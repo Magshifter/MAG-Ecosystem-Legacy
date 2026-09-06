@@ -1,0 +1,573 @@
+# MAG Ecosystem — AI Development Guidelines
+
+This document is the **Global MAG development standard**. It defines **how** MAG XenForo add-ons are developed with AI assistance.
+
+It applies to ChatGPT, Cursor IDE, Cursor Agent, Codex, and any other AI-assisted tool used on MAG work.
+
+Ecosystem identity, project registry, `#N` markers, Global vs Project documentation levels, AI context isolation, high-level documentation authority, project bootstrap, and the License Manager concept are defined in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). This file does not restate those definitions. Load **GLOBAL + the active `#N`** as specified there.
+
+Detailed coding-agent execution boundaries, checkpoint mechanics, and report formats belong in `AI_AGENTS_RULES.md` once that Global file exists. Until then, follow this document and `MAG_ECOSYSTEM.md`; do not invent a parallel agent protocol.
+
+Cursor usage accounting methodology and historical MAG analytics belong in `CURSOR_USAGE_ANALYTICS.md` once that Global file exists. Do not duplicate that methodology here.
+
+---
+
+## 1. Purpose and philosophy
+
+MAG development must remain:
+
+- Correct.
+- Stable.
+- Maintainable.
+- Compatible with the XenForo versions declared by the active project.
+- Secure.
+- Performant.
+- Accurately documented.
+- Incrementally developed under **manual user control**.
+
+AI must not treat MAG work as an open-ended rewrite, a research project, or a license to implement later stages because they seem useful.
+
+---
+
+## 2. Authority (development use)
+
+Use the authority model in `MAG_ECOSYSTEM.md`. For implementation work, apply it as follows:
+
+| Source | Use |
+| --- | --- |
+| Global documentation | Process, tools, Git, security/performance/testing standards, XenForo development rules. |
+| Project `TZ.md` | What the add-on must do. |
+| Project `Roadmap.md` | What increment is approved **now**, and verified progress. |
+| Project `Architecture.md` | Approved implementation architecture. Does not override TZ. |
+| Project `CLASS_MAP.md` | Current classes and responsibilities as they exist. |
+| Actual project code | What is currently implemented. Documentation must not claim code that does not exist. |
+| Installed XenForo source | Undocumented or uncertain framework behavior. |
+| `Changelog.md` / Git history | History. Do not rewrite the past. |
+| `README.md` / overview | Descriptive only. |
+| `Idea.md` | Non-authoritative research. |
+
+`AI_AGENTS_RULES.md` (when present) additionally constrains repository-task execution. If Global documents conflict, **stop and report** rather than silently choosing one.
+
+AI must not invent XenForo APIs or rely on assumptions when installed XenForo source can be inspected.
+
+---
+
+## 3. Incremental development and manual control
+
+Development must remain incremental and controlled by the user.
+
+AI must:
+
+- Read the relevant project requirements before proposing changes.
+- Inspect the existing implementation in the active `#N` repository.
+- Preserve verified working behavior.
+- Identify affected classes and dependencies.
+- Explain the proposed change.
+- Implement only the requested scope.
+- Verify XenForo compatibility for the versions in that project's scope.
+- Review security and performance implications as appropriate to the change.
+- Test in proportion to risk and previous verification.
+- Synchronize only affected documentation.
+- Keep changes small and focused.
+- Stop when the requested stage or task is complete.
+
+AI must not:
+
+- Implement functionality merely because it may be useful later.
+- Expand the current stage without approval.
+- Replace working code for stylistic preference.
+- Invent framework behavior.
+- Present planned functionality as implemented.
+- Present an experimental observation as a formal benchmark.
+- Present a placeholder class as functional.
+- Automatically implement future stages.
+- Modify a MAG repository that is outside the approved procedure scope.
+
+---
+
+## 4. Responsibility model
+
+High-level roles are in `MAG_ECOSYSTEM.md`. This section defines MAG development responsibilities in enough detail to apply them. Execution checklists for coding agents belong in `AI_AGENTS_RULES.md` when that file exists.
+
+### ChatGPT
+
+ChatGPT is responsible for:
+
+- Architecture.
+- Technical analysis.
+- Planning.
+- Requirements clarification.
+- Documentation analysis and writing.
+- Code review.
+- Risk identification.
+- Development decisions.
+- Explaining implementation approaches.
+- Reviewing completed stages.
+
+ChatGPT must not assume undocumented XenForo behavior.
+
+ChatGPT must not silently replace Cursor Agent implementation or the user's Git control.
+
+### Cursor IDE
+
+Cursor IDE is the **primary environment** for:
+
+- Inspecting the local repository.
+- Editing files.
+- Running local development tasks.
+- Testing the add-on.
+- Reviewing changes.
+- Inspecting installed XenForo source.
+
+### Cursor Agent
+
+Cursor Agent is a **last-resort implementation tool**.
+
+Cursor Agent must **not** be used for:
+
+- Internet searches.
+- External documentation research.
+- Learning XenForo APIs.
+- Architectural decisions.
+- Requirements analysis.
+- Exploring new implementation approaches.
+- Deciding what should be implemented.
+
+Cursor Agent may **only** be used for:
+
+- Working with existing repository code.
+- Implementing a clearly specified change.
+- Optimization.
+- Refactoring.
+- Debugging.
+- Analysis of existing code.
+
+Before using Cursor Agent **outside** these permitted cases, explain the reason and obtain **explicit approval**.
+
+### Codex
+
+Codex may be used for code-related assistance when the user assigns it.
+
+Codex must follow the same MAG:
+
+- Project and stage discipline.
+- XenForo standards.
+- Existing Code First principle.
+- Security requirements.
+- Performance requirements.
+- Documentation rules.
+- Git workflow.
+
+Codex must not independently expand implementation beyond the approved stage or task.
+
+### User
+
+The user is product owner: requirements, sequencing, reviews, Git, and releases. Final repository control remains with the user.
+
+No assistant may treat another assistant's draft as approved product or process unless the user has accepted it.
+
+---
+
+## 5. Stage discipline
+
+Follow the stages (or equivalent approved increments) defined in the **active project's** `TZ.md` and `Roadmap.md`.
+
+Before implementing a stage:
+
+1. Read the relevant requirements.
+2. Read the relevant roadmap section.
+3. Inspect current project structure.
+4. Inspect related existing code.
+5. Identify dependencies.
+6. Explain the proposed implementation.
+7. Implement **only** the requested stage.
+8. Test the result.
+9. Review XenForo compatibility.
+10. Review security implications as appropriate.
+11. Review performance implications as appropriate.
+12. Update affected documentation.
+13. Prepare the Git checkpoint (user owns commit unless they explicitly request otherwise).
+
+Never automatically implement future stages.
+
+A **minimal** prerequisite from a later stage may be introduced only when:
+
+- The current stage cannot be completed correctly without it.
+- The dependency is explicitly identified.
+- The scope remains minimal.
+- The reason is documented.
+- No unrelated future functionality is added.
+
+Existing code from later or earlier stages must not be deleted merely because those stages are incomplete.
+
+A stage may be marked complete only when the project's Roadmap conditions are satisfied. Completion generally requires: required implementation exists; relevant XenForo behavior is verified; tests appropriate to the stage pass; security and performance implications are reviewed; development diagnostics are handled; documentation is synchronized (including the changelog entry the project requires); the result is ready for a Git checkpoint.
+
+Architecture approval alone does not complete a stage. The presence of placeholder or Alpha code alone does not complete a stage.
+
+---
+
+## 6. Language
+
+All source code must be written in **English**.
+
+This includes identifiers, filenames, directory names, comments, PHPDoc, JavaScript identifiers, CSS class names, and Git commit messages.
+
+Project documentation is maintained in English unless a separate translated document is explicitly required.
+
+All user-facing XenForo text must use the XenForo Phrase system. User-facing strings must not be hardcoded into PHP or JavaScript.
+
+---
+
+## 7. Existing Code First
+
+Before changing code:
+
+1. Inspect the current implementation.
+2. Understand the active runtime flow.
+3. Identify existing classes related to the task.
+4. Verify whether the requested functionality already exists.
+5. Identify dependencies on completed or partially implemented work.
+6. Preserve verified working functionality.
+7. Avoid unnecessary rewrites.
+8. Reuse existing XenForo mechanisms.
+9. Make the smallest reasonably focused change.
+
+Do not recreate an existing class unless there is a verified technical reason.
+
+Do not introduce a new abstraction only to support hypothetical future functionality or "ecosystem sharing." Shared MAG components exist only under `MAG_ECOSYSTEM.md` (real cross-project requirement, approved).
+
+---
+
+## 8. XenForo standards
+
+MAG add-ons follow official XenForo conventions for the versions declared by the active project.
+
+Prefer native XenForo mechanisms such as:
+
+- Entities, Finders, Repositories, Services, Jobs.
+- Code Event Listeners and Class Extensions.
+- Template Modifications.
+- Options, Permissions, Phrases, Routes, Controllers.
+- XenForo filesystem and HTTP facilities.
+
+Use only mechanisms appropriate to the active requirement.
+
+Do not:
+
+- Modify XenForo core files.
+- Directly modify XenForo default templates when a Template Modification is appropriate.
+- Invent undocumented XenForo APIs.
+- Assume that an API from another XenForo version behaves identically.
+- Create custom architecture when XenForo already provides a suitable native mechanism.
+
+When XenForo behavior is uncertain:
+
+1. Inspect the **installed XenForo source** first.
+2. Identify the actual call path and lifecycle.
+3. Consult **official XenForo documentation** when necessary.
+4. Record the verified conclusion in the project document that owns it.
+5. Only then make the implementation decision.
+
+---
+
+## 9. Third-party reference add-ons
+
+Third-party add-ons may be inspected to identify candidate XenForo integration points, compatibility considerations, common patterns, and pitfalls.
+
+Third-party code is **not** authoritative XenForo documentation.
+
+Do not blindly copy architecture, code, security or performance behavior, licensing behavior, branding mechanisms, or legacy workarounds.
+
+Every adopted mechanism must be independently verified against installed XenForo source, the project's TZ, MAG architecture, security and performance requirements, and current stage scope.
+
+---
+
+## 10. PHP standards
+
+Use:
+
+```php
+declare(strict_types=1);
+```
+
+PHP must:
+
+- Follow XenForo-compatible style for the project.
+- Use meaningful types.
+- Use focused classes and methods.
+- Avoid unnecessary static state.
+- Avoid suppressed errors in final production paths unless explicitly justified.
+- Avoid hidden side effects.
+- Escape output for the correct context.
+- Keep services testable where practical.
+
+PHPDoc should add useful information and must not merely repeat obvious type declarations.
+
+Do not introduce dependencies without a clear benefit.
+
+---
+
+## 11. Frontend: JavaScript, CSS, and LESS
+
+JavaScript must remain minimal.
+
+JavaScript may support verified frontend behavior that cannot reasonably be handled by server-rendered markup or CSS, integrate with the XenForo frontend lifecycle where required, and apply presentation behavior to supported dynamic content.
+
+JavaScript must not perform untrusted remote discovery or download, security validation that belongs on the server, server cache control, whole-page DOM scanning as primary architecture, injection into unrelated XenForo UI, or compensation for avoidable server architecture problems.
+
+Use XenForo LESS templates for integrated styling where appropriate. Selectors must be scoped to the add-on.
+
+Presentation must avoid layout shifts, content jumping, horizontal overflow, covered content, unstable alignment, and unnecessary specificity.
+
+Consider desktop, mobile, supported XenForo styles, dynamic content, and RTL where applicable.
+
+Do not maintain duplicate CSS and LESS sources without a documented build or packaging reason.
+
+---
+
+## 12. Content scope
+
+An add-on must process only the XenForo content types and surfaces declared in that project's TZ.
+
+Do not globally inject behavior into unrelated UI (navigation, header, footer, breadcrumbs, standard sidebar, widgets, lists, user menus, Admin CP, and similar) unless the project's requirements explicitly include that surface.
+
+A complete-page DOM scan must not be the primary integration architecture unless TZ and Architecture explicitly require it and XenForo source has been verified.
+
+---
+
+## 13. Security
+
+Untrusted input, untrusted URLs, and untrusted remote responses remain untrusted.
+
+Where a MAG add-on performs external HTTP or stores untrusted files, the **controlled server path** (not normal page rendering) must provide appropriate protection against SSRF, unsafe addresses and schemes, unsafe or excessive redirects, oversized responses, invalid status or type, and malicious payload content. Every redirect destination must be validated.
+
+Prefer XenForo's native untrusted HTTP reader and related facilities when they meet the requirement.
+
+Security failures must not produce fatal XenForo errors during normal forum use.
+
+Errors must not expose sensitive information to users.
+
+Temporary diagnostics must be removed or appropriately replaced before the relevant stage is complete.
+
+Logging must use appropriate severity and must not flood XenForo logs during normal behavior.
+
+---
+
+## 14. Error handling
+
+Add-on failures must fail gracefully.
+
+Normal forum use must continue when parsing, remote requests, storage, cache, or optional features fail.
+
+Do not couple ordinary rendering to the availability of optional external services.
+
+---
+
+## 15. Performance
+
+Performance is a core architecture requirement.
+
+AI must avoid:
+
+- Blocking the XenForo request on avoidable external work.
+- Repeated work for the same key without a verified cache or suppression policy.
+- Unnecessary database queries and filesystem operations.
+- Global DOM scanning.
+- Duplicate frontend initialization.
+- Large unbounded downloads.
+
+Rendering (or other user-facing request paths declared by the project) must complete normally when optional remote data is missing, slow, unavailable, previously failed, or expired.
+
+Experimental observations are not formal benchmarks and must not be used to roll back a roadmap without approval.
+
+---
+
+## 16. Localization
+
+All user-facing text must use XenForo phrases.
+
+Phrase names must follow XenForo conventions, use a consistent MAG/add-on prefix, remain stable where practical, and be documented when they are part of administrator configuration.
+
+If a project maintains an official extra-language XML **outside** the canonical add-on ZIP:
+
+- Keep it in sync when source phrases change.
+- Align `base_version_id` with the add-on `version_id` when that is the project's established policy.
+- Validate coverage, placeholders, and XML before release finalization when phrases changed.
+- Do not add it to the canonical ZIP unless a later approved stage changes that policy.
+
+Internal diagnostic text is not automatically user-facing.
+
+---
+
+## 17. Testing
+
+Testing must correspond to the active stage and risk.
+
+Potential verification includes syntax validation, focused unit tests, XenForo integration checks, add-on data import/export, install/upgrade/uninstall, rendering and AJAX/dynamic-content checks, filesystem and HTTP behavior, security tests, and performance measurements.
+
+Production or live-site observation must not substitute for controlled local verification.
+
+Do not claim tests were run when they were not.
+
+---
+
+## 18. Efficient validation
+
+Validation effort must be **proportional** to the change and to verification already performed.
+
+Do not introduce redundant procedures merely to repeat already sufficient verification.
+
+A later documentation-only or already-approved synchronization does not require a new full review, security audit, or release-finalization suite unless the synchronization introduces unexpected changes, unresolved issues, or invalidates previous verification.
+
+Release Finalization (when a project uses it) verifies the **artifact and deployment boundary**. It does not repeat the preceding stage audit unless that audit has been invalidated (production behavior changed after the audit, a release-blocking defect was found, packaging exposed a problem requiring production changes, or another concrete reason).
+
+---
+
+## 19. Backwards compatibility
+
+A shipping MAG version is a product baseline, not a permanent public API freeze.
+
+Existing structures may change when the active stage requires it (markup, data attributes, JavaScript, CSS, constructors, method signatures, storage layout, and similar). Such changes must be required, explained before implementation, verified against XenForo, tested, reflected in documentation, and checkpointed in Git.
+
+Working behavior must not be broken casually. Preserve the current shipping product of `#N` unless the approved increment explicitly changes it.
+
+---
+
+## 20. Git workflow
+
+The verified local working copy is authoritative for pending local changes.
+
+The configured remote records the last published repository state.
+
+Each completed stage should end at a stable Git checkpoint.
+
+The **user** owns `git add`, `git commit`, and `git push` unless they explicitly request the agent to perform them.
+
+Before publishing:
+
+1. Verify the permanent repository root for the active `#N` (or `MAG-Ecosystem` for Global documentation).
+2. Verify intended XenForo add-on structure when the repository is an add-on.
+3. Review all changes.
+4. Confirm no temporary restore directories are tracked.
+5. Confirm no XenForo core or environment-specific files are included.
+6. Test the applicable stage.
+7. Synchronize documentation.
+8. Commit with an English message when the user requests it.
+9. Push only the verified local commit when the user requests it.
+
+Do not claim Git state was verified unless it was actually inspected.
+
+Preserve unrelated user changes.
+
+Expected **add-on** repository form (logical; exact paths may vary):
+
+```text
+RepositoryRoot
+├── .git
+├── .gitignore
+├── README.md
+├── TZ.md
+├── Idea.md          (optional)
+├── docs/
+└── src/addons/MAG/<AddOnDirectory>
+```
+
+Global process files live in `MAG-Ecosystem`, not inside each add-on, once migration of those files is complete.
+
+Do not claim a MAG add-on repository must keep copies of Global `AI_GUIDELINES.md` after that migration is approved.
+
+---
+
+## 21. Release artifact preservation
+
+Finalized XenForo release ZIP archives in `_releases` are immutable historical artifacts.
+
+- Never overwrite, replace, or reuse the filename of a previously finalized release ZIP.
+- Test and development builds must not use the filename of an existing final release.
+- After creating a test build, copy or rename it immediately using an explicit test identifier (for example `MAG-AddOnName-1.0.0-test.zip`).
+- Final packages use the canonical version filename (for example `MAG-AddOnName-1.0.0.zip`).
+- Preserve previous final release ZIPs so every published version remains recoverable.
+
+`xf-addon:build-release` names the output ZIP from the **installed XenForo add-on version string in the database**, not from `addon.json` alone.
+
+Before `xf-addon:build-release`:
+
+- Verify source `addon.json` `version_string` and `version_id` match the intended release.
+- Verify the installed XenForo add-on DB version is aligned with that intended release.
+- When they differ, run the established native XenForo alignment procedure first (on the current stack: `xf-addon:bump-version --from-json`).
+- List the target `_releases` directory.
+- Confirm the intended canonical ZIP filename does not already exist.
+- Never rely only on `addon.json` to predict the output ZIP filename.
+- Never allow `build-release` to overwrite a historical final archive. If the canonical filename already exists, stop and rename or relocate the new build.
+
+Minimum Release Finalization verification typically includes: version metadata; canonical ZIP identity; ZIP contents; `hashes.json` vs packaged files; required packaged assets; exclusion of development and runtime-only files; preservation of historical final ZIPs; supported-XenForo install/upgrade smoke; file health where applicable; installed add-on version and active state; ZIP size and SHA-256.
+
+When source phrases changed, also validate any official extra-language file the project maintains outside the ZIP.
+
+---
+
+## 22. Documentation synchronization
+
+After verified implementation changes, update **only** the documents the change actually affects.
+
+Typical project documents: `README.md`, `TZ.md`, `Architecture.md`, `CLASS_MAP.md`, `Changelog.md`, `Roadmap.md`, and optional overview/research files.
+
+Update Global documents only when process or ecosystem conventions changed.
+
+Documentation must describe the actual verified state. Do not copy one project's product status into Global guidelines.
+
+If code or XenForo source inspection shows that a documented requirement is incorrect, unsafe, impossible, or incompatible:
+
+1. Stop implementation.
+2. Identify the conflict.
+3. Record the evidence.
+4. Explain the impact.
+5. Propose a correction.
+6. Obtain approval where the correction changes requirements.
+7. Update the authoritative document.
+8. Synchronize related documents.
+9. Only then continue.
+
+AI must not silently change requirements for implementation convenience.
+
+---
+
+## 23. AI behavior
+
+AI must:
+
+- State assumptions.
+- Distinguish facts from proposals.
+- Cite inspected code when making implementation claims.
+- Identify uncertainty.
+- Stop when additional authority is required.
+- Avoid presenting incomplete work as complete.
+- Avoid claiming tests or Git verification that did not occur.
+- Preserve unrelated user changes.
+- Keep recommendations proportional to the current task.
+
+When a production observation conflicts with documentation, inspect code and controlled evidence before changing stage interpretation.
+
+Do not optimize development merely to reduce Cursor quota usage. Correctness, XenForo compatibility, security, maintainability, testing, and documentation remain higher priorities.
+
+When Cursor analytics apply, follow `CURSOR_USAGE_ANALYTICS.md` (once present). Do not invent usage percentages. Do not print Model requests made, Usage-counted requests, or Agent/tool calls in MAG reports.
+
+---
+
+## 24. Final principle
+
+AI-assisted MAG development must remain:
+
+- Incremental.
+- Evidence-based.
+- XenForo-native.
+- Existing-code-first.
+- Security-conscious.
+- Performance-conscious.
+- Precisely documented.
+- Limited to the active stage of the active `#N`.
+- Preservative of that project's current shipping baseline.
+
+Work proceeds from verified code and verified XenForo behavior, not from assumptions, silent conflict resolution, or speculative future architecture.
+
+**GLOBAL defines HOW. `#N` defines WHAT.**
