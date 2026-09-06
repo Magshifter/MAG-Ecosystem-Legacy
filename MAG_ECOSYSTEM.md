@@ -31,8 +31,8 @@ MAG Ecosystem is **not** a runtime product, a shared PHP package, or a license-c
 
 | ID | Product | Status | Git repository |
 | --- | --- | --- | --- |
-| #1 | [MAG] Global Links Favicons | Active / Stable | `GlobalLinksFavicons` |
-| #2 | [MAG] Tag Synchronizer | Planned | `TagSynchronizer` |
+| #1 | [MAG] Global Links Favicons | Active / Stable 1.4.0 | `GlobalLinksFavicons` |
+| #2 | [MAG] Tag Synchronizer | Requirements Definition / Pre-Implementation | `TagSynchronizer` |
 
 `#3` and later are assigned **sequentially when a project is approved**. Do not reserve unused numbers, invent products, or skip identifiers.
 
@@ -75,11 +75,17 @@ The current Global documentation tree in this repository is:
 | `AI_AGENTS_RULES.md` | Rules and boundaries for AI coding agents and related development tools. |
 | `CURSOR_USAGE_ANALYTICS.md` | Canonical methodology for Cursor Models measurement, reporting, forecasting, and analytics. |
 
-`CURSOR_USAGE_ANALYTICS.md` is methodology only. It is not a measurement-history log. Project (`#N`) measurements belong in that project's repository as project history. MAG Ecosystem process measurements belong in a separate MAG-Ecosystem history artifact when that artifact is later approved. Do not copy analytics rules into this file.
+These four files are **Global-only**. They exist only in `MAG-Ecosystem`. Individual MAG project repositories must **not** create copies, companions, or pointer files named `MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, or `CURSOR_USAGE_ANALYTICS.md`.
+
+Projects inherit Global rules by reading this repository. Project-specific requirements belong in that project's TZ, Roadmap, Architecture, CLASS_MAP, Changelog, and README (and optional research/overview files). Project-specific Cursor measurement history may be stored locally (for example `docs/CURSOR_USAGE_HISTORY.md`).
+
+When a Global process rule changes, edit only `MAG-Ecosystem`. Do **not** synchronize that change into `#1`, `#2`, or later project repositories merely to mirror Global wording.
+
+`CURSOR_USAGE_ANALYTICS.md` is methodology only. It is not a measurement-history log. MAG Ecosystem process measurements belong in a separate MAG-Ecosystem history artifact when that artifact is later approved. Do not copy analytics rules into this file.
 
 ### How MAG projects cite Global documents
 
-Project documentation must cite Global files as **`MAG-Ecosystem` / `<filename.md>`** (for example `MAG-Ecosystem` / `AI_GUIDELINES.md`). Do not copy Global process documents into a project repository as a second source of truth. Do not repeat the workstation clone path in every product document; the clone convention above is recorded once in this file.
+Project documentation must cite Global files as **`MAG-Ecosystem` / `<filename.md>`** (for example `MAG-Ecosystem` / `AI_GUIDELINES.md`). Do not repeat the workstation clone path in every product document; the clone convention above is recorded once in this file.
 
 ## Project documentation standard
 
@@ -232,9 +238,10 @@ When a new MAG add-on is approved:
 3. Create the project Git repository (separate from `MAG-Ecosystem`).
 4. Add the standard project documentation set as that project needs it (`TZ.md` first when requirements exist).
 5. Do not copy another project's requirements, architecture, or code "as a template" beyond true Global process.
-6. Do not create shared components as part of bootstrap.
+6. Do not create copies or pointer files of Global process documents in the new project.
+7. Do not create shared components as part of bootstrap.
 
-`#2` [MAG] Tag Synchronizer is registered as **Planned**. Its repository and documentation are **not** created in this procedure.
+`#2` [MAG] Tag Synchronizer is registered. Its Git repository exists. Status is **Requirements Definition / Pre-Implementation**. It inherits Global rules by reference. It must not contain local copies of the four Global process files.
 
 ## Current MAG-Ecosystem repository contents
 
