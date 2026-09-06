@@ -530,6 +530,20 @@ If code or XenForo source inspection shows that a documented requirement is inco
 
 AI must not silently change requirements for implementation convenience.
 
+### ChatGPT Project files after Stable release
+
+After a confirmed Stable release whose result is **RELEASE FINALIZATION PASS**, ChatGPT must give the user a short vertical list of ChatGPT Project files to update or replace so Project context matches the new stable state.
+
+The list must:
+
+- Be concise.
+- Contain filenames/paths only unless the user asks for explanation.
+- Be grouped by source context using `GLOBAL [MAG] Ecosystem`, `#1 [MAG] Global Links Favicons`, `#2 [MAG] Tag Synchronizer`, and future `#N` markers as applicable.
+- Include only files that actually changed or that genuinely need Project-context refresh.
+- Use real project-relative paths where useful, for example `docs/Architecture.md`.
+
+Do not produce this list for release candidates, test builds, blocked releases, or failed finalization.
+
 ---
 
 ## 23. AI behavior
