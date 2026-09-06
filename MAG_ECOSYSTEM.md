@@ -27,12 +27,14 @@ MAG Ecosystem is **not** a runtime product, a shared PHP package, or a license-c
 
 ## Permanent sequential project registry
 
-`#N` is a **permanent logical project identifier**. It is assigned once and is not reused. It is **not** required in physical filenames, folder names, or Git repository names.
+`#N` is a **permanent logical project identifier**. It is assigned once and is not reused.
 
-| ID | Product | Status | Git repository |
-| --- | --- | --- | --- |
-| #1 | [MAG] Global Links Favicons | Active / Stable 1.4.0 | `GlobalLinksFavicons` |
-| #2 | [MAG] Tag Synchronizer | Requirements Definition / Pre-Implementation | `TagSynchronizer` |
+Each MAG project also has a **short, stable project code** used in documentation filenames. That code is a filesystem/UI representation of `#N`. It does **not** replace `#N` in Global registry, reports, or AI context.
+
+| ID | Code | Product | Status | Git repository |
+| --- | --- | --- | --- | --- |
+| #1 | `P01__GLF` | [MAG] Global Links Favicons | Active / Stable 1.4.3 | `GlobalLinksFavicons` |
+| #2 | `P02__TS` | [MAG] Tag Synchronizer | Requirements Definition / Pre-Implementation | `TagSynchronizer` |
 
 `#3` and later are assigned **sequentially when a project is approved**. Do not reserve unused numbers, invent products, or skip identifiers.
 
@@ -77,7 +79,7 @@ The current Global documentation tree in this repository is:
 
 These four files are **Global-only**. They exist only in `MAG-Ecosystem`. Individual MAG project repositories must **not** create copies, companions, or pointer files named `MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, or `CURSOR_USAGE_ANALYTICS.md`.
 
-Projects inherit Global rules by reading this repository. Project-specific requirements belong in that project's TZ, Roadmap, Architecture, CLASS_MAP, Changelog, and README (and optional research/overview files). Project-specific Cursor measurement history may be stored locally (for example `docs/CURSOR_USAGE_HISTORY.md`).
+Projects inherit Global rules by reading this repository. Project-specific requirements belong in that project's TZ, Roadmap, Architecture, CLASS_MAP, Changelog, and README (and optional research/overview files), using the canonical filenames defined below. Project-specific Cursor measurement history may be stored locally (for example `docs/P01__GLF__CURSOR_USAGE_HISTORY.md`).
 
 When a Global process rule changes, edit only `MAG-Ecosystem`. Do **not** synchronize that change into `#1`, `#2`, or later project repositories merely to mirror Global wording.
 
@@ -89,30 +91,58 @@ Project documentation must cite Global files as **`MAG-Ecosystem` / `<filename.m
 
 ## Project documentation standard
 
-Each MAG project repository should use this standard set:
+Each MAG project repository should use this standard **logical** set. Authority is defined by the logical document, not by an unprefixed filename.
 
-| File | Role |
-| --- | --- |
-| `TZ.md` | Product requirements. Authoritative for **what** the add-on must do. |
-| `Roadmap.md` | Approved implementation sequencing and verified stage progress. |
-| `Architecture.md` | Approved implementation architecture. |
-| `CLASS_MAP.md` | Current code structure and class responsibilities. |
-| `Changelog.md` | Historical record of released and staged changes. |
-| `README.md` | Descriptive project entry point. |
+| Logical document | Canonical filename | Role |
+| --- | --- | --- |
+| TZ | `P<NN>__<CODE>__TZ.md` | Product requirements. Authoritative for **what** the add-on must do. |
+| Roadmap | `P<NN>__<CODE>__Roadmap.md` | Approved implementation sequencing and verified stage progress. |
+| Architecture | `P<NN>__<CODE>__Architecture.md` | Approved implementation architecture. |
+| CLASS_MAP | `P<NN>__<CODE>__CLASS_MAP.md` | Current code structure and class responsibilities. |
+| Changelog | `P<NN>__<CODE>__Changelog.md` | Historical record of released and staged changes. |
+| README | `P<NN>__<CODE>__README.md` | Descriptive project entry point. |
 
 Optional, created only when useful:
 
-- `Idea.md` — non-authoritative research and working notes.
-- `Overview.md` (or an equivalent overview document) — descriptive product overview.
-- Other project documents when they serve a real, documented need.
+- Idea — `P<NN>__<CODE>__Idea.md` — non-authoritative research and working notes.
+- Overview — `P<NN>__<CODE>__Overview.md` — descriptive product overview.
+- Cursor usage history — `P<NN>__<CODE>__CURSOR_USAGE_HISTORY.md` (often under `docs/`).
+- Other project documents when they serve a real, documented need, using the same filename prefix.
 
-Physical layout inside a project repository may place some of these files at the repository root or under `docs/`. The **logical names and authority** above matter more than a single folder convention. `#N` is not required in those filenames.
+Physical layout inside a project repository may place some of these files at the repository root or under `docs/`. The **logical names and authority** above remain unchanged.
+
+Do not keep duplicate copies under the old unprefixed names after a controlled migration. Do not create a separate renamed-copy layer for ChatGPT Project; ChatGPT Project should use these same canonical filenames.
+
+### Project documentation filenames
+
+This is the authoritative MAG convention for project-specific documentation filenames.
+
+1. Global-only process files keep their existing unique filenames (`MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `CURSOR_USAGE_ANALYTICS.md`). Do **not** add a `GLOBAL__` prefix to them.
+2. Project-specific canonical documentation uses `P<NN>__<CODE>__<Document>.md`.
+3. `#N` remains the permanent logical project identifier.
+4. `P01`, `P02`, and later are the filename representation of `#1`, `#2`, and later. The prefix does not replace `#N`.
+5. Each project receives one short, stable project code recorded in the registry above (`GLF`, `TS`, …).
+6. Existing project documentation should use the convention after controlled migration.
+7. New MAG projects should use the convention from bootstrap.
+8. Physical directories may still use the project-appropriate root/`docs/` layout.
+9. The convention applies to the real canonical repository files, not only ChatGPT Project copies.
+10. ChatGPT Project should use those same canonical filenames. No separate renamed-copy naming layer is required.
+
+Examples:
+
+```text
+#1  P01__GLF__TZ.md
+    docs/P01__GLF__Roadmap.md
+
+#2  P02__TS__TZ.md
+    P02__TS__Roadmap.md
+```
 
 ## Project marker system
 
 - `#N` identifies the product in Global registry, reports, and AI context (`#1`, `#2`, …).
-- Repository names, add-on IDs, PHP namespaces, and documentation filenames follow XenForo / MAG product identity (for example `MAG/GlobalLinksFavicons`), not the `#N` marker.
-- Do not rename existing project files solely to insert `#N`.
+- Repository names, add-on IDs, and PHP namespaces follow XenForo / MAG product identity (for example `MAG/GlobalLinksFavicons`), not the `#N` marker.
+- Project documentation filenames use `P<NN>__<CODE>__` as defined above so the same files are identifiable in local clones, GitHub, Cursor, and ChatGPT Project.
 
 ## AI context isolation
 
@@ -131,13 +161,13 @@ Do not modify one MAG repository while the approved procedure is scoped to anoth
 | Source | Authority |
 | --- | --- |
 | Global documentation (`MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `CURSOR_USAGE_ANALYTICS.md`) | **How** MAG work is done: process, agents, Git checkpoints, analytics methodology, ecosystem conventions. |
-| Project `TZ.md` | **What** that product must do. Functional requirements. |
-| Project `Architecture.md` | Approved implementation architecture for that product. Describes intended and verified structure; it does not override TZ. |
-| Project `Roadmap.md` | Approved sequencing and verified progress. Controls what may be implemented **now**. |
-| Project `CLASS_MAP.md` | Current classes and responsibilities as they exist in code. |
-| Project `README.md` / overview documents | Descriptive. Not a source of new requirements or process. |
-| Project `Idea.md` | Non-authoritative research. Must not override TZ, Architecture, Roadmap, or Global rules. |
-| `Changelog.md` and Git history | Historical. Preserve as history. Do not rewrite the past to match a later decision. |
+| Project TZ | **What** that product must do. Functional requirements. Canonical file: `P<NN>__<CODE>__TZ.md`. |
+| Project Architecture | Approved implementation architecture for that product. Describes intended and verified structure; it does not override TZ. |
+| Project Roadmap | Approved sequencing and verified progress. Controls what may be implemented **now**. |
+| Project CLASS_MAP | Current classes and responsibilities as they exist in code. |
+| Project README / overview documents | Descriptive. Not a source of new requirements or process. |
+| Project Idea | Non-authoritative research. Must not override TZ, Architecture, Roadmap, or Global rules. |
+| Changelog and Git history | Historical. Preserve as history. Do not rewrite the past to match a later decision. |
 
 **Code currently in the project repository is authoritative for what exists.** Requirements and process documents are authoritative for what is approved. Planned work is not implemented work.
 
@@ -234,9 +264,9 @@ This repository must **not** design, specify, or implement License Manager funct
 When a new MAG add-on is approved:
 
 1. Assign the next sequential `#N` in the registry above.
-2. Record product name, status, and Git repository name.
+2. Record product name, status, Git repository name, and short filename code (`P<NN>__<CODE>`).
 3. Create the project Git repository (separate from `MAG-Ecosystem`).
-4. Add the standard project documentation set as that project needs it (`TZ.md` first when requirements exist).
+4. Add the standard project documentation set as that project needs it (`P<NN>__<CODE>__TZ.md` first when requirements exist). Use the filename convention in this document from bootstrap.
 5. Do not copy another project's requirements, architecture, or code "as a template" beyond true Global process.
 6. Do not create copies or pointer files of Global process documents in the new project.
 7. Do not create shared components as part of bootstrap.

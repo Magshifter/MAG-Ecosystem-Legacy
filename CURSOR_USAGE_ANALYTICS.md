@@ -250,7 +250,7 @@ Do not copy another project’s procedure log into this Global standard.
 | Kind of record | Logical home (do not create new files solely from this section) |
 | --- | --- |
 | Methodology (this document) | `MAG-Ecosystem` / `CURSOR_USAGE_ANALYTICS.md` |
-| `#N` procedure logs, release summaries, project forecasts vs actual | That project’s repository, as project history (not TZ/Roadmap requirements) |
+| `#N` procedure logs, release summaries, project forecasts vs actual | That project’s repository, as project history (not TZ/Roadmap requirements). Canonical history filename example: `docs/P01__GLF__CURSOR_USAGE_HISTORY.md`. |
 | Global documentation-reorganization / ecosystem-process measurements | `MAG-Ecosystem` process history, separate from this methodology file |
 
 Do not silently rewrite measured historical records because methodology later changes. If a field is retired or reinterpreted, keep old rows as recorded and note the interpretation change in notes or a later dated correction. Corrections must be transparent.
@@ -269,7 +269,7 @@ ChatGPT is responsible for noticing when a completed Cursor procedure discussed 
 
 After a completed release, hotfix cycle, or coherent body of work, ChatGPT must verify that meaningful Cursor procedures since the previous history checkpoint are represented before analytics/history synchronization is considered complete.
 
-Stable-release ChatGPT Project synchronization must include `docs/CURSOR_USAGE_HISTORY.md` when that file actually changed.
+Stable-release ChatGPT Project synchronization must include that project's `docs/P<NN>__<CODE>__CURSOR_USAGE_HISTORY.md` when that file actually changed.
 
 ---
 

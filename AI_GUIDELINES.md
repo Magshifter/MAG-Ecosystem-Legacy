@@ -36,15 +36,15 @@ Use the authority model in `MAG_ECOSYSTEM.md`. For implementation work, apply it
 | Source | Use |
 | --- | --- |
 | Global documentation | Process, tools, Git, security/performance/testing standards, XenForo development rules. |
-| Project `TZ.md` | What the add-on must do. |
-| Project `Roadmap.md` | What increment is approved **now**, and verified progress. |
-| Project `Architecture.md` | Approved implementation architecture. Does not override TZ. |
-| Project `CLASS_MAP.md` | Current classes and responsibilities as they exist. |
+| Project TZ | What the add-on must do. Canonical filename: `P<NN>__<CODE>__TZ.md` (`MAG_ECOSYSTEM.md`). |
+| Project Roadmap | What increment is approved **now**, and verified progress. |
+| Project Architecture | Approved implementation architecture. Does not override TZ. |
+| Project CLASS_MAP | Current classes and responsibilities as they exist. |
 | Actual project code | What is currently implemented. Documentation must not claim code that does not exist. |
 | Installed XenForo source | Undocumented or uncertain framework behavior. |
-| `Changelog.md` / Git history | History. Do not rewrite the past. |
-| `README.md` / overview | Descriptive only. |
-| `Idea.md` | Non-authoritative research. |
+| Changelog / Git history | History. Do not rewrite the past. |
+| README / overview | Descriptive only. |
+| Idea | Non-authoritative research. |
 
 `AI_AGENTS_RULES.md` (when present) additionally constrains repository-task execution. If Global documents conflict, **stop and report** rather than silently choosing one.
 
@@ -170,7 +170,7 @@ No assistant may treat another assistant's draft as approved product or process 
 
 ## 5. Stage discipline
 
-Follow the stages (or equivalent approved increments) defined in the **active project's** `TZ.md` and `Roadmap.md`.
+Follow the stages (or equivalent approved increments) defined in the **active project's** TZ and Roadmap (canonical filenames in `MAG_ECOSYSTEM.md`).
 
 Before implementing a stage:
 
@@ -465,12 +465,15 @@ Expected **add-on** repository form (logical; exact paths may vary):
 RepositoryRoot
 ├── .git
 ├── .gitignore
-├── README.md
-├── TZ.md
-├── Idea.md          (optional)
+├── P<NN>__<CODE>__README.md
+├── P<NN>__<CODE>__TZ.md
+├── P<NN>__<CODE>__Idea.md          (optional)
 ├── docs/
+│   └── P<NN>__<CODE>__*.md
 └── src/addons/MAG/<AddOnDirectory>
 ```
+
+Canonical project documentation filenames are defined in `MAG_ECOSYSTEM.md`. Do not invent a second naming layer.
 
 Global process files live in `MAG-Ecosystem`, not inside each add-on, once migration of those files is complete.
 
@@ -510,7 +513,7 @@ When source phrases changed, also validate any official extra-language file the 
 
 After verified implementation changes, update **only** the documents the change actually affects.
 
-Typical project documents: `README.md`, `TZ.md`, `Architecture.md`, `CLASS_MAP.md`, `Changelog.md`, `Roadmap.md`, and optional overview/research files.
+Typical project documents (logical): README, TZ, Architecture, CLASS_MAP, Changelog, Roadmap, and optional overview/research files. Use the canonical `P<NN>__<CODE>__` filenames recorded in `MAG_ECOSYSTEM.md`.
 
 Update Global documents only when process or ecosystem conventions changed.
 
@@ -540,8 +543,8 @@ The list must:
 - Contain filenames/paths only unless the user asks for explanation.
 - Be grouped by source context using `GLOBAL [MAG] Ecosystem`, `#1 [MAG] Global Links Favicons`, `#2 [MAG] Tag Synchronizer`, and future `#N` markers as applicable.
 - Include only files that actually changed or that genuinely need Project-context refresh.
-- Use real project-relative paths where useful, for example `docs/Architecture.md`.
-- Include `docs/CURSOR_USAGE_HISTORY.md` when that file actually changed.
+- Use real project-relative paths where useful, for example `docs/P01__GLF__Architecture.md`.
+- Include that project's `docs/P<NN>__<CODE>__CURSOR_USAGE_HISTORY.md` when that file actually changed.
 
 Do not produce this list for release candidates, test builds, blocked releases, or failed finalization.
 
