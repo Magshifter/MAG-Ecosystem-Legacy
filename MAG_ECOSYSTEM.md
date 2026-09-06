@@ -2,7 +2,7 @@
 
 This document is the navigation and governance foundation for MAG add-on projects.
 
-It defines **how MAG projects relate to each other and how their documentation is organized**. It does not duplicate detailed development, agent, or analytics rules. Those belong in the Global documentation files listed below, once they exist, and in each project's own documentation.
+It defines **how MAG projects relate to each other and how their documentation is organized**. It does not duplicate detailed development, agent, or analytics rules. Those belong in the Global documentation files listed below and in each project's own documentation.
 
 ## Core principle
 
@@ -66,14 +66,16 @@ Work on `#N` means **GLOBAL + that `#N`**. Documentation from other MAG projects
 
 ## Global documentation set
 
+The current Global documentation tree in this repository is:
+
 | File | Role |
 | --- | --- |
-| `MAG_ECOSYSTEM.md` | This file. Registry, levels, authority, bootstrap, maintenance. |
-| `AI_GUIDELINES.md` | Detailed MAG development rules (created/migrated in a later procedure). |
-| `AI_AGENTS_RULES.md` | Agent workflow and checkpoint rules (created/migrated in a later procedure). |
-| `CURSOR_USAGE_ANALYTICS.md` | Cursor usage analytics process and historical MAG records (created/migrated in a later procedure). |
+| `MAG_ECOSYSTEM.md` | This file. MAG Ecosystem identity, architecture, project relationships, documentation map, and high-level governance. |
+| `AI_GUIDELINES.md` | Global MAG development workflow and operational rules. |
+| `AI_AGENTS_RULES.md` | Rules and boundaries for AI coding agents and related development tools. |
+| `CURSOR_USAGE_ANALYTICS.md` | Canonical methodology for Cursor Models measurement, reporting, forecasting, and analytics. |
 
-Until those later files exist, this document remains the only Global MAG documentation. Do not treat missing Global files as authorization to invent process.
+`CURSOR_USAGE_ANALYTICS.md` is methodology only. It is not a measurement-history log. Project (`#N`) measurements belong in that project's repository as project history. MAG Ecosystem process measurements belong in a separate MAG-Ecosystem history artifact when that artifact is later approved. Do not copy analytics rules into this file.
 
 ## Project documentation standard
 
@@ -118,7 +120,7 @@ Do not modify one MAG repository while the approved procedure is scoped to anoth
 
 | Source | Authority |
 | --- | --- |
-| Global documentation (`MAG_ECOSYSTEM.md`, later `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, analytics process) | **How** MAG work is done: process, agents, Git checkpoints, analytics, ecosystem conventions. |
+| Global documentation (`MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `CURSOR_USAGE_ANALYTICS.md`) | **How** MAG work is done: process, agents, Git checkpoints, analytics methodology, ecosystem conventions. |
 | Project `TZ.md` | **What** that product must do. Functional requirements. |
 | Project `Architecture.md` | Approved implementation architecture for that product. Describes intended and verified structure; it does not override TZ. |
 | Project `Roadmap.md` | Approved sequencing and verified progress. Controls what may be implemented **now**. |
@@ -156,7 +158,7 @@ MAG work is incremental and stage-controlled:
 
 Do not start the next stage, the next MAG project, or a shared component because the current increment is complete.
 
-Detailed stage, review, release, and analytics procedures belong in Global `AI_GUIDELINES.md` and `AI_AGENTS_RULES.md` once migrated.
+Detailed stage, review, and release procedures belong in `AI_GUIDELINES.md` and `AI_AGENTS_RULES.md`. Cursor measurement and forecasting methodology belongs in `CURSOR_USAGE_ANALYTICS.md`.
 
 ## High-level responsibility model
 
@@ -215,7 +217,7 @@ This repository must **not** design, specify, or implement License Manager funct
 - Keep changes minimal and scoped to the affected documents.
 - Preserve historical Changelog and Git records as history.
 - Do not duplicate Global rules into every project, and do not copy one project's TZ into another.
-- After Global files are migrated, this document remains the registry and authority map; it should point to those files rather than restating them.
+- This document remains the registry and authority map. It points to the other Global files rather than restating them.
 
 ## New MAG project bootstrap
 
@@ -230,11 +232,11 @@ When a new MAG add-on is approved:
 
 `#2` [MAG] Tag Synchronizer is registered as **Planned**. Its repository and documentation are **not** created in this procedure.
 
-## Repository contents of MAG-Ecosystem (this procedure)
+## Current MAG-Ecosystem repository contents
 
-This foundation procedure creates only:
+This Global documentation repository currently contains:
 
-- Git repository `MAG-Ecosystem` on branch `main`;
-- `MAG_ECOSYSTEM.md`.
-
-`AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, and `CURSOR_USAGE_ANALYTICS.md` are intentionally absent until later controlled migration procedures.
+- `MAG_ECOSYSTEM.md`
+- `AI_GUIDELINES.md`
+- `AI_AGENTS_RULES.md`
+- `CURSOR_USAGE_ANALYTICS.md`
