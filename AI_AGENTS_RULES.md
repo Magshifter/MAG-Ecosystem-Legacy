@@ -8,7 +8,7 @@ Coding agents are **implementation tools**. They do not own strategy, independen
 
 Which agent is used is a user/tooling choice. These rules do not change when a more capable agent is introduced. Tool capability does not grant permission to exceed the approved task.
 
-Cursor usage accounting and MAG Cursor report-field methodology belong in `CURSOR_USAGE_ANALYTICS.md` once that file exists. Do not invent usage percentages here.
+Cursor usage accounting and MAG Cursor report-field methodology belong in `CURSOR_USAGE_ANALYTICS.md`. Do not invent usage percentages here.
 
 ---
 
@@ -269,7 +269,7 @@ Classify discovered issues as:
 
 Do not `git commit` or `git push` unless explicitly requested.
 
-When Cursor analytics apply, follow `CURSOR_USAGE_ANALYTICS.md` once present. Do not print Model requests made, Usage-counted requests, or Agent/tool calls.
+When Cursor analytics apply, follow `CURSOR_USAGE_ANALYTICS.md`.
 
 ---
 

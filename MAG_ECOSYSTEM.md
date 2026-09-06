@@ -77,6 +77,10 @@ The current Global documentation tree in this repository is:
 
 `CURSOR_USAGE_ANALYTICS.md` is methodology only. It is not a measurement-history log. Project (`#N`) measurements belong in that project's repository as project history. MAG Ecosystem process measurements belong in a separate MAG-Ecosystem history artifact when that artifact is later approved. Do not copy analytics rules into this file.
 
+### How MAG projects cite Global documents
+
+Project documentation must cite Global files as **`MAG-Ecosystem` / `<filename.md>`** (for example `MAG-Ecosystem` / `AI_GUIDELINES.md`). Do not copy Global process documents into a project repository as a second source of truth. Do not repeat the workstation clone path in every product document; the clone convention above is recorded once in this file.
+
 ## Project documentation standard
 
 Each MAG project repository should use this standard set:

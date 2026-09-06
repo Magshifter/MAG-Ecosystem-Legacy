@@ -6,9 +6,9 @@ It applies to ChatGPT, Cursor IDE, Cursor Agent, Codex, and any other AI-assiste
 
 Ecosystem identity, project registry, `#N` markers, Global vs Project documentation levels, AI context isolation, high-level documentation authority, project bootstrap, and the License Manager concept are defined in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). This file does not restate those definitions. Load **GLOBAL + the active `#N`** as specified there.
 
-Detailed coding-agent execution boundaries, checkpoint mechanics, and report formats belong in `AI_AGENTS_RULES.md` once that Global file exists. Until then, follow this document and `MAG_ECOSYSTEM.md`; do not invent a parallel agent protocol.
+Detailed coding-agent execution boundaries, checkpoint mechanics, and report formats belong in `AI_AGENTS_RULES.md`.
 
-Cursor usage accounting methodology and historical MAG analytics belong in `CURSOR_USAGE_ANALYTICS.md` once that Global file exists. Do not duplicate that methodology here.
+Cursor usage accounting methodology belongs in `CURSOR_USAGE_ANALYTICS.md`. Project measurement history belongs in the project repository. Do not duplicate that methodology here.
 
 ---
 
@@ -550,7 +550,7 @@ When a production observation conflicts with documentation, inspect code and con
 
 Do not optimize development merely to reduce Cursor quota usage. Correctness, XenForo compatibility, security, maintainability, testing, and documentation remain higher priorities.
 
-When Cursor analytics apply, follow `CURSOR_USAGE_ANALYTICS.md` (once present). Do not invent usage percentages. Do not print Model requests made, Usage-counted requests, or Agent/tool calls in MAG reports.
+When Cursor analytics apply, follow `CURSOR_USAGE_ANALYTICS.md`. Do not invent usage percentages.
 
 ---
 
