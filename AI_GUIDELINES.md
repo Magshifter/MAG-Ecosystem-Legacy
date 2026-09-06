@@ -541,6 +541,7 @@ The list must:
 - Be grouped by source context using `GLOBAL [MAG] Ecosystem`, `#1 [MAG] Global Links Favicons`, `#2 [MAG] Tag Synchronizer`, and future `#N` markers as applicable.
 - Include only files that actually changed or that genuinely need Project-context refresh.
 - Use real project-relative paths where useful, for example `docs/Architecture.md`.
+- Include `docs/CURSOR_USAGE_HISTORY.md` when that file actually changed.
 
 Do not produce this list for release candidates, test builds, blocked releases, or failed finalization.
 

@@ -59,19 +59,7 @@ If the user explicitly provides a Cursor Models percentage outside the Cursor re
 
 Never invent percentages. Never silently assume a percentage when a fresh measurement is required.
 
-### Model requests and usage-counted requests
-
-**Model requests made** and **Usage-counted requests** are optional when they can be **reliably determined** from the Cursor UI or an equivalent official display.
-
-If they cannot be reliably determined, report exactly:
-
-```text
-unavailable
-```
-
-Do not estimate them. Do not spend extra Agent/model work solely to obtain them.
-
-**Agent/tool-call counts** are not a MAG billing metric. Omit that field. Never estimate it. Never convert it into a Cursor Models percentage.
+Do **not** request, report, track, or store **Model requests made**, **Usage-counted requests**, or any replacement request-count metric. Do not print Agent/tool-call counts. They are not MAG Cursor analytics fields.
 
 ---
 
@@ -131,8 +119,6 @@ Where useful, also record project/release/stage classification (`#N`, add-on nam
 | Cursor Models Before | Displayed % at start |
 | Cursor Models After | Displayed % after the procedure |
 | Visible delta | After − Before, in percentage points |
-| Model requests made | Reliable value, or exactly `unavailable` |
-| Usage-counted requests | Reliable value, or exactly `unavailable` |
 | Cumulative release usage | Fixed release baseline → After (p.p.), when a release baseline exists |
 | Result / issues | What happened; Critical / Non-critical / Informational |
 | Notes | Residual context; label inference vs fact |
@@ -150,8 +136,6 @@ Stage / version:
 Cursor Models Before:
 Cursor Models After:
 Visible delta: <p.p.>
-Model requests made: <value | unavailable>
-Usage-counted requests: <value | unavailable>
 Cumulative release usage: <if applicable>
 Result / issues:
 Notes:
@@ -175,6 +159,8 @@ The After value of one procedure may become the Before value of the next **only*
 
 A procedure is not analytics-complete until After is recorded when the user can provide it.
 
+If Before and After are both known, history must not retain a blank After or an unresolved visible delta. If After is genuinely unknown, leave it unknown. Do not invent it.
+
 ---
 
 ## 8. ChatGPT procedure report summary (§4A)
@@ -183,7 +169,7 @@ After every Cursor procedure/report, ChatGPT must give a very short human-readab
 
 Use this sequence, and only this sequence:
 
-1. **Cursor Models After** and **visible delta** from Before. Include **Model requests made** / **Usage-counted requests** only when reliably available; otherwise exactly `unavailable`. When a fixed release baseline exists, also state cumulative release usage as baseline → After (delta p.p.). Do not invent percentages. If After was not provided, request it before giving this summary. Do not print Agent/tool calls.
+1. **Cursor Models After** and **visible delta** from Before. When a fixed release baseline exists, also state cumulative release usage as baseline → After (delta p.p.). Do not invent percentages. If After was not provided, request it before giving this summary. Do not mention Model requests made, Usage-counted requests, or Agent/tool-call counts.
 2. **Result** — what the completed procedure achieved.
 3. **Main tasks/issues solved.**
 4. **Discovered issues** — classify each as **Critical**, **Non-critical**, or **Informational**. If none, say so explicitly. Critical findings must change the immediate next action and must not be hidden behind a normal commit recommendation.
@@ -269,7 +255,21 @@ Do not copy another project’s procedure log into this Global standard.
 
 Do not silently rewrite measured historical records because methodology later changes. If a field is retired or reinterpreted, keep old rows as recorded and note the interpretation change in notes or a later dated correction. Corrections must be transparent.
 
+A previously incomplete field may be completed only from verified evidence. Never fabricate telemetry merely to make the log continuous.
+
 Existing `#1` analytics history remains in the `#1` repository until a later controlled extraction.
+
+### History completeness
+
+Every meaningful completed Cursor procedure must be recorded in the appropriate project or process usage-history document when Before/After telemetry is known.
+
+A user-supplied Cursor Models percentage is authoritative for that procedure when clearly identified.
+
+ChatGPT is responsible for noticing when a completed Cursor procedure discussed in chat has not yet been synchronized into project history.
+
+After a completed release, hotfix cycle, or coherent body of work, ChatGPT must verify that meaningful Cursor procedures since the previous history checkpoint are represented before analytics/history synchronization is considered complete.
+
+Stable-release ChatGPT Project synchronization must include `docs/CURSOR_USAGE_HISTORY.md` when that file actually changed.
 
 ---
 
