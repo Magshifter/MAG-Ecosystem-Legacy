@@ -428,7 +428,16 @@ A later documentation-only or already-approved synchronization does not require 
 
 Release Finalization (when a project uses it) verifies the **artifact and deployment boundary**. It does not repeat the preceding stage audit unless that audit has been invalidated (production behavior changed after the audit, a release-blocking defect was found, packaging exposed a problem requiring production changes, or another concrete reason).
 
----
+### Proportional point-change execution
+
+When a change is already understood, approved, and technically verified, use a **point procedure** limited to the exact change and the validation that change actually requires.
+
+- Do not repeat architecture analysis, source audits, research, broad regression review, or already-valid verification without a concrete new uncertainty or risk.
+- Do not split one simple deterministic correction into multiple artificial procedures when one procedure can safely perform the change, synchronize the local installed copy when required, and enable Product Owner verification.
+- Validation remains proportional to actual change and risk.
+- Expand scope only when new uncertainty, dependency, unexpected behavior, security/compatibility concern, or other material risk justifies it.
+
+This optimization must not weaken required validation.
 
 ## 19. Backwards compatibility
 

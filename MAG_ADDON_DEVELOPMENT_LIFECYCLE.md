@@ -654,7 +654,7 @@ Release Presentation governs release-facing description, branded icon, Developer
 2. The Product Owner reviews it.
 3. The Product Owner may correct it.
 4. The Product Owner must explicitly approve the final text.
-5. The main description must not exceed **250 characters**.
+5. The main description must not exceed **150 characters**.
 6. Do not invent functionality, claims, compatibility, or benefits not supported by approved project documentation.
 7. The presentation must always include a separate final line:
 

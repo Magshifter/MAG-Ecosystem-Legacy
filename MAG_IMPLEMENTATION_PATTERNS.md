@@ -49,6 +49,7 @@ For a concrete task:
 - [ACP maintenance should not perform remote acquisition](#acp-maintenance-should-not-perform-remote-acquisition)
 - [Cross-version tests may need semantic rather than literal assertions](#cross-version-tests-may-need-semantic-rather-than-literal-assertions)
 - [Audit-scope optimization lesson](#audit-scope-optimization-lesson)
+- [XenForo add-on Release Presentation metadata](#xenforo-add-on-release-presentation-metadata)
 - [Source map](#source-map)
 
 ---
@@ -793,6 +794,54 @@ For a task with uncertain XenForo behavior:
 This improves context targeting and makes repeated audits less likely.
 
 Do not split procedures mechanically when separation would increase cost without improving clarity or verification. Global Cursor workflow and model-selection rules remain authoritative.
+
+---
+
+## XenForo add-on Release Presentation metadata
+
+Status: **Verified Fact / Reusable Pattern**
+
+Verified scope: **XenForo 2.3.12; verified during #2 Tag Synchronizer Release Presentation work (P02-RF02–P02-RF05); mechanism is native `addon.json` metadata plus a root-level packaged icon asset**
+
+Source context:
+
+- `MAG-Ecosystem / MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 8 — Release Presentation policy
+- `#2 Tag Synchronizer / P02-RF02` native-mechanism audit evidence
+- `#2 Tag Synchronizer / P02-RF03`–`P02-RF05` implementation and local verification evidence
+- installed XenForo 2.3.12 source: `XF\AddOn\AddOn`, `XF\Service\AddOn\ReleaseBuilderService`, admin `addon_list_macros`
+
+Observed behavior:
+
+XenForo 2.3.12 exposes add-on Release Presentation metadata from `addon.json` in the add-on root. ACP reads these values from disk through `XF\AddOn\AddOn`; there is no separate native field for Donate or for a separate `Made in Ukraine` line.
+
+| Presentation item | Native representation |
+| --- | --- |
+| Main description | `addon.json` → `"description"` (string) |
+| `Made in Ukraine` separate line | append `\nMade in Ukraine` inside `"description"`; ACP renders with `nl2br` |
+| Icon | `"icon": "<filename>"` plus image file at add-on root; `hasIcon()` requires the file to exist |
+| Developer identity | `"dev"` |
+| Developer URL | `"dev_url"` |
+| Support URL | `"support_url"` |
+| Donate URL | `"extra_urls"` associative object, e.g. `{"Donate": "<url>"}` |
+
+`xf-addon:build-release` copies non-excluded add-on root files, including `addon.json` and the icon file, into `upload/src/addons/<AddOnId>/` inside the release ZIP. `hashes.json` includes packaged files such as `src/addons/<AddOnId>/<icon-file>`.
+
+For local ACP verification before a release build, synchronize the repository `addon.json` and icon file into the installed XenForo add-on directory. XenForo reads the updated metadata from disk without a separate metadata-import step. A DB `json_hash` mismatch may show ACP **Pending changes** until a later `xf-addon:sync-json` or equivalent step; that label does not block ACP metadata display from disk.
+
+Pattern:
+
+For MAG Release Presentation on XenForo 2.3.x:
+
+1. set approved metadata in repository `addon.json`;
+2. copy the authoritative Global `magicon.png` unchanged to the add-on root and reference it from `"icon"`;
+3. synchronize `addon.json` and the icon into the installed XenForo add-on directory before local ACP verification or a release build when local installed behavior must match repository state;
+4. run `xf-addon:build-release` only after required Release Presentation data is approved and present in the build source tree.
+
+Limitations / revalidation boundary:
+
+- Do not copy #2 product description text or Support URL values into other projects.
+- Revalidate against installed XenForo source when the XenForo major/minor version, `xf-addon:build-release` behavior, or add-on packaging layout changes.
+- A prior native-mechanism audit (for example P02-RF02-style) does not need repeating when this verified scope still applies and no new uncertainty exists.
 
 ---
 

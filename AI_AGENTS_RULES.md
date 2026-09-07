@@ -226,6 +226,17 @@ In such cases, inspect the resulting diff/report and proceed to the Git checkpoi
 
 A new review is required only when the synchronization introduces unexpected changes, unresolved issues, or invalidates previous verification.
 
+### Proportional point-change execution
+
+When a change is already understood, approved, and technically verified, execute only the minimum procedure needed for that exact change and its necessary validation.
+
+- Do not repeat architecture analysis, source audits, research, broad regression review, or already-valid verification without a concrete new uncertainty or risk.
+- Do not split one simple deterministic correction into multiple artificial procedures when one procedure can safely perform the change, synchronize the local installed copy when required, and enable Product Owner verification.
+- Validation remains proportional to actual change and risk.
+- Expand scope only when new uncertainty, dependency, unexpected behavior, security/compatibility concern, or other material risk justifies it.
+
+This optimization must not weaken required validation. Detailed proportional-validation rules remain in `AI_GUIDELINES.md` §18.
+
 ---
 
 ## 10. User control and Git
