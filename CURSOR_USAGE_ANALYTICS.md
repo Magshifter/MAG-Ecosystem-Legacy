@@ -6,6 +6,8 @@ It is **methodology**, not a procedure-history log. Do not append project or pro
 
 Project identity (`#N`), Global vs Project documentation, and context isolation are defined in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). Broader development workflow and validation philosophy are in [`AI_GUIDELINES.md`](AI_GUIDELINES.md). Coding-agent execution, stop conditions, and the redundant pre-commit review rule are in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md).
 
+Lifecycle timing is defined in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md); this document remains authoritative for Cursor measurement and metric-finalization mechanics.
+
 Historical measurements belong with the project (or Global process history) that produced them. See section 13. Do not mix those histories into this standard.
 
 ---

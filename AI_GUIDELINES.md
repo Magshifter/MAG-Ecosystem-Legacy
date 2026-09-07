@@ -12,6 +12,8 @@ Cursor procedure routing/pre-flight, model selection and escalation, usage optim
 
 ---
 
+Lifecycle order, gates, and documentation timing are canonical in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md). This document owns detailed development and closure mechanics applied at those lifecycle checkpoints.
+
 ## 1. Purpose and philosophy
 
 MAG development must remain:

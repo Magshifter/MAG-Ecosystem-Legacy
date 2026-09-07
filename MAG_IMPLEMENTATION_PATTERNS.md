@@ -8,6 +8,7 @@ This document is a Global knowledge base. It does not define product requirement
 - `AI_GUIDELINES.md`
 - `AI_AGENTS_RULES.md`
 - `CURSOR_USAGE_ANALYTICS.md`
+- `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
 - any active project `TZ`, `Roadmap`, `Architecture`, `CLASS_MAP`, `Changelog`, or `README`
 
 `GLOBAL defines HOW. #N defines WHAT.`
@@ -228,9 +229,9 @@ Verified scope: **#1 GLF; XenForo 2.2.19 and 2.3.12; production behavior through
 
 Source context:
 - `GlobalLinksFavicons / P01__GLF__TZ.md`
-- `GlobalLinksFavicons / P01__GLF__CLASS_MAP.md`
-- `GlobalLinksFavicons / P01__GLF__Changelog.md`
-- `GlobalLinksFavicons / P01__GLF__Architecture.md`
+- `GlobalLinksFavicons / docs/P01__GLF__CLASS_MAP.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Changelog.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
 
 Observed behavior:
 
@@ -268,8 +269,8 @@ Status: **Verified Fact / Reusable Pattern**
 Verified scope: **#1 GLF real upgrades; 1.3.0 → 1.4.3 and production 1.4.3 upgrade**
 
 Source context:
-- `GlobalLinksFavicons / P01__GLF__Architecture.md` §39F–39G
-- `GlobalLinksFavicons / P01__GLF__Changelog.md` 1.4.2–1.4.3
+- `GlobalLinksFavicons / docs/P01__GLF__Architecture.md` §39F–39G
+- `GlobalLinksFavicons / docs/P01__GLF__Changelog.md` 1.4.2–1.4.3
 - `GlobalLinksFavicons / P01__GLF__TZ.md` 1.4.2–1.4.3
 
 Observed behavior:
@@ -307,9 +308,9 @@ Status: **Verified Fact / Reusable Pattern**
 Verified scope: **#1 GLF 1.2.1+; XenForo 2.2.19 and 2.3.12**
 
 Source context:
-- `GlobalLinksFavicons / P01__GLF__Architecture.md`
-- `GlobalLinksFavicons / P01__GLF__Changelog.md`
-- `GlobalLinksFavicons / P01__GLF__CURSOR_USAGE_HISTORY.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Changelog.md`
+- `GlobalLinksFavicons / docs/P01__GLF__CURSOR_USAGE_HISTORY.md`
 
 Verified GLF pattern:
 
@@ -337,7 +338,7 @@ Status: **Verified Fact / Reusable Pattern**
 Verified scope: **#1 GLF custom FAILED placeholder**
 
 Source context:
-- `GlobalLinksFavicons / P01__GLF__Architecture.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
 - `GlobalLinksFavicons / P01__GLF__TZ.md`
 
 Verified GLF pattern:
@@ -371,7 +372,7 @@ Status: **Verified Fact / Needs Revalidation**
 Verified scope: **#1 GLF XenForo source investigation during image-upload work**
 
 Source context:
-- `GlobalLinksFavicons / P01__GLF__CURSOR_USAGE_HISTORY.md`
+- `GlobalLinksFavicons / docs/P01__GLF__CURSOR_USAGE_HISTORY.md`
 
 Recorded finding:
 
@@ -395,7 +396,7 @@ Verified scope: **#1 GLF; XenForo 2.2.19 and 2.3.12**
 
 Source context:
 - `GlobalLinksFavicons / P01__GLF__TZ.md`
-- `GlobalLinksFavicons / P01__GLF__CURSOR_USAGE_HISTORY.md`
+- `GlobalLinksFavicons / docs/P01__GLF__CURSOR_USAGE_HISTORY.md`
 
 Recorded optimization lesson:
 
@@ -426,7 +427,7 @@ Verified scope: **#1 GLF remote and ACP image handling**
 
 Source context:
 - `GlobalLinksFavicons / P01__GLF__TZ.md`
-- `GlobalLinksFavicons / P01__GLF__Architecture.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
 
 Verified GLF rule:
 
@@ -454,9 +455,9 @@ Status: **Verified Fact / Reusable Pattern**
 Verified scope: **#1 GLF runtime architecture**
 
 Source context:
-- `GlobalLinksFavicons / P01__GLF__Architecture.md`
-- `GlobalLinksFavicons / P01__GLF__Changelog.md`
-- `GlobalLinksFavicons / P01__GLF__Overview.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Changelog.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Overview.md`
 
 Historical problem:
 
@@ -483,8 +484,8 @@ Status: **Verified Fact / Reusable Pattern**
 Verified scope: **#1 GLF Stage 17**
 
 Source context:
-- `GlobalLinksFavicons / P01__GLF__Changelog.md`
-- `GlobalLinksFavicons / P01__GLF__Architecture.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Changelog.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
 
 Verified #1 findings:
 
@@ -524,7 +525,7 @@ Status: **Verified Fact / Reusable Pattern**
 Verified scope: **#1 GLF favicon state machine**
 
 Source context:
-- `GlobalLinksFavicons / P01__GLF__Architecture.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
 - `GlobalLinksFavicons / P01__GLF__TZ.md`
 
 Verified state behavior:
@@ -556,8 +557,8 @@ Status: **Verified Fact / Reusable Pattern**
 Verified scope: **#1 GLF format-aware favicon storage**
 
 Source context:
-- `GlobalLinksFavicons / P01__GLF__Architecture.md`
-- `GlobalLinksFavicons / P01__GLF__Changelog.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Changelog.md`
 
 Verified #1 correction:
 
@@ -580,8 +581,8 @@ Status: **Verified Fact / Reusable Pattern**
 Verified scope: **#1 GLF format switching**
 
 Source context:
-- `GlobalLinksFavicons / P01__GLF__Architecture.md`
-- `GlobalLinksFavicons / P01__GLF__Changelog.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Changelog.md`
 
 Verified ordering:
 
@@ -608,9 +609,9 @@ Status: **Verified Fact / Reusable Pattern / Needs Revalidation**
 Verified scope: **#1 GLF external favicon acquisition; XF 2.2.19 and 2.3.12**
 
 Source context:
-- `GlobalLinksFavicons / P01__GLF__Architecture.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
 - `GlobalLinksFavicons / P01__GLF__TZ.md`
-- `GlobalLinksFavicons / P01__GLF__Changelog.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Changelog.md`
 
 Verified #1 implementation used XenForo's untrusted HTTP reader and combined:
 
@@ -641,7 +642,7 @@ Status: **Verified Fact / Needs Revalidation**
 Verified scope: **#1 GLF FaviconDiscovery; XenForo 2.2.19 and 2.3.12**
 
 Source context:
-- `GlobalLinksFavicons / P01__GLF__Architecture.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
 
 Recorded compatibility nuance:
 
@@ -666,7 +667,7 @@ Status: **Verified Fact / Reusable Pattern**
 Verified scope: **#1 GLF URL/domain identity**
 
 Source context:
-- `GlobalLinksFavicons / P01__GLF__Architecture.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
 - `GlobalLinksFavicons / P01__GLF__TZ.md`
 
 Verified #1 normalization centralized:
@@ -698,7 +699,7 @@ Status: **Verified Fact / Reusable Pattern**
 Verified scope: **#1 GLF internal-link favicon behavior**
 
 Source context:
-- `GlobalLinksFavicons / P01__GLF__Architecture.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
 - `GlobalLinksFavicons / P01__GLF__TZ.md`
 
 Verified #1 design:
@@ -727,7 +728,7 @@ Status: **Verified Fact / Reusable Pattern**
 Verified scope: **#1 GLF Cache Management**
 
 Source context:
-- `GlobalLinksFavicons / P01__GLF__Architecture.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
 
 Verified #1 boundary:
 
@@ -749,7 +750,7 @@ Verified scope: **#1 GLF security tests; XenForo 2.2.19 and 2.3.12**
 
 Source context:
 - `GlobalLinksFavicons / P01__GLF__TZ.md`
-- `GlobalLinksFavicons / P01__GLF__Changelog.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Changelog.md`
 
 Observed difference:
 
@@ -772,7 +773,7 @@ Revalidate each discrepancy rather than broadly accepting multiple values.
 Status: **Verified Fact / Reusable Pattern**
 
 Source context:
-- `GlobalLinksFavicons / P01__GLF__CURSOR_USAGE_HISTORY.md`
+- `GlobalLinksFavicons / docs/P01__GLF__CURSOR_USAGE_HISTORY.md`
 - Global authority remains `AI_AGENTS_RULES.md` and `CURSOR_USAGE_ANALYTICS.md`
 
 Recorded #1 lesson:
@@ -809,13 +810,13 @@ Global authority reviewed:
 Project #1 evidence reviewed:
 
 - `GlobalLinksFavicons / P01__GLF__TZ.md`
-- `GlobalLinksFavicons / P01__GLF__Roadmap.md`
-- `GlobalLinksFavicons / P01__GLF__Architecture.md`
-- `GlobalLinksFavicons / P01__GLF__CLASS_MAP.md`
-- `GlobalLinksFavicons / P01__GLF__Changelog.md`
-- `GlobalLinksFavicons / P01__GLF__Overview.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Roadmap.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
+- `GlobalLinksFavicons / docs/P01__GLF__CLASS_MAP.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Changelog.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Overview.md`
 - `GlobalLinksFavicons / P01__GLF__README.md`
-- `GlobalLinksFavicons / P01__GLF__CURSOR_USAGE_HISTORY.md`
+- `GlobalLinksFavicons / docs/P01__GLF__CURSOR_USAGE_HISTORY.md`
 
 Excluded from this initial extraction:
 
