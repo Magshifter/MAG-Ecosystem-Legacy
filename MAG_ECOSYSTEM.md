@@ -194,11 +194,12 @@ MAG work is incremental and stage-controlled:
 4. Implement the smallest verified change that satisfies the approved increment.
 5. Verify against the project's requirements and XenForo versions in scope.
 6. Synchronize only the documentation that the change actually affects.
-7. Stop at the approved Git checkpoint. The user owns Git add / commit / push unless they explicitly request otherwise.
+7. Close the approved stage or phase using the closure sequence in `AI_GUIDELINES.md` §20 when applicable.
+8. Stop at the approved Git checkpoint. The user owns Git add / commit / push unless they explicitly request otherwise.
 
 Do not start the next stage, the next MAG project, or a shared component because the current increment is complete.
 
-Detailed stage, review, and release procedures belong in `AI_GUIDELINES.md` and `AI_AGENTS_RULES.md`. Cursor procedure routing/pre-flight, model selection, escalation, Cursor Models Before/After tracking, and forecasting methodology belong in `CURSOR_USAGE_ANALYTICS.md`.
+Detailed stage, review, release, and closure procedures belong in `AI_GUIDELINES.md` and `AI_AGENTS_RULES.md`. Cursor procedure presentation, routing/pre-flight, model selection, escalation, Cursor Models Before/After tracking, and forecasting methodology belong in `CURSOR_USAGE_ANALYTICS.md`.
 
 ## High-level responsibility model
 

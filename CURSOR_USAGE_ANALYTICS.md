@@ -33,9 +33,30 @@ A cheaper procedure that weakens those priorities is not an improvement.
 
 Before **every** Cursor procedure, ChatGPT must complete Cursor chat routing and Cursor model selection **before** recording Cursor Models Before and **before** presenting or executing the Cursor procedure prompt.
 
-### 2.1 Required user-facing format
+### 2.1 Cursor procedure prompt presentation
 
-The first two user-facing lines before every Cursor procedure must use this exact format:
+When ChatGPT provides a Cursor procedure to the product owner, separate **copyable Cursor execution text** from **user-facing execution guidance**.
+
+The **copyable prompt block** must contain **only** the exact text intended to be pasted into Cursor.
+
+Do **not** place user-facing procedure metadata or instructions inside the copyable Cursor prompt unless Cursor itself needs that information for the procedure.
+
+The following user-facing information must be placed **after** the copyable prompt block:
+
+- Cursor chat;
+- recommended Cursor model;
+- Cursor Models Before instruction/value;
+- instructions about what the user must return after execution;
+- Cursor Models After instruction;
+- any other execution guidance intended for the product owner rather than Cursor.
+
+This rule changes presentation/order only. It does **not** remove mandatory pre-flight information or Cursor usage tracking.
+
+Plain text requirements for copyable technical content remain in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md).
+
+### 2.2 Required user-facing format
+
+After the copyable Cursor procedure prompt block, the user-facing Cursor chat and model lines must use this exact format when they are presented:
 
 ```text
 Cursor chat: <target Cursor Agent chat>
@@ -58,21 +79,24 @@ Cursor chat: MAG Workflow Bridge Agent
 Cursor model: Composer 2.5
 ```
 
-### 2.2 Required operational sequence
+### 2.3 Required operational sequence
 
-1. Select/specify the correct Cursor Agent chat.
-2. Select/recommend the Cursor model/mode.
+The mandatory Cursor procedure information and tracking sequence is:
+
+1. Provide the Cursor procedure prompt in **Plain text** as a copyable block containing only paste-into-Cursor content.
+2. Present user-facing execution guidance **after** that block, including Cursor chat routing and Cursor model selection.
 3. Record Cursor Models Before.
-4. Provide the Cursor procedure prompt in **Plain text**.
-5. Execute the Cursor procedure.
-6. Record Cursor Models After.
-7. Review the result.
-8. Record/synchronize usage history where required.
-9. Decide the next action.
+4. Execute the Cursor procedure.
+5. Record Cursor Models After.
+6. Review the result.
+7. Record/synchronize usage history where required.
+8. Decide the next action.
+
+All items remain mandatory. This sequence governs presentation order and what belongs inside vs outside the copyable prompt block.
 
 This sequence applies to **all** Cursor procedures, including Implementation, Debugging, Testing, Audit, Compatibility investigation, Documentation, Release finalization, Repository inspection, Refactoring, Cleanup, Rollback, and other Cursor-assisted work.
 
-### 2.3 Cursor chat routing
+### 2.4 Cursor chat routing
 
 Before every Cursor procedure, ChatGPT must identify the correct Cursor Agent chat for the active repository/project/tool context so unrelated project contexts are not mixed.
 
@@ -86,7 +110,7 @@ Do not treat standalone tooling repositories as numbered MAG Ecosystem projects.
 
 Do **not** silently invent a canonical Cursor Agent chat name when the actual chat name has not been established. If the required chat name is unknown or ambiguous, resolve it with the user before instructing execution.
 
-### 2.4 Cursor model selection — core principle
+### 2.5 Cursor model selection — core principle
 
 Before every Cursor procedure, ChatGPT must recommend the preferred Cursor model/mode.
 
@@ -104,7 +128,7 @@ Consider: task complexity; uncertainty; implementation risk; debugging difficult
 
 **Core rule:** Model strength should scale with task complexity, uncertainty, and risk — not with habit.
 
-### 2.5 Model selection matrix
+### 2.6 Model selection matrix
 
 **Auto** — default for ordinary implementation when a specific model is not required. Use for routine implementation, small fixes, rollback, documentation changes, cleanup, simple multi-file changes, and well-specified tasks. Prefer Auto when the prompt is precise, architecture is already decided, risk is low/moderate, and no special reasoning model is required.
 
@@ -122,7 +146,7 @@ Consider: task complexity; uncertainty; implementation risk; debugging difficult
 
 **Claude Opus** — strong alternative perspective: architecture review, code review, large-context reasoning, evaluating another model's implementation, alternative debugging analysis, second opinion on risky changes.
 
-### 2.6 Escalation policy
+### 2.7 Escalation policy
 
 Normal starting point:
 
@@ -141,21 +165,21 @@ Do **not** escalate merely because a stronger model exists.
 
 If a cheaper model produces repeated mistakes, unexplained edits, scope drift, weak reasoning, uncertain implementation, or failed validation, escalate to an appropriate stronger model instead of repeatedly spending requests on the same weak path.
 
-### 2.7 Validation independence
+### 2.8 Validation independence
 
 Selecting a cheaper model must **not** reduce validation requirements. Correctness, security, XenForo compatibility, performance, scope control, maintainability, testing, validation quality, and documentation accuracy remain unchanged regardless of selected model.
 
-### 2.8 Model availability
+### 2.9 Model availability
 
 Keep this policy maintainable if Cursor's available models, modes, or names change. Do not invent unavailable model names or capabilities. The permanent governing principle remains: model strength scales with task complexity, uncertainty, and risk — not with habit.
 
-### 2.9 Plain text in the Cursor workflow
+### 2.10 Plain text in the Cursor workflow
 
-The Cursor procedure prompt must be provided in **Plain text**. Detailed Plain text execution rules for ChatGPT (including prohibitions on Writing Blocks / rich editable blocks for copyable technical content) live in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md). This analytics document preserves the sequence in §2.2 without duplicating that full output policy.
+The Cursor procedure prompt must be provided in **Plain text** inside the copyable prompt block. Detailed Plain text execution rules for ChatGPT (including prohibitions on Writing Blocks / rich editable blocks for copyable technical content) live in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md). This analytics document preserves the sequence in §2.3 without duplicating that full output policy.
 
-### 2.10 Usage tracking authority
+### 2.11 Usage tracking authority
 
-This file remains the authoritative source for Cursor Models Before/After methodology, visible deltas, history placement, and related usage rules. The chat/model pre-flight is added **before** the Before measurement. Never invent usage values. Do not reintroduce deprecated tracking fields this document intentionally excludes.
+This file remains the authoritative source for Cursor Models Before/After methodology, visible deltas, history placement, and related usage rules. The copyable prompt presentation rule in §2.1 and the operational sequence in §2.3 govern what belongs inside vs outside the copyable block. Never invent usage values. Do not reintroduce deprecated tracking fields this document intentionally excludes.
 
 ---
 
@@ -277,11 +301,11 @@ Record completed rows in **project (or Global process) history**, not in this fi
 
 ## 8. Before / After workflow
 
-For a meaningful Cursor procedure, complete §2 pre-flight first (**Cursor chat**, then **Cursor model**). Then:
+For a meaningful Cursor procedure, complete the presentation and tracking sequence in §2.3.
 
-**Before** the work starts, obtain the current displayed Cursor Models percentage if a current measurement is not already available for that exact procedure. That is **Cursor Models Before**.
+Provide the copyable Cursor procedure prompt in **Plain text** first. Present user-facing Cursor chat/model guidance and Cursor Models Before instructions **after** that copyable block unless the user has already recorded Before for that exact procedure.
 
-Provide the Cursor procedure prompt in **Plain text**, then execute.
+Then execute the procedure.
 
 **After** the procedure finishes, obtain the displayed percentage again. That is **Cursor Models After**.
 

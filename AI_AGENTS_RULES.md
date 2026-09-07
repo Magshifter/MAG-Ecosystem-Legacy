@@ -18,28 +18,29 @@ These rules are **mandatory prerequisites** for every Cursor-assisted procedure.
 
 ### 1.1 Mandatory Cursor pre-flight
 
-Before **every** Cursor procedure prompt, ChatGPT must first specify:
+For every Cursor procedure, ChatGPT must provide:
 
-```text
-Cursor chat: <target Cursor Agent chat>
-Cursor model: <recommended model / mode>
-```
+1. A **copyable prompt block** containing only the exact text intended to be pasted into Cursor.
+2. User-facing execution guidance **after** that block, including Cursor chat, recommended Cursor model, Cursor Models Before instruction/value, post-execution return instructions, and Cursor Models After instruction.
+
+Do **not** place user-facing procedure metadata or instructions inside the copyable Cursor prompt unless Cursor itself needs that information.
 
 The Cursor chat must correspond to the active project/repository/tool context. Respect **GLOBAL + active `#N`** isolation. Do not mix unrelated project Agent chats. Do not invent a canonical chat name when the real name is unknown or ambiguous — resolve it with the user first.
 
 The Cursor model must be selected according to task complexity, uncertainty, risk, and usage efficiency.
 
-Authoritative detail for routing, model-selection matrix, escalation, usage optimization, and Cursor Models Before/After tracking:
+Authoritative detail for copyable-prompt presentation, routing, model-selection matrix, escalation, usage optimization, and Cursor Models Before/After tracking:
 
 [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md)
 
-Required order before execution:
+Required presentation and tracking order:
 
-1. Cursor chat  
-2. Cursor model  
-3. Cursor Models Before  
-4. Cursor procedure prompt in Plain text  
+1. Copyable Cursor procedure prompt in Plain text  
+2. Cursor chat  
+3. Cursor model  
+4. Cursor Models Before  
 5. Cursor execution  
+6. Cursor Models After and required user return instructions    
 
 ### 1.2 Plain text output — mandatory
 
@@ -247,18 +248,28 @@ Ready-to-copy technical commands must be provided in **Plain text** per §1.2.
 Standard checkpoint:
 
 ```text
-Agent implementation and validation
+Approved stage/phase work complete
         ↓
-Synchronize documentation that the approved task requires
+Synchronize authoritative documentation and Cursor usage history where required
+        ↓
+Review resulting diff and repository status
+        ↓
+Resolve Critical issues before closure
         ↓
 Agent reports result
         ↓
 User reviews changes
         ↓
-User performs Git operations
+User performs Git operations when authorized
+        ↓
+Verify clean working tree
         ↓
 Stable Git checkpoint
+        ↓
+Proceed to next approved stage/phase only after closure
 ```
+
+Authoritative stage/phase closure discipline is defined in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §20.
 
 When the approved task is a completed stage checkpoint, synchronize that project's changelog as part of the same increment. A stage is not complete until required changelog synchronization is finished.
 
@@ -329,7 +340,7 @@ Classify discovered issues as:
 
 Do not `git commit` or `git push` unless explicitly requested.
 
-When Cursor analytics apply, follow `CURSOR_USAGE_ANALYTICS.md`, including Cursor chat/model pre-flight before Cursor Models Before/After.
+When Cursor analytics apply, follow `CURSOR_USAGE_ANALYTICS.md`, including copyable-prompt presentation and Cursor chat/model guidance after the copyable block, and Cursor Models Before/After tracking.
 
 ---
 

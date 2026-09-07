@@ -200,9 +200,11 @@ A **minimal** prerequisite from a later stage may be introduced only when:
 
 Existing code from later or earlier stages must not be deleted merely because those stages are incomplete.
 
-A stage may be marked complete only when the project's Roadmap conditions are satisfied. Completion generally requires: required implementation exists; relevant XenForo behavior is verified; tests appropriate to the stage pass; security and performance implications are reviewed; development diagnostics are handled; documentation is synchronized (including the changelog entry the project requires); the result is ready for a Git checkpoint.
+A stage may be marked complete only when the project's Roadmap conditions are satisfied. Completion generally requires: required implementation exists; relevant XenForo behavior is verified; tests appropriate to the stage pass; security and performance implications are reviewed; development diagnostics are handled; documentation is synchronized (including the changelog entry the project requires); Cursor usage history is synchronized when applicable; the result is ready for a Git checkpoint; and the approved stage/phase closure sequence in §20 has been completed.
 
 Architecture approval alone does not complete a stage. The presence of placeholder or Alpha code alone does not complete a stage.
+
+Do not interpret stage closure as requiring a Git commit after every tiny action, command, inspection, audit step, or intermediate Cursor procedure. Git checkpoints correspond to completed and approved logical stages/phases or other explicitly approved meaningful checkpoints.
 
 ---
 
@@ -439,9 +441,32 @@ The verified local working copy is authoritative for pending local changes.
 
 The configured remote records the last published repository state.
 
-Each completed stage should end at a stable Git checkpoint.
+Each completed and approved logical stage or project phase must be closed with documentation synchronization and a Git checkpoint before work proceeds to the next stage or phase.
+
+This does **not** require a commit after every tiny action, command, inspection, audit step, or intermediate Cursor procedure. Git checkpoints correspond to completed and approved logical stages/phases or other explicitly approved meaningful checkpoints.
+
+Do not commit incomplete, unreviewed, or known-broken work merely to satisfy the checkpoint rule.
+
+Documentation must describe the approved actual state, not planned or assumed completion.
+
+Historical documentation and Git history remain historical records and must not be rewritten to make later decisions appear earlier.
 
 The **user** owns `git add`, `git commit`, and `git push` unless they explicitly request the agent to perform them.
+
+If a stage reveals unresolved **Critical** issues, the stage is not closed and progression is blocked.
+
+### Stage and phase closure sequence
+
+1. Complete the approved work for the current logical stage/phase.
+2. Review and explicitly approve the result where product-owner approval is required.
+3. Synchronize authoritative project documentation with the actual approved state.
+4. Synchronize Cursor usage history when the completed stage/phase included Cursor procedures whose verified Before/After values are available. Follow [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). If a completed Cursor procedure has an unknown Cursor Models After value, do not invent it. Record/synchronize it only after the value becomes known.
+5. Review the resulting documentation/code diff and repository status.
+6. Resolve Critical issues before closure.
+7. Create a logical Git commit representing the completed stage/phase when the user requests or authorizes it.
+8. Push the approved commit when the user authorizes/executes the push.
+9. Verify the working tree is clean.
+10. Only then proceed to the next logical stage/phase.
 
 Before publishing:
 
@@ -568,7 +593,7 @@ When a production observation conflicts with documentation, inspect code and con
 
 Do not optimize development merely to reduce Cursor quota usage. Correctness, XenForo compatibility, security, maintainability, testing, and documentation remain higher priorities.
 
-When Cursor analytics or Cursor procedure pre-flight apply, follow `CURSOR_USAGE_ANALYTICS.md` for routing, model selection, and usage tracking, and `AI_AGENTS_RULES.md` for mandatory execution/pre-flight requirements. Do not invent usage percentages.
+When Cursor analytics or Cursor procedure presentation/pre-flight apply, follow `CURSOR_USAGE_ANALYTICS.md` for copyable-prompt presentation, routing, model selection, and usage tracking, and `AI_AGENTS_RULES.md` for mandatory execution/pre-flight requirements. Do not invent usage percentages.
 
 ---
 
