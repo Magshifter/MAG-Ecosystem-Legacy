@@ -485,7 +485,7 @@ If a stage reveals unresolved **Critical** issues, the stage is not closed and p
 2. Review and explicitly approve the result where product-owner approval is required.
 3. Synchronize authoritative project documentation with the actual approved state.
 4. When relevant work may have produced reusable technical knowledge, evaluate it for `MAG_IMPLEMENTATION_PATTERNS.md` per §22.
-5. Synchronize Cursor usage history when the completed stage/phase included Cursor procedures whose verified Before/After values are available. Follow [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). If a completed Cursor procedure has an unknown Cursor Models After value, do not invent it. Record/synchronize it only after the value becomes known.
+5. Synchronize Cursor usage history when the completed stage/phase included Cursor procedures. Follow [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md) §8.1. If any procedure in the stage still has pending **Cursor Models After** or visible delta, finalize them in this same stage-closing workflow or at the next substantive Cursor procedure in that stage. Do not invent values. Do not launch a standalone metric-finalization procedure.
 6. Review the resulting documentation/code diff and repository status.
 7. Resolve Critical issues before closure.
 8. Create a logical Git commit representing the completed stage/phase when the user requests or authorizes it.
