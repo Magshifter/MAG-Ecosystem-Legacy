@@ -439,6 +439,16 @@ When a change is already understood, approved, and technically verified, use a *
 
 This optimization must not weaken required validation.
 
+### Product Owner Practical Acceptance
+
+Per [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) Phase 7, technical or automated validation alone does not complete Integration and Final Validation. Required Product Owner Practical Acceptance must reach explicit **PASS** before Gate 3 — Release Readiness.
+
+Do not treat technical validation as sufficient for release readiness, Release Finalization, or Stable Release while required Practical Acceptance remains pending or has failed.
+
+When Practical Acceptance finds a defect, return proportionally to the earliest affected lifecycle point. Preserve unaffected valid verification evidence; do not automatically repeat audits, architecture analysis, or broad regression work.
+
+This pre-release acceptance does not replace Phase 9 — Post-Release Verification.
+
 ## 19. Backwards compatibility
 
 A shipping MAG version is a product baseline, not a permanent public API freeze.

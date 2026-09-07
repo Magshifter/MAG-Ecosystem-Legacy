@@ -212,9 +212,12 @@ Distinguish:
 - Validation that failed.
 - Validation not performed.
 - Manual verification still required.
+- Product Owner Practical Acceptance still required or pending.
 - Assumptions that remain unverified.
 
 Do not claim a test passed, XenForo compatibility was verified, runtime behavior was proven from static inspection, or Git state was inspected, unless that is true.
+
+Do not treat completed technical validation as sufficient for Gate 3 — Release Readiness, Release Finalization, or Stable Release when required Product Owner Practical Acceptance per `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 7 remains pending or has not **PASS**.
 
 Selecting a cheaper Cursor model must not reduce these validation requirements.
 

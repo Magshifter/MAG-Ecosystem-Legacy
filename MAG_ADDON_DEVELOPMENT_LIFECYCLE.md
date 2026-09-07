@@ -52,6 +52,7 @@ Idea
 → Implementation Planning
 → Incremental Implementation
 → Integration and Final Validation
+   → Product Owner Practical Acceptance
 → Release Readiness
 → Release Finalization
    → Release Presentation
@@ -562,11 +563,15 @@ An increment awaiting required review, manual validation, or closure remains pen
 
 Verify that the completed release scope works as a coherent product rather than only as isolated increments.
 
+Product Owner Practical Acceptance is the mandatory final acceptance step of this phase. The Product Owner personally exercises the completed release scope as a real user and, where relevant, administrator to detect workflow, usability, integration, and behavioral issues that formal automated or technical validation may not reveal.
+
 ### Entry conditions
 
 Required implementation scope for the target release is complete.
 
 ### Required work
+
+#### Technical integration and final validation
 
 Validation depth is risk-based.
 
@@ -591,11 +596,25 @@ Do not mechanically repeat expensive validation already performed when preceding
 
 Do not reduce required validation merely to reduce Cursor usage.
 
+#### Product Owner Practical Acceptance (mandatory)
+
+After required technical integration and final validation for the release scope has completed, the Product Owner must personally exercise the completed release scope in an appropriate local or otherwise relevant XenForo environment.
+
+Practical Acceptance depth must be proportional to the product and release risk. Do not require an artificial exhaustive test script for every release.
+
+Practical Acceptance must produce an explicit **PASS** or identify issues requiring correction.
+
+This pre-release acceptance does not replace Phase 9 — Post-Release Verification, which remains responsible for issues observable only after actual release, deployment, or production use.
+
+When Practical Acceptance finds a defect, classify the issue and return only to the earliest affected lifecycle point necessary for a proportional correction and revalidation. Preserve unaffected technical validation evidence; do not automatically repeat audits, architecture analysis, or broad regression work solely because Practical Acceptance failed.
+
 ### Documentation actions
 
 Synchronize only affected authoritative project documents.
 
 Record significant verified compatibility/security/performance findings in the document that owns them.
+
+Record the Product Owner Practical Acceptance result explicitly when performed.
 
 Create a separate validation/audit artifact only when preserving that evidence has a real future purpose.
 
@@ -604,7 +623,10 @@ Create a separate validation/audit artifact only when preserving that evidence h
 - required validation for release risk has completed;
 - no unresolved Critical issue remains;
 - known limitations are documented accurately;
-- product documentation reflects verified state.
+- product documentation reflects verified state;
+- Product Owner Practical Acceptance has **PASS**.
+
+Phase 7 is not complete, and Gate 3 — Release Readiness must not be entered, until required Product Owner Practical Acceptance has **PASS**.
 
 
 ## 12. Gate 3 — Release Readiness
@@ -614,6 +636,7 @@ The release may proceed to finalization only when:
 - approved release requirements are satisfied;
 - required implementation exists;
 - required validation is complete;
+- Product Owner Practical Acceptance has **PASS**;
 - Critical issues are resolved;
 - known limitations are accurately documented;
 - release documentation is synchronized;
@@ -1010,7 +1033,7 @@ This matrix defines timing. Approval details, execution mechanics, evidence stan
 1. Before a decision gate: the owning document must state the decision being approved.
 2. Before implementation: the relevant requirements, architecture, and next increment must be clear enough to execute.
 3. After an increment: synchronize documents affected by verified changes; explicitly record pending validation.
-4. Before release readiness: reconcile release scope, actual implementation, evidence, and product documentation.
+4. Before release readiness: reconcile release scope, actual implementation, evidence, and product documentation; confirm required Product Owner Practical Acceptance has **PASS**.
 5. During finalization: complete Release Presentation; verify documentation against the actual shipping artifact and version.
 6. After release: record relevant real-environment findings, complete applicable history synchronization, and review reusable-knowledge candidates.
 
@@ -1055,6 +1078,8 @@ Use a bounded documentation scope, verify statements against their owning source
 
 Map the verified current state to the appropriate phase. Preserve completed releases and historical stages. Identify real gaps and seek decisions for affected work; do not invent retroactive approvals or restart completed work solely to match this document.
 
+A project already beyond Phase 7 when this rule is adopted but not yet Stable Released may perform Product Owner Practical Acceptance as a current supplemental pre-release gate before Stable Release. Historical projects, procedures, and records must not be rewritten to pretend this rule existed earlier.
+
 
 ## 20. Exceptions and Stop Conditions
 
@@ -1067,6 +1092,7 @@ At lifecycle level, stop the affected transition when:
 - a necessary architecture decision depends on unverified native behavior;
 - a Critical issue prevents safe implementation or release;
 - required validation is missing, failed, or invalidated by later changes;
+- required Product Owner Practical Acceptance is missing, pending, or failed;
 - release documentation or the artifact does not match the claimed shipping state;
 - a Global authority conflict remains unresolved.
 
@@ -1116,7 +1142,7 @@ This summary makes phase outputs and next transitions explicit. Each transition 
 | Gate 2 — Architecture Approval | Approved HOW for the relevant scope | Phase 5 |
 | Phase 5 — Implementation Planning | Executable next increment with boundaries and validation criteria | Phase 6 after explicit implementation authorization |
 | Phase 6 — Incremental Implementation | Implemented increment, relevant validation, reviewed changes, synchronized affected documents | Next approved increment; Phase 7 when release scope is complete; earlier affected phase for a new blocker |
-| Phase 7 — Integration and Final Validation | Completed required release validation and accurate documentation | Gate 3; authorized correction cycle if validation fails |
+| Phase 7 — Integration and Final Validation | Completed required release validation; Product Owner Practical Acceptance **PASS**; accurate documentation | Gate 3; authorized correction cycle if validation or Practical Acceptance fails |
 | Gate 3 — Release Readiness | Product Owner approval of release finalization | Phase 8 |
 | Phase 8 — Release Finalization | Release Presentation completed; final artifact and shipping state verified; explicit PASS, BLOCKED, or FAIL | Final release approval/publication only on PASS; correction and revalidation otherwise |
 | Stable Release | Confirmed authorized publication establishes the shipping baseline | Phase 9 |
