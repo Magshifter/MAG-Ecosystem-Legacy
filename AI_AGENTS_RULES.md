@@ -8,6 +8,8 @@ Coding agents are **implementation tools**. They do not own strategy, independen
 
 Ordered phase transitions and documentation timing are defined in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md). That lifecycle does not expand the execution scope authorized under this document.
 
+Reusable-knowledge capture mechanics belong in [`MAG_IMPLEMENTATION_PATTERNS.md`](MAG_IMPLEMENTATION_PATTERNS.md). Evaluation integration at procedure completion belongs in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §22. Do not duplicate those procedures here.
+
 Which agent is used is a user/tooling choice. These rules do not change when a more capable agent is introduced. Tool capability does not grant permission to exceed the approved task.
 
 Cursor usage accounting, Cursor chat/model pre-flight workflow, detailed model-selection matrix, escalation policy, and MAG Cursor report-field methodology belong in [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). Do not invent usage percentages here. Do not duplicate the complete model matrix in this file.

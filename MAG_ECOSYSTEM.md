@@ -10,7 +10,7 @@ It defines **how MAG projects relate to each other and how their documentation i
 
 **#N defines WHAT the specific project is and must do.**
 
-Global documentation governs process, workflow, agent rules, and shared ecosystem conventions.
+Global documentation governs process, workflow, agent rules, ordered lifecycle, reusable technical knowledge, and shared ecosystem conventions.
 
 Project (`#N`) documentation governs that project's product requirements, architecture, sequencing, and current code structure.
 
@@ -68,7 +68,7 @@ Work on `#N` means **GLOBAL + that `#N`**. Documentation from other MAG projects
 
 ## Global documentation set
 
-The current Global documentation tree in this repository is:
+The current Global documentation set comprises **six** authoritative files in this repository:
 
 | File | Role |
 | --- | --- |
@@ -160,11 +160,16 @@ Do not modify one MAG repository while the approved procedure is scoped to anoth
 
 ## Documentation authority model
 
+Each Global file has one primary authority. Do not duplicate its detailed rules in other Global documents.
+
 | Source | Authority |
 | --- | --- |
-| Global documentation (`MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `CURSOR_USAGE_ANALYTICS.md`, `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`) | **How** MAG work is done: process, agents, Git checkpoints, Cursor pre-flight/model selection and usage methodology, ecosystem conventions. |
-| `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Canonical lifecycle order, stage gates, phase transitions, and documentation timing; detailed development and execution mechanics remain in their owning Global documents. |
-| `MAG_IMPLEMENTATION_PATTERNS.md` | Reusable, evidence-backed technical knowledge for future MAG work. Subordinate to Global process documents and active-project TZ, Roadmap, and Architecture. Not a source of product requirements or process rules. |
+| `MAG_ECOSYSTEM.md` | Ecosystem identity, project registry, documentation map, authority navigation, and GLOBAL + active `#N` context isolation. |
+| `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Canonical ordered lifecycle, stage gates, phase transitions, and documentation timing. Does not redefine detailed rules owned by other Global documents. |
+| `AI_GUIDELINES.md` | Detailed development standards, principles, stage/phase closure mechanics, and operational workflow applied at lifecycle checkpoints. |
+| `AI_AGENTS_RULES.md` | Coding-agent execution boundaries, mandatory Cursor pre-flight, checkpoints, and applicable report requirements. |
+| `CURSOR_USAGE_ANALYTICS.md` | Cursor procedure routing/pre-flight, model selection and escalation, usage tracking, reporting, forecasting, and analytics methodology. |
+| `MAG_IMPLEMENTATION_PATTERNS.md` | Reusable, source-backed technical knowledge base and its capture/maintenance procedure. Subordinate to Global process documents and active-project TZ, Roadmap, and Architecture. Not a source of product requirements or process rules. |
 | Project TZ | **What** that product must do. Functional requirements. Canonical file: `P<NN>__<CODE>__TZ.md`. |
 | Project Architecture | Approved implementation architecture for that product. Describes intended and verified structure; it does not override TZ. |
 | Project Roadmap | Approved sequencing and verified progress. Controls what may be implemented **now**. |

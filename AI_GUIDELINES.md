@@ -37,7 +37,9 @@ Use the authority model in `MAG_ECOSYSTEM.md`. For implementation work, apply it
 
 | Source | Use |
 | --- | --- |
-| Global documentation | Process, tools, Git, security/performance/testing standards, XenForo development rules. |
+| `MAG_ECOSYSTEM.md` | Ecosystem identity, registry, documentation map, authority navigation, and GLOBAL + active `#N` context isolation. |
+| `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Lifecycle order, stage gates, and documentation timing. Stage/phase closure mechanics in this document apply at those checkpoints. |
+| Global documentation (other) | Process, tools, Git, security/performance/testing standards, XenForo development rules. |
 | `MAG_IMPLEMENTATION_PATTERNS.md` | Reusable, evidence-backed technical knowledge. Subordinate to Global process documents and active-project TZ, Roadmap, and Architecture. Not a source of product requirements. |
 | Project TZ | What the add-on must do. Canonical filename: `P<NN>__<CODE>__TZ.md` (`MAG_ECOSYSTEM.md`). |
 | Project Roadmap | What increment is approved **now**, and verified progress. |
