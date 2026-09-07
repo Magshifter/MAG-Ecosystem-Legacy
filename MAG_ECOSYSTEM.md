@@ -76,8 +76,9 @@ The current Global documentation tree in this repository is:
 | `AI_GUIDELINES.md` | Global MAG development workflow and operational rules. |
 | `AI_AGENTS_RULES.md` | Mandatory execution rules and boundaries for AI coding agents and related development tools, including Cursor procedure pre-flight and Plain text output requirements. |
 | `CURSOR_USAGE_ANALYTICS.md` | Authoritative Cursor procedure routing/pre-flight, model selection and escalation, usage optimization, Cursor Models Before/After tracking, reporting, forecasting, and analytics methodology. |
+| `MAG_IMPLEMENTATION_PATTERNS.md` | Global reusable technical knowledge base: verified XenForo/XFRM behavior, implementation patterns, compatibility lessons, failure modes, and related evidence-backed findings. Subordinate to Global process documents and active-project TZ, Roadmap, and Architecture. Does not define product requirements. |
 
-These four files are **Global-only**. They exist only in `MAG-Ecosystem`. Individual MAG project repositories must **not** create copies, companions, or pointer files named `MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, or `CURSOR_USAGE_ANALYTICS.md`.
+These Global files exist only in `MAG-Ecosystem`. Individual MAG project repositories must **not** create copies, companions, or pointer files named `MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `CURSOR_USAGE_ANALYTICS.md`, or `MAG_IMPLEMENTATION_PATTERNS.md`.
 
 Projects inherit Global rules by reading this repository. Project-specific requirements belong in that project's TZ, Roadmap, Architecture, CLASS_MAP, Changelog, and README (and optional research/overview files), using the canonical filenames defined below. Project-specific Cursor measurement history may be stored locally (for example `docs/P01__GLF__CURSOR_USAGE_HISTORY.md`).
 
@@ -117,7 +118,7 @@ Do not keep duplicate copies under the old unprefixed names after a controlled m
 
 This is the authoritative MAG convention for project-specific documentation filenames.
 
-1. Global-only process files keep their existing unique filenames (`MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `CURSOR_USAGE_ANALYTICS.md`). Do **not** add a `GLOBAL__` prefix to them.
+1. Global-only files keep their existing unique filenames (`MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `CURSOR_USAGE_ANALYTICS.md`, `MAG_IMPLEMENTATION_PATTERNS.md`). Do **not** add a `GLOBAL__` prefix to them.
 2. Project-specific canonical documentation uses `P<NN>__<CODE>__<Document>.md`.
 3. `#N` remains the permanent logical project identifier.
 4. `P01`, `P02`, and later are the filename representation of `#1`, `#2`, and later. The prefix does not replace `#N`.
@@ -161,6 +162,7 @@ Do not modify one MAG repository while the approved procedure is scoped to anoth
 | Source | Authority |
 | --- | --- |
 | Global documentation (`MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `CURSOR_USAGE_ANALYTICS.md`) | **How** MAG work is done: process, agents, Git checkpoints, Cursor pre-flight/model selection and usage methodology, ecosystem conventions. |
+| `MAG_IMPLEMENTATION_PATTERNS.md` | Reusable, evidence-backed technical knowledge for future MAG work. Subordinate to Global process documents and active-project TZ, Roadmap, and Architecture. Not a source of product requirements or process rules. |
 | Project TZ | **What** that product must do. Functional requirements. Canonical file: `P<NN>__<CODE>__TZ.md`. |
 | Project Architecture | Approved implementation architecture for that product. Describes intended and verified structure; it does not override TZ. |
 | Project Roadmap | Approved sequencing and verified progress. Controls what may be implemented **now**. |
@@ -194,8 +196,9 @@ MAG work is incremental and stage-controlled:
 4. Implement the smallest verified change that satisfies the approved increment.
 5. Verify against the project's requirements and XenForo versions in scope.
 6. Synchronize only the documentation that the change actually affects.
-7. Close the approved stage or phase using the closure sequence in `AI_GUIDELINES.md` §20 when applicable.
-8. Stop at the approved Git checkpoint. The user owns Git add / commit / push unless they explicitly request otherwise.
+7. When relevant work may have produced reusable technical knowledge, evaluate it for `MAG_IMPLEMENTATION_PATTERNS.md` using the procedure in `AI_GUIDELINES.md` §22.
+8. Close the approved stage or phase using the closure sequence in `AI_GUIDELINES.md` §20 when applicable.
+9. Stop at the approved Git checkpoint. The user owns Git add / commit / push unless they explicitly request otherwise.
 
 Do not start the next stage, the next MAG project, or a shared component because the current increment is complete.
 
@@ -272,7 +275,7 @@ When a new MAG add-on is approved:
 6. Do not create copies or pointer files of Global process documents in the new project.
 7. Do not create shared components as part of bootstrap.
 
-`#2` [MAG] Tag Synchronizer is registered. Its Git repository exists. Status is **Requirements Definition / Pre-Implementation**. It inherits Global rules by reference. It must not contain local copies of the four Global process files.
+`#2` [MAG] Tag Synchronizer is registered. Its Git repository exists. Status is **Requirements Definition / Pre-Implementation**. It inherits Global rules by reference. It must not contain local copies of Global documentation files from `MAG-Ecosystem`.
 
 ## Current MAG-Ecosystem repository contents
 
@@ -282,3 +285,4 @@ This Global documentation repository currently contains:
 - `AI_GUIDELINES.md`
 - `AI_AGENTS_RULES.md`
 - `CURSOR_USAGE_ANALYTICS.md`
+- `MAG_IMPLEMENTATION_PATTERNS.md`

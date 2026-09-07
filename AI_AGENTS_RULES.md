@@ -177,6 +177,8 @@ If documentation and implementation conflict, **report the conflict**. Do not si
 
 If implementation appears to require an architectural change, **stop** and report: why the current architecture appears insufficient; the technical conflict; which requirement or boundary is affected; what decision is required. Continue only after that decision is made through the normal MAG process.
 
+When completed work may have produced reusable technical knowledge, follow the evaluation rules in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §22. If a qualifying candidate is found but updating `MAG-Ecosystem` is outside the approved task scope, report it to the product owner. Do not modify Global documentation without approval.
+
 ---
 
 ## 8. XenForo inspection

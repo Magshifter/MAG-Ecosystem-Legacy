@@ -36,6 +36,7 @@ Use the authority model in `MAG_ECOSYSTEM.md`. For implementation work, apply it
 | Source | Use |
 | --- | --- |
 | Global documentation | Process, tools, Git, security/performance/testing standards, XenForo development rules. |
+| `MAG_IMPLEMENTATION_PATTERNS.md` | Reusable, evidence-backed technical knowledge. Subordinate to Global process documents and active-project TZ, Roadmap, and Architecture. Not a source of product requirements. |
 | Project TZ | What the add-on must do. Canonical filename: `P<NN>__<CODE>__TZ.md` (`MAG_ECOSYSTEM.md`). |
 | Project Roadmap | What increment is approved **now**, and verified progress. |
 | Project Architecture | Approved implementation architecture. Does not override TZ. |
@@ -460,13 +461,14 @@ If a stage reveals unresolved **Critical** issues, the stage is not closed and p
 1. Complete the approved work for the current logical stage/phase.
 2. Review and explicitly approve the result where product-owner approval is required.
 3. Synchronize authoritative project documentation with the actual approved state.
-4. Synchronize Cursor usage history when the completed stage/phase included Cursor procedures whose verified Before/After values are available. Follow [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). If a completed Cursor procedure has an unknown Cursor Models After value, do not invent it. Record/synchronize it only after the value becomes known.
-5. Review the resulting documentation/code diff and repository status.
-6. Resolve Critical issues before closure.
-7. Create a logical Git commit representing the completed stage/phase when the user requests or authorizes it.
-8. Push the approved commit when the user authorizes/executes the push.
-9. Verify the working tree is clean.
-10. Only then proceed to the next logical stage/phase.
+4. When relevant work may have produced reusable technical knowledge, evaluate it for `MAG_IMPLEMENTATION_PATTERNS.md` per §22.
+5. Synchronize Cursor usage history when the completed stage/phase included Cursor procedures whose verified Before/After values are available. Follow [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). If a completed Cursor procedure has an unknown Cursor Models After value, do not invent it. Record/synchronize it only after the value becomes known.
+6. Review the resulting documentation/code diff and repository status.
+7. Resolve Critical issues before closure.
+8. Create a logical Git commit representing the completed stage/phase when the user requests or authorizes it.
+9. Push the approved commit when the user authorizes/executes the push.
+10. Verify the working tree is clean.
+11. Only then proceed to the next logical stage/phase.
 
 Before publishing:
 
@@ -540,7 +542,7 @@ After verified implementation changes, update **only** the documents the change 
 
 Typical project documents (logical): README, TZ, Architecture, CLASS_MAP, Changelog, Roadmap, and optional overview/research files. Use the canonical `P<NN>__<CODE>__` filenames recorded in `MAG_ECOSYSTEM.md`.
 
-Update Global documents only when process or ecosystem conventions changed.
+Update Global documents only when process, ecosystem conventions, or reusable technical knowledge changed per `AI_GUIDELINES.md` §22.
 
 Documentation must describe the actual verified state. Do not copy one project's product status into Global guidelines.
 
@@ -557,6 +559,37 @@ If code or XenForo source inspection shows that a documented requirement is inco
 9. Only then continue.
 
 AI must not silently change requirements for implementation convenience.
+
+### Reusable implementation knowledge
+
+When completed MAG work may have produced reusable technical knowledge, evaluate whether it belongs in [`MAG_IMPLEMENTATION_PATTERNS.md`](MAG_IMPLEMENTATION_PATTERNS.md).
+
+This evaluation is a normal completion consideration for relevant:
+
+- implementation;
+- debugging;
+- audit;
+- compatibility investigation;
+- XenForo/XFRM source inspection;
+- testing;
+- stabilization;
+- release verification;
+- production troubleshooting.
+
+It does **not** require a separate Cursor procedure.
+
+Follow the capture procedure defined in `MAG_IMPLEMENTATION_PATTERNS.md` (**Detect → Verify → Search → Classify → Determine scope → Decide → Record → Preserve authority**). Do not duplicate the full algorithm here.
+
+Rules:
+
+- Promote only evidence-backed findings. Do not generalize from donor behavior, assumptions, planned architecture, hypotheses, or accidental implementation behavior.
+- Keep product requirements, approved project architecture, project code structure, project-specific behavior, and project history in the active `#N` documentation.
+- Add or update Global reusable knowledge only when there is a meaningful future reuse case. Do not turn the knowledge base into a development log.
+- If the approved procedure already includes Global documentation synchronization and a qualifying knowledge update is within scope, record it as part of that procedure.
+- If reusable knowledge is discovered while working only in an active `#N` repository and modifying `MAG-Ecosystem` would cross the approved repository/procedure scope, do **not** modify Global documentation. Report the candidate to the product owner and wait for approval of a separate Global documentation update.
+- Discovery of reusable knowledge does **not** authorize unrelated implementation, architecture changes, requirements changes, cross-project modifications, scope expansion, Git operations, or starting another development stage.
+
+Entry structure, status model, and maintenance mechanics remain authoritative in `MAG_IMPLEMENTATION_PATTERNS.md`.
 
 ### ChatGPT Project files after Stable release
 
