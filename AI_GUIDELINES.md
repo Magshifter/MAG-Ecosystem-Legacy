@@ -514,6 +514,8 @@ Do not claim a MAG add-on repository must keep copies of Global `AI_GUIDELINES.m
 
 ## 21. Release artifact preservation
 
+Release Presentation requirements, sequence, and final-package gating are canonical in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) Phase 8. Do not build the final release ZIP before required Release Presentation data is approved and applied per that workflow.
+
 Finalized XenForo release ZIP archives in `_releases` are immutable historical artifacts.
 
 - Never overwrite, replace, or reuse the filename of a previously finalized release ZIP.
@@ -534,7 +536,7 @@ Before `xf-addon:build-release`:
 - Never rely only on `addon.json` to predict the output ZIP filename.
 - Never allow `build-release` to overwrite a historical final archive. If the canonical filename already exists, stop and rename or relocate the new build.
 
-Minimum Release Finalization verification typically includes: version metadata; canonical ZIP identity; ZIP contents; `hashes.json` vs packaged files; required packaged assets; exclusion of development and runtime-only files; preservation of historical final ZIPs; supported-XenForo install/upgrade smoke; file health where applicable; installed add-on version and active state; ZIP size and SHA-256.
+Minimum Release Finalization verification typically includes: version metadata; canonical ZIP identity; ZIP contents; `hashes.json` vs packaged files; required packaged assets; exclusion of development and runtime-only files; preservation of historical final ZIPs; supported-XenForo install/upgrade smoke; file health where applicable; installed add-on version and active state; ZIP size and SHA-256; and, where applicable, approved Release Presentation metadata (description, mandatory separate `Made in Ukraine` line, MAG icon, Developer link, Product Owner-supplied Support Resource URL, and Donate link) per `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 8.
 
 When source phrases changed, also validate any official extra-language file the project maintains outside the ZIP.
 

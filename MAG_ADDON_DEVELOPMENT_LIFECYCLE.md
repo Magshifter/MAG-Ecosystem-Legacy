@@ -54,6 +54,8 @@ Idea
 → Integration and Final Validation
 → Release Readiness
 → Release Finalization
+   → Release Presentation
+   → final release package build and validation
 → Stable Release
 → Post-Release Verification
 → Knowledge Capture
@@ -626,11 +628,161 @@ Passing this gate does not itself publish the release.
 
 Prepare and verify the actual release state and artifact.
 
+Release Finalization includes **Release Presentation** as a mandatory component immediately before the final release package is built. Release Presentation is not a separate top-level lifecycle phase.
+
+```text
+Release Readiness
+→ Release Finalization
+   → Release Presentation
+   → final release package build and validation
+→ Stable Release
+```
+
 ### Entry conditions
 
 Gate 3 passed and the finalization scope is authorized.
 
-### Required work
+### Release Presentation (mandatory)
+
+Every MAG add-on must complete Release Presentation before the **final** release ZIP is built.
+
+Release Presentation governs release-facing description, branded icon, Developer link, project-specific Support link, and Donate link. It does not redefine Local, integration, web, production, Release Readiness, or other existing validation processes.
+
+#### Release-facing description
+
+1. ChatGPT proposes the description using only approved/current documentation of the active `#N` project.
+2. The Product Owner reviews it.
+3. The Product Owner may correct it.
+4. The Product Owner must explicitly approve the final text.
+5. The main description must not exceed **250 characters**.
+6. Do not invent functionality, claims, compatibility, or benefits not supported by approved project documentation.
+7. The presentation must always include a separate final line:
+
+```text
+Made in Ukraine
+```
+
+The `Made in Ukraine` line is mandatory and is separate from the main description character limit.
+
+#### MAG branded icon
+
+Authoritative Global source:
+
+```text
+MAG-Ecosystem/magicon.png
+```
+
+Policy:
+
+- required current size: **96×96 px**;
+- this is the common branded icon for MAG add-ons;
+- it remains the default until the Product Owner approves a new design concept;
+- numbered project release work may consume/copy it as required by the verified XenForo-native mechanism;
+- numbered projects must **not** modify the authoritative Global source file;
+- do not resize, regenerate, redesign, or otherwise modify `magicon.png` during Release Presentation work in a numbered project repository.
+
+Before use, verify that `magicon.png` exists and report its actual dimensions. If actual dimensions conflict with the approved 96×96 requirement, report the conflict. Do not modify the Global file to resolve the conflict during Release Presentation.
+
+#### Developer link (fixed Global rule)
+
+| Field | Value |
+| --- | --- |
+| Label | `Developer` |
+| Display identity | `Magshifter` |
+| URL | `https://bio.site/magshifter` |
+
+This is reusable across MAG add-ons unless the Product Owner later changes the Global rule.
+
+#### Support link (project/release-specific)
+
+The Support URL is the URL of the Resource page for that specific add-on on the Product Owner's forum.
+
+Rules:
+
+- never invent it;
+- never infer it;
+- never substitute another URL;
+- never use a placeholder in the final release package.
+
+When the add-on is otherwise ready for final release packaging, ChatGPT must request the Resource URL from the Product Owner.
+
+The Product Owner creates the Resource for the add-on on the forum and supplies its URL.
+
+That exact Product Owner-supplied Resource URL becomes the Support URL for the release.
+
+The final release package must **not** be built while a required Support URL is unknown.
+
+#### Donate link (fixed Global rule)
+
+| Field | Value |
+| --- | --- |
+| Label | `Donate` |
+| URL | `https://donatello.to/Magshifter` |
+
+This is reusable across MAG add-ons unless the Product Owner later changes the Global rule.
+
+#### Required Release Presentation sequence
+
+Within Release Finalization, use this sequence:
+
+1. Confirm the project is at the appropriate existing Release Finalization point.
+2. ChatGPT prepares the proposed release-facing description from approved `#N` documentation.
+3. Product Owner reviews/corrects and explicitly approves the description.
+4. Prepare the standard MAG icon from `MAG-Ecosystem/magicon.png`.
+5. Prepare the fixed Developer and Donate information.
+6. Request the project-specific Resource URL from the Product Owner.
+7. Product Owner creates the add-on Resource on the forum and supplies its URL.
+8. Use that exact Resource URL as Support.
+9. Before implementation, verify the exact XenForo-native mechanism for:
+   - icon;
+   - description;
+   - Developer link;
+   - Support link;
+   - Donate link;
+   - release package inclusion.
+
+   Use the applicable installed/reference XenForo source and native build tooling.
+
+   Do not assume `addon.json` field names, file paths, asset locations, or package behavior.
+
+10. Apply the approved Release Presentation metadata/assets using the verified XenForo-native mechanism.
+11. Build the final release ZIP.
+12. Validate the final release ZIP.
+13. Synchronize affected project documentation under normal MAG rules.
+14. Complete the logical Git checkpoint, push, and clean verification under normal MAG rules.
+15. Only after Release Finalization is fully closed may the separate Product Owner Stable Release gate be considered.
+
+#### Final package rule
+
+A ZIP built before all required Release Presentation data is available is **not** the final Stable Release package when that presentation data must be included in the package.
+
+In particular, when the Support URL belongs in the package metadata, a package built before the Product Owner supplies the Resource URL is preliminary and must be rebuilt after the approved Support URL is added.
+
+#### Final release-package validation
+
+Final release-package validation must verify, where applicable:
+
+- approved version identity;
+- approved description;
+- mandatory separate `Made in Ukraine` line;
+- approved MAG icon;
+- Developer information/link;
+- exact Product Owner-supplied Resource URL as Support;
+- Donate link;
+- expected XenForo-native metadata/assets;
+- package integrity;
+- expected package contents;
+- absence of unintended repository, development, test, private, credential, or unrelated files.
+
+Detailed release-artifact mechanics and Git rules remain in the appropriate Global documents.
+
+#### Historical integrity
+
+Do not rewrite historical project procedures or completed release records to pretend this Global rule existed earlier.
+
+Projects that reached Release Finalization before adoption of this rule may complete the newly required Release Presentation work as a separate current procedure before Stable Release where applicable.
+
+### Required work (after Release Presentation)
 
 As applicable:
 
@@ -648,8 +800,6 @@ As applicable:
 - inspect final repository diff/status;
 - resolve release-blocking issues.
 
-Detailed release-artifact and Git rules remain in the appropriate Global documents.
-
 ### Documentation actions
 
 Release-related project documentation must describe the actual shipping state.
@@ -665,6 +815,8 @@ Release Finalization must end with an explicit result such as:
 - FAIL
 
 Only a confirmed PASS may proceed to Stable Release.
+
+Phase 8 PASS confirms readiness of the final artifact and completed Release Presentation. It does not authorize publication.
 
 
 ## 14. Stable Release
@@ -859,7 +1011,7 @@ This matrix defines timing. Approval details, execution mechanics, evidence stan
 2. Before implementation: the relevant requirements, architecture, and next increment must be clear enough to execute.
 3. After an increment: synchronize documents affected by verified changes; explicitly record pending validation.
 4. Before release readiness: reconcile release scope, actual implementation, evidence, and product documentation.
-5. During finalization: verify documentation against the actual shipping artifact and version.
+5. During finalization: complete Release Presentation; verify documentation against the actual shipping artifact and version.
 6. After release: record relevant real-environment findings, complete applicable history synchronization, and review reusable-knowledge candidates.
 
 Do not create empty audit reports or speculative code maps to satisfy a phase. A document is created when it has real information to own. Mandatory history synchronization follows its owning Global rules even when no product documentation changed.
@@ -966,7 +1118,7 @@ This summary makes phase outputs and next transitions explicit. Each transition 
 | Phase 6 — Incremental Implementation | Implemented increment, relevant validation, reviewed changes, synchronized affected documents | Next approved increment; Phase 7 when release scope is complete; earlier affected phase for a new blocker |
 | Phase 7 — Integration and Final Validation | Completed required release validation and accurate documentation | Gate 3; authorized correction cycle if validation fails |
 | Gate 3 — Release Readiness | Product Owner approval of release finalization | Phase 8 |
-| Phase 8 — Release Finalization | Actual artifact and shipping state verified; explicit PASS, BLOCKED, or FAIL | Final release approval/publication only on PASS; correction and revalidation otherwise |
+| Phase 8 — Release Finalization | Release Presentation completed; final artifact and shipping state verified; explicit PASS, BLOCKED, or FAIL | Final release approval/publication only on PASS; correction and revalidation otherwise |
 | Stable Release | Confirmed authorized publication establishes the shipping baseline | Phase 9 |
 | Phase 9 — Post-Release Verification | Required observations completed and findings recorded, or a documented risk-based determination that no additional checks are needed | Phase 10; Phase 11 maintenance/hotfix when a defect requires action |
 | Phase 10 — Reusable Knowledge Capture | Candidate review completed; qualified findings recorded or explicitly deferred | Phase 11 |

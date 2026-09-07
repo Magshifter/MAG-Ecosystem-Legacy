@@ -203,7 +203,7 @@ Validation effort must match the **actual change and risk**.
 
 Reuse immediately preceding **valid** verification where it still applies. Do not repeat expensive checks (broad regression, security, or performance suites; full release-finalization) without a concrete reason.
 
-Release-artifact rules and Release Finalization scope are defined in `AI_GUIDELINES.md`. Agents must not overwrite canonical `_releases` ZIP filenames. Test builds must be renamed immediately.
+Release-artifact rules, Release Finalization scope, and Release Presentation gating are defined in `AI_GUIDELINES.md` and `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 8. Agents must not overwrite canonical `_releases` ZIP filenames. Test builds must be renamed immediately. Do not build the final release ZIP before required Release Presentation data is approved and applied.
 
 Distinguish:
 
