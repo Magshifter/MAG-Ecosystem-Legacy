@@ -74,8 +74,8 @@ The current Global documentation tree in this repository is:
 | --- | --- |
 | `MAG_ECOSYSTEM.md` | This file. MAG Ecosystem identity, architecture, project relationships, documentation map, and high-level governance. |
 | `AI_GUIDELINES.md` | Global MAG development workflow and operational rules. |
-| `AI_AGENTS_RULES.md` | Rules and boundaries for AI coding agents and related development tools. |
-| `CURSOR_USAGE_ANALYTICS.md` | Canonical methodology for Cursor Models measurement, reporting, forecasting, and analytics. |
+| `AI_AGENTS_RULES.md` | Mandatory execution rules and boundaries for AI coding agents and related development tools, including Cursor procedure pre-flight and Plain text output requirements. |
+| `CURSOR_USAGE_ANALYTICS.md` | Authoritative Cursor procedure routing/pre-flight, model selection and escalation, usage optimization, Cursor Models Before/After tracking, reporting, forecasting, and analytics methodology. |
 
 These four files are **Global-only**. They exist only in `MAG-Ecosystem`. Individual MAG project repositories must **not** create copies, companions, or pointer files named `MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, or `CURSOR_USAGE_ANALYTICS.md`.
 
@@ -83,7 +83,7 @@ Projects inherit Global rules by reading this repository. Project-specific requi
 
 When a Global process rule changes, edit only `MAG-Ecosystem`. Do **not** synchronize that change into `#1`, `#2`, or later project repositories merely to mirror Global wording.
 
-`CURSOR_USAGE_ANALYTICS.md` is methodology only. It is not a measurement-history log. MAG Ecosystem process measurements belong in a separate MAG-Ecosystem history artifact when that artifact is later approved. Do not copy analytics rules into this file.
+`CURSOR_USAGE_ANALYTICS.md` is methodology and Cursor-workflow policy. It is not a measurement-history log. MAG Ecosystem process measurements belong in a separate MAG-Ecosystem history artifact when that artifact is later approved. Do not copy analytics rules or the model-selection matrix into this file.
 
 ### How MAG projects cite Global documents
 
@@ -160,7 +160,7 @@ Do not modify one MAG repository while the approved procedure is scoped to anoth
 
 | Source | Authority |
 | --- | --- |
-| Global documentation (`MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `CURSOR_USAGE_ANALYTICS.md`) | **How** MAG work is done: process, agents, Git checkpoints, analytics methodology, ecosystem conventions. |
+| Global documentation (`MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `CURSOR_USAGE_ANALYTICS.md`) | **How** MAG work is done: process, agents, Git checkpoints, Cursor pre-flight/model selection and usage methodology, ecosystem conventions. |
 | Project TZ | **What** that product must do. Functional requirements. Canonical file: `P<NN>__<CODE>__TZ.md`. |
 | Project Architecture | Approved implementation architecture for that product. Describes intended and verified structure; it does not override TZ. |
 | Project Roadmap | Approved sequencing and verified progress. Controls what may be implemented **now**. |
@@ -198,7 +198,7 @@ MAG work is incremental and stage-controlled:
 
 Do not start the next stage, the next MAG project, or a shared component because the current increment is complete.
 
-Detailed stage, review, and release procedures belong in `AI_GUIDELINES.md` and `AI_AGENTS_RULES.md`. Cursor measurement and forecasting methodology belongs in `CURSOR_USAGE_ANALYTICS.md`.
+Detailed stage, review, and release procedures belong in `AI_GUIDELINES.md` and `AI_AGENTS_RULES.md`. Cursor procedure routing/pre-flight, model selection, escalation, Cursor Models Before/After tracking, and forecasting methodology belong in `CURSOR_USAGE_ANALYTICS.md`.
 
 ## High-level responsibility model
 

@@ -6,9 +6,9 @@ It applies to ChatGPT, Cursor IDE, Cursor Agent, Codex, and any other AI-assiste
 
 Ecosystem identity, project registry, `#N` markers, Global vs Project documentation levels, AI context isolation, high-level documentation authority, project bootstrap, and the License Manager concept are defined in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). This file does not restate those definitions. Load **GLOBAL + the active `#N`** as specified there.
 
-Detailed coding-agent execution boundaries, checkpoint mechanics, and report formats belong in `AI_AGENTS_RULES.md`.
+Detailed coding-agent execution boundaries, mandatory Cursor pre-flight, Plain text output requirements, checkpoint mechanics, and report formats belong in `AI_AGENTS_RULES.md`.
 
-Cursor usage accounting methodology belongs in `CURSOR_USAGE_ANALYTICS.md`. Project measurement history belongs in the project repository. Do not duplicate that methodology here.
+Cursor procedure routing/pre-flight, model selection and escalation, usage optimization, Cursor Models Before/After tracking, reporting, and forecasting methodology belong in `CURSOR_USAGE_ANALYTICS.md`. Project measurement history belongs in the project repository. Do not duplicate that methodology or the model-selection matrix here.
 
 ---
 
@@ -46,7 +46,7 @@ Use the authority model in `MAG_ECOSYSTEM.md`. For implementation work, apply it
 | README / overview | Descriptive only. |
 | Idea | Non-authoritative research. |
 
-`AI_AGENTS_RULES.md` (when present) additionally constrains repository-task execution. If Global documents conflict, **stop and report** rather than silently choosing one.
+`AI_AGENTS_RULES.md` (when present) additionally constrains repository-task execution and states the mandatory Cursor pre-flight / Plain text execution requirements. Detailed Cursor routing and model-selection policy remains in `CURSOR_USAGE_ANALYTICS.md`. If Global documents conflict, **stop and report** rather than silently choosing one.
 
 AI must not invent XenForo APIs or rely on assumptions when installed XenForo source can be inspected.
 
@@ -568,7 +568,7 @@ When a production observation conflicts with documentation, inspect code and con
 
 Do not optimize development merely to reduce Cursor quota usage. Correctness, XenForo compatibility, security, maintainability, testing, and documentation remain higher priorities.
 
-When Cursor analytics apply, follow `CURSOR_USAGE_ANALYTICS.md`. Do not invent usage percentages.
+When Cursor analytics or Cursor procedure pre-flight apply, follow `CURSOR_USAGE_ANALYTICS.md` for routing, model selection, and usage tracking, and `AI_AGENTS_RULES.md` for mandatory execution/pre-flight requirements. Do not invent usage percentages.
 
 ---
 

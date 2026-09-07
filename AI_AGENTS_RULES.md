@@ -8,11 +8,67 @@ Coding agents are **implementation tools**. They do not own strategy, independen
 
 Which agent is used is a user/tooling choice. These rules do not change when a more capable agent is introduced. Tool capability does not grant permission to exceed the approved task.
 
-Cursor usage accounting and MAG Cursor report-field methodology belong in `CURSOR_USAGE_ANALYTICS.md`. Do not invent usage percentages here.
+Cursor usage accounting, Cursor chat/model pre-flight workflow, detailed model-selection matrix, escalation policy, and MAG Cursor report-field methodology belong in [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). Do not invent usage percentages here. Do not duplicate the complete model matrix in this file.
 
 ---
 
-## 1. Allowed tasks
+## 1. Mandatory Cursor pre-flight and Plain text output
+
+These rules are **mandatory prerequisites** for every Cursor-assisted procedure. They apply to Implementation, Debugging, Testing, Audit, Compatibility investigation, Documentation, Release finalization, Repository inspection, Refactoring, Cleanup, Rollback, and other Cursor-assisted work.
+
+### 1.1 Mandatory Cursor pre-flight
+
+Before **every** Cursor procedure prompt, ChatGPT must first specify:
+
+```text
+Cursor chat: <target Cursor Agent chat>
+Cursor model: <recommended model / mode>
+```
+
+The Cursor chat must correspond to the active project/repository/tool context. Respect **GLOBAL + active `#N`** isolation. Do not mix unrelated project Agent chats. Do not invent a canonical chat name when the real name is unknown or ambiguous — resolve it with the user first.
+
+The Cursor model must be selected according to task complexity, uncertainty, risk, and usage efficiency.
+
+Authoritative detail for routing, model-selection matrix, escalation, usage optimization, and Cursor Models Before/After tracking:
+
+[`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md)
+
+Required order before execution:
+
+1. Cursor chat  
+2. Cursor model  
+3. Cursor Models Before  
+4. Cursor procedure prompt in Plain text  
+5. Cursor execution  
+
+### 1.2 Plain text output — mandatory
+
+ChatGPT must provide Cursor prompts and copyable code/commands **exclusively in Plain text format**.
+
+This requirement applies to:
+
+- Cursor procedure prompts;
+- source code intended for copying;
+- PowerShell commands;
+- Git commands;
+- shell/terminal commands;
+- configuration snippets;
+- other technical content intended to be copied into Cursor, Terminal, source files, or development tools.
+
+Do **not** use for that content:
+
+- Writing Blocks;
+- rich editable blocks;
+- special interactive writing formats;
+- generated document/artifact containers for ordinary copyable prompts or code.
+
+Purpose: keep technical content directly copyable, predictable, compatible with MAG Workflow Bridge, free from UI-specific transformations, and suitable for deterministic transfer between ChatGPT, Cursor, Terminal, and other development tools.
+
+Normal Markdown formatting may still be used for explanatory conversation when the content is **not** intended for direct technical transfer. The Plain text rule does not prohibit ordinary explanatory formatting in that case.
+
+---
+
+## 2. Allowed tasks
 
 An AI coding agent may:
 
@@ -31,7 +87,7 @@ An AI coding agent may:
 
 ---
 
-## 2. Prohibited tasks
+## 3. Prohibited tasks
 
 An AI coding agent must not:
 
@@ -57,7 +113,7 @@ Before using an agent **outside** these permitted cases, explain the reason and 
 
 ---
 
-## 3. Required task definition
+## 4. Required task definition
 
 Before implementation, the task should be sufficiently defined, including where applicable:
 
@@ -73,7 +129,7 @@ If critical information is missing and cannot be determined safely from the repo
 
 ---
 
-## 4. Implementation workflow
+## 5. Implementation workflow
 
 For each task:
 
@@ -96,7 +152,7 @@ Do not modify a MAG repository that is outside the approved procedure scope.
 
 ---
 
-## 5. Scope and stable-code protection
+## 6. Scope and stable-code protection
 
 Use the smallest change that fully solves the defined task.
 
@@ -108,7 +164,7 @@ If a requested change creates a significant risk to a known stable state, identi
 
 ---
 
-## 6. Documentation during agent execution
+## 7. Documentation during agent execution
 
 An agent may read documentation required to implement the current task.
 
@@ -122,7 +178,7 @@ If implementation appears to require an architectural change, **stop** and repor
 
 ---
 
-## 7. XenForo inspection
+## 8. XenForo inspection
 
 Do not invent XenForo APIs or undocumented framework behavior.
 
@@ -134,7 +190,7 @@ If installed source is insufficient and external documentation research becomes 
 
 ---
 
-## 8. Validation
+## 9. Validation
 
 Validation effort must match the **actual change and risk**.
 
@@ -153,6 +209,8 @@ Distinguish:
 
 Do not claim a test passed, XenForo compatibility was verified, runtime behavior was proven from static inspection, or Git state was inspected, unless that is true.
 
+Selecting a cheaper Cursor model must not reduce these validation requirements.
+
 ### Redundant pre-commit review
 
 Do not perform a redundant pre-commit review when the immediately preceding finalization or implementation procedure has already provided sufficient verification and the remaining work only synchronizes approved documentation or other already-approved changes.
@@ -163,7 +221,7 @@ A new review is required only when the synchronization introduces unexpected cha
 
 ---
 
-## 9. User control and Git
+## 10. User control and Git
 
 Agents may inspect Git status and diffs when needed to understand or validate their own changes.
 
@@ -183,6 +241,8 @@ The user reviews, stages, commits, and publishes.
 Do not treat an incomplete manual step as completed.
 
 When a required operation is simple, deterministic, and better done by the user, provide the exact command or action instead of consuming the agent to perform it. Include where it should run, what success looks like, and what the user should return when verification is required.
+
+Ready-to-copy technical commands must be provided in **Plain text** per §1.2.
 
 Standard checkpoint:
 
@@ -204,7 +264,7 @@ When the approved task is a completed stage checkpoint, synchronize that project
 
 ---
 
-## 10. Stop and report
+## 11. Stop and report
 
 Stop **before** continuing when:
 
@@ -249,7 +309,7 @@ Incomplete?
 
 ---
 
-## 11. Procedure report
+## 12. Procedure report
 
 After completing a task, provide a concise report containing:
 
@@ -269,11 +329,11 @@ Classify discovered issues as:
 
 Do not `git commit` or `git push` unless explicitly requested.
 
-When Cursor analytics apply, follow `CURSOR_USAGE_ANALYTICS.md`.
+When Cursor analytics apply, follow `CURSOR_USAGE_ANALYTICS.md`, including Cursor chat/model pre-flight before Cursor Models Before/After.
 
 ---
 
-## 12. Context efficiency
+## 13. Context efficiency
 
 Use an agent only where it provides meaningful engineering value.
 
@@ -287,7 +347,7 @@ Keep simple manual operations manual.
 
 ---
 
-## 13. Core principle
+## 14. Core principle
 
 AI coding agents execute **defined** engineering work. They do not independently define the project.
 

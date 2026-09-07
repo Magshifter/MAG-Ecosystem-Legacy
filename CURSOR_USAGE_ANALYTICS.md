@@ -6,7 +6,7 @@ It is **methodology**, not a procedure-history log. Do not append project or pro
 
 Project identity (`#N`), Global vs Project documentation, and context isolation are defined in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). Broader development workflow and validation philosophy are in [`AI_GUIDELINES.md`](AI_GUIDELINES.md). Coding-agent execution, stop conditions, and the redundant pre-commit review rule are in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md).
 
-Historical measurements belong with the project (or Global process history) that produced them. See section 12. Do not mix those histories into this standard.
+Historical measurements belong with the project (or Global process history) that produced them. See section 13. Do not mix those histories into this standard.
 
 ---
 
@@ -29,7 +29,137 @@ A cheaper procedure that weakens those priorities is not an improvement.
 
 ---
 
-## 2. Two levels of analysis
+## 2. Mandatory Cursor procedure pre-flight (FIRST operational rules)
+
+Before **every** Cursor procedure, ChatGPT must complete Cursor chat routing and Cursor model selection **before** recording Cursor Models Before and **before** presenting or executing the Cursor procedure prompt.
+
+### 2.1 Required user-facing format
+
+The first two user-facing lines before every Cursor procedure must use this exact format:
+
+```text
+Cursor chat: <target Cursor Agent chat>
+Cursor model: <recommended model / mode>
+```
+
+Examples of format only (do not invent a chat name when the real name is unknown):
+
+```text
+Cursor chat: GLF Agent
+Cursor model: Grok 4.6 / Medium
+
+Cursor chat: Tag Synchronizer Agent
+Cursor model: Auto
+
+Cursor chat: MAG Ecosystem Agent
+Cursor model: Composer 2.5
+
+Cursor chat: MAG Workflow Bridge Agent
+Cursor model: Composer 2.5
+```
+
+### 2.2 Required operational sequence
+
+1. Select/specify the correct Cursor Agent chat.
+2. Select/recommend the Cursor model/mode.
+3. Record Cursor Models Before.
+4. Provide the Cursor procedure prompt in **Plain text**.
+5. Execute the Cursor procedure.
+6. Record Cursor Models After.
+7. Review the result.
+8. Record/synchronize usage history where required.
+9. Decide the next action.
+
+This sequence applies to **all** Cursor procedures, including Implementation, Debugging, Testing, Audit, Compatibility investigation, Documentation, Release finalization, Repository inspection, Refactoring, Cleanup, Rollback, and other Cursor-assisted work.
+
+### 2.3 Cursor chat routing
+
+Before every Cursor procedure, ChatGPT must identify the correct Cursor Agent chat for the active repository/project/tool context so unrelated project contexts are not mixed.
+
+The selected Cursor chat must correspond to the active work context.
+
+Respect MAG context isolation: **GLOBAL + active `#N`**.
+
+Do not route project-specific work through another project's Cursor Agent chat.
+
+Do not treat standalone tooling repositories as numbered MAG Ecosystem projects.
+
+Do **not** silently invent a canonical Cursor Agent chat name when the actual chat name has not been established. If the required chat name is unknown or ambiguous, resolve it with the user before instructing execution.
+
+### 2.4 Cursor model selection — core principle
+
+Before every Cursor procedure, ChatGPT must recommend the preferred Cursor model/mode.
+
+Required format:
+
+```text
+Cursor model: <model / mode>
+```
+
+Model selection must happen before the Cursor procedure prompt is presented or executed.
+
+Use the cheapest model/mode appropriate for the task, but escalate when complexity, uncertainty, or risk justifies it.
+
+Consider: task complexity; uncertainty; implementation risk; debugging difficulty; security impact; XenForo integration risk; regression risk; reasoning requirements; usage efficiency.
+
+**Core rule:** Model strength should scale with task complexity, uncertainty, and risk — not with habit.
+
+### 2.5 Model selection matrix
+
+**Auto** — default for ordinary implementation when a specific model is not required. Use for routine implementation, small fixes, rollback, documentation changes, cleanup, simple multi-file changes, and well-specified tasks. Prefer Auto when the prompt is precise, architecture is already decided, risk is low/moderate, and no special reasoning model is required.
+
+**Composer 2.5** — low-cost execution for very clear mechanical tasks: renames, cleanup, formatting, repetitive edits, simple documentation updates, known-pattern changes, narrow deterministic implementation. Do not default to it for ambiguous debugging, architecture decisions, security-sensitive code, uncertain XenForo behavior, or complex refactoring.
+
+**Grok 4.6 / Low** — small coding tasks when specific Grok execution is preferred over Auto: trivial edits, simple rollback, minor cleanup, tiny localized changes.
+
+**Grok 4.6 / Medium** — primary normal manual Grok coding mode: normal feature implementation, ordinary debugging, several related files, medium-complexity refactoring, implementation from already approved architecture. Default manual Grok level when manual Grok selection is appropriate.
+
+**Grok 4.6 / High** — when materially deeper reasoning is required: difficult bugs, multi-subsystem interactions, uncertain root cause, larger refactors, state/lifecycle problems, non-obvious XenForo integration, significant regression risk.
+
+**Grok 4.6 / Extra High** — use rarely: very difficult debugging, architecture-sensitive implementation, complex legacy behavior, multiple failed prior attempts, high-cost mistakes, deeply coupled code, exhaustive reasoning justified. Do not use for routine work.
+
+**GPT-5.6 Sol** — strong alternative/escalation: complex debugging, difficult code reasoning, large dependency analysis, weak/inconsistent Grok results, second high-quality implementation approach, high-risk code review.
+
+**Claude Opus** — strong alternative perspective: architecture review, code review, large-context reasoning, evaluating another model's implementation, alternative debugging analysis, second opinion on risky changes.
+
+### 2.6 Escalation policy
+
+Normal starting point:
+
+- Auto for ordinary well-specified work;
+- Composer 2.5 for cheap deterministic/mechanical work.
+
+Escalate to:
+
+- Grok 4.6 / Medium when manual model control or normal development reasoning is useful;
+- Grok 4.6 / High when complexity, uncertainty, or regression risk materially increases;
+- Grok 4.6 / Extra High only for genuinely exceptional/high-risk cases.
+
+Alternative escalation: GPT-5.6 Sol or Claude Opus when that family is likely to materially improve the result.
+
+Do **not** escalate merely because a stronger model exists.
+
+If a cheaper model produces repeated mistakes, unexplained edits, scope drift, weak reasoning, uncertain implementation, or failed validation, escalate to an appropriate stronger model instead of repeatedly spending requests on the same weak path.
+
+### 2.7 Validation independence
+
+Selecting a cheaper model must **not** reduce validation requirements. Correctness, security, XenForo compatibility, performance, scope control, maintainability, testing, validation quality, and documentation accuracy remain unchanged regardless of selected model.
+
+### 2.8 Model availability
+
+Keep this policy maintainable if Cursor's available models, modes, or names change. Do not invent unavailable model names or capabilities. The permanent governing principle remains: model strength scales with task complexity, uncertainty, and risk — not with habit.
+
+### 2.9 Plain text in the Cursor workflow
+
+The Cursor procedure prompt must be provided in **Plain text**. Detailed Plain text execution rules for ChatGPT (including prohibitions on Writing Blocks / rich editable blocks for copyable technical content) live in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md). This analytics document preserves the sequence in §2.2 without duplicating that full output policy.
+
+### 2.10 Usage tracking authority
+
+This file remains the authoritative source for Cursor Models Before/After methodology, visible deltas, history placement, and related usage rules. The chat/model pre-flight is added **before** the Before measurement. Never invent usage values. Do not reintroduce deprecated tracking fields this document intentionally excludes.
+
+---
+
+## 3. Two levels of analysis
 
 **Procedure-level measurement** records one meaningful Cursor procedure: Before, After, visible delta, classification, result, and issues. This is the primary telemetry.
 
@@ -39,7 +169,7 @@ Do not treat a single procedure’s visible delta as a full release cost.
 
 ---
 
-## 3. Measurement boundary
+## 4. Measurement boundary
 
 The tracked pool is **Cursor Models**.
 
@@ -63,7 +193,7 @@ Do **not** request, report, track, or store **Model requests made**, **Usage-cou
 
 ---
 
-## 4. Zero-visible-delta
+## 5. Zero-visible-delta
 
 If Before and After show the **same** displayed Cursor Models percentage, record:
 
@@ -75,7 +205,7 @@ Do **not** claim the procedure consumed literally zero tokens or compute. The UI
 
 ---
 
-## 5. Procedure classification
+## 6. Procedure classification
 
 Every meaningful procedure should have a type. Minimum set:
 
@@ -107,7 +237,7 @@ Where useful, also record project/release/stage classification (`#N`, add-on nam
 
 ---
 
-## 6. Procedure-level fields
+## 7. Procedure-level fields
 
 | Field | Intent |
 | --- | --- |
@@ -145,11 +275,13 @@ Record completed rows in **project (or Global process) history**, not in this fi
 
 ---
 
-## 7. Before / After workflow
+## 8. Before / After workflow
 
-For a meaningful Cursor procedure:
+For a meaningful Cursor procedure, complete §2 pre-flight first (**Cursor chat**, then **Cursor model**). Then:
 
 **Before** the work starts, obtain the current displayed Cursor Models percentage if a current measurement is not already available for that exact procedure. That is **Cursor Models Before**.
+
+Provide the Cursor procedure prompt in **Plain text**, then execute.
 
 **After** the procedure finishes, obtain the displayed percentage again. That is **Cursor Models After**.
 
@@ -163,7 +295,7 @@ If Before and After are both known, history must not retain a blank After or an 
 
 ---
 
-## 8. ChatGPT procedure report summary (§4A)
+## 9. ChatGPT procedure report summary (§4A)
 
 After every Cursor procedure/report, ChatGPT must give a very short human-readable summary. Do not repeat the full Cursor report.
 
@@ -184,7 +316,7 @@ Every ready-to-copy local repository command block must begin with `cd` to the *
 
 ---
 
-## 9. Efficiency, quota, and proportional validation
+## 10. Efficiency, quota, and proportional validation
 
 Each meaningful procedure should be classified when useful:
 
@@ -204,7 +336,8 @@ Quota optimization that is in scope here:
 - do not spend Cursor quota on redundant reviews;
 - reuse immediately preceding valid verification when it still applies;
 - separate meaningful procedures so cost can be compared;
-- prefer safe manual/user work where the agent adds little value.
+- prefer safe manual/user work where the agent adds little value;
+- choose the cheapest appropriate Cursor model/mode per §2, and escalate only when justified.
 
 Do not move work to the user when that materially increases correctness, security, compatibility, or release risk.
 
@@ -212,7 +345,7 @@ Release Finalization vs preceding audit, and the redundant pre-commit review rul
 
 ---
 
-## 10. Forecasting
+## 11. Forecasting
 
 Before a sufficiently defined future release or major stage:
 
@@ -235,7 +368,7 @@ Update forecasts as more MAG projects provide measured data. A recorded pre-impl
 
 ---
 
-## 11. Cross-project analytics
+## 12. Cross-project analytics
 
 Use the same fields and types so MAG can later compare `#1`, `#2`, `#3`, and Global process work (polish vs feature vs architecture, compatibility, debugging, audits, documentation, release finalization, bootstrap vs maintenance).
 
@@ -245,7 +378,7 @@ Do not copy another project’s procedure log into this Global standard.
 
 ---
 
-## 12. Where historical records live
+## 13. Where historical records live
 
 | Kind of record | Logical home (do not create new files solely from this section) |
 | --- | --- |
@@ -273,7 +406,7 @@ Stable-release ChatGPT Project synchronization must include that project's `docs
 
 ---
 
-## 13. Release-level summary template
+## 14. Release-level summary template
 
 At the end of a release (or equivalent Global process phase), summarize in **that project’s or process history**:
 
