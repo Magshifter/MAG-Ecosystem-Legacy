@@ -92,6 +92,8 @@ The mandatory Cursor procedure information and tracking sequence is:
 7. Record/synchronize usage history where required.
 8. Decide the next action.
 
+When the procedure itself updates a Cursor usage-history document that includes that procedure's own metrics, step 5 and the final After/delta values in step 7 follow the **Deferred Cursor Models After recording** workflow in §8.1 instead of being completed during the main procedure.
+
 All items remain mandatory. This sequence governs presentation order and what belongs inside vs outside the copyable prompt block.
 
 This sequence applies to **all** Cursor procedures, including Implementation, Debugging, Testing, Audit, Compatibility investigation, Documentation, Release finalization, Repository inspection, Refactoring, Cleanup, Rollback, and other Cursor-assisted work.
@@ -309,13 +311,54 @@ Then execute the procedure.
 
 **After** the procedure finishes, obtain the displayed percentage again. That is **Cursor Models After**.
 
-If After is missing from the Cursor report and the user has not supplied it, **request it before completing the procedure summary**. Do not invent it. Do not copy the previous procedure’s After unless the procedures are consecutive and no meaningful Cursor work occurred in between.
+When the procedure itself is responsible for writing its own usage-history entry, the main procedure records only verified **Cursor Models Before**. **Cursor Models After** and visible delta remain explicitly pending until the metric-finalization follow-up in §8.1. Do not treat that pending state as the final record.
+
+If After is missing from the Cursor report and the user has not supplied it, **request it before completing the procedure summary**. Do not invent it. Do not copy the previous procedure’s After unless the procedures are consecutive and no meaningful Cursor work occurred in between. Do not copy **Cursor Models Before** as a substitute for After.
 
 The After value of one procedure may become the Before value of the next **only** when they are consecutive and no meaningful Cursor work occurred between measurements.
 
 A procedure is not analytics-complete until After is recorded when the user can provide it.
 
-If Before and After are both known, history must not retain a blank After or an unresolved visible delta. If After is genuinely unknown, leave it unknown. Do not invent it.
+If Before and After are both known, history must not retain a blank After or an unresolved visible delta. If After is genuinely unknown and cannot be reliably obtained, preserve it as unavailable/unresolved according to §4 and §8.1. Do not invent it.
+
+### 8.1 Deferred Cursor Models After recording
+
+Use this workflow when a Cursor procedure updates a Cursor usage-history document that includes that procedure's own usage metrics.
+
+**Cursor Models After** is only known after the Cursor procedure has completed. The main procedure therefore cannot truthfully record its own final After value while performing the substantive work. This is a two-step completion workflow, not an ad hoc exception.
+
+1. The main Cursor procedure records the known **Cursor Models Before** value in the usage-history entry (and any other fields that do not depend on After).
+
+2. **Cursor Models After** and the resulting visible delta must not be guessed, predicted, inferred, or copied from **Cursor Models Before**.
+
+3. During the main procedure, **Cursor Models After** and visible delta remain explicitly **pending** or **unresolved**. This temporary state is expected and acceptable only until metric finalization.
+
+4. Cursor completes the main requested work and returns its normal procedure report.
+
+5. ChatGPT then requests the actual **Cursor Models After** value from the product owner.
+
+6. The product owner supplies the observed **Cursor Models After** value.
+
+7. ChatGPT calculates the visible delta from the verified Before and After values (After − Before, in percentage points).
+
+8. ChatGPT prepares a separate minimal Cursor follow-up prompt whose **only** purpose is to finalize the usage-history record with:
+   - the verified **Cursor Models After**;
+   - the calculated visible delta;
+   - any directly dependent usage-summary fields that must be synchronized because of those values.
+
+9. The follow-up must not reinterpret, rewrite, or change the substantive result of the completed main procedure.
+
+10. Usage-history synchronization for that procedure is **not** complete until this follow-up has recorded the verified After and visible delta (or preserved After as unavailable when it cannot be reliably obtained).
+
+11. A Git checkpoint/commit for a logical stage or documentation checkpoint that includes this usage-history update should occur only after the usage-history record has been finalized, unless the product owner explicitly decides otherwise.
+
+12. A pending/unresolved After value is acceptable only as the temporary state between the main procedure and the metric-finalization follow-up.
+
+13. If the actual **Cursor Models After** cannot be reliably obtained, preserve it as unavailable/unresolved according to the existing rules in this document. Never invent a value merely to close the record.
+
+14. If **Cursor Models After** equals **Cursor Models Before**, record **Visible delta: 0 percentage points**. This does not prove that the procedure consumed zero actual Cursor resources.
+
+15. The metric-finalization follow-up is part of the same logical Cursor procedure/accounting workflow. It must remain minimal and must not be treated as a new development or architecture task.
 
 ---
 
@@ -329,7 +372,7 @@ Use this sequence, and only this sequence:
 2. **Result** — what the completed procedure achieved.
 3. **Main tasks/issues solved.**
 4. **Discovered issues** — classify each as **Critical**, **Non-critical**, or **Informational**. If none, say so explicitly. Critical findings must change the immediate next action and must not be hidden behind a normal commit recommendation.
-5. **Commit** — if the tree is ready to commit and there are no unresolved Critical issues, give exact ready-to-copy git commands. Do not run `git add` / `git commit` / `git push`. If a Critical issue is unresolved, do not recommend the normal commit. Omit this item when no commit is appropriate.
+5. **Commit** — if the tree is ready to commit and there are no unresolved Critical issues, give exact ready-to-copy git commands. Do not run `git add` / `git commit` / `git push`. If a Critical issue is unresolved, do not recommend the normal commit. Omit this item when no commit is appropriate. When a completed procedure used §8.1 and its usage-history After/delta are still pending, do not recommend a Git checkpoint for that logical stage or documentation checkpoint until metric finalization is complete, unless the product owner explicitly decides otherwise.
 6. **Next step.**
 7. **Main tasks of that next step.**
 8. **Ask whether to prepare the next prompt.** Do not provide the next Cursor prompt until the user approves.
@@ -418,7 +461,11 @@ Existing `#1` analytics history remains in the `#1` repository until a later con
 
 ### History completeness
 
-Every meaningful completed Cursor procedure must be recorded in the appropriate project or process usage-history document when Before/After telemetry is known.
+Every meaningful completed Cursor procedure must be recorded in the appropriate project or process usage-history document.
+
+When Before/After telemetry is fully known at the end of the main procedure, record it in that procedure's history entry immediately.
+
+When §8.1 applies, the main procedure records verified Before and an explicitly pending After/delta; metric finalization completes the same logical procedure record. Analytics/history synchronization is not complete until After and visible delta are finalized or preserved as unavailable per §8.1.
 
 A user-supplied Cursor Models percentage is authoritative for that procedure when clearly identified.
 
