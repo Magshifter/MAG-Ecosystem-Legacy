@@ -8,7 +8,7 @@ Ecosystem identity, project registry, `#N` markers, Global vs Project documentat
 
 Detailed coding-agent execution boundaries, mandatory Cursor pre-flight, Plain text output requirements, checkpoint mechanics, and report formats belong in `AI_AGENTS_RULES.md`.
 
-Cursor procedure routing/pre-flight, model selection and escalation, usage optimization, Cursor Models Before/After tracking, reporting, and forecasting methodology belong in `CURSOR_USAGE_ANALYTICS.md`. Project measurement history belongs in the project repository. Do not duplicate that methodology or the model-selection matrix here.
+Cursor procedure routing/pre-flight, model selection and escalation, usage optimization, Cursor Models Before/After tracking (including automatic After telemetry consumption and failure handling), reporting, and forecasting methodology belong in `CURSOR_USAGE_ANALYTICS.md`. Project measurement history belongs in the project repository. Do not duplicate that methodology or the model-selection matrix here.
 
 ---
 
@@ -485,7 +485,7 @@ If a stage reveals unresolved **Critical** issues, the stage is not closed and p
 2. Review and explicitly approve the result where product-owner approval is required.
 3. Synchronize authoritative project documentation with the actual approved state.
 4. When relevant work may have produced reusable technical knowledge, evaluate it for `MAG_IMPLEMENTATION_PATTERNS.md` per §22.
-5. Synchronize Cursor usage history when the completed stage/phase included Cursor procedures. Follow [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md) §8.1. If any procedure in the stage still has pending **Cursor Models After** or visible delta, finalize them in this same stage-closing workflow or at the next substantive Cursor procedure in that stage. Do not invent values. Do not launch a standalone metric-finalization procedure.
+5. Synchronize Cursor usage history when the completed stage/phase included Cursor procedures. Follow [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md) §8. Prefer finalizing **Cursor Models After** from valid automatic MAG GPT|Cursor|Sync report telemetry without a Product Owner measurement step. If automatic After is missing/invalid, notify the Product Owner per that document’s telemetry-failure rule and preserve unavailable/pending metrics; do not invent or silently substitute values. Do not launch a standalone metric-finalization procedure.
 6. Review the resulting documentation/code diff and repository status.
 7. Resolve Critical issues before closure.
 8. Create a logical Git commit representing the completed stage/phase when the user requests or authorizes it.

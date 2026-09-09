@@ -75,7 +75,7 @@ The current Global documentation set comprises **six** authoritative files in th
 | `MAG_ECOSYSTEM.md` | This file. MAG Ecosystem identity, architecture, project relationships, documentation map, and high-level governance. |
 | `AI_GUIDELINES.md` | Global MAG development workflow and operational rules. |
 | `AI_AGENTS_RULES.md` | Mandatory execution rules and boundaries for AI coding agents and related development tools, including Cursor procedure pre-flight and Plain text output requirements. |
-| `CURSOR_USAGE_ANALYTICS.md` | Authoritative Cursor procedure routing/pre-flight, model selection and escalation, usage optimization, Cursor Models Before/After tracking, reporting, forecasting, and analytics methodology. |
+| `CURSOR_USAGE_ANALYTICS.md` | Authoritative Cursor procedure routing/pre-flight, model selection and escalation, usage optimization, Cursor Models Before/After tracking (including automatic After telemetry consumption and failure handling), reporting, forecasting, and analytics methodology. |
 | `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Canonical ordered lifecycle, stage gates, transitions, and documentation timing. References detailed operational rules in their owning Global documents. |
 | `MAG_IMPLEMENTATION_PATTERNS.md` | Global reusable technical knowledge base: verified XenForo/XFRM behavior, implementation patterns, compatibility lessons, failure modes, and related evidence-backed findings. Subordinate to Global process documents and active-project TZ, Roadmap, and Architecture. Does not define product requirements. |
 
