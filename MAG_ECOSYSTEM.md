@@ -1,5 +1,8 @@
 # MAG Ecosystem
 
+- MAG-Document-ID: `MAG_ECOSYSTEM.md`
+- MAG-Content-Updated: `2026-09-09T22:20:00+03:00`
+
 This document is the navigation and governance foundation for MAG add-on projects.
 
 It defines **how MAG projects relate to each other and how their documentation is organized**. It does not duplicate detailed development, agent, or analytics rules. Those belong in the Global documentation files listed below and in each project's own documentation.
@@ -34,7 +37,7 @@ Each MAG project also has a **short, stable project code** used in documentation
 | ID | Code | Product | Status | Git repository |
 | --- | --- | --- | --- | --- |
 | #1 | `P01__GLF` | [MAG] Global Links Favicons | Active / Stable 1.4.3 | `GlobalLinksFavicons` |
-| #2 | `P02__TS` | [MAG] Tag Synchronizer | Architecture Planning / Pre-Implementation | `TagSynchronizer` |
+| #2 | `P02__TS` | [MAG] Tag Synchronizer | Active / Stable 1.0.0 | `TagSynchronizer` |
 
 `#3` and later are assigned **sequentially when a project is approved**. Do not reserve unused numbers, invent products, or skip identifiers.
 
@@ -274,7 +277,7 @@ When a new MAG add-on is approved:
 6. Do not create copies or pointer files of Global process documents in the new project.
 7. Do not create shared components as part of bootstrap.
 
-`#2` [MAG] Tag Synchronizer is registered. Its Git repository exists. Status is **Architecture Planning / Pre-Implementation**. Technical decisions A1–A6 are defined; full Architecture approval remains pending and implementation is blocked. It inherits Global rules by reference. It must not contain local copies of Global documentation files from `MAG-Ecosystem`.
+`#2` [MAG] Tag Synchronizer is registered. Its Git repository exists. Status is **Active / Stable 1.0.0**. Stable Release 1.0.0 is released; Post-Release Verification is the next lifecycle stage and has not started. It inherits Global rules by reference. It must not contain local copies of Global documentation files from `MAG-Ecosystem`.
 
 ## Current MAG-Ecosystem repository contents
 

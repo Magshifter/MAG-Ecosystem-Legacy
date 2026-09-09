@@ -1,5 +1,8 @@
 # MAG Ecosystem — AI Coding Agent Rules
 
+- MAG-Document-ID: `AI_AGENTS_RULES.md`
+- MAG-Content-Updated: `2026-09-09T16:29:18+03:00`
+
 These rules define **how coding agents may execute** work in MAG repositories.
 
 They apply equally to Cursor Agent, Codex, and any future coding agent used on MAG work.

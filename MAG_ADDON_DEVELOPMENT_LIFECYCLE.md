@@ -1,5 +1,8 @@
 # MAG Add-on Development Lifecycle
 
+- MAG-Document-ID: `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
+- MAG-Content-Updated: `2026-09-09T16:29:18+03:00`
+
 This document defines the Global MAG lifecycle for developing and maintaining MAG XenForo add-ons.
 
 It defines the ordered development path from an initial idea through project approval, requirements, technical verification, architecture, implementation, validation, release, post-release verification, reusable-knowledge capture, and subsequent maintenance.

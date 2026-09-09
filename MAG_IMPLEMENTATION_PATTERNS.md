@@ -1,5 +1,8 @@
 # MAG Implementation Patterns
 
+- MAG-Document-ID: `MAG_IMPLEMENTATION_PATTERNS.md`
+- MAG-Content-Updated: `2026-09-08T00:11:06+03:00`
+
 Reusable, source-backed implementation knowledge for MAG development.
 
 This document is a Global knowledge base. It does not define product requirements and does not replace:

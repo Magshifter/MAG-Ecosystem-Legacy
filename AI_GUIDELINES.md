@@ -1,5 +1,8 @@
 # MAG Ecosystem — AI Development Guidelines
 
+- MAG-Document-ID: `AI_GUIDELINES.md`
+- MAG-Content-Updated: `2026-09-09T16:29:18+03:00`
+
 This document is the **Global MAG development standard**. It defines **how** MAG XenForo add-ons are developed with AI assistance.
 
 It applies to ChatGPT, Cursor IDE, Cursor Agent, Codex, and any other AI-assisted tool used on MAG work.

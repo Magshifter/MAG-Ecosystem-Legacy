@@ -1,5 +1,8 @@
 # MAG Ecosystem — Cursor Usage Analytics
 
+- MAG-Document-ID: `CURSOR_USAGE_ANALYTICS.md`
+- MAG-Content-Updated: `2026-09-09T16:29:18+03:00`
+
 This document is the reusable MAG standard for **measuring, reporting, comparing, and optimizing Cursor usage** across MAG projects.
 
 It is **methodology**, not a procedure-history log. Do not append project or procedure rows to this file.
