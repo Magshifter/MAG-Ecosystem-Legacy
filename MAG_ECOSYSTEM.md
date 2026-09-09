@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-09T22:20:00+03:00`
+- MAG-Content-Updated: `2026-09-09T23:23:05+03:00`
 
 This document is the navigation and governance foundation for MAG add-on projects.
 
@@ -69,9 +69,30 @@ Lives in that project's own Git repository. Describes that product only.
 
 Work on `#N` means **GLOBAL + that `#N`**. Documentation from other MAG projects is excluded unless a task specifically requires it (for example a real shared-component change).
 
+## Synchronization-managed document identity
+
+A synchronization-managed Markdown document has one canonical filename and exactly one visible metadata block immediately below its single H1 heading:
+
+- `MAG-Document-ID`: the exact canonical filename including `.md`.
+- `MAG-Content-Updated`: the latest established substantive document revision, in RFC 3339 format `YYYY-MM-DDTHH:mm:ss±HH:mm`.
+
+`MAG-Document-ID` identifies the same logical document across managed Local Git repositories, Google Drive, ChatGPT, and Cursor.
+
+`MAG-Content-Updated` changes when the document receives a substantive content change. It does **not** change merely because of synchronization, copying, upload/download, transport conversion, safe formatting normalization, filesystem timestamps, or Drive timestamps.
+
+This metadata supports identity, comparison, and conflict detection. It does not create or override substantive authority. Detailed synchronization scope, commands, comparison, conflict handling, approval, execution, verification, cleanup, reporting, and Git handoff boundaries are governed by `MAG_DOCUMENTATION_OPERATIONS.md`.
+
+Synchronization-managed status is explicit. The existence of a Markdown file alone does not register it or place it in SYNC scope, and metadata alone does not grant substantive authority.
+
+Global registration is represented by the authoritative Global documentation set below together with valid metadata and the applicable Local authoritative state. Stable project registration follows the approved project identity, canonical Local repository, applicable project documentation model and authority, valid metadata, and approved Git baseline.
+
+Before Git handoff, provisional registration may exist only inside the explicit Product Owner-approved controlled registration or adoption procedure that created it. Provisional documents are available for validation and review within that procedure but are not part of default SYNC discovery or the stable registered project documentation set.
+
+Document onboarding, adoption, counterpart creation, rename, retirement, and unregistered-file handling are governed by `MAG_DOCUMENTATION_OPERATIONS.md`.
+
 ## Global documentation set
 
-The current Global documentation set comprises **six** authoritative files in this repository:
+The current Global documentation set comprises **seven** authoritative files in this repository:
 
 | File | Role |
 | --- | --- |
@@ -81,8 +102,9 @@ The current Global documentation set comprises **six** authoritative files in th
 | `CURSOR_USAGE_ANALYTICS.md` | Authoritative Cursor procedure routing/pre-flight, model selection and escalation, usage optimization, Cursor Models Before/After tracking (including automatic After telemetry consumption and failure handling), reporting, forecasting, and analytics methodology. |
 | `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Canonical ordered lifecycle, stage gates, transitions, and documentation timing. References detailed operational rules in their owning Global documents. |
 | `MAG_IMPLEMENTATION_PATTERNS.md` | Global reusable technical knowledge base: verified XenForo/XFRM behavior, implementation patterns, compatibility lessons, failure modes, and related evidence-backed findings. Subordinate to Global process documents and active-project TZ, Roadmap, and Architecture. Does not define product requirements. |
+| `MAG_DOCUMENTATION_OPERATIONS.md` | Authoritative documentation synchronization protocol across managed Local Git repositories, Google Drive, ChatGPT, and Cursor. |
 
-These Global files exist only in `MAG-Ecosystem`. Individual MAG project repositories must **not** create copies, companions, or pointer files named `MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `CURSOR_USAGE_ANALYTICS.md`, `MAG_IMPLEMENTATION_PATTERNS.md`, or `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`.
+These Global files exist only in `MAG-Ecosystem`. Individual MAG project repositories must **not** create copies, companions, or pointer files named `MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `CURSOR_USAGE_ANALYTICS.md`, `MAG_IMPLEMENTATION_PATTERNS.md`, `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`, or `MAG_DOCUMENTATION_OPERATIONS.md`.
 
 Projects inherit Global rules by reading this repository. Project-specific requirements belong in that project's TZ, Roadmap, Architecture, CLASS_MAP, Changelog, and README (and optional research/overview files), using the canonical filenames defined below. Project-specific Cursor measurement history may be stored locally (for example `docs/P01__GLF__CURSOR_USAGE_HISTORY.md`).
 
@@ -122,7 +144,7 @@ Do not keep duplicate copies under the old unprefixed names after a controlled m
 
 This is the authoritative MAG convention for project-specific documentation filenames.
 
-1. Global-only files keep their existing unique filenames (`MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `CURSOR_USAGE_ANALYTICS.md`, `MAG_IMPLEMENTATION_PATTERNS.md`, `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`). Do **not** add a `GLOBAL__` prefix to them.
+1. Global-only files keep their existing unique filenames (`MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `CURSOR_USAGE_ANALYTICS.md`, `MAG_IMPLEMENTATION_PATTERNS.md`, `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`, `MAG_DOCUMENTATION_OPERATIONS.md`). Do **not** add a `GLOBAL__` prefix to them.
 2. Project-specific canonical documentation uses `P<NN>__<CODE>__<Document>.md`.
 3. `#N` remains the permanent logical project identifier.
 4. `P01`, `P02`, and later are the filename representation of `#1`, `#2`, and later. The prefix does not replace `#N`.
@@ -173,6 +195,7 @@ Each Global file has one primary authority. Do not duplicate its detailed rules 
 | `AI_AGENTS_RULES.md` | Coding-agent execution boundaries, mandatory Cursor pre-flight, checkpoints, and applicable report requirements. |
 | `CURSOR_USAGE_ANALYTICS.md` | Cursor procedure routing/pre-flight, model selection and escalation, usage tracking, reporting, forecasting, and analytics methodology. |
 | `MAG_IMPLEMENTATION_PATTERNS.md` | Reusable, source-backed technical knowledge base and its capture/maintenance procedure. Subordinate to Global process documents and active-project TZ, Roadmap, and Architecture. Not a source of product requirements or process rules. |
+| `MAG_DOCUMENTATION_OPERATIONS.md` | Documentation identity validation, synchronization scope and commands, comparison, conflict handling, approval, execution, verification, cleanup, reporting, and Git handoff boundaries. |
 | Project TZ | **What** that product must do. Functional requirements. Canonical file: `P<NN>__<CODE>__TZ.md`. |
 | Project Architecture | Approved implementation architecture for that product. Describes intended and verified structure; it does not override TZ. |
 | Project Roadmap | Approved sequencing and verified progress. Controls what may be implemented **now**. |
@@ -289,3 +312,4 @@ This Global documentation repository currently contains:
 - `CURSOR_USAGE_ANALYTICS.md`
 - `MAG_IMPLEMENTATION_PATTERNS.md`
 - `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
+- `MAG_DOCUMENTATION_OPERATIONS.md`
