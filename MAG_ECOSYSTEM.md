@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-10T16:38:25+00:00`
+- MAG-Content-Updated: `2026-09-10T16:59:32+00:00`
 
 This document is the navigation and governance foundation for MAG add-on projects.
 
@@ -146,12 +146,12 @@ Experimental / Evaluation documents are optional project-scoped working evidence
 
 Promotion follows documented evaluation, selection of findings for full or partial adoption, a scoped proposal for the owning Global documents, explicit Product Owner approval, and verified updates there. No automatic promotion follows PASS, PARTIAL PASS, registration, synchronization, or Git commit.
 
-The following existing documents are approved as **Experimental registered documents** for project `#2`, retained under their current canonical names and locations as an explicit naming/location exception:
+The following existing documents have stable registration as **Experimental registered documents** for project `#2`, retained under their current canonical names and locations as an explicit naming/location exception:
 
 - `MAG_PIPELINE_V2_EXPERIMENT.md` — canonical Local: `MAG-Ecosystem` repository root; Drive object: `<DRIVE-DOC:MAG_PIPELINE_V2_EXPERIMENT>`.
 - `MAG_PIPELINE_V2_EVALUATION.md` — canonical Local: `MAG-Ecosystem` repository root; Drive object: `<DRIVE-DOC:MAG_PIPELINE_V2_EVALUATION>`.
 
-Both retain the existing Drive folder `<DRIVE-FOLDER:MAG_PIPELINE_V2>`. Physical placement in the ecosystem repository or Drive does not place them in the seven-file Global authority set. They belong to `SYNC #2` or exact-filename scope, not `SYNC GLOBAL`. Do not create copies in TagSynchronizer or rename existing counterparts. This approved adoption is provisional within the controlled procedure until the scoped Git baseline establishes stable discovery; synchronization of these existing counterparts is explicitly included in this procedure. Detailed registration and validation rules remain in `MAG_DOCUMENTATION_OPERATIONS.md` §5.
+Both retain the existing Drive folder `<DRIVE-FOLDER:MAG_PIPELINE_V2>`. Physical placement in the ecosystem repository or Drive does not place them in the seven-file Global authority set. They belong to `SYNC #2` or exact-filename scope, not `SYNC GLOBAL`. Do not create copies in TagSynchronizer or rename existing counterparts. The approved Git baseline was established in `2e16465`, followed by the Evaluation pilot-activation record in `3c5f864`; both documents are now available for stable discovery in their registered project scope. Stable registration grants synchronization eligibility only, not substantive authority. Detailed registration and validation rules remain in `MAG_DOCUMENTATION_OPERATIONS.md` §5.
 
 ### Project documentation filenames
 

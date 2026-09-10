@@ -1,7 +1,7 @@
 # MAG Pipeline v2 Evaluation
 
 - MAG-Document-ID: `MAG_PIPELINE_V2_EVALUATION.md`
-- MAG-Content-Updated: `2026-09-10T16:50:24+00:00`
+- MAG-Content-Updated: `2026-09-10T16:59:32+00:00`
 
 Status: EXPERIMENTAL EVALUATION FRAMEWORK — NOT GLOBAL AUTHORITY
 
@@ -9,7 +9,7 @@ Status: EXPERIMENTAL EVALUATION FRAMEWORK — NOT GLOBAL AUTHORITY
 
 These are project-scoped working documents for `#2` ([MAG] Tag Synchronizer), not Global authority. They may evolve during the approved pilot. Registration and metadata establish identity/version tracking and synchronization eligibility only; they grant no substantive authority. They cannot override approved TZ, Architecture, Roadmap, or Global rules. Only expressly approved, bounded pilot procedural exceptions may apply within their recorded scope; no exception extends to another project or cycle.
 
-Promotion requires documented evaluation evidence, limitations and quality results; an explicit decision on each finding (adopt, revise/retest, or reject); exact proposed changes in the owning Global document; and Product Owner approval of that scope. PASS or PARTIAL PASS, synchronization, Git commit, or pilot activation alone never promotes a finding. Partial adoption promotes only approved findings after the owning Global documents are updated and verified. Remaining findings stay experimental; preserve evidence and decision history. The current approval formalizes experimental registration, not Global adoption.
+Per-finding disposition and the separate Global promotion gate are defined in §12. Pilot results, registration, synchronization, Git commit, and pilot activation do not grant Global authority. Preserve evidence and decision history for every finding.
 
 ## 1. Purpose
 
@@ -237,27 +237,40 @@ Pipeline v2 may be rated PASS when:
 
 Use when clear efficiency improvement exists but is below 30%, some v2 mechanisms work well while others create friction, evidence is too incomplete for a confident full PASS, or a quality/process weakness was found but can be isolated and corrected without rejecting the entire model.
 
-A PARTIAL PASS should identify exactly which v2 rules should be retained, revised, or retested.
+A PARTIAL PASS should identify the affected findings and record their individual dispositions under §12; the pilot result does not assign those dispositions automatically.
 
 ### FAIL
 
 Use when time savings are insignificant or negative, rework materially increases, Critical defects increase because of process compression, validation quality degrades, release/documentation state becomes unreliable, Product Owner control becomes weaker, or the process hides uncertainty rather than resolving it.
 
-## 12. Adoption decision
+## 12. Per-finding disposition and adoption decision
 
-A successful pilot does not automatically modify Global MAG documentation.
+Pilot PASS / PARTIAL PASS / FAIL describes the overall evaluation result. It is separate from the disposition of an individual finding. PASS or PARTIAL PASS does not automatically make any finding a `GLOBAL_CANDIDATE`.
 
-After PASS or PARTIAL PASS:
+### 12.1 Finding disposition
 
-1. identify which existing Global provisions would change;
-2. list exact conflicts;
-3. preserve historical project/process records;
-4. prepare a scoped Global adoption proposal;
-5. obtain Product Owner approval;
-6. update owning Global documents only after approval;
-7. remove or archive experimental status only after the authoritative replacement is complete.
+Assign exactly one of these four outcomes to each evaluated finding, supported by its evidence, limitations, quality impact, and Product Owner decision:
 
-Do not silently make Pipeline v2 authoritative.
+- `GLOBAL_CANDIDATE` — sufficient evidence exists to propose the finding for adoption into the appropriate owning Global document or documents. This classification itself grants no Global authority.
+- `KEEP_PROJECT_ONLY` — the finding is accepted for the approved `#2` scope but must not be promoted into Global MAG policy.
+- `CONTINUE_EXPERIMENT` — evidence remains insufficient, mixed, or incomplete; further testing is required within an explicitly approved experimental scope.
+- `REJECT` — the finding is not accepted for continued use as an approved practice. Preserve its historical evidence and decision record.
+
+Record a stable finding identifier, description, evidence and limitations, disposition, approved scope, decision date, and Product Owner decision. Further testing does not imply approval to expand the pilot or continue into another cycle. A later disposition change records its rationale and new evidence without overwriting the earlier decision.
+
+### 12.2 Separate Global promotion gate
+
+Only a `GLOBAL_CANDIDATE` may enter a separate scoped Global adoption proposal. Candidate status is a proposal qualification, not approval or authority. `KEEP_PROJECT_ONLY`, `CONTINUE_EXPERIMENT`, and `REJECT` must never trigger changes to Global authoritative documentation.
+
+For each proposed candidate:
+
+1. identify the exact finding, evidence, limitations, and quality results;
+2. specify the correct owning Global document or documents, exact proposed changes, and any conflicts;
+3. obtain explicit Product Owner approval of the scoped proposal;
+4. update only the approved owning Global documents;
+5. validate the changes, synchronize applicable canonical counterparts under `MAG_DOCUMENTATION_OPERATIONS.md`, and verify the resulting Git state under the applicable Git authorization.
+
+Partial adoption operates finding-by-finding only. Complete and verify the full gate before treating a finding as Global authority. Record the adoption result and references in its decision record; preserve rejected and non-promoted findings, evaluation evidence, and history. Do not remove experimental status from the whole document because one finding is adopted. This procedure defines the evaluation model and promotes no experimental finding.
 
 ## 13. Known experiment focus areas from #2
 
@@ -307,12 +320,19 @@ These observations motivate the pilot but are not themselves proof that Pipeline
 2.
 3.
 
-### Recommended decision
+### Per-finding disposition record
 
-- Adopt:
-- Revise and retest:
-- Reject:
-- Next pilot, if needed:
+Repeat for each finding, applying §12:
+
+- Finding ID and description:
+- Evidence, limitations, and quality impact:
+- Disposition: GLOBAL_CANDIDATE / KEEP_PROJECT_ONLY / CONTINUE_EXPERIMENT / REJECT
+- Approved project scope:
+- Decision rationale:
+- Next action or test, if authorized:
+- Global proposal / owning documents, for GLOBAL_CANDIDATE only:
+- Promotion-gate completion evidence, if separately approved and completed:
+- Prior decision references:
 
 ### Product Owner decision
 
