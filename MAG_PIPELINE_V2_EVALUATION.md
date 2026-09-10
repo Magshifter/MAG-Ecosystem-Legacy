@@ -1,7 +1,7 @@
 # MAG Pipeline v2 Evaluation
 
 - MAG-Document-ID: `MAG_PIPELINE_V2_EVALUATION.md`
-- MAG-Content-Updated: `2026-09-10T16:38:25+00:00`
+- MAG-Content-Updated: `2026-09-10T16:50:24+00:00`
 
 Status: EXPERIMENTAL EVALUATION FRAMEWORK — NOT GLOBAL AUTHORITY
 
@@ -27,17 +27,21 @@ Quality must not materially regress.
 
 ## 2. Pilot identity
 
-Record before the pilot begins:
+Active evaluated pilot (Product Owner approved activation):
 
-- Project:
-- Project marker:
-- Release / upgrade:
-- Pilot start boundary:
-- Pilot end boundary:
+- Project: `#2` — [MAG] Tag Synchronizer
+- Project marker: `P02__TS`
+- Release / upgrade: `1.1.0`
+- Pilot start boundary: development cycle `1.1.0` (Pipeline v2 active for this cycle)
+- Pilot end boundary: completion of development cycle `1.1.0`, or earlier Product Owner deactivation
 - Baseline chosen for comparison:
 - Date started:
-- Product Owner approval:
+- Product Owner approval: YES — Pipeline v2 activated for `#2` / `1.1.0` only
 - Initial Cursor Models value, if available:
+
+Evaluation target: the MAG Pipeline v2 experiment for the active pilot above, governed by `MAG_PIPELINE_V2_EXPERIMENT.md`.
+
+Evaluation status: **NOT COMPLETED**. Do not treat evaluation results as completed before the pilot lifecycle provides evidence. Do not invent efficiency values, Cursor usage values, or success claims.
 
 Do not invent missing values.
 
