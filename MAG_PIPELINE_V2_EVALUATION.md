@@ -1,7 +1,7 @@
 # MAG Pipeline v2 Evaluation
 
 - MAG-Document-ID: `MAG_PIPELINE_V2_EVALUATION.md`
-- MAG-Content-Updated: `2026-09-10T16:59:32+00:00`
+- MAG-Content-Updated: `2026-09-10T20:29:49+00:00`
 
 Status: EXPERIMENTAL EVALUATION FRAMEWORK — NOT GLOBAL AUTHORITY
 
@@ -162,9 +162,12 @@ Suggested fields:
 - number of substantive Cursor procedures;
 - high-cost procedures;
 - documentation-only procedures;
+- procedures avoided through verified native XenForo tooling;
 - procedures avoided through manual Product Owner action;
 - procedures avoided through ChatGPT reasoning;
 - repeated audits avoided through valid evidence reuse.
+
+For the native-tooling metric, record the approved operation, installed XenForo version, exact verified command, verification evidence, and the Cursor procedure it replaced. Count an avoided procedure only after the native operation and its required validation complete; a proposed route is not a measured saving. Record native-tooling cases once in this category even when the Product Owner runs the command, avoiding duplicate totals with manual-action savings. Use `unavailable` when evidence is insufficient; do not infer time, request, or quota savings from the procedure count.
 
 An unchanged displayed percentage means visible delta 0 pp only.
 
@@ -196,6 +199,7 @@ Examples:
 - validation repeated without new risk;
 - release field blocked by external dependency;
 - manual command significantly faster than agent procedure;
+- verified native XenForo tooling completed an approved operation without a separate Cursor procedure (record command and validation evidence);
 - coherent batching prevented multiple round trips.
 
 Keep entries brief and factual.
@@ -271,6 +275,20 @@ For each proposed candidate:
 5. validate the changes, synchronize applicable canonical counterparts under `MAG_DOCUMENTATION_OPERATIONS.md`, and verify the resulting Git state under the applicable Git authorization.
 
 Partial adoption operates finding-by-finding only. Complete and verify the full gate before treating a finding as Global authority. Record the adoption result and references in its decision record; preserve rejected and non-promoted findings, evaluation evidence, and history. Do not remove experimental status from the whole document because one finding is adopted. This procedure defines the evaluation model and promotes no experimental finding.
+
+### 12.3 XF AI-agent integration finding
+
+- Finding ID: `P02-PV2-XF-AI-001`.
+- Description: integration of official XenForo AI-agent guidance into the existing MAG-only, single-folder Cursor workspace.
+- Evidence: the preceding audit discussion in the “MAG Ecosystem” conversation (`6a8d3833-5ae4-83ed-a311-81a41b819dc4`) reported XenForo `2.3.12`, an available but uninstalled AI-agent package, and no verified clean external-reference bridge for the existing workspace. The reported audit conclusion was `NO CLEAN BRIDGE — DEFER XF AI INTEGRATION`.
+- Limitations: this records the prior audit conclusion, not a new source audit or proof that integration is impossible. External file references and parent-root guidance/skill discovery must not be treated as verified integration; a reference to `SKILL.md` alone does not establish skill registration. No measured efficiency or compatibility benefit is established by this finding.
+- Disposition: `CONTINUE_EXPERIMENT`.
+- Approved scope: experimental evidence and decision tracking for `#2` / `1.1.0` only.
+- Decision date: `2026-09-10`.
+- Product Owner decision: record this finding as `CONTINUE_EXPERIMENT`; keep XF AI-agent integration deferred while evaluating verified native-tooling routing independently.
+- Rationale and quality impact: evidence for a low-friction integration remains incomplete. Preserve targeted XenForo source verification and required validation without introducing unapproved workspace infrastructure.
+- Next action: no installation or integration test is authorized by this record. Any later test requires an explicitly approved bounded scope. Do not install XF AI-agent resources, change the workspace model, or create copies, symlinks, or reference bridges under this documentation change.
+- Prior decision reference: preserve the preceding deferred-integration audit conclusion above. This classification does not replace that history, complete the pilot evaluation, or propose Global promotion.
 
 ## 13. Known experiment focus areas from #2
 

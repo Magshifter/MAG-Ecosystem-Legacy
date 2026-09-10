@@ -1,7 +1,7 @@
 # MAG Pipeline v2 Experiment
 
 - MAG-Document-ID: `MAG_PIPELINE_V2_EXPERIMENT.md`
-- MAG-Content-Updated: `2026-09-10T16:59:32+00:00`
+- MAG-Content-Updated: `2026-09-10T20:29:49+00:00`
 
 Status: EXPERIMENTAL — NOT GLOBAL AUTHORITY
 
@@ -204,6 +204,20 @@ Pipeline v2 evaluates an optimized ChatGPT → Product Owner → Cursor workflow
 - provide immediate post-execution review and a progressive Ukrainian learning note per `AI_GUIDELINES.md` §24.3.
 
 This experiment measures whether reduced context duplication and clearer presentation improve AI/Cursor workflow efficiency without weakening engineering rigor or Product Owner control.
+
+### 7.2 XenForo Native Tooling First (experimental)
+
+For the active `#2` / `1.1.0` pilot only, use this routing order before assigning deterministic XenForo work to an AI coding agent:
+
+Verified native XenForo tooling → manual Product Owner action → ChatGPT reasoning → Cursor when repository-aware engineering execution is needed.
+
+These are suitability checks, not mandatory handoffs. First inspect the relevant existing implementation and reuse still-valid evidence under §6. Verify the exact native command, options, prerequisites, and effects against the installed XenForo version before selecting it. Command families such as `xf-make:*`, `xf-dev:*`, and `xf-addon:*` are candidates to check, not a claim that every command exists or is suitable.
+
+Prefer verified native tooling when it safely performs the approved deterministic operation, including standard scaffolding or applicable phrase/template, validation, add-on metadata, and release-preparation work. Do not ask Cursor to manually generate equivalent boilerplate when the verified native operation is sufficient. Use Cursor for the remaining project-specific logic, debugging, refactoring, or engineering work.
+
+Tool availability does not authorize execution. Preserve Existing-Code-First, approved scope and architecture, required validation, stage gates, and Product Owner control; mutating commands require applicable authorization. If suitability remains uncertain, resolve only that uncertainty through targeted installed-source inspection instead of a broad framework audit.
+
+Native CLI routing is independent of installing XenForo AI-agent resources. The deferred integration finding and its evidence limits are recorded in `MAG_PIPELINE_V2_EVALUATION.md` §12.3. This routing grants no approval to install resources, change the workspace model, or create an integration bridge.
 
 ## 8. Documentation strategy
 
