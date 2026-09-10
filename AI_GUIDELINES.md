@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Development Guidelines
 
 - MAG-Document-ID: `AI_GUIDELINES.md`
-- MAG-Content-Updated: `2026-09-09T16:29:18+03:00`
+- MAG-Content-Updated: `2026-09-10T19:20:00+03:00`
 
 This document is the **Global MAG development standard**. It defines **how** MAG XenForo add-ons are developed with AI assistance.
 
@@ -11,7 +11,9 @@ Ecosystem identity, project registry, `#N` markers, Global vs Project documentat
 
 Detailed coding-agent execution boundaries, mandatory Cursor pre-flight, Plain text output requirements, checkpoint mechanics, and report formats belong in `AI_AGENTS_RULES.md`.
 
-Cursor procedure routing/pre-flight, model selection and escalation, usage optimization, Cursor Models Before/After tracking (including automatic After telemetry consumption and failure handling), reporting, and forecasting methodology belong in `CURSOR_USAGE_ANALYTICS.md`. Project measurement history belongs in the project repository. Do not duplicate that methodology or the model-selection matrix here.
+ChatGPT → Product Owner → Cursor prompt presentation and post-execution review belong in §24 of this document.
+
+Cursor model selection, usage metrics, Cursor Models Before/After methodology (including automatic After telemetry consumption and failure handling), post-execution usage-value display, history recording, and forecasting methodology belong in `CURSOR_USAGE_ANALYTICS.md`. Project measurement history belongs in the project repository. Do not duplicate that methodology or the model-selection matrix here.
 
 ---
 
@@ -54,7 +56,7 @@ Use the authority model in `MAG_ECOSYSTEM.md`. For implementation work, apply it
 | README / overview | Descriptive only. |
 | Idea | Non-authoritative research. |
 
-`AI_AGENTS_RULES.md` (when present) additionally constrains repository-task execution and states the mandatory Cursor pre-flight / Plain text execution requirements. Detailed Cursor routing and model-selection policy remains in `CURSOR_USAGE_ANALYTICS.md`. If Global documents conflict, **stop and report** rather than silently choosing one.
+`AI_AGENTS_RULES.md` (when present) additionally constrains repository-task execution and states mandatory Cursor pre-flight and Plain text execution requirements. Cursor prompt presentation and post-execution review remain in §24 of this document. Cursor model selection and usage metrics remain in `CURSOR_USAGE_ANALYTICS.md`. If Global documents conflict, **stop and report** rather than silently choosing one.
 
 AI must not invent XenForo APIs or rely on assumptions when installed XenForo source can be inspected.
 
@@ -654,11 +656,50 @@ When a production observation conflicts with documentation, inspect code and con
 
 Do not optimize development merely to reduce Cursor quota usage. Correctness, XenForo compatibility, security, maintainability, testing, and documentation remain higher priorities.
 
-When Cursor analytics or Cursor procedure presentation/pre-flight apply, follow `CURSOR_USAGE_ANALYTICS.md` for copyable-prompt presentation, routing, model selection, and usage tracking, and `AI_AGENTS_RULES.md` for mandatory execution/pre-flight requirements. Do not invent usage percentages.
+When Cursor analytics or Cursor procedure presentation apply, follow §24 of this document for presentation and post-execution review, `CURSOR_USAGE_ANALYTICS.md` for model selection and usage metrics, and `AI_AGENTS_RULES.md` for mandatory execution and Plain text requirements. Do not invent usage percentages.
 
 ---
 
-## 24. Final principle
+## 24. Cursor prompt presentation and post-execution review
+
+This section is the Global authority for ChatGPT → Product Owner → Cursor presentation and post-execution review.
+
+Cursor usage metrics, measurement procedure, and post-execution usage-value display belong in [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). Coding-agent Plain text execution requirements remain in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md). Progressive Product Owner technical-lead learning as a permanent MAG development principle is recorded in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md).
+
+### 24.1 When to present a Cursor prompt
+
+Provide a prepared Cursor prompt only after the Product Owner has approved receiving it for that procedure.
+
+### 24.2 Cursor prompt presentation order
+
+Present information in this order:
+
+1. **Cursor prompt** — first. A dedicated plain-text code block containing only the exact text intended for paste into Cursor. Do not place explanations or execution metadata before it. Keep the prompt concise and task-specific; reference applicable authoritative MAG rules instead of duplicating them unnecessarily.
+2. **Ціль/задача** — maximally concise, informative Ukrainian description of the procedure's purpose and expected result.
+3. **Cursor chat** — exact target chat. Never invent an unknown Cursor chat; resolve ambiguity with the Product Owner first.
+4. **Cursor model** — recommended model/mode per [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md) §2.5.
+
+Do not place explanations, Cursor usage values, or other execution metadata before the copyable prompt block.
+
+Do not require **Cursor Models Before** in the user-facing prompt presentation block. Before remains part of analytics methodology in `CURSOR_USAGE_ANALYTICS.md` when applicable.
+
+### 24.3 Post-execution review
+
+After a meaningful Cursor procedure, ChatGPT must immediately provide:
+
+1. **Analysis** — whether the completed work met the approved task.
+2. **Confirmed result** — what succeeded.
+3. **Problems** — **Critical**, **Non-critical**, and **Unresolved** issues as applicable. If none, state that explicitly.
+4. **Recommended next step / Stage** — one concrete recommendation. This does not authorize execution; Product Owner control remains required.
+5. **Learning note** — a short Ukrainian note explaining what the Product Owner should understand from this stage as the person leading the development process.
+
+Learning notes must be practical, stage-specific, concise, non-repetitive, and progressively deeper as Product Owner experience grows.
+
+Present applicable Cursor usage values separately, per `CURSOR_USAGE_ANALYTICS.md`, without commentary or interpretation in the usage-values block.
+
+---
+
+## 25. Final principle
 
 AI-assisted MAG development must remain:
 

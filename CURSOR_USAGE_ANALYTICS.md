@@ -1,13 +1,13 @@
 # MAG Ecosystem — Cursor Usage Analytics
 
 - MAG-Document-ID: `CURSOR_USAGE_ANALYTICS.md`
-- MAG-Content-Updated: `2026-09-09T16:29:18+03:00`
+- MAG-Content-Updated: `2026-09-10T19:20:00+03:00`
 
 This document is the reusable MAG standard for **measuring, reporting, comparing, and optimizing Cursor usage** across MAG projects.
 
 It is **methodology**, not a procedure-history log. Do not append project or procedure rows to this file.
 
-Project identity (`#N`), Global vs Project documentation, context isolation, and the Global documentation authority map are defined in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). Broader development workflow and validation philosophy are in [`AI_GUIDELINES.md`](AI_GUIDELINES.md). Coding-agent execution, stop conditions, and the redundant pre-commit review rule are in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md).
+Project identity (`#N`), Global vs Project documentation, context isolation, and the Global documentation authority map are defined in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). ChatGPT → Product Owner → Cursor prompt presentation, post-execution review, and broader development workflow are in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24 and related sections. Coding-agent execution, stop conditions, and the redundant pre-commit review rule are in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md).
 
 Lifecycle timing is defined in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md); this document remains authoritative for Cursor measurement, Cursor Models Before/After methodology, automatic After telemetry consumption, visible-delta calculation, reporting, and metric finalization. Reusable technical knowledge and its capture procedure belong in [`MAG_IMPLEMENTATION_PATTERNS.md`](MAG_IMPLEMENTATION_PATTERNS.md).
 
@@ -36,27 +36,29 @@ A cheaper procedure that weakens those priorities is not an improvement.
 
 ## 2. Mandatory Cursor procedure pre-flight (FIRST operational rules)
 
-Before **every** Cursor procedure, ChatGPT must complete Cursor chat routing and Cursor model selection **before** recording Cursor Models Before and **before** presenting or executing the Cursor procedure prompt.
+Before **every** Cursor procedure, ChatGPT must complete Cursor chat routing and Cursor model selection, establish **Cursor Models Before** when applicable for analytics/history, and present the procedure only after Product Owner approval to receive the prepared prompt.
+
+Presentation order and post-execution review belong in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24. This section owns usage metrics and measurement procedure only.
 
 ### 2.1 Cursor procedure prompt presentation
 
-When ChatGPT provides a Cursor procedure to the product owner, separate **copyable Cursor execution text** from **user-facing execution guidance**.
+When ChatGPT provides a Cursor procedure to the Product Owner, follow [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24.2.
 
-The **copyable prompt block** must contain **only** the exact text intended to be pasted into Cursor.
+The **copyable prompt block** must appear **first** and contain **only** the exact text intended to be pasted into Cursor.
+
+Do **not** place explanations, execution metadata, or Cursor usage values before the copyable prompt block.
 
 Do **not** place user-facing procedure metadata or instructions inside the copyable Cursor prompt unless Cursor itself needs that information for the procedure.
 
-The following user-facing information must be placed **after** the copyable prompt block:
+After the copyable prompt block, present in order:
 
-- Cursor chat;
-- recommended Cursor model;
-- Cursor Models Before instruction/value when Before still needs Product Owner observation;
-- instructions about what the user must return after execution (substantive Cursor report / result);
-- any other execution guidance intended for the product owner rather than Cursor.
+- **Ціль/задача** — per `AI_GUIDELINES.md` §24.2;
+- **Cursor chat**;
+- **Cursor model**.
+
+Do **not** include **Cursor Models Before** in the user-facing prompt presentation block. Before remains part of analytics methodology and history recording when applicable.
 
 Do **not** routinely instruct the Product Owner to read or report **Cursor Models After**. When MAG GPT|Cursor|Sync appends a valid automatic After line to the returned Cursor report, ChatGPT consumes it per §8 without Product Owner interaction.
-
-This rule changes presentation/order only. It does **not** remove mandatory pre-flight information or Cursor usage tracking.
 
 Plain text requirements for copyable technical content remain in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md).
 
@@ -89,18 +91,18 @@ Cursor model: Composer 2.5
 
 The mandatory Cursor procedure information and tracking sequence is:
 
-1. Provide the Cursor procedure prompt in **Plain text** as a copyable block containing only paste-into-Cursor content.
-2. Present user-facing execution guidance **after** that block, including Cursor chat routing and Cursor model selection.
-3. Record Cursor Models Before.
-4. Execute the Cursor procedure.
-5. Consume **Cursor Models After** from automatic report telemetry when present and valid (§8); otherwise apply the telemetry-failure rule.
-6. Review the substantive result (telemetry handling remains background when successful).
-7. Record/synchronize usage history where required.
-8. Decide the next action.
+1. Obtain Product Owner approval to receive the prepared prompt.
+2. Provide the Cursor procedure prompt in **Plain text** as the first copyable block containing only paste-into-Cursor content.
+3. Present **Ціль/задача**, **Cursor chat**, and **Cursor model** after that block per `AI_GUIDELINES.md` §24.2.
+4. Establish **Cursor Models Before** for analytics/history when applicable. Do not present Before in the user-facing prompt presentation block.
+5. Execute the Cursor procedure.
+6. Consume **Cursor Models After** from automatic report telemetry when present and valid (§8); otherwise apply the telemetry-failure rule.
+7. Display applicable Cursor usage values per §9.1 without commentary or interpretation.
+8. Provide post-execution review per `AI_GUIDELINES.md` §24.3.
+9. Record/synchronize usage history where required.
+10. Decide the next action.
 
 When a procedure writes its own usage-history entry before After is known, finalize After from the automatic report line as soon as that report is returned to ChatGPT. Do not launch a separate Cursor procedure solely to write After/delta, and do not ask the Product Owner to measure After when a valid automatic value was supplied.
-
-This sequence governs presentation order and what belongs inside vs outside the copyable prompt block.
 
 This sequence applies to **all** Cursor procedures, including Implementation, Debugging, Testing, Audit, Compatibility investigation, Documentation, Release finalization, Repository inspection, Refactoring, Cleanup, Rollback, and other Cursor-assisted work.
 
@@ -187,7 +189,7 @@ The Cursor procedure prompt must be provided in **Plain text** inside the copyab
 
 ### 2.11 Usage tracking authority
 
-This file remains the authoritative source for Cursor Models Before/After methodology, automatic After telemetry consumption and failure handling, visible deltas, history placement, and related usage rules. The copyable prompt presentation rule in §2.1 and the operational sequence in §2.3 govern what belongs inside vs outside the copyable block. Never invent usage values. Do not reintroduce deprecated tracking fields this document intentionally excludes.
+This file remains the authoritative source for Cursor Models Before/After methodology, automatic After telemetry consumption and failure handling, visible deltas, post-execution usage-value display, history placement, and related usage rules. Prompt presentation and post-execution review belong in `AI_GUIDELINES.md` §24. Never invent usage values. Do not reintroduce deprecated tracking fields this document intentionally excludes, including request-count metrics.
 
 ---
 
@@ -328,7 +330,7 @@ Record completed rows in **project (or Global process) history**, not in this fi
 
 For a meaningful Cursor procedure, complete the presentation and tracking sequence in §2.3.
 
-Provide the copyable Cursor procedure prompt in **Plain text** first. Present user-facing Cursor chat/model guidance and Cursor Models Before instructions **after** that copyable block unless the user has already recorded Before for that exact procedure.
+Provide the copyable Cursor procedure prompt in **Plain text** first per `AI_GUIDELINES.md` §24.2. Present **Ціль/задача**, **Cursor chat**, and **Cursor model** after that block. Establish **Cursor Models Before** for analytics/history when applicable, but do not include Before in the user-facing presentation block.
 
 Then execute the procedure.
 
@@ -392,23 +394,37 @@ A procedure's history row is not analytics-complete until After and visible delt
 
 ---
 
-## 9. ChatGPT procedure report summary (§4A)
+## 9. Post-execution usage display and review boundary
 
-After every Cursor procedure/report, ChatGPT must give a very short human-readable summary. Do not repeat the full Cursor report.
+Post-execution review belongs in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24.3. This section owns only Cursor usage presentation after execution.
 
-Use this sequence, and only this sequence:
+### 9.1 Post-execution Cursor usage display
 
-1. **Result** — what the completed procedure achieved. Process automatic Cursor Models After / visible-delta finalization in the background per §8 when a valid automatic line is present; do not lead with or call attention to successful telemetry. If automatic After is missing/invalid, state that telemetry failure briefly per §8.0.1, then continue. When a fixed release baseline exists and After is known, cumulative release usage may be retained in analytics/history without Product Owner-facing emphasis.
-2. **Main tasks/issues solved.**
-3. **Discovered issues** — classify each as **Critical**, **Non-critical**, or **Informational**. If none, say so explicitly. Critical findings must change the immediate next action and must not be hidden behind a normal commit recommendation.
-4. **Commit** — if the tree is ready to commit and there are no unresolved Critical issues, give exact ready-to-copy git commands. Do not run `git add` / `git commit` / `git push`. If a Critical issue is unresolved, do not recommend the normal commit. Omit this item when no commit is appropriate.
-5. **Next step.**
-6. **Main tasks of that next step.**
-7. **Ask whether to prepare the next prompt.** Do not provide the next Cursor prompt until the user approves.
+After a meaningful Cursor procedure, display the applicable Cursor usage values only, without commentary or interpretation.
+
+Use this format when values are known:
+
+```text
+Cursor Models Before: <value or unavailable/pending>
+Cursor Models After: <value or unavailable/pending>
+Visible delta: <p.p. or unavailable/pending>
+```
+
+Include **Cumulative release usage** only when a fixed release baseline exists and the value is known.
+
+Process automatic **Cursor Models After** / visible-delta finalization in the background per §8 when a valid automatic line is present. Do not lead with or call attention to successful telemetry in the usage-values block.
+
+If automatic After is missing/invalid, show **unavailable/pending** for After and visible delta per §8.0.1. State telemetry failure in the post-execution review per `AI_GUIDELINES.md` §24.3, not in the usage-values block.
 
 Do not invent percentages. Do not mention Model requests made, Usage-counted requests, or Agent/tool-call counts.
 
-The withdrawn three-item summary (Obtained / Why it matters / Next) must not be used.
+### 9.2 Review and commit guidance boundary
+
+Follow `AI_GUIDELINES.md` §24.3 for analysis, confirmed result, **Critical** / **Non-critical** / **Unresolved** problems, recommended next step / Stage, and the Ukrainian learning note.
+
+When the tree is ready to commit and there are no unresolved Critical issues, commit guidance may be included in the review. Do not run `git add` / `git commit` / `git push` unless explicitly authorized. If a Critical issue is unresolved, do not recommend the normal commit.
+
+Do not provide the next Cursor prompt until the Product Owner approves receiving it.
 
 Every ready-to-copy local repository command block must begin with `cd` to the **canonical repository directory** for that work (`MAG-Ecosystem` or the active `#N` clone path in `MAG_ECOSYSTEM.md`).
 

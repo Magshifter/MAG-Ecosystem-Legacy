@@ -1,7 +1,7 @@
 # MAG Add-on Development Lifecycle
 
 - MAG-Document-ID: `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
-- MAG-Content-Updated: `2026-09-09T16:29:18+03:00`
+- MAG-Content-Updated: `2026-09-10T19:20:00+03:00`
 
 This document defines the Global MAG lifecycle for developing and maintaining MAG XenForo add-ons.
 
@@ -33,7 +33,7 @@ Project identity and documentation authority remain in MAG_ECOSYSTEM.md.
 
 The lifecycle applies to GLOBAL + the active #N. Project document authority, identity, naming, and context isolation remain defined in [MAG_ECOSYSTEM.md](MAG_ECOSYSTEM.md).
 
-Lifecycle transitions do not enlarge an agent's authorized scope. Apply [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) to execution in every phase, including research, documentation, and release work. Apply [CURSOR_USAGE_ANALYTICS.md](CURSOR_USAGE_ANALYTICS.md) whenever a phase uses Cursor; this document does not define telemetry fields, model selection, automatic After consumption, or report formats.
+Lifecycle transitions do not enlarge an agent's authorized scope. Apply [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) to execution in every phase, including research, documentation, and release work. Apply [AI_GUIDELINES.md](AI_GUIDELINES.md) §24 whenever a phase uses Cursor for prompt presentation and post-execution review. Apply [CURSOR_USAGE_ANALYTICS.md](CURSOR_USAGE_ANALYTICS.md) whenever a phase uses Cursor for usage metrics and measurement; this document does not define telemetry fields, model selection, automatic After consumption, or usage-value display formats.
 
 The Global documentation map in MAG_ECOSYSTEM.md includes this lifecycle and MAG_IMPLEMENTATION_PATTERNS.md. Keep that map synchronized when an approved Global document or authority boundary changes.
 
@@ -87,6 +87,7 @@ The lifecycle follows these principles:
 10. Reusable technical knowledge is captured only when justified.
 11. Stable releases become the baseline for subsequent development.
 12. The Product Owner controls approval gates, implementation authorization, Git checkpoints, and releases.
+13. Product Owner technical-lead learning develops progressively through practical, stage-specific learning after meaningful Cursor procedures. ChatGPT provides concise Ukrainian learning notes as part of post-execution review per [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24.3. Learning notes deepen progressively as Product Owner experience grows. They do not authorize execution and do not replace requirements, architecture, or validation authority.
 
 A smaller project may pass through some phases quickly.
 

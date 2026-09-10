@@ -2,6 +2,8 @@
 
 Status: EXPERIMENTAL — NOT GLOBAL AUTHORITY
 
+Active approved pilot: `#2` — [MAG] Tag Synchronizer / `1.1.0` — ACTIVE
+
 ## 1. Purpose
 
 MAG Pipeline v2 is a controlled process experiment intended to reduce total elapsed development time and procedural friction without reducing correctness, security, XenForo/XFRM compatibility, maintainability, validation quality, documentation accuracy, or Product Owner control.
@@ -26,6 +28,29 @@ Pipeline v2 may be activated only when the Product Owner explicitly identifies:
 - that Pipeline v2 is active for that boundary.
 
 While active, Pipeline v2 temporarily replaces only the procedural mechanics explicitly covered by this document.
+
+### 2.1 Product Owner pilot activation record
+
+Product Owner approval has been given to activate the Pipeline v2 experiment for the following pilot only:
+
+| Field | Value |
+| --- | --- |
+| Pilot project | `#2` — [MAG] Tag Synchronizer |
+| Project marker | `P02__TS` |
+| Approved development cycle | `1.1.0` |
+| Pipeline v2 status for this cycle | ACTIVE |
+| Governing experiment document | `MAG_PIPELINE_V2_EXPERIMENT.md` |
+| Evaluation document | `MAG_PIPELINE_V2_EVALUATION.md` |
+
+Activation limits and authority boundaries:
+
+- activation is limited to `#2` / `1.1.0`;
+- Pipeline v2 remains experimental;
+- this activation does **not** make Pipeline v2 the default MAG lifecycle;
+- `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` remains the canonical Global lifecycle authority outside this approved pilot’s procedural substitutions;
+- this activation does **not** authorize Pipeline v2 for any other MAG project or version;
+- this activation does **not** authorize implementation automatically;
+- broader adoption requires a separate Product Owner decision after evaluation under `MAG_PIPELINE_V2_EVALUATION.md`.
 
 The following Global principles remain mandatory:
 
@@ -154,6 +179,23 @@ inspect relevant code
 
 rather than splitting that sequence into multiple procedures without a risk-based reason.
 
+### 7.1 Optimized prompt and context workflow (experimental)
+
+**Classification:** experimental Pipeline v2 practice only. Authoritative prompt presentation and post-execution review remain in `MAG-Ecosystem` / `AI_GUIDELINES.md` §24. Authoritative Cursor usage metrics remain in `MAG-Ecosystem` / `CURSOR_USAGE_ANALYTICS.md`.
+
+Pipeline v2 evaluates an optimized ChatGPT → Product Owner → Cursor workflow intended to reduce duplicated context and unnecessary round trips:
+
+- present the copyable Cursor prompt first, after Product Owner approval to receive it;
+- keep prompts concise and task-specific;
+- reference applicable authoritative MAG rules instead of duplicating them in the prompt;
+- provide a concise Ukrainian **Ціль/задача** after the prompt;
+- route through the correct **Cursor chat** and **Cursor model** without inventing unknown chats;
+- avoid requiring **Cursor Models Before** in the user-facing presentation block;
+- display applicable Cursor usage values after execution without commentary;
+- provide immediate post-execution review and a progressive Ukrainian learning note per `AI_GUIDELINES.md` §24.3.
+
+This experiment measures whether reduced context duplication and clearer presentation improve AI/Cursor workflow efficiency without weakening engineering rigor or Product Owner control.
+
 ## 8. Documentation strategy
 
 Documentation is synchronized by ownership and boundary, not by habit.
@@ -266,6 +308,8 @@ Pipeline v2 retains these experimental operational goals (aligned with current G
 **Historical experimental note (superseded for current Global workflow):** an earlier Pipeline v2 draft proposed stage-local “last known displayed value” substitution when After was pending. Current Global methodology **does not** authorize silent last-known substitution for failed/missing automatic After. That earlier proposal remains a historical experiment idea only.
 
 **Historical observation from `#2` pilot baseline:** prior workflow sometimes required additional Product Owner-facing metric handling. That observation motivated Pipeline v2 friction reduction but is not proof that manual After reporting remains the normal current workflow.
+
+**Experimental documentation-work observation only (not an official `CURSOR_USAGE_ANALYTICS.md` metric):** during early Pipeline v2 documentation-work evaluation, **Other Models** usage was observed as `0% → 32%` (**Δ +32 p.p.**). This observation is experimental context for evaluating AI/Cursor allocation during documentation procedures. It is **not** part of the tracked **Cursor Models** pool, must not be recorded as a Global analytics field, and must not be promoted into authoritative Cursor methodology without separate Product Owner approval.
 
 ## 14. Round-trip reduction rule
 
