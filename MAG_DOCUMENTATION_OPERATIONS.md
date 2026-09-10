@@ -1,7 +1,7 @@
 # MAG Documentation Operations
 
 - MAG-Document-ID: `MAG_DOCUMENTATION_OPERATIONS.md`
-- MAG-Content-Updated: `2026-09-09T23:23:05+03:00`
+- MAG-Content-Updated: `2026-09-10T16:38:25+00:00`
 
 ## 1. Purpose and authority
 
@@ -68,6 +68,18 @@ SYNC operates only on registered logical documents. The existence of a Markdown 
 
 Document registration is a distinct authority action. Registration, adoption, canonical rename, and retirement require Product Owner approval. Do not create speculative documents merely to complete a nominal documentation set.
 
+### Registration types and experimental documents
+
+Registration distinguishes **Stable registered document** and **Experimental registered document**. This distinction concerns document role, not a new SYNC classification. Experimental registration can have a stable approved Git baseline while its substantive findings remain experimental.
+
+An Experimental registered document belongs to an explicit project `#N` and records working evidence, hypotheses, temporary procedures, or evaluation. Product Owner approval must establish its non-authoritative experimental role, canonical identity/location, project scope, and any bounded pilot exception. Registration grants synchronization eligibility only, never substantive authority. Use the existing two-bullet metadata block; do not add registration fields to it or create another registry file.
+
+Experimental documents use the same identity, metadata, comparison, conflict, verification, and Git rules as other registered documents. Missing required metadata remains `INVALID_METADATA` for a registered document; unregistered files remain `UNREGISTERED_DOCUMENT` and excluded from writable SYNC. Neither case becomes `NEWER_LOCAL` merely because Local content changed.
+
+Existing experimental artifacts may be adopted without assigning Global authority. In the procedures below, establishing substantive authority includes explicitly recording a non-authoritative experimental role. Approved naming/location exceptions and existing counterpart IDs are recorded in the `MAG_ECOSYSTEM.md` documentation map; physical storage does not change project scope. Ordinary discovery requires the approved Git baseline. A controlled, explicitly approved adoption may update its identified existing counterparts before the final Git handoff; this does not enable unrelated or default SYNC discovery.
+
+Promotion is a separate substantive decision under `MAG_ECOSYSTEM.md`: evaluate evidence and limitations, select individual findings, propose changes to owning Global documents, obtain Product Owner approval, then update and verify those documents. Synchronization, registration, PASS/PARTIAL PASS, and Git finalization cannot promote an experiment.
+
 ### New document
 
 Use this lifecycle only when the logical document does not yet exist:
@@ -95,7 +107,7 @@ The initial `MAG-Content-Updated` is the timestamp when the current substantive 
 
 ### Existing document adoption
 
-Use adoption when a pre-existing authoritative document is brought under synchronization management:
+Use adoption when a pre-existing document with an approved authoritative or non-authoritative experimental role is brought under synchronization management:
 
 1. confirm its logical identity and substantive authority;
 2. establish its canonical filename and Local location;
@@ -134,7 +146,7 @@ Do not create a separate documentation registry file.
 
 Global registration is represented by the `MAG_ECOSYSTEM.md` Global documentation map, valid metadata, and the applicable Local authoritative state.
 
-Stable project registration requires the approved project identity, canonical Local repository, applicable project documentation model and authority, valid metadata, and approved Git baseline. Nonstandard project documents require explicit Product Owner-approved substantive authority; metadata cannot grant authority by itself.
+Stable project registration requires the approved project identity, canonical Local repository, applicable project documentation model and authority, valid metadata, and approved Git baseline. Nonstandard project documents require an explicit Product Owner-approved authoritative or non-authoritative experimental role; metadata cannot grant authority by itself.
 
 ### Provisional registration
 
@@ -213,7 +225,7 @@ The command itself does not authorize creation or registration.
 
 ### `DOC ADOPT <filename>`
 
-Use only for a pre-existing authoritative document. Validate identity, authority, canonical location, collisions, and historical timestamp evidence, or require Product Owner baseline ratification. Produce a plan and stop for approval. Do not treat adoption as new authorship.
+Use only for a pre-existing document. Validate identity, approved authority or non-authoritative experimental role, canonical location, collisions, and historical timestamp evidence, or require Product Owner baseline ratification. Produce a plan and stop for approval. Do not treat adoption as new authorship.
 
 ### `SYNC CHECK [scope]`
 

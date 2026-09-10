@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-09T23:23:05+03:00`
+- MAG-Content-Updated: `2026-09-10T16:38:25+00:00`
 
 This document is the navigation and governance foundation for MAG add-on projects.
 
@@ -97,7 +97,7 @@ The current Global documentation set comprises **seven** authoritative files in 
 | File | Role |
 | --- | --- |
 | `MAG_ECOSYSTEM.md` | This file. MAG Ecosystem identity, architecture, project relationships, documentation map, and high-level governance. |
-| `AI_GUIDELINES.md` | Global MAG development workflow and operational rules. |
+| `AI_GUIDELINES.md` | Global MAG development workflow and operational rules; §24 owns Cursor prompt presentation and post-execution review. |
 | `AI_AGENTS_RULES.md` | Mandatory execution rules and boundaries for AI coding agents and related development tools, including Cursor procedure pre-flight and Plain text output requirements. |
 | `CURSOR_USAGE_ANALYTICS.md` | Authoritative Cursor procedure routing/pre-flight, model selection and escalation, usage optimization, Cursor Models Before/After tracking (including automatic After telemetry consumption and failure handling), reporting, forecasting, and analytics methodology. |
 | `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Canonical ordered lifecycle, stage gates, transitions, and documentation timing. References detailed operational rules in their owning Global documents. |
@@ -139,6 +139,19 @@ Optional, created only when useful:
 Physical layout inside a project repository may place some of these files at the repository root or under `docs/`. The **logical names and authority** above remain unchanged.
 
 Do not keep duplicate copies under the old unprefixed names after a controlled migration. Do not create a separate renamed-copy layer for ChatGPT Project; ChatGPT Project should use these same canonical filenames.
+
+### Experimental / Evaluation documents
+
+Experimental / Evaluation documents are optional project-scoped working evidence: hypotheses, temporary procedures, candidate workflows, observations, metrics, and evaluation results. They may evolve throughout the approved experiment. Registration and metadata establish identity/version tracking and synchronization eligibility only; they grant no substantive authority. They cannot override approved TZ, Architecture, Roadmap, or Global rules. Only expressly approved, bounded pilot procedural exceptions may apply within their recorded scope; no exception extends to another project or cycle.
+
+Promotion follows documented evaluation, selection of findings for full or partial adoption, a scoped proposal for the owning Global documents, explicit Product Owner approval, and verified updates there. No automatic promotion follows PASS, PARTIAL PASS, registration, synchronization, or Git commit.
+
+The following existing documents are approved as **Experimental registered documents** for project `#2`, retained under their current canonical names and locations as an explicit naming/location exception:
+
+- `MAG_PIPELINE_V2_EXPERIMENT.md` — canonical Local: `MAG-Ecosystem` repository root; Drive object: `<DRIVE-DOC:MAG_PIPELINE_V2_EXPERIMENT>`.
+- `MAG_PIPELINE_V2_EVALUATION.md` — canonical Local: `MAG-Ecosystem` repository root; Drive object: `<DRIVE-DOC:MAG_PIPELINE_V2_EVALUATION>`.
+
+Both retain the existing Drive folder `<DRIVE-FOLDER:MAG_PIPELINE_V2>`. Physical placement in the ecosystem repository or Drive does not place them in the seven-file Global authority set. They belong to `SYNC #2` or exact-filename scope, not `SYNC GLOBAL`. Do not create copies in TagSynchronizer or rename existing counterparts. This approved adoption is provisional within the controlled procedure until the scoped Git baseline establishes stable discovery; synchronization of these existing counterparts is explicitly included in this procedure. Detailed registration and validation rules remain in `MAG_DOCUMENTATION_OPERATIONS.md` §5.
 
 ### Project documentation filenames
 

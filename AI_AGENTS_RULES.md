@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Coding Agent Rules
 
 - MAG-Document-ID: `AI_AGENTS_RULES.md`
-- MAG-Content-Updated: `2026-09-09T16:29:18+03:00`
+- MAG-Content-Updated: `2026-09-10T16:38:25+00:00`
 
 These rules define **how coding agents may execute** work in MAG repositories.
 
@@ -25,31 +25,11 @@ These rules are **mandatory prerequisites** for every Cursor-assisted procedure.
 
 ### 1.1 Mandatory Cursor pre-flight
 
-For every Cursor procedure, ChatGPT must provide:
+For every Cursor procedure, follow [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24 for prompt approval, presentation order, post-execution review, and the Ukrainian learning note. That section alone owns presentation; do not recreate its ordered block here.
 
-1. A **copyable prompt block** containing only the exact text intended to be pasted into Cursor.
-2. User-facing execution guidance **after** that block, including Cursor chat, recommended Cursor model, Cursor Models Before instruction/value when Before still needs observation, and post-execution return instructions for the substantive Cursor report.
+Mandatory execution and Plain text requirements remain in this document. Respect **GLOBAL + active `#N`** isolation and the approved repository/tool context. Resolve an unknown or ambiguous Cursor chat with the Product Owner; do not invent it.
 
-Do **not** routinely instruct the Product Owner to read or report **Cursor Models After**. Automatic After telemetry, silent consumption, and failure notification are defined in [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md).
-
-Do **not** place user-facing procedure metadata or instructions inside the copyable Cursor prompt unless Cursor itself needs that information.
-
-The Cursor chat must correspond to the active project/repository/tool context. Respect **GLOBAL + active `#N`** isolation. Do not mix unrelated project Agent chats. Do not invent a canonical chat name when the real name is unknown or ambiguous — resolve it with the user first.
-
-The Cursor model must be selected according to task complexity, uncertainty, risk, and usage efficiency.
-
-Authoritative detail for copyable-prompt presentation, routing, model-selection matrix, escalation, usage optimization, and Cursor Models Before/After tracking:
-
-[`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md)
-
-Required presentation and tracking order:
-
-1. Copyable Cursor procedure prompt in Plain text  
-2. Cursor chat  
-3. Cursor model  
-4. Cursor Models Before  
-5. Cursor execution  
-6. Cursor Models After via automatic report telemetry when valid; otherwise apply the telemetry-failure rule in `CURSOR_USAGE_ANALYTICS.md`
+Routing, model selection/escalation, usage tracking, automatic After telemetry and failure handling, and separate usage-value display remain in [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). Before remains an analytics field, not a required item in the user-facing prompt presentation block. Do not routinely request manual After reporting.
 
 ### 1.2 Plain text output — mandatory
 
@@ -365,7 +345,7 @@ Classify discovered issues as:
 
 Do not `git commit` or `git push` unless explicitly requested.
 
-When Cursor analytics apply, follow `CURSOR_USAGE_ANALYTICS.md`, including copyable-prompt presentation and Cursor chat/model guidance after the copyable block, Cursor Models Before tracking, and automatic Cursor Models After consumption / failure handling.
+When Cursor procedures apply, follow `AI_GUIDELINES.md` §24 for presentation and post-execution review. Follow `CURSOR_USAGE_ANALYTICS.md` for model selection, Before/After tracking, telemetry handling, and separate usage-value display.
 
 ---
 

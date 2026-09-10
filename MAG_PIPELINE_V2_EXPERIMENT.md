@@ -1,8 +1,17 @@
 # MAG Pipeline v2 Experiment
 
+- MAG-Document-ID: `MAG_PIPELINE_V2_EXPERIMENT.md`
+- MAG-Content-Updated: `2026-09-10T16:38:25+00:00`
+
 Status: EXPERIMENTAL — NOT GLOBAL AUTHORITY
 
 Active approved pilot: `#2` — [MAG] Tag Synchronizer / `1.1.0` — ACTIVE
+
+## Authority disclaimer and promotion gate
+
+These are project-scoped working documents for `#2` ([MAG] Tag Synchronizer), not Global authority. They may evolve during the approved pilot. Registration and metadata establish identity/version tracking and synchronization eligibility only; they grant no substantive authority. They cannot override approved TZ, Architecture, Roadmap, or Global rules. Only expressly approved, bounded pilot procedural exceptions may apply within their recorded scope; no exception extends to another project or cycle.
+
+Promotion requires documented evaluation evidence, limitations and quality results; an explicit decision on each finding (adopt, revise/retest, or reject); exact proposed changes in the owning Global document; and Product Owner approval of that scope. PASS or PARTIAL PASS, synchronization, Git commit, or pilot activation alone never promotes a finding. Partial adoption promotes only approved findings after the owning Global documents are updated and verified. Remaining findings stay experimental; preserve evidence and decision history. The current approval formalizes experimental registration, not Global adoption.
 
 ## 1. Purpose
 
