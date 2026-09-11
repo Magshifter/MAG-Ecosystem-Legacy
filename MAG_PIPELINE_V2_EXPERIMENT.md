@@ -1,7 +1,7 @@
 # MAG Pipeline v2 Experiment
 
 - MAG-Document-ID: `MAG_PIPELINE_V2_EXPERIMENT.md`
-- MAG-Content-Updated: `2026-09-10T20:29:49+00:00`
+- MAG-Content-Updated: `2026-09-11T06:48:00+03:00`
 
 Status: EXPERIMENTAL — NOT GLOBAL AUTHORITY
 
@@ -76,6 +76,28 @@ The following Global principles remain mandatory:
 
 If Pipeline v2 conflicts with an engineering or safety requirement outside the procedural mechanics defined here, the existing Global safety/engineering rule wins and the conflict must be reported.
 
+### 2.2 Global → Pipeline v2 substitution map
+
+This matrix is authoritative only for the approved `#2` / `1.1.0` pilot. It identifies bounded experimental treatment without reproducing or replacing the owning Global procedures.
+
+| Global mechanism | Pipeline v2 treatment | Classification | Owning authority | Pilot-specific boundary |
+| --- | --- | --- | --- | --- |
+| Requirements approval | Retained without substitution | Unchanged | `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Gate 1; active `#2` TZ | Existing approved requirements remain authoritative; changes still require Product Owner approval |
+| Architecture approval | Retained without substitution | Unchanged | `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Gate 2; active `#2` Architecture | Approved A1–A6 remain unchanged; batching cannot amend architecture |
+| Implementation planning | Approved related planning may be handled as one coherent block | Optimized | Global lifecycle Phase 5; active `#2` Roadmap | Existing I1–I7 remain unchanged; optimization changes procedure shape only |
+| Implementation authorization | Separate explicit Product Owner authorization remains mandatory | Unchanged | `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 5 | Pipeline activation and this framework do not authorize I1 or any implementation |
+| Targeted research / source verification | Reuse applicable valid evidence; inspect only unresolved, invalidated, or materially risky behavior | Conditionally substituted | Global lifecycle Phase 3; `AI_GUIDELINES.md` | Evidence reuse is allowed only within verified scope; uncertain XenForo/XFRM behavior still requires verification |
+| Validation | Focus validation on changed behavior and uncovered risk while preserving required evidence | Optimized | `AI_GUIDELINES.md`; Global lifecycle Phases 6–8 | No reduction in required quality, security, compatibility, or release validation |
+| Documentation synchronization | Batch affected documents at logical ownership and closure boundaries | Optimized | `MAG_DOCUMENTATION_OPERATIONS.md`; `AI_GUIDELINES.md` | No silent state drift, cross-project sync, registration, adoption, or authority change |
+| Redundant review suppression | Omit a repeated review only while preceding evidence remains valid and covers current risk | Conditionally substituted | `AI_GUIDELINES.md`; `AI_AGENTS_RULES.md` | New risk, changed state, failed validation, or uncertainty restores the applicable review |
+| Git checkpoint strategy | Consolidate related approved work into one logical checkpoint where rollback and review remain safe | Optimized | `AI_GUIDELINES.md`; `AI_AGENTS_RULES.md` | Product Owner Git control remains unchanged; high-risk isolation may require an additional checkpoint |
+| Product Owner Practical Acceptance | Preserve as a distinct mandatory gate where the Global lifecycle requires it | Unchanged | `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 7 | Must not be collapsed into technical validation, Release Readiness, or Release Finalization |
+| Release Readiness | Preserve Gate 3 and its entry conditions | Unchanged | `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Gate 3 | No batching or efficiency result can bypass Product Owner approval |
+| Release Finalization | Consolidate already-approved release inputs and related execution where dependencies permit | Optimized | `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 8 | Remains distinct from Practical Acceptance and Release Readiness; must end with its required result |
+| Release actions | No experimental substitution | Unchanged | `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`; `AI_GUIDELINES.md` | Commit, push, tag, publication, deployment, and Stable Release remain Product Owner-controlled |
+
+All Global approval gates not expressly identified as optimized or conditionally substituted remain untouched. `Not applicable` may be recorded for a mechanism only when it genuinely does not apply to a bounded pilot task; it is not a waiver.
+
 ## 3. Core optimization principle
 
 Optimize round trips, not engineering rigor.
@@ -92,9 +114,15 @@ A coherent batch may contain several already-approved related actions when they:
 
 Do not create separate AI procedures solely because individual edits could technically be separated.
 
+Pipeline v2 optimizes unnecessary fragmentation. Fewer procedures are not an objective by themselves.
+
 ## 4. Risk-scaled procedure levels
 
 Every planned execution task should be classified before choosing the procedure depth.
+
+**Highest applicable material risk wins.**
+
+If a coherent batch contains a material High-Risk component, classify the batch as Level H unless the risk-bearing component is safely separated into its own independently reviewable task. Batching must never downgrade risk classification.
 
 ### Level S — Simple
 
@@ -123,7 +151,7 @@ Default treatment:
 
 ### Level H — High Risk
 
-Use for work involving materially higher uncertainty or failure cost, including permissions, transactions, persistence, security, upgrades/migrations, destructive operations, complex XenForo/XFRM lifecycle behavior, concurrency/reentrancy, difficult compatibility boundaries, or high regression risk.
+Use for work involving materially higher uncertainty or failure cost, including permissions/security, persistence or data integrity, transactions, install/upgrade/migration behavior, destructive operations, concurrency/reentrancy, complex XenForo/XFRM lifecycle behavior, difficult compatibility boundaries, or another condition where failure cost or uncertainty is materially high.
 
 Default treatment:
 
@@ -170,15 +198,13 @@ Verified evidence should be reused until invalidated by a relevant platform-vers
 
 Do not repeat an audit merely because a later stage refers to the same mechanism.
 
-## 7. Cursor minimization
+## 7. Executor selection and Cursor minimization
 
-Cursor is for work where repository-aware execution materially helps.
+**Use the lowest-friction safe executor that preserves Product Owner control, approved scope, required verification, and auditability.**
 
-Prefer ChatGPT reasoning and Product Owner manual actions for requirements, architecture decisions, wording decisions, simple Git commands, `git status`, `git diff`, `git add`, `git commit`, `git push`, simple file copying, deterministic one-line checks, character counting, and simple metadata confirmation.
+Potential executors include Product Owner manual action, ChatGPT reasoning, ChatGPT Work, Cursor, or another explicitly approved tool. Select proportionally to task complexity, risk, repository/file access requirements, and verification needs. Executor capability does not expand authority.
 
-Do not create a Cursor procedure merely to avoid a simple safe manual command.
-
-Cursor should normally execute a complete coherent task such as:
+Do not create a Cursor or Work procedure merely to avoid a simpler safe execution path. Use Cursor when repository-aware engineering execution materially helps. A Cursor task should normally execute a complete coherent task such as:
 
 inspect relevant code  
 → apply approved change  
@@ -187,6 +213,8 @@ inspect relevant code
 → report
 
 rather than splitting that sequence into multiple procedures without a risk-based reason.
+
+This is a `#2` / `1.1.0` experimental routing principle, not a new Global tool policy.
 
 ### 7.1 Optimized prompt and context workflow (experimental)
 
@@ -207,17 +235,15 @@ This experiment measures whether reduced context duplication and clearer present
 
 ### 7.2 XenForo Native Tooling First (experimental)
 
-For the active `#2` / `1.1.0` pilot only, use this routing order before assigning deterministic XenForo work to an AI coding agent:
+For the active `#2` / `1.1.0` pilot only, verified native XenForo tooling is an executor candidate under §7 when it is the lowest-friction safe path for deterministic XenForo work.
 
-Verified native XenForo tooling → manual Product Owner action → ChatGPT reasoning → Cursor when repository-aware engineering execution is needed.
-
-These are suitability checks, not mandatory handoffs. First inspect the relevant existing implementation and reuse still-valid evidence under §6. Verify the exact native command, options, prerequisites, and effects against the installed XenForo version before selecting it. Command families such as `xf-make:*`, `xf-dev:*`, and `xf-addon:*` are candidates to check, not a claim that every command exists or is suitable.
+This is a suitability check, not a mandatory handoff or fixed executor order. First inspect the relevant existing implementation and reuse still-valid evidence under §6. Verify the exact native command, options, prerequisites, and effects against the installed XenForo version before selecting it. Command families such as `xf-make:*`, `xf-dev:*`, and `xf-addon:*` are candidates to check, not a claim that every command exists or is suitable.
 
 Prefer verified native tooling when it safely performs the approved deterministic operation, including standard scaffolding or applicable phrase/template, validation, add-on metadata, and release-preparation work. Do not ask Cursor to manually generate equivalent boilerplate when the verified native operation is sufficient. Use Cursor for the remaining project-specific logic, debugging, refactoring, or engineering work.
 
 Tool availability does not authorize execution. Preserve Existing-Code-First, approved scope and architecture, required validation, stage gates, and Product Owner control; mutating commands require applicable authorization. If suitability remains uncertain, resolve only that uncertainty through targeted installed-source inspection instead of a broad framework audit.
 
-Native CLI routing is independent of installing XenForo AI-agent resources. The deferred integration finding and its evidence limits are recorded in `MAG_PIPELINE_V2_EVALUATION.md` §12.3. This routing grants no approval to install resources, change the workspace model, or create an integration bridge.
+Native CLI routing is independent of installing XenForo AI-agent resources. The deferred integration finding and its evidence limits are recorded in `MAG_PIPELINE_V2_EVALUATION.md` §12.4. This routing grants no approval to install resources, change the workspace model, or create an integration bridge.
 
 ## 8. Documentation strategy
 
@@ -266,6 +292,8 @@ Do not repeat already-valid evidence unless the tested behavior changed, the env
 
 Final integration validation should focus on cross-component behavior and release-level risk not already sufficiently proven by increment-level validation.
 
+Technical validation, Product Owner Practical Acceptance, Release Readiness, and Release Finalization remain distinct lifecycle boundaries. Batching and time optimization may reduce overhead around them but must never collapse, silently merge, remove, or redefine them. Product Owner Practical Acceptance remains separately required wherever the Global lifecycle requires it.
+
 ## 11. Release flow optimization
 
 Before release execution, assemble one Release Manifest where applicable:
@@ -299,6 +327,8 @@ Release Manifest approval
 → one release documentation closure checkpoint
 
 Do not fragment already-approved release metadata into separate Cursor procedures unless a dependency genuinely requires a pause.
+
+This consolidated flow does not merge technical validation, Product Owner Practical Acceptance, Release Readiness, or Release Finalization. Each retains its Global entry, evidence, decision, and completion boundary.
 
 ## 12. Background and long-running operations
 
@@ -334,6 +364,12 @@ Pipeline v2 retains these experimental operational goals (aligned with current G
 
 **Experimental documentation-work observation only (not an official `CURSOR_USAGE_ANALYTICS.md` metric):** during early Pipeline v2 documentation-work evaluation, **Other Models** usage was observed as `0% → 32%` (**Δ +32 p.p.**). This observation is experimental context for evaluating AI/Cursor allocation during documentation procedures. It is **not** part of the tracked **Cursor Models** pool, must not be recorded as a Global analytics field, and must not be promoted into authoritative Cursor methodology without separate Product Owner approval.
 
+### 13.1 Evidence capture boundary
+
+Capture metrics, friction observations, over-batching incidents, rework, and finding-specific evidence opportunistically at existing logical stage, closure, or checkpoint boundaries when reliable contemporaneous evidence is available.
+
+Do not create standalone Cursor or Work procedures merely to record routine experiment telemetry when the same evidence can be captured safely during an existing closure. Do not defer all evidence reconstruction until pilot completion when contemporaneous capture is reasonably available. Preserve `pending` or `unavailable` rather than inventing missing evidence.
+
 ## 14. Round-trip reduction rule
 
 Before creating a new procedure, ChatGPT should determine whether it can be safely merged into the current coherent batch.
@@ -351,11 +387,25 @@ A new procedure is justified when at least one is true:
 
 Otherwise, prefer continuation within the same coherent batch.
 
+### 14.1 Over-batching control
+
+An **Over-batching incident** is a coherent batch that became too broad and materially reduced reviewability, rollback safety, root-cause isolation, validation clarity, scope control, or Product Owner understanding/control.
+
+Record each incident in the evaluation friction/evidence model with the affected finding ID, boundary, observed impact, corrective action, and remaining quality effect. An incident is evidence against the relevant optimization even when the batch eventually succeeds.
+
+Split or stop a batch when continuing would materially worsen any of these controls. Pipeline v2 reduces unnecessary fragmentation; it does not reward procedure-count reduction at the expense of control.
+
 ## 15. Stop conditions
 
 Pipeline v2 does not authorize automatic progression.
 
 Stop and return control to the Product Owner when a requirement decision is needed, architecture must change, scope expansion is proposed, a Critical issue is found, a release gate requires approval, a Git/release action requires Product Owner authorization, or evidence contradicts the approved design.
+
+### 15.1 Current #2 documentation-repair boundary
+
+The separate Documentation Department task affecting `P02__TS__TZ.md`, `P02__TS__Architecture.md`, `P02__TS__Roadmap.md`, `P02__TS__CLASS_MAP.md`, and `docs/P02__TS__IDEA.md` is current pilot context only.
+
+This hardening procedure does not execute, register, adopt, add metadata to, correct, rename, or synchronize those documents. That task remains a separate subsequent coherent block. Pre-Implementation Gate remains not started, I1 is not started, and Tag Synchronizer `1.1.0` implementation remains not authorized.
 
 ## 16. Pilot closure
 

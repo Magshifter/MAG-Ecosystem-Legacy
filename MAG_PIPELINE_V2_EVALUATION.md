@@ -1,7 +1,7 @@
 # MAG Pipeline v2 Evaluation
 
 - MAG-Document-ID: `MAG_PIPELINE_V2_EVALUATION.md`
-- MAG-Content-Updated: `2026-09-10T20:29:49+00:00`
+- MAG-Content-Updated: `2026-09-11T06:48:00+03:00`
 
 Status: EXPERIMENTAL EVALUATION FRAMEWORK — NOT GLOBAL AUTHORITY
 
@@ -17,7 +17,8 @@ This document evaluates whether MAG Pipeline v2 produces a real improvement over
 
 Primary success target:
 
-- at least 30% reduction in total elapsed development time.
+- at least 30% reduction in comparable adjusted Wall-clock elapsed time;
+- report Active process / collaboration time independently as a second required time result.
 
 Target outcome:
 
@@ -34,7 +35,8 @@ Active evaluated pilot (Product Owner approved activation):
 - Release / upgrade: `1.1.0`
 - Pilot start boundary: development cycle `1.1.0` (Pipeline v2 active for this cycle)
 - Pilot end boundary: completion of development cycle `1.1.0`, or earlier Product Owner deactivation
-- Baseline chosen for comparison:
+- Baseline chosen for comparison: PENDING — no reliable comparable value has yet been established
+- Baseline strategy: select and lock the closest completed MAG body of work using §3 before the first substantive `#2` / `1.1.0` implementation increment
 - Date started:
 - Product Owner approval: YES — Pipeline v2 activated for `#2` / `1.1.0` only
 - Initial Cursor Models value, if available:
@@ -45,38 +47,68 @@ Evaluation status: **NOT COMPLETED**. Do not treat evaluation results as complet
 
 Do not invent missing values.
 
-## 3. Baseline selection
+## 3. Baseline lock
 
-Prefer the closest comparable completed MAG body of work.
+The baseline strategy must be fixed before the first substantive `#2` / `1.1.0` implementation increment. The baseline must not be selected or changed retrospectively after the Pipeline v2 result is known.
 
-Possible baselines:
+### 3.1 Selection method
 
-- same project, previous similar release;
-- another MAG add-on with comparable complexity;
-- a comparable stage within a completed project;
-- a normalized internal estimate when no direct baseline exists.
+Select the closest comparable completed MAG body of work using this order:
 
-Document why the baseline is comparable.
+1. same project, previous similar release;
+2. comparable completed stage or release within the same project;
+3. another MAG add-on body of work with comparable complexity and risk;
+4. a normalized internal estimate only when no direct baseline exists.
 
-Do not claim precise percentage improvement from a weak baseline.
+Before lock, record:
 
-When exact elapsed-time history is unavailable, use clearly labeled proxy metrics and qualitative evidence.
+- selected baseline or exact baseline-selection strategy;
+- why it is comparable;
+- known limitations;
+- confidence;
+- date and lifecycle boundary at which it was locked;
+- exact evidence used and unresolved values.
+
+If reliable evidence cannot establish an exact baseline value before implementation, lock the approved selection method and mark unresolved values `PENDING`. Do not invent historical timings or measurements. A normalized internal estimate must be labeled `ESTIMATE`.
+
+### 3.2 Current baseline-lock status
+
+- Selected baseline: `PENDING`
+- Approved selection method: `PENDING PRODUCT OWNER RATIFICATION`
+- Comparability rationale: `PENDING`
+- Known limitations: exact historical time evidence has not yet been established
+- Confidence: `PENDING`
+- Lock date/boundary: must be recorded before the first substantive `#2` / `1.1.0` implementation increment
+
+Required Product Owner decision: ratify either a reliable selected baseline or the §3.1 selection method and its evidence boundary before implementation begins.
+
+Do not claim precise percentage improvement from a weak baseline. When exact history is unavailable, use clearly labeled proxy metrics and qualitative evidence.
 
 ## 4. Primary metrics
 
-### 4.1 Total elapsed time
+### 4.1 Wall-clock elapsed time
 
-Best metric where measurable.
+Calendar time from the recorded pilot start boundary to the recorded completion boundary.
 
-Record pilot start, pilot completion, known inactive/waiting periods where they can be separated reliably, and estimated active collaboration time only when the estimate is explicitly labeled.
+Record start and completion timestamps and separately identify reliably established excluded periods, such as ordinary Product Owner inactivity, unrelated waiting, paused scope, or external delay not caused by Pipeline v2. Report gross wall-clock duration and adjusted wall-clock duration when exclusions are supported by evidence. Do not infer exclusions without evidence.
 
-Primary comparison:
+### 4.2 Active process / collaboration time
+
+Time actively spent on in-scope decision-making, preparation, execution, review, validation, documentation, and required handoffs by the Product Owner and approved executors.
+
+Use measured intervals when available. If reconstructed or estimated, label the value `ESTIMATE`, state the method and confidence, and do not present it as measured fact. Do not count ordinary Product Owner inactivity or unrelated waiting when it can be separated reliably.
+
+The final evaluation reports Wall-clock elapsed time and Active process / collaboration time independently for baseline and Pipeline v2.
+
+Time reduction for each time type may be calculated only when comparable baseline and pilot values are available:
 
 `time reduction % = (baseline time - pilot time) / baseline time × 100`
 
+Do not combine the two time types into one unlabeled value.
+
 Do not fabricate historical time that was never measured.
 
-### 4.2 Interaction round trips
+### 4.3 Interaction round trips
 
 Count meaningful handoff cycles such as:
 
@@ -86,7 +118,7 @@ A round trip is counted when control leaves the current decision/execution conte
 
 Record total round trips, avoidable round trips identified after completion, and round trips per completed stage.
 
-### 4.3 Cursor substantive procedures
+### 4.4 Cursor substantive procedures
 
 Count procedures that materially inspect, implement, test, debug, audit, validate, or modify repository state.
 
@@ -94,19 +126,19 @@ Separately count Implementation, Debugging, Testing/Validation, Audit/Research, 
 
 Do not count a telemetry-only action as substantive work.
 
-### 4.4 Documentation passes
+### 4.5 Documentation passes
 
 Count distinct documentation synchronization passes.
 
 Record total passes, documentation-only passes, files normally touched per closure, and cases where multiple micro-updates were successfully consolidated.
 
-### 4.5 Git checkpoints
+### 4.6 Git checkpoints
 
 Count logical Git commit/push checkpoints used during the pilot.
 
 Record whether each checkpoint was a stage boundary, risk-preservation checkpoint, release checkpoint, or unnecessary/avoidable in hindsight.
 
-### 4.6 Rework loops
+### 4.7 Rework loops
 
 Count cases where completed work had to return to an earlier step because of misunderstood requirement, incorrect architecture, implementation defect, validation failure, documentation-state error, release-state error, or process error.
 
@@ -130,6 +162,17 @@ Observation, limitation, or improvement idea that does not represent a defect.
 
 Compare the number of Critical issues, number of Non-critical issues, defect escape to later stages, defects first discovered after release, validation regressions, and documentation-state inaccuracies.
 
+### 5.1 Quality regression policy
+
+Quality, security, XenForo/XFRM compatibility, maintainability, validation, documentation integrity, and Product Owner control are hard constraints.
+
+- A process-induced Critical regression prevents PASS and normally produces FAIL.
+- A material increase in rework, defect escape, validation failure, or documentation-state unreliability prevents an unqualified PASS and normally limits the result to PARTIAL PASS unless the evidence supports FAIL.
+- Isolated corrected Non-critical issues do not automatically prevent PASS when they do not indicate systemic process degradation and leave no material residual quality effect.
+- Efficiency evidence must never offset or hide quality degradation.
+
+Apply evidence-based judgment. Do not invent unsupported numeric quality thresholds.
+
 ## 6. XenForo/XFRM quality controls
 
 The pilot must explicitly confirm that optimization did not weaken:
@@ -145,6 +188,8 @@ The pilot must explicitly confirm that optimization did not weaken:
 - release package correctness.
 
 A 30% faster process with a material regression in these areas does not PASS.
+
+Technical validation, Product Owner Practical Acceptance, Release Readiness, and Release Finalization must be evidenced as distinct lifecycle boundaries. Pipeline v2 may reduce overhead around them but must not collapse, silently merge, remove, or redefine them. Product Owner Practical Acceptance remains a separate required gate wherever `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` requires it.
 
 ## 7. Cursor usage metrics
 
@@ -165,6 +210,7 @@ Suggested fields:
 - procedures avoided through verified native XenForo tooling;
 - procedures avoided through manual Product Owner action;
 - procedures avoided through ChatGPT reasoning;
+- procedures avoided through ChatGPT Work or another explicitly approved executor;
 - repeated audits avoided through valid evidence reuse.
 
 For the native-tooling metric, record the approved operation, installed XenForo version, exact verified command, verification evidence, and the Cursor procedure it replaced. Count an avoided procedure only after the native operation and its required validation complete; a proposed route is not a measured saving. Record native-tooling cases once in this category even when the Product Owner runs the command, avoiding duplicate totals with manual-action savings. Use `unavailable` when evidence is insufficient; do not infer time, request, or quota savings from the procedure count.
@@ -201,8 +247,13 @@ Examples:
 - manual command significantly faster than agent procedure;
 - verified native XenForo tooling completed an approved operation without a separate Cursor procedure (record command and validation evidence);
 - coherent batching prevented multiple round trips.
+- **Over-batching incident** — a batch materially reduced reviewability, rollback safety, root-cause isolation, validation clarity, scope control, or Product Owner understanding/control.
 
 Keep entries brief and factual.
+
+For each Over-batching incident, record the affected finding ID, task/stage boundary, observed control loss, quality impact, corrective action, and whether the incident caused rework or changed the finding evidence. Fewer procedures are not an efficiency objective by themselves.
+
+Capture routine metrics, friction observations, Over-batching incidents, rework, and finding-specific evidence opportunistically at existing logical stage, closure, or checkpoint boundaries. Do not create standalone Cursor or Work procedures solely for routine telemetry when safe capture fits an existing closure. Do not postpone all reconstruction until pilot completion when contemporaneous evidence is reasonably available.
 
 ## 10. Pilot result table
 
@@ -210,7 +261,8 @@ At completion, fill:
 
 | Metric | Baseline | Pipeline v2 | Change | Confidence |
 |---|---:|---:|---:|---|
-| Elapsed time | | | | |
+| Wall-clock elapsed time | | | | |
+| Active process / collaboration time | | | | |
 | Round trips | | | | |
 | Substantive Cursor procedures | | | | |
 | Documentation passes | | | | |
@@ -218,6 +270,7 @@ At completion, fill:
 | Rework loops | | | | |
 | Critical issues | | | | |
 | Non-critical issues | | | | |
+| Over-batching incidents | | | | |
 | Visible Cursor Models delta | | | | |
 
 Use `unavailable` where evidence does not exist.
@@ -230,9 +283,11 @@ Do not backfill with invented values.
 
 Pipeline v2 may be rated PASS when:
 
-- measured or sufficiently evidenced total elapsed-time reduction is at least 30%;
+- measured or sufficiently evidenced comparable time reduction is at least 30%;
 - target of approximately 40% may be noted if achieved;
-- no unacceptable regression exists in correctness, security, XenForo/XFRM compatibility, maintainability, validation quality, release quality, or Product Owner control;
+- no process-induced Critical regression exists;
+- no material increase in rework, defect escape, validation failure, or documentation-state unreliability exists;
+- no unacceptable regression exists in correctness, security, XenForo/XFRM compatibility, maintainability, validation quality, release quality, documentation integrity, or Product Owner control;
 - procedural fragmentation is materially lower;
 - rework does not erase the savings;
 - project state and documentation remain trustworthy.
@@ -241,17 +296,36 @@ Pipeline v2 may be rated PASS when:
 
 Use when clear efficiency improvement exists but is below 30%, some v2 mechanisms work well while others create friction, evidence is too incomplete for a confident full PASS, or a quality/process weakness was found but can be isolated and corrected without rejecting the entire model.
 
+A material increase in rework, defect escape, validation failure, or documentation-state unreliability normally limits the result to PARTIAL PASS at best unless the evidence supports FAIL. Isolated corrected Non-critical issues do not automatically prevent PASS when they show no systemic process degradation.
+
 A PARTIAL PASS should identify the affected findings and record their individual dispositions under §12; the pilot result does not assign those dispositions automatically.
 
 ### FAIL
 
-Use when time savings are insignificant or negative, rework materially increases, Critical defects increase because of process compression, validation quality degrades, release/documentation state becomes unreliable, Product Owner control becomes weaker, or the process hides uncertainty rather than resolving it.
+Use when time savings are insignificant or negative, a process-induced Critical regression occurs, rework materially increases, validation quality degrades, release/documentation state becomes unreliable, Product Owner control becomes weaker, or the process hides uncertainty rather than resolving it.
 
 ## 12. Per-finding disposition and adoption decision
 
 Pilot PASS / PARTIAL PASS / FAIL describes the overall evaluation result. It is separate from the disposition of an individual finding. PASS or PARTIAL PASS does not automatically make any finding a `GLOBAL_CANDIDATE`.
 
-### 12.1 Finding disposition
+### 12.1 Stable initial finding catalog
+
+These finding IDs are fixed for the pilot. Evidence, friction, quality impact, Over-batching incidents, and final disposition must be traceable to the applicable ID.
+
+| Finding ID | Finding | Scope / intent |
+| --- | --- | --- |
+| `V2-F01` | Coherent batching | Test whether related approved actions can be executed as one reviewable batch without crossing gates or weakening control |
+| `V2-F02` | Risk-scaled procedure depth | Test deterministic S/N/H depth using the highest applicable material risk |
+| `V2-F03` | Documentation boundary batching | Test synchronization at ownership and logical closure boundaries instead of after every micro-decision |
+| `V2-F04` | Evidence reuse / reduced repeated validation | Test reuse of still-valid evidence while restoring verification when scope, risk, or state invalidates it |
+| `V2-F05` | Cursor minimization / executor selection | Test use of the lowest-friction safe executor without expanding authority or weakening verification |
+| `V2-F06` | Prompt and context optimization | Test concise task-specific prompts and reduced duplicated context under current Global presentation rules |
+| `V2-F07` | Git checkpoint consolidation | Test fewer logical checkpoints while preserving reviewability, rollback safety, and Product Owner Git control |
+| `V2-F08` | Release-flow consolidation | Test coherent release-input/execution handling while preserving all distinct Global gates and release authority |
+
+Do not assign final dispositions before sufficient evidence and Product Owner decision. If a disposition later changes, append the new evidence, rationale, decision date, and prior-decision reference; never overwrite decision history.
+
+### 12.2 Finding disposition
 
 Assign exactly one of these four outcomes to each evaluated finding, supported by its evidence, limitations, quality impact, and Product Owner decision:
 
@@ -262,7 +336,7 @@ Assign exactly one of these four outcomes to each evaluated finding, supported b
 
 Record a stable finding identifier, description, evidence and limitations, disposition, approved scope, decision date, and Product Owner decision. Further testing does not imply approval to expand the pilot or continue into another cycle. A later disposition change records its rationale and new evidence without overwriting the earlier decision.
 
-### 12.2 Separate Global promotion gate
+### 12.3 Separate Global promotion gate
 
 Only a `GLOBAL_CANDIDATE` may enter a separate scoped Global adoption proposal. Candidate status is a proposal qualification, not approval or authority. `KEEP_PROJECT_ONLY`, `CONTINUE_EXPERIMENT`, and `REJECT` must never trigger changes to Global authoritative documentation.
 
@@ -276,7 +350,9 @@ For each proposed candidate:
 
 Partial adoption operates finding-by-finding only. Complete and verify the full gate before treating a finding as Global authority. Record the adoption result and references in its decision record; preserve rejected and non-promoted findings, evaluation evidence, and history. Do not remove experimental status from the whole document because one finding is adopted. This procedure defines the evaluation model and promotes no experimental finding.
 
-### 12.3 XF AI-agent integration finding
+### 12.4 XF AI-agent integration finding
+
+This is a preserved auxiliary integration finding outside the fixed `V2-F01`–`V2-F08` optimization catalog. If later pilot evidence uses it to evaluate executor selection, cross-reference that evidence to `V2-F05` without renaming or erasing this prior decision record.
 
 - Finding ID: `P02-PV2-XF-AI-001`.
 - Description: integration of official XenForo AI-agent guidance into the existing MAG-only, single-folder Cursor workspace.
@@ -311,7 +387,11 @@ These observations motivate the pilot but are not themselves proof that Pipeline
 ### Pilot result
 
 - Result: PASS / PARTIAL PASS / FAIL
-- Measured elapsed-time reduction:
+- Baseline / strategy locked:
+- Baseline lock date/boundary:
+- Baseline limitations and confidence:
+- Wall-clock elapsed-time reduction:
+- Active process / collaboration-time reduction:
 - Confidence:
 - Target ≥30% achieved: YES / NO / UNAVAILABLE
 - Approx. 40% target achieved: YES / NO / UNAVAILABLE
@@ -325,6 +405,8 @@ These observations motivate the pilot but are not themselves proof that Pipeline
 - Release quality:
 - Documentation accuracy:
 - Product Owner control:
+- Over-batching incidents:
+- Distinct technical validation / Practical Acceptance / Release Readiness / Release Finalization evidence:
 
 ### Highest-value optimizations
 
