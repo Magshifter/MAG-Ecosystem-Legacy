@@ -1,7 +1,7 @@
 # MAG Pipeline v2 Experiment
 
 - MAG-Document-ID: `MAG_PIPELINE_V2_EXPERIMENT.md`
-- MAG-Content-Updated: `2026-09-11T07:10:00+03:00`
+- MAG-Content-Updated: `2026-09-11T07:55:00+03:00`
 
 Status: EXPERIMENTAL — NOT GLOBAL AUTHORITY
 
@@ -262,6 +262,40 @@ In that state, use the smallest safe execution procedure. Do not create a fresh 
 For documentation synchronization, the Global Fast Sync Path in `MAG_DOCUMENTATION_OPERATIONS.md` §10.1 governs the reusable mechanics. This section records only the Pipeline v2 experimental intent: reduce elapsed-time friction from repeated preflight when the Local source, target identity, classification, and approval are already proven.
 
 Global safety, verification, approval, conflict handling, and stop-condition requirements remain mandatory.
+
+### 7.4 Authorized gate — immediate execution (experimental)
+
+**Classification:** experimental Pipeline v2 practice for the approved `#2` / `1.1.0` pilot only. Not Global authority. Does not change Global lifecycle semantics or which actions require Product Owner authorization.
+
+When the Product Owner authorizes or activates a gate and all evidence required to evaluate that gate is already available, the authorized agent should execute the gate immediately in the same interaction and return the formally defined gate result (`PASS`, `BLOCKED`, or another result defined for that gate). No additional Product Owner confirmation should be requested solely to begin execution of the already-authorized gate.
+
+Required experimental behavior:
+
+```text
+Product Owner authorization/activation
+→ immediate gate evaluation
+→ PASS / BLOCKED / other formally defined gate result
+```
+
+Avoid:
+
+```text
+Product Owner authorization
+→ acknowledgement
+→ wait for another confirmation
+→ gate evaluation
+```
+
+This is a concrete experimental application of §7.3 for gate evaluation: reduce unnecessary round trips without replacing Global lifecycle authority. Outside this pilot, existing Global rules remain authoritative.
+
+Clarifications:
+
+- Product Owner control remains unchanged.
+- Required Product Owner authorization is still mandatory.
+- This rule removes only redundant confirmation that contains no new decision.
+- If evidence is missing, contradictory, stale, or requires a new Product Owner decision, stop and state the concrete blocker or question.
+- Missing prerequisites must never be treated as satisfied.
+- Gate `PASS` must not automatically authorize the next Product Owner-controlled lifecycle stage when Global rules or the project Roadmap define that authorization separately.
 
 ## 8. Documentation strategy
 
