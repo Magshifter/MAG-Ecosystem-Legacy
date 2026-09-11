@@ -1,7 +1,7 @@
 # MAG Pipeline v2 Experiment
 
 - MAG-Document-ID: `MAG_PIPELINE_V2_EXPERIMENT.md`
-- MAG-Content-Updated: `2026-09-11T07:55:00+03:00`
+- MAG-Content-Updated: `2026-09-11T08:17:00+03:00`
 
 Status: EXPERIMENTAL — NOT GLOBAL AUTHORITY
 
@@ -296,6 +296,70 @@ Clarifications:
 - If evidence is missing, contradictory, stale, or requires a new Product Owner decision, stop and state the concrete blocker or question.
 - Missing prerequisites must never be treated as satisfied.
 - Gate `PASS` must not automatically authorize the next Product Owner-controlled lifecycle stage when Global rules or the project Roadmap define that authorization separately.
+
+### 7.5 Satisfied prerequisites after gate PASS (experimental)
+
+**Classification:** experimental Pipeline v2 practice for the approved `#2` / `1.1.0` pilot only. Not Global authority. Does not change Global lifecycle semantics, Product Owner control, or XenForo Native Tooling First.
+
+Once a prerequisite has been satisfied by verified evidence and a later gate relying on that evidence has passed, Pipeline v2 must treat that prerequisite as satisfied while the relevant evidence remains valid. The prerequisite must not be reopened or repeated merely because a later implementation stage references the same engineering rule.
+
+Before requesting or performing additional verification, identify a concrete new fact that invalidates the prior evidence or creates a genuinely new technical uncertainty.
+
+Required execution order:
+
+```text
+Current lifecycle state
+→ existing verified evidence
+→ check whether evidence is invalidated
+→ identify genuinely new uncertainty
+→ only then determine whether additional verification is needed
+```
+
+A passed gate is evidence that its required prerequisites were sufficiently satisfied at the time of evaluation. After that gate `PASS`, do not behave as though one of those prerequisites remains unresolved unless a specific new condition invalidates it.
+
+If invalidation exists:
+
+- name the exact prerequisite;
+- state the new evidence or changed condition;
+- explain why previous evidence no longer resolves it;
+- perform only the smallest targeted verification required.
+
+XenForo Native Tooling First (§7.2) remains fully in force. Already verified and still-valid evidence satisfies it. A new verification is justified only by concrete invalidation or new uncertainty.
+
+Valid invalidation examples: changed requirement; changed approved architecture; changed implementation scope; repository change affecting the earlier evidence; relevant XenForo/XFRM/platform/environment change; failed validation; contradictory new evidence; previously unknown API behavior; another concrete reason making prior evidence unreliable.
+
+Correct pilot behavior:
+
+```text
+Native Verification completed
+→ Architecture approved
+→ Implementation Plan completed
+→ Pre-Implementation Gate PASS
+→ Implementation authorized
+→ start approved implementation increment
+```
+
+If a new API uncertainty appears during implementation:
+
+```text
+identify exact uncertainty
+→ narrow targeted Native/XenForo verification
+→ continue implementation
+```
+
+Incorrect pilot behavior:
+
+```text
+Native Verification completed
+→ Architecture approved
+→ Implementation Plan completed
+→ Pre-Implementation Gate PASS
+→ Implementation authorized
+→ repeat general Native Tooling First audit
+→ only then start implementation
+```
+
+This is a concrete experimental application of §6, §7.2, and §7.3: reuse still-valid evidence, avoid repeated broad audits, and reduce unnecessary round trips without weakening required verification when genuinely new uncertainty appears.
 
 ## 8. Documentation strategy
 
