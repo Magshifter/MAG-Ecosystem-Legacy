@@ -1,7 +1,7 @@
 # MAG Pipeline v2 Experiment
 
 - MAG-Document-ID: `MAG_PIPELINE_V2_EXPERIMENT.md`
-- MAG-Content-Updated: `2026-09-11T06:48:00+03:00`
+- MAG-Content-Updated: `2026-09-11T07:10:00+03:00`
 
 Status: EXPERIMENTAL — NOT GLOBAL AUTHORITY
 
@@ -244,6 +244,24 @@ Prefer verified native tooling when it safely performs the approved deterministi
 Tool availability does not authorize execution. Preserve Existing-Code-First, approved scope and architecture, required validation, stage gates, and Product Owner control; mutating commands require applicable authorization. If suitability remains uncertain, resolve only that uncertainty through targeted installed-source inspection instead of a broad framework audit.
 
 Native CLI routing is independent of installing XenForo AI-agent resources. The deferred integration finding and its evidence limits are recorded in `MAG_PIPELINE_V2_EVALUATION.md` §12.4. This routing grants no approval to install resources, change the workspace model, or create an integration bridge.
+
+### 7.3 Resolved deterministic operation (experimental)
+
+**Resolved deterministic operation = execute, not re-analyze.**
+
+Apply this experimental optimization when:
+
+- the objective is already approved;
+- source and target are resolved;
+- direction is deterministic;
+- prior evidence remains valid;
+- no authority, risk, or scope boundary changed.
+
+In that state, use the smallest safe execution procedure. Do not create a fresh planning or audit cycle merely because the operation is being retried through another executor.
+
+For documentation synchronization, the Global Fast Sync Path in `MAG_DOCUMENTATION_OPERATIONS.md` §10.1 governs the reusable mechanics. This section records only the Pipeline v2 experimental intent: reduce elapsed-time friction from repeated preflight when the Local source, target identity, classification, and approval are already proven.
+
+Global safety, verification, approval, conflict handling, and stop-condition requirements remain mandatory.
 
 ## 8. Documentation strategy
 

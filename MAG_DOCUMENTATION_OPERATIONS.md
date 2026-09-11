@@ -1,7 +1,7 @@
 # MAG Documentation Operations
 
 - MAG-Document-ID: `MAG_DOCUMENTATION_OPERATIONS.md`
-- MAG-Content-Updated: `2026-09-10T16:38:25+00:00`
+- MAG-Content-Updated: `2026-09-11T07:10:00+03:00`
 
 ## 1. Purpose and authority
 
@@ -292,6 +292,25 @@ If safe capability cannot be established:
 STOP → FAILED / NO SAFE WRITE
 ```
 
+### 8.1 Capability escalation and executor limits
+
+Distinguish clearly:
+
+- **`OPERATION UNSAFE`** — no approved executor can perform the required operation while preserving required identity, type, location, content, and verification guarantees.
+- **`CURRENT EXECUTOR LACKS CAPABILITY`** — the operation itself may be safe in another approved executor/environment, but the active executor cannot prove the required safe write path.
+
+When the active executor lacks the required safe capability:
+
+1. identify the exact missing capability once;
+2. do not repeatedly redesign the procedure around the same limitation;
+3. do not infer that the underlying operation is globally impossible;
+4. route or recommend the operation to an available approved executor/environment that actually provides the required capability;
+5. preserve the already established source/target state and evidence.
+
+Use `FAILED / NO SAFE WRITE` for the current executor when appropriate, but record the capability blocker precisely. Do not use unsafe workarounds such as duplicate Drive objects, delete-and-recreate replacement, or lossy Google Docs conversion/export round-trips.
+
+Capability proven in another environment is insufficient for the active executor to write, but established evidence from a prior executor remains reusable while its relevant source state is unchanged.
+
 ## 9. Layered content comparison
 
 Compare in order:
@@ -355,6 +374,97 @@ The source is resolved but its required counterpart does not exist. Propose crea
 Timestamp order informs `NEWER_LOCAL` or `NEWER_DRIVE` only when identity, metadata, and content evidence are valid. Same timestamp plus equal content is `IDENTICAL`; same timestamp plus a fully recognized transport transformation is `FORMAT_ONLY`; same timestamp plus substantive divergence is `CONFLICT`.
 
 Git history is corroborating evidence, not an automatic authority override. If Git evidence materially contradicts apparent timestamp ordering, classify the document as `CONFLICT` unless the discrepancy can be conclusively resolved without inventing history.
+
+### 10.1 Fast Sync Path
+
+Use the Fast Sync Path only when **all** of the following are already established:
+
+- canonical document identity is resolved;
+- registration state is valid;
+- source metadata is valid;
+- source content passed validation in the immediately preceding approved procedure or checkpoint;
+- source is committed or otherwise at the approved stable source state required by the procedure;
+- no relevant source change occurred after that validation;
+- synchronization direction is deterministically established;
+- target counterpart identity is resolved;
+- Product Owner authorization already covers the synchronization.
+
+When these conditions hold, do **not** repeat:
+
+- registration or adoption analysis;
+- authority analysis;
+- metadata onboarding analysis;
+- historical timestamp reconstruction;
+- full document audit;
+- unchanged source validation;
+- another planning cycle for the already-approved synchronization.
+
+The Fast Sync Path is:
+
+```text
+Confirm proven source state
+→ Confirm target identity/state
+→ Confirm safe executor capability
+→ Write
+→ Read back
+→ Compare
+→ Report
+```
+
+Expand back to the full synchronization workflow only when new evidence invalidates a previously proven condition.
+
+Fast Sync does not bypass conflict detection, metadata validation, identity resolution, registration checks, Product Owner approval boundaries, or required verification. It reduces repeated analysis; it does not reduce safety.
+
+### 10.2 Proven evidence reuse
+
+A completed validation result remains reusable while its relevant source state remains unchanged.
+
+A later executor may rely on previously established evidence such as:
+
+- Git commit or hash;
+- clean working-tree state;
+- source SHA-256;
+- valid metadata;
+- canonical identity;
+- target Drive ID or other counterpart identity;
+- previous pair classification.
+
+Do not force a new executor to reproduce an entire audit merely because execution moved between ChatGPT, Work, Cursor, MCP, or another environment. Require only the minimum confirmation necessary to prove that the referenced evidence still applies.
+
+### 10.3 Failed executor does not reset proven state
+
+**A failed executor attempt does not reset previously proven document state.**
+
+If an executor fails because it lacks a required capability, preserve all still-valid evidence gathered before the failure.
+
+Example:
+
+```text
+Local PASS
++ canonical identity resolved
++ target resolved
++ NEWER_LOCAL
+→ current executor lacks raw Drive write capability
+→ synchronization remains blocked at capability execution only
+```
+
+A subsequent executor starts from that established state after confirming the source has not changed. It must not automatically restart registration, authority, metadata, comparison, or planning analysis.
+
+### 10.4 Fast Sync invalidation
+
+Stop the Fast Sync Path and return to the full workflow when any of the following occurs:
+
+- source content changed;
+- metadata changed unexpectedly;
+- Git or checkpoint evidence no longer matches;
+- target identity changed;
+- counterpart disappeared;
+- duplicate identity appeared;
+- classification is no longer deterministic;
+- conflict is detected;
+- authority or registration state changed;
+- Product Owner-approved scope changed;
+- the executor proposes a different write mechanism with materially different preservation guarantees.
 
 ## 11. Conflict handling
 
@@ -451,7 +561,9 @@ On failure:
 
 Do not conceal partial completion, perform uncontrolled retries, or infer rollback authority.
 
-Use `FAILED / NO SAFE WRITE` when required capability is unavailable. Use `FAILED VERIFICATION` when a write occurred but required verification did not pass. Report `PARTIALLY COMPLETE` only when some approved independent actions were verified and others were not completed.
+A capability failure preserves proven source, target, classification, and validation evidence unless new evidence invalidates them. Retry from the Fast Sync Path when the conditions in §10.1 still hold; otherwise return to the full workflow.
+
+Use `FAILED / NO SAFE WRITE` when the current executor's required capability is unavailable. Record whether the blocker is `CURRENT EXECUTOR LACKS CAPABILITY` or `OPERATION UNSAFE`. Use `FAILED VERIFICATION` when a write occurred but required verification did not pass. Report `PARTIALLY COMPLETE` only when some approved independent actions were verified and others were not completed.
 
 ## 17. Reporting
 
@@ -484,3 +596,5 @@ An approved SYNC may modify only what its approved synchronization plan authoriz
 - history rewrite.
 
 After Local writes, report Git diff and status and return control under existing Global development rules. Do not duplicate general Git policy here.
+
+Synchronization-only completion of an already committed source does not require a new Git commit when Local content is unchanged. If Drive synchronization later succeeds without Local modifications, verify Local remains clean, report synchronization completion, and do not create an artificial Git commit.

@@ -1,7 +1,7 @@
 # MAG Pipeline v2 Evaluation
 
 - MAG-Document-ID: `MAG_PIPELINE_V2_EVALUATION.md`
-- MAG-Content-Updated: `2026-09-11T06:48:00+03:00`
+- MAG-Content-Updated: `2026-09-11T07:10:00+03:00`
 
 Status: EXPERIMENTAL EVALUATION FRAMEWORK — NOT GLOBAL AUTHORITY
 
@@ -246,7 +246,8 @@ Examples:
 - release field blocked by external dependency;
 - manual command significantly faster than agent procedure;
 - verified native XenForo tooling completed an approved operation without a separate Cursor procedure (record command and validation evidence);
-- coherent batching prevented multiple round trips.
+- coherent batching prevented multiple round trips;
+- repeated synchronization preflight/analysis after source, target, and classification were already proven, when the active executor lacked raw in-place Drive write capability (see §12.5 `V2-F03`).
 - **Over-batching incident** — a batch materially reduced reviewability, rollback safety, root-cause isolation, validation clarity, scope control, or Product Owner understanding/control.
 
 Keep entries brief and factual.
@@ -365,6 +366,34 @@ This is a preserved auxiliary integration finding outside the fixed `V2-F01`–`
 - Rationale and quality impact: evidence for a low-friction integration remains incomplete. Preserve targeted XenForo source verification and required validation without introducing unapproved workspace infrastructure.
 - Next action: no installation or integration test is authorized by this record. Any later test requires an explicitly approved bounded scope. Do not install XF AI-agent resources, change the workspace model, or create copies, symlinks, or reference bridges under this documentation change.
 - Prior decision reference: preserve the preceding deferred-integration audit conclusion above. This classification does not replace that history, complete the pilot evaluation, or propose Global promotion.
+
+### 12.5 Recorded pilot evidence — Pipeline v2 Drive synchronization friction
+
+**Classification:** active experimental evidence only. Not a final finding disposition and not Global authority.
+
+| Field | Value |
+| --- | --- |
+| Primary finding ID | `V2-F03` — Documentation boundary batching |
+| Cross-reference | `V2-F05` — Cursor minimization / executor selection |
+| Current disposition | `CONTINUE_EXPERIMENT` |
+| Decision date | `2026-09-11` |
+
+**Evidence (factual):**
+
+- Local `MAG_PIPELINE_V2_EXPERIMENT.md` and `MAG_PIPELINE_V2_EVALUATION.md` were validated and committed at Git `2041ec6d28996f97598cc06ee793adcdd977dcd1` (`Harden Pipeline v2 measurement and control framework`).
+- Source SHA-256 values and canonical Drive IDs were already known for both documents.
+- Pair classification for both counterparts was already `NEWER_LOCAL`.
+- Multiple synchronization attempts across executors repeated registration, authority, metadata, comparison, and planning analysis, but could not complete the write because the active executor lacked safe in-place raw Markdown content replacement on the existing Drive object.
+- No unsafe workaround was used.
+- No duplicate Drive objects were created.
+- The repeated procedural work added elapsed-time friction without increasing confidence in the already-proven Local source.
+
+**Operational state preserved:**
+
+- `MAG_PIPELINE_V2_EXPERIMENT.md` → Drive ID `<DRIVE-DOC:MAG_PIPELINE_V2_EXPERIMENT>` → remains `NEWER_LOCAL`
+- `MAG_PIPELINE_V2_EVALUATION.md` → Drive ID `<DRIVE-DOC:MAG_PIPELINE_V2_EVALUATION>` → remains `NEWER_LOCAL`
+
+Do not invent a numerical time saving. Do not mark Drive synchronization complete until an executor with a proven safe in-place raw-content write path performs and verifies the synchronization. Process improvements derived from this evidence are recorded separately in `MAG_DOCUMENTATION_OPERATIONS.md` §10 and do not by themselves change the current Drive classification.
 
 ## 13. Known experiment focus areas from #2
 
