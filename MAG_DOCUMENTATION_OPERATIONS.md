@@ -1,7 +1,7 @@
 # MAG Documentation Operations
 
 - MAG-Document-ID: `MAG_DOCUMENTATION_OPERATIONS.md`
-- MAG-Content-Updated: `2026-09-11T07:10:00+03:00`
+- MAG-Content-Updated: `2026-09-11T12:30:00+03:00`
 
 ## 1. Purpose and authority
 
@@ -33,7 +33,7 @@ This protocol applies to synchronization-managed MAG Markdown documents in:
 - ChatGPT documentation context;
 - Cursor documentation context.
 
-An operation may use only systems and locations resolved within its approved scope. Project context follows `GLOBAL + active #N`; synchronizing one project must not import another project's documentation.
+An operation may use only systems and locations resolved within its approved scope. Active development context follows `GLOBAL + active development identity` per `MAG_ECOSYSTEM.md`; synchronizing one registered development must not import another development's documentation.
 
 ## 3. Managed locations and canonical identity
 
@@ -42,7 +42,7 @@ Resolve every document by:
 1. its `MAG-Document-ID`;
 2. its exact canonical filename;
 3. its expected authority and managed location;
-4. its permanent project identity when project-scoped.
+4. its permanent development identity when development-scoped.
 
 Do not guess when identity or location is ambiguous. Preserve canonical filename, Markdown type, intended location, and existing object identity where the approved operation requires them.
 
@@ -72,7 +72,7 @@ Document registration is a distinct authority action. Registration, adoption, ca
 
 Registration distinguishes **Stable registered document** and **Experimental registered document**. This distinction concerns document role, not a new SYNC classification. Experimental registration can have a stable approved Git baseline while its substantive findings remain experimental.
 
-An Experimental registered document belongs to an explicit project `#N` and records working evidence, hypotheses, temporary procedures, or evaluation. Product Owner approval must establish its non-authoritative experimental role, canonical identity/location, project scope, and any bounded pilot exception. Registration grants synchronization eligibility only, never substantive authority. Use the existing two-bullet metadata block; do not add registration fields to it or create another registry file.
+An Experimental registered document belongs to an explicit development identity (for example `#N`) and records working evidence, hypotheses, temporary procedures, or evaluation. Product Owner approval must establish its non-authoritative experimental role, canonical identity/location, development scope, and any bounded pilot exception. Registration grants synchronization eligibility only, never substantive authority. Use the existing two-bullet metadata block; do not add registration fields to it or create another registry file.
 
 Experimental documents use the same identity, metadata, comparison, conflict, verification, and Git rules as other registered documents. Missing required metadata remains `INVALID_METADATA` for a registered document; unregistered files remain `UNREGISTERED_DOCUMENT` and excluded from writable SYNC. Neither case becomes `NEWER_LOCAL` merely because Local content changed.
 
@@ -146,13 +146,13 @@ Do not create a separate documentation registry file.
 
 Global registration is represented by the `MAG_ECOSYSTEM.md` Global documentation map, valid metadata, and the applicable Local authoritative state.
 
-Stable project registration requires the approved project identity, canonical Local repository, applicable project documentation model and authority, valid metadata, and approved Git baseline. Nonstandard project documents require an explicit Product Owner-approved authoritative or non-authoritative experimental role; metadata cannot grant authority by itself.
+Stable project registration requires the approved development identity, canonical Local repository, applicable development documentation model and authority, valid metadata, and approved Git baseline. Nonstandard development documents require an explicit Product Owner-approved authoritative or non-authoritative experimental role; metadata cannot grant authority by itself.
 
 ### Provisional registration
 
 Provisional registration exists only inside an explicit controlled Product Owner-approved registration or adoption procedure. It permits validation and review before Git handoff, but it is not default discovery state.
 
-Ordinary `SYNC #N` must not automatically include a provisional document. Unrelated procedures must not treat it as stable registration. The separately approved Git handoff establishes normal discoverability. No additional metadata field represents provisional state.
+Ordinary `SYNC #N`, `SYNC A<N>`, or `SYNC B<N>` must not automatically include a provisional document. Unrelated procedures must not treat it as stable registration. The separately approved Git handoff establishes normal discoverability. No additional metadata field represents provisional state.
 
 ### Unregistered and orphan documents
 
@@ -170,20 +170,20 @@ Update the applicable registration map or set and managed counterparts through o
 
 Document retirement requires Product Owner approval and removes the document from active registration and SYNC scope. It does not authorize deletion. Historical records remain historical, and counterpart retention or deletion requires separate authority.
 
-Project retirement remains under `MAG_ECOSYSTEM.md` and lifecycle authority. Its permanent `#N` is never reused, its documentation is not automatically deleted or rewritten, and the Product Owner determines archived/read-only or limited synchronization treatment.
+Project retirement remains under `MAG_ECOSYSTEM.md` and lifecycle authority. Its permanent development identity is never reused, its documentation is not automatically deleted or rewritten, and the Product Owner determines archived/read-only or limited synchronization treatment.
 
 ### Project onboarding boundary
 
-Documentation Operations consumes an already approved project identity. It does not approve projects, assign `#N`, or provide a project-creation command.
+Documentation Operations consumes an already approved development identity. It does not approve developments, assign identities, or provide a development-creation command.
 
-A newly approved `#N` establishes project identity only. Select its documents from actual current information needs. Never automatically clone #1, #2, or a complete documentation template. Project approval and bootstrap sequencing remain governed by `MAG_ECOSYSTEM.md` and `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`.
+A newly approved development identity establishes that identity only. Select its documents from actual current information needs. Never automatically clone #1, #2, or a complete documentation template. Development approval and bootstrap sequencing remain governed by `MAG_ECOSYSTEM.md` and, for `#N` XenForo add-ons, `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`.
 
 ## 6. Scope resolution
 
 Before comparison:
 
 1. parse the requested command and any explicit natural-language narrowing;
-2. establish the active Global or permanent `#N` context;
+2. establish the active Global or permanent development-identity context;
 3. enumerate only stable registered canonical documents in that scope;
 4. resolve each managed counterpart;
 5. report ambiguity, missing sources, missing targets, unregistered/orphan files, and duplicate candidates.
@@ -250,9 +250,9 @@ Resolve the clearly established active context, compare it, and produce a synchr
 
 Cover all synchronization-managed Global documents, including `MAG_DOCUMENTATION_OPERATIONS.md`.
 
-### `SYNC #1` and `SYNC #2`
+### `SYNC #1`, `SYNC #2`, `SYNC #N`, `SYNC A<N>`, and `SYNC B<N>`
 
-Cover only the synchronization-managed documents belonging to that permanent project identity. The same grammar applies to later approved `#N` identities. Never copy Global documents into project scope.
+Cover only the synchronization-managed documents belonging to that permanent development identity. Never copy Global documents into development scope.
 
 ### `SYNC OPERATIONS`
 

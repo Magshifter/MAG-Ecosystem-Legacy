@@ -1,13 +1,15 @@
 # MAG Ecosystem — AI Development Guidelines
 
 - MAG-Document-ID: `AI_GUIDELINES.md`
-- MAG-Content-Updated: `2026-09-10T19:20:00+03:00`
+- MAG-Content-Updated: `2026-09-11T12:30:00+03:00`
 
-This document is the **Global MAG development standard**. It defines **how** MAG XenForo add-ons are developed with AI assistance.
+This document is the **Global MAG development standard**. It defines **how** MAG software is developed with AI assistance.
 
 It applies to ChatGPT, Cursor IDE, Cursor Agent, Codex, and any other AI-assisted tool used on MAG work.
 
-Ecosystem identity, project registry, `#N` markers, Global vs Project documentation levels, AI context isolation, high-level documentation authority, project bootstrap, and the License Manager concept are defined in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). This file does not restate those definitions. Load **GLOBAL + the active `#N`** as specified there.
+Ecosystem identity, development-class taxonomy, namespace registry, Global vs active-development documentation levels, AI context isolation, high-level documentation authority, development bootstrap, and the License Manager concept are defined in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). This file does not restate those definitions. Load **GLOBAL + the active development identity** as specified there.
+
+Identity classes (`#N`, `A<N>`, `B<N>`), registry, and context isolation are owned by `MAG_ECOSYSTEM.md`. Unless a section explicitly scopes otherwise, XenForo add-on engineering rules in this document apply only when the active development identity is a `#N` XenForo add-on project.
 
 Detailed coding-agent execution boundaries, mandatory Cursor pre-flight, Plain text output requirements, checkpoint mechanics, and report formats belong in `AI_AGENTS_RULES.md`.
 
@@ -26,7 +28,7 @@ MAG development must remain:
 - Correct.
 - Stable.
 - Maintainable.
-- Compatible with the XenForo versions declared by the active project.
+- Compatible with the XenForo versions declared by the active `#N` project when the active development identity is `#N`.
 - Secure.
 - Performant.
 - Accurately documented.
@@ -42,23 +44,23 @@ Use the authority model in `MAG_ECOSYSTEM.md`. For implementation work, apply it
 
 | Source | Use |
 | --- | --- |
-| `MAG_ECOSYSTEM.md` | Ecosystem identity, registry, documentation map, authority navigation, and GLOBAL + active `#N` context isolation. |
-| `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Lifecycle order, stage gates, and documentation timing. Stage/phase closure mechanics in this document apply at those checkpoints. |
-| Global documentation (other) | Process, tools, Git, security/performance/testing standards, XenForo development rules. |
-| `MAG_IMPLEMENTATION_PATTERNS.md` | Reusable, evidence-backed technical knowledge. Subordinate to Global process documents and active-project TZ, Roadmap, and Architecture. Not a source of product requirements. |
-| Project TZ | What the add-on must do. Canonical filename: `P<NN>__<CODE>__TZ.md` (`MAG_ECOSYSTEM.md`). |
+| `MAG_ECOSYSTEM.md` | Ecosystem identity, registry, documentation map, authority navigation, and GLOBAL + active development identity context isolation. |
+| `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Lifecycle order, stage gates, and documentation timing for `#N` XenForo add-ons. Stage/phase closure mechanics in this document apply at those checkpoints. |
+| Global documentation (other) | Process, tools, Git, security/performance/testing standards, and XenForo development rules for `#N` projects. |
+| `MAG_IMPLEMENTATION_PATTERNS.md` | Reusable, evidence-backed technical knowledge. Subordinate to Global process documents and active-development TZ, Roadmap, and Architecture. Not a source of product requirements. |
+| Project TZ | What the product must do. For `#N`: the XenForo add-on requirements. Canonical filename: `P<NN>__<CODE>__TZ.md` (`MAG_ECOSYSTEM.md`). |
 | Project Roadmap | What increment is approved **now**, and verified progress. |
 | Project Architecture | Approved implementation architecture. Does not override TZ. |
 | Project CLASS_MAP | Current classes and responsibilities as they exist. |
 | Actual project code | What is currently implemented. Documentation must not claim code that does not exist. |
-| Installed XenForo source | Undocumented or uncertain framework behavior. |
+| Installed XenForo source | Undocumented or uncertain XenForo framework behavior when the active development identity is `#N`. |
 | Changelog / Git history | History. Do not rewrite the past. |
 | README / overview | Descriptive only. |
 | Idea | Non-authoritative research. |
 
 `AI_AGENTS_RULES.md` (when present) additionally constrains repository-task execution and states mandatory Cursor pre-flight and Plain text execution requirements. Cursor prompt presentation and post-execution review remain in §24 of this document. Cursor model selection and usage metrics remain in `CURSOR_USAGE_ANALYTICS.md`. If Global documents conflict, **stop and report** rather than silently choosing one.
 
-AI must not invent XenForo APIs or rely on assumptions when installed XenForo source can be inspected.
+For `#N` XenForo add-on work, AI must not invent XenForo APIs or rely on assumptions when installed XenForo source can be inspected.
 
 ---
 
@@ -69,12 +71,12 @@ Development must remain incremental and controlled by the user.
 AI must:
 
 - Read the relevant project requirements before proposing changes.
-- Inspect the existing implementation in the active `#N` repository.
+- Inspect the existing implementation in the active development repository.
 - Preserve verified working behavior.
 - Identify affected classes and dependencies.
 - Explain the proposed change.
 - Implement only the requested scope.
-- Verify XenForo compatibility for the versions in that project's scope.
+- When the active development identity is `#N`, verify XenForo compatibility for the versions in that project's scope.
 - Review security and performance implications as appropriate to the change.
 - Test in proportion to risk and previous verification.
 - Synchronize only affected documentation.
@@ -252,6 +254,8 @@ Do not introduce a new abstraction only to support hypothetical future functiona
 
 ## 8. XenForo standards
 
+**Scope: `#N` MAG XenForo add-on projects only.**
+
 MAG add-ons follow official XenForo conventions for the versions declared by the active project.
 
 Prefer native XenForo mechanisms such as:
@@ -284,6 +288,8 @@ When XenForo behavior is uncertain:
 
 ## 9. Third-party reference add-ons
 
+**Scope: `#N` MAG XenForo add-on projects only.**
+
 Third-party add-ons may be inspected to identify candidate XenForo integration points, compatibility considerations, common patterns, and pitfalls.
 
 Third-party code is **not** authoritative XenForo documentation.
@@ -304,7 +310,7 @@ declare(strict_types=1);
 
 PHP must:
 
-- Follow XenForo-compatible style for the project.
+- When `#N`, follow XenForo-compatible style for the project; otherwise follow the active development's established style.
 - Use meaningful types.
 - Use focused classes and methods.
 - Avoid unnecessary static state.
@@ -320,6 +326,8 @@ Do not introduce dependencies without a clear benefit.
 ---
 
 ## 11. Frontend: JavaScript, CSS, and LESS
+
+**Scope: `#N` MAG XenForo add-on projects only.**
 
 JavaScript must remain minimal.
 
@@ -338,6 +346,8 @@ Do not maintain duplicate CSS and LESS sources without a documented build or pac
 ---
 
 ## 12. Content scope
+
+**Scope: `#N` MAG XenForo add-on projects only.**
 
 An add-on must process only the XenForo content types and surfaces declared in that project's TZ.
 
@@ -395,6 +405,8 @@ Experimental observations are not formal benchmarks and must not be used to roll
 ---
 
 ## 16. Localization
+
+**Scope: `#N` MAG XenForo add-on projects only.**
 
 All user-facing text must use XenForo phrases.
 
@@ -460,7 +472,7 @@ A shipping MAG version is a product baseline, not a permanent public API freeze.
 
 Existing structures may change when the active stage requires it (markup, data attributes, JavaScript, CSS, constructors, method signatures, storage layout, and similar). Such changes must be required, explained before implementation, verified against XenForo, tested, reflected in documentation, and checkpointed in Git.
 
-Working behavior must not be broken casually. Preserve the current shipping product of `#N` unless the approved increment explicitly changes it.
+Working behavior must not be broken casually. Preserve the current shipping product of the active development identity unless the approved increment explicitly changes it.
 
 ---
 
@@ -500,8 +512,8 @@ If a stage reveals unresolved **Critical** issues, the stage is not closed and p
 
 Before publishing:
 
-1. Verify the permanent repository root for the active `#N` (or `MAG-Ecosystem` for Global documentation).
-2. Verify intended XenForo add-on structure when the repository is an add-on.
+1. Verify the permanent repository root for the active development identity (or `MAG-Ecosystem` for Global documentation).
+2. When the active development identity is `#N`, verify intended XenForo add-on structure.
 3. Review all changes.
 4. Confirm no temporary restore directories are tracked.
 5. Confirm no XenForo core or environment-specific files are included.
@@ -537,6 +549,8 @@ Do not claim a MAG add-on repository must keep copies of Global `AI_GUIDELINES.m
 ---
 
 ## 21. Release artifact preservation
+
+**Scope: `#N` MAG XenForo add-on projects only.**
 
 Release Presentation requirements, sequence, and final-package gating are canonical in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) Phase 8. Do not build the final release ZIP before required Release Presentation data is approved and applied per that workflow.
 
@@ -613,10 +627,10 @@ Follow the capture procedure defined in `MAG_IMPLEMENTATION_PATTERNS.md` (**Dete
 Rules:
 
 - Promote only evidence-backed findings. Do not generalize from donor behavior, assumptions, planned architecture, hypotheses, or accidental implementation behavior.
-- Keep product requirements, approved project architecture, project code structure, project-specific behavior, and project history in the active `#N` documentation.
+- Keep product requirements, approved project architecture, project code structure, product-specific behavior, and project history in the active development identity's documentation.
 - Add or update Global reusable knowledge only when there is a meaningful future reuse case. Do not turn the knowledge base into a development log.
 - If the approved procedure already includes Global documentation synchronization and a qualifying knowledge update is within scope, record it as part of that procedure.
-- If reusable knowledge is discovered while working only in an active `#N` repository and modifying `MAG-Ecosystem` would cross the approved repository/procedure scope, do **not** modify Global documentation. Report the candidate to the product owner and wait for approval of a separate Global documentation update.
+- If reusable knowledge is discovered while working only in an active development repository and modifying `MAG-Ecosystem` would cross the approved repository/procedure scope, do **not** modify Global documentation. Report the candidate to the product owner and wait for approval of a separate Global documentation update.
 - Discovery of reusable knowledge does **not** authorize unrelated implementation, architecture changes, requirements changes, cross-project modifications, scope expansion, Git operations, or starting another development stage.
 
 Entry structure, status model, and maintenance mechanics remain authoritative in `MAG_IMPLEMENTATION_PATTERNS.md`.
@@ -629,7 +643,7 @@ The list must:
 
 - Be concise.
 - Contain filenames/paths only unless the user asks for explanation.
-- Be grouped by source context using `GLOBAL [MAG] Ecosystem`, `#1 [MAG] Global Links Favicons`, `#2 [MAG] Tag Synchronizer`, and future `#N` markers as applicable.
+- Be grouped by source context using `GLOBAL [MAG] Ecosystem`, `#1 [MAG] Global Links Favicons`, `#2 [MAG] Tag Synchronizer`, `A1 [MAG] GPT|Cursor|Sync`, and other approved development-identity markers defined in `MAG_ECOSYSTEM.md`.
 - Include only files that actually changed or that genuinely need Project-context refresh.
 - Use real project-relative paths where useful, for example `docs/P01__GLF__Architecture.md`.
 - Include that project's `docs/P<NN>__<CODE>__CURSOR_USAGE_HISTORY.md` when that file actually changed.
@@ -710,9 +724,9 @@ AI-assisted MAG development must remain:
 - Security-conscious.
 - Performance-conscious.
 - Precisely documented.
-- Limited to the active stage of the active `#N`.
+- Limited to the active stage of the active development identity.
 - Preservative of that project's current shipping baseline.
 
 Work proceeds from verified code and verified XenForo behavior, not from assumptions, silent conflict resolution, or speculative future architecture.
 
-**GLOBAL defines HOW. `#N` defines WHAT.**
+**GLOBAL defines HOW. Active development defines WHAT.**

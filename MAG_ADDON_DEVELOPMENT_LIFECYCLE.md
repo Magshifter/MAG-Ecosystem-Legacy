@@ -1,9 +1,11 @@
 # MAG Add-on Development Lifecycle
 
 - MAG-Document-ID: `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
-- MAG-Content-Updated: `2026-09-10T19:20:00+03:00`
+- MAG-Content-Updated: `2026-09-11T12:30:00+03:00`
 
-This document defines the Global MAG lifecycle for developing and maintaining MAG XenForo add-ons.
+This document defines the Global MAG lifecycle for developing and maintaining **MAG XenForo add-ons (`#N`)**.
+
+**Scope:** This lifecycle applies to **`#N` MAG XenForo Projects** unless a separately approved lifecycle exists for another development class. Process rules that are not XenForo-specific remain available through GLOBAL + active development identity, but XenForo-only phases, gates, and release mechanics in this document apply only where the active identity is `#N`.
 
 It defines the ordered development path from an initial idea through project approval, requirements, technical verification, architecture, implementation, validation, release, post-release verification, reusable-knowledge capture, and subsequent maintenance.
 
@@ -20,7 +22,7 @@ It does not replace:
 - any active project TZ, Roadmap, Architecture, CLASS_MAP, Changelog, README, or approved research/audit documentation.
 
 GLOBAL defines HOW.
-#N defines WHAT.
+Active development defines WHAT.
 
 Detailed development rules remain in AI_GUIDELINES.md.
 Coding-agent execution rules remain in AI_AGENTS_RULES.md.
@@ -31,7 +33,7 @@ Project identity and documentation authority remain in MAG_ECOSYSTEM.md.
 
 ### Authority boundaries and adoption
 
-The lifecycle applies to GLOBAL + the active #N. Project document authority, identity, naming, and context isolation remain defined in [MAG_ECOSYSTEM.md](MAG_ECOSYSTEM.md).
+The lifecycle applies to GLOBAL + the active `#N` XenForo project. Project document authority, identity, naming, and context isolation remain defined in [MAG_ECOSYSTEM.md](MAG_ECOSYSTEM.md).
 
 Lifecycle transitions do not enlarge an agent's authorized scope. Apply [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) to execution in every phase, including research, documentation, and release work. Apply [AI_GUIDELINES.md](AI_GUIDELINES.md) §24 whenever a phase uses Cursor for prompt presentation and post-execution review. Apply [CURSOR_USAGE_ANALYTICS.md](CURSOR_USAGE_ANALYTICS.md) whenever a phase uses Cursor for usage metrics and measurement; this document does not define telemetry fields, model selection, automatic After consumption, or usage-value display formats.
 
@@ -1162,7 +1164,7 @@ Phase 8 PASS confirms readiness of the final artifact, not publication. Stable s
 ## 23. Authority Summary
 
 - **MAG_ADDON_DEVELOPMENT_LIFECYCLE.md** is canonical for ordered lifecycle phases, transitions, stage gates, and documentation timing.
-- **[MAG_ECOSYSTEM.md](MAG_ECOSYSTEM.md)** owns ecosystem identity, project registry, documentation map, naming, context isolation, and the documentation authority model.
+- **[MAG_ECOSYSTEM.md](MAG_ECOSYSTEM.md)** owns ecosystem identity, development-class taxonomy, namespace registry, documentation map, naming, context isolation, and the documentation authority model.
 - **[AI_GUIDELINES.md](AI_GUIDELINES.md)** owns detailed development workflow and operational standards.
 - **[AI_AGENTS_RULES.md](AI_AGENTS_RULES.md)** owns coding-agent execution boundaries, stop/report mechanics, and applicable checkpoint rules.
 - **[CURSOR_USAGE_ANALYTICS.md](CURSOR_USAGE_ANALYTICS.md)** owns Cursor routing, model selection, tracking, reporting, optimization, and history methodology.
@@ -1171,6 +1173,6 @@ Phase 8 PASS confirms readiness of the final artifact, not publication. Stable s
 - **Actual code and verified evidence** establish what exists and what has been demonstrated; they do not silently redefine approved requirements.
 - **The Product Owner** retains control over requirements, priorities, architecture, implementation authorization, Git actions, and releases.
 
-GLOBAL defines HOW. #N defines WHAT.
+GLOBAL defines HOW. Active development defines WHAT.
 
 ChatGPT coordinates and prepares decisions and documentation. Cursor/Codex execute approved technical tasks within their governing rules. This lifecycle makes the order explicit without transferring decision authority to the tools.

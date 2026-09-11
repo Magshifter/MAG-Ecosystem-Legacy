@@ -1,7 +1,7 @@
 # MAG Implementation Patterns
 
 - MAG-Document-ID: `MAG_IMPLEMENTATION_PATTERNS.md`
-- MAG-Content-Updated: `2026-09-08T00:11:06+03:00`
+- MAG-Content-Updated: `2026-09-11T12:30:00+03:00`
 
 Reusable, source-backed implementation knowledge for MAG development.
 
@@ -14,7 +14,9 @@ This document is a Global knowledge base. It does not define product requirement
 - `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
 - any active project `TZ`, `Roadmap`, `Architecture`, `CLASS_MAP`, `Changelog`, or `README`
 
-`GLOBAL defines HOW. #N defines WHAT.`
+`GLOBAL defines HOW. Active development defines WHAT.`
+
+Entries in this document are **stack-scoped** unless explicitly marked otherwise. XenForo/XFRM entries apply to `#N` products only. Do not apply XenForo patterns to `A<N>`, `B<N>`, or other non-`#N` developments without matching verified scope.
 
 ## Usage rule
 
@@ -26,8 +28,8 @@ For a concrete task:
 2. Open only the matching section.
 3. Check the entry status and verified scope.
 4. Reuse a pattern only when the current task matches its conditions.
-5. If an entry is version-specific, project-specific, or marked `Needs revalidation`, verify the current installed XenForo source or current project implementation before relying on it.
-6. If this document conflicts with authoritative Global or active-project documentation, report the conflict. Do not silently choose this document.
+5. If an entry is version-specific, development-specific, or marked `Needs revalidation`, verify the current installed XenForo source or current development implementation before relying on it.
+6. If this document conflicts with authoritative Global or active-development documentation, report the conflict. Do not silently choose this document.
 
 ## Index
 
@@ -177,7 +179,7 @@ It must **not**:
 - silently resolve documentation conflicts;
 - replace required current-source verification where an entry requires revalidation.
 
-`GLOBAL defines HOW. #N defines WHAT.`
+`GLOBAL defines HOW. Active development defines WHAT.`
 
 ### 9. Procedure completion integration
 
@@ -185,7 +187,7 @@ Reusable-knowledge evaluation is a normal completion consideration for relevant 
 
 If the current approved procedure already includes Global documentation synchronization and the knowledge update is within scope, it may be recorded as part of that procedure.
 
-If the reusable candidate is discovered while working only within an active `#N` repository and modifying `MAG-Ecosystem` would cross the approved repository/procedure scope:
+If the reusable candidate is discovered while working only within an active development repository and modifying `MAG-Ecosystem` would cross the approved repository/procedure scope:
 
 - do not modify `MAG-Ecosystem`;
 - report the reusable-knowledge candidate to the product owner;

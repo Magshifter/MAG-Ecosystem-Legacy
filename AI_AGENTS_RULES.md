@@ -1,13 +1,15 @@
 # MAG Ecosystem — AI Coding Agent Rules
 
 - MAG-Document-ID: `AI_AGENTS_RULES.md`
-- MAG-Content-Updated: `2026-09-10T16:38:25+00:00`
+- MAG-Content-Updated: `2026-09-11T12:30:00+03:00`
 
 These rules define **how coding agents may execute** work in MAG repositories.
 
 They apply equally to Cursor Agent, Codex, and any future coding agent used on MAG work.
 
-Coding agents are **implementation tools**. They do not own strategy, independent research, architecture, requirements, or project management. Broader MAG development policy is in [`AI_GUIDELINES.md`](AI_GUIDELINES.md). Ecosystem structure, `#N` context, and documentation authority navigation are in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). Do not restate those documents here.
+Coding agents are **implementation tools**. They do not own strategy, independent research, architecture, requirements, or project management. Broader MAG development policy is in [`AI_GUIDELINES.md`](AI_GUIDELINES.md). Ecosystem structure, active development identity, and documentation authority navigation are in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). Do not restate those documents here.
+
+Respect **GLOBAL + active development identity** isolation per `MAG_ECOSYSTEM.md`. XenForo-specific execution rules apply only when that identity is a `#N` XenForo add-on project.
 
 Ordered phase transitions and documentation timing are defined in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md). That lifecycle does not expand the execution scope authorized under this document.
 
@@ -27,7 +29,7 @@ These rules are **mandatory prerequisites** for every Cursor-assisted procedure.
 
 For every Cursor procedure, follow [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24 for prompt approval, presentation order, post-execution review, and the Ukrainian learning note. That section alone owns presentation; do not recreate its ordered block here.
 
-Mandatory execution and Plain text requirements remain in this document. Respect **GLOBAL + active `#N`** isolation and the approved repository/tool context. Resolve an unknown or ambiguous Cursor chat with the Product Owner; do not invent it.
+Mandatory execution and Plain text requirements remain in this document. Respect **GLOBAL + active development identity** isolation and the approved repository/tool context. Resolve an unknown or ambiguous Cursor chat with the Product Owner; do not invent it.
 
 Routing, model selection/escalation, usage tracking, automatic After telemetry and failure handling, and separate usage-value display remain in [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). Before remains an analytics field, not a required item in the user-facing prompt presentation block. Do not routinely request manual After reporting.
 
@@ -64,12 +66,12 @@ An AI coding agent may:
 
 - Inspect existing repository code and structure required for the defined task.
 - Locate files, classes, templates, styles, JavaScript, PHP, XML, configuration, or other components relevant to that task.
-- Read Global and active-`#N` documentation required for the current task.
+- Read Global and active-development documentation required for the current task.
 - Implement from an approved, clearly specified change.
 - Modify existing code according to explicit requirements.
 - Analyze bugs within the repository.
 - Optimize or refactor existing code when explicitly requested.
-- Inspect installed XenForo source when the approved task requires it.
+- When the active development identity is `#N`, inspect installed XenForo source when the approved task requires it.
 - Run relevant local tests, linters, syntax checks, or development commands needed to verify **this** change.
 - Inspect Git status and diffs to understand or validate its own work.
 - Report exactly which files were changed and why.
@@ -124,7 +126,7 @@ If critical information is missing and cannot be determined safely from the repo
 For each task:
 
 1. Inspect only the repository areas needed to understand the task.
-2. Read only the documentation relevant to the task (GLOBAL + active `#N`).
+2. Read only the documentation relevant to the task (GLOBAL + active development identity).
 3. Confirm the existing implementation before modifying it (Existing Code First).
 4. Identify dependencies on existing functionality.
 5. Follow approved architecture and conventions.
@@ -171,6 +173,8 @@ When completed work may have produced reusable technical knowledge, follow the e
 ---
 
 ## 8. XenForo inspection
+
+**Applies when the active development identity is `#N`.**
 
 Do not invent XenForo APIs or undocumented framework behavior.
 

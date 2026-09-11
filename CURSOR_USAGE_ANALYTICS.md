@@ -1,13 +1,13 @@
 # MAG Ecosystem — Cursor Usage Analytics
 
 - MAG-Document-ID: `CURSOR_USAGE_ANALYTICS.md`
-- MAG-Content-Updated: `2026-09-10T19:20:00+03:00`
+- MAG-Content-Updated: `2026-09-11T12:30:00+03:00`
 
 This document is the reusable MAG standard for **measuring, reporting, comparing, and optimizing Cursor usage** across MAG projects.
 
 It is **methodology**, not a procedure-history log. Do not append project or procedure rows to this file.
 
-Project identity (`#N`), Global vs Project documentation, context isolation, and the Global documentation authority map are defined in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). ChatGPT → Product Owner → Cursor prompt presentation, post-execution review, and broader development workflow are in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24 and related sections. Coding-agent execution, stop conditions, and the redundant pre-commit review rule are in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md).
+Project identity (`#N`, `A<N>`, `B<N>`, `Global`), Global vs active-development documentation, context isolation, and the Global documentation authority map are defined in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). ChatGPT → Product Owner → Cursor prompt presentation, post-execution review, and broader development workflow are in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24 and related sections. Coding-agent execution, stop conditions, and the redundant pre-commit review rule are in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md).
 
 Lifecycle timing is defined in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md); this document remains authoritative for Cursor measurement, Cursor Models Before/After methodology, automatic After telemetry consumption, visible-delta calculation, reporting, and metric finalization. Reusable technical knowledge and its capture procedure belong in [`MAG_IMPLEMENTATION_PATTERNS.md`](MAG_IMPLEMENTATION_PATTERNS.md).
 
@@ -112,11 +112,11 @@ Before every Cursor procedure, ChatGPT must identify the correct Cursor Agent ch
 
 The selected Cursor chat must correspond to the active work context.
 
-Respect MAG context isolation: **GLOBAL + active `#N`**.
+Respect MAG context isolation: **GLOBAL + active development identity** per `MAG_ECOSYSTEM.md`.
 
-Do not route project-specific work through another project's Cursor Agent chat.
+Do not route work for one approved development identity through another identity's Cursor Agent chat.
 
-Do not treat standalone tooling repositories as numbered MAG Ecosystem projects.
+Do not assign XenForo `#N` markers to non-`#N` products. Unregistered MAG-branded repositories do not receive a development identity automatically.
 
 Do **not** silently invent a canonical Cursor Agent chat name when the actual chat name has not been established. If the required chat name is unknown or ambiguous, resolve it with the user before instructing execution.
 
@@ -284,7 +284,7 @@ Documentation work may be subclassified when useful. Examples:
 
 These examples are labels, not a closed catalog. Add a precise subclass only when it helps comparison.
 
-Where useful, also record project/release/stage classification (`#N`, add-on name, version, roadmap increment).
+Where useful, also record project/release/stage classification (`#N`, `A<N>`, `B<N>`, product name, version, roadmap increment).
 
 ---
 
@@ -292,7 +292,7 @@ Where useful, also record project/release/stage classification (`#N`, add-on nam
 
 | Field | Intent |
 | --- | --- |
-| Project marker | `#N` from the Global registry, or `Global` for MAG-Ecosystem process work |
+| Project marker | Approved development identity from the Global registry (`#N`, `A<N>`, `B<N>`), or `Global` for MAG-Ecosystem process work |
 | Project / add-on | Product or `MAG-Ecosystem` |
 | Procedure | Short id or sequence within that body of work |
 | Classification | Type and optional documentation subclass |
@@ -309,7 +309,7 @@ Do not invent metrics that cannot realistically be collected.
 ### Recording template
 
 ```text
-Project marker: #<N> | Global
+Project marker: #<N> | A<N> | B<N> | Global
 Project / add-on:
 Procedure:
 Classification:
@@ -426,7 +426,7 @@ When the tree is ready to commit and there are no unresolved Critical issues, co
 
 Do not provide the next Cursor prompt until the Product Owner approves receiving it.
 
-Every ready-to-copy local repository command block must begin with `cd` to the **canonical repository directory** for that work (`MAG-Ecosystem` or the active `#N` clone path in `MAG_ECOSYSTEM.md`).
+Every ready-to-copy local repository command block must begin with `cd` to the **canonical repository directory** for that work (`MAG-Ecosystem` or the active development identity's clone path in `MAG_ECOSYSTEM.md`).
 
 ---
 
@@ -484,7 +484,7 @@ Update forecasts as more MAG projects provide measured data. A recorded pre-impl
 
 ## 12. Cross-project analytics
 
-Use the same fields and types so MAG can later compare `#1`, `#2`, `#3`, and Global process work (polish vs feature vs architecture, compatibility, debugging, audits, documentation, release finalization, bootstrap vs maintenance).
+Use the same fields and types so MAG can later compare `#1`, `#2`, `#3`, `A1`, `B1`, and Global process work (polish vs feature vs architecture, compatibility, debugging, audits, documentation, release finalization, bootstrap vs maintenance).
 
 Keep **project marker and product name** on every historical row. Do not merge datasets without recording which project produced the measurement.
 
@@ -497,7 +497,7 @@ Do not copy another project’s procedure log into this Global standard.
 | Kind of record | Logical home (do not create new files solely from this section) |
 | --- | --- |
 | Methodology (this document) | `MAG-Ecosystem` / `CURSOR_USAGE_ANALYTICS.md` |
-| `#N` procedure logs, release summaries, project forecasts vs actual | That project’s repository, as project history (not TZ/Roadmap requirements). Canonical history filename example: `docs/P01__GLF__CURSOR_USAGE_HISTORY.md`. |
+| `#N` / `A<N>` / `B<N>` procedure logs, release summaries, project forecasts vs actual | That development's repository, as project history (not TZ/Roadmap requirements). Canonical history filename example: `docs/P01__GLF__CURSOR_USAGE_HISTORY.md`. |
 | Global documentation-reorganization / ecosystem-process measurements | `MAG-Ecosystem` process history, separate from this methodology file |
 
 Do not silently rewrite measured historical records because methodology later changes. If a field is retired or reinterpreted, keep old rows as recorded and note the interpretation change in notes or a later dated correction. Corrections must be transparent.
