@@ -1,7 +1,7 @@
 # MAG Add-on Development Lifecycle
 
 - MAG-Document-ID: `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
-- MAG-Content-Updated: `2026-09-11T08:07:00+03:00`
+- MAG-Content-Updated: `2026-09-10T19:20:00+03:00`
 
 This document defines the Global MAG lifecycle for developing and maintaining MAG XenForo add-ons.
 
@@ -88,7 +88,6 @@ The lifecycle follows these principles:
 11. Stable releases become the baseline for subsequent development.
 12. The Product Owner controls approval gates, implementation authorization, Git checkpoints, and releases.
 13. Product Owner technical-lead learning develops progressively through practical, stage-specific learning after meaningful Cursor procedures. ChatGPT provides concise Ukrainian learning notes as part of post-execution review per [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24.3. Learning notes deepen progressively as Product Owner experience grows. They do not authorize execution and do not replace requirements, architecture, or validation authority.
-14. Satisfied lifecycle prerequisites remain satisfied while their verified evidence remains valid; a passed gate must not be contradicted by casually reopening prerequisites without invalidating evidence.
 
 A smaller project may pass through some phases quickly.
 
@@ -124,28 +123,6 @@ Planned work must not be represented as implemented work.
 Before advancing from a completed logical stage or phase, complete the mandatory closure procedure in [AI_GUIDELINES.md](AI_GUIDELINES.md) §20 and the applicable execution/checkpoint rules in [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) §10. An output ready for review is not a closed phase. Every transition in this document is subject to that prerequisite.
 
 Research/architecture iterations and intermediate actions within the same approved logical phase do not create artificial Git checkpoints. Existing project phase/stage identifiers remain historical identifiers; record their mapping to this lifecycle without renumbering completed history.
-
-### Prerequisite satisfaction and gate-passed evidence
-
-Follow this order when deciding whether a lifecycle prerequisite or verification step is still required:
-
-```text
-Current lifecycle state
-→ existing verified evidence
-→ check whether that evidence has been invalidated
-→ identify any genuinely new uncertainty
-→ only then determine whether additional verification is required
-```
-
-Once a lifecycle prerequisite has been satisfied by verified evidence and a subsequent gate relying on that evidence has passed, the prerequisite remains satisfied unless new evidence or a concrete changed condition invalidates it.
-
-A passed gate establishes that its required prerequisites were sufficiently satisfied at the time of evaluation. After that gate, do not behave as though one of those prerequisites remains unresolved unless a specific new fact invalidates the previous evidence. If such a fact exists, state the exact invalidated prerequisite and the new evidence before initiating additional verification.
-
-Do not reopen or repeat a prerequisite merely because a later stage references the same engineering rule, mechanism, or verification type. XenForo native tooling, source verification, targeted research, and other mandatory checks remain required when applicable, but still-valid verified evidence satisfies that requirement.
-
-If a genuinely new technical uncertainty appears during implementation, perform only the smallest targeted verification required for that uncertainty.
-
-Invalidation examples include: changed requirement, changed architecture, changed scope, changed XenForo/XFRM platform version, repository or environment change affecting the evidence, failed validation, contradictory new evidence, or another concrete reason that makes the earlier conclusion no longer reliable.
 
 
 ## 4. Phase 0 — Idea and Evaluation

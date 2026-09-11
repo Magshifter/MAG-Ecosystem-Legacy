@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Development Guidelines
 
 - MAG-Document-ID: `AI_GUIDELINES.md`
-- MAG-Content-Updated: `2026-09-11T08:07:00+03:00`
+- MAG-Content-Updated: `2026-09-10T19:20:00+03:00`
 
 This document is the **Global MAG development standard**. It defines **how** MAG XenForo add-ons are developed with AI assistance.
 
@@ -443,14 +443,6 @@ When a change is already understood, approved, and technically verified, use a *
 - Expand scope only when new uncertainty, dependency, unexpected behavior, security/compatibility concern, or other material risk justifies it.
 
 This optimization must not weaken required validation.
-
-### Satisfied prerequisites after a passed gate
-
-Canonical prerequisite and gate-evidence rules are in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) §3.3.
-
-ChatGPT must reuse still-valid verified evidence and must not reopen or repeat a prerequisite merely because a later stage references the same engineering rule. After a gate `PASS`, treat its satisfied prerequisites as resolved unless a specific invalidating fact is identified before proposing additional verification.
-
-Native tooling, source verification, and XenForo-native development rules remain mandatory when applicable. Already verified and still-valid evidence satisfies those requirements. New verification is justified only by a concrete unresolved or invalidated condition.
 
 ### Product Owner Practical Acceptance
 
