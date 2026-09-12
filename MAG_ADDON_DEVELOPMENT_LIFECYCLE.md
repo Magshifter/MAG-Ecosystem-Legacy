@@ -1,7 +1,7 @@
 # MAG Add-on Development Lifecycle
 
 - MAG-Document-ID: `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
-- MAG-Content-Updated: `2026-09-11T12:30:00+03:00`
+- MAG-Content-Updated: `2026-09-12T10:56:10+03:00`
 
 This document defines the Global MAG lifecycle for developing and maintaining **MAG XenForo add-ons (`#N`)**.
 
@@ -26,7 +26,8 @@ Active development defines WHAT.
 
 Detailed development rules remain in AI_GUIDELINES.md.
 Coding-agent execution rules remain in AI_AGENTS_RULES.md.
-Cursor workflow and usage methodology remain in CURSOR_USAGE_ANALYTICS.md.
+Cursor model-selection / model-routing policy remains in AI_GUIDELINES.md §24.4.
+Cursor usage telemetry remains in CURSOR_USAGE_ANALYTICS.md.
 Reusable technical knowledge remains in MAG_IMPLEMENTATION_PATTERNS.md.
 Project identity and documentation authority remain in MAG_ECOSYSTEM.md.
 
@@ -35,7 +36,7 @@ Project identity and documentation authority remain in MAG_ECOSYSTEM.md.
 
 The lifecycle applies to GLOBAL + the active `#N` XenForo project. Project document authority, identity, naming, and context isolation remain defined in [MAG_ECOSYSTEM.md](MAG_ECOSYSTEM.md).
 
-Lifecycle transitions do not enlarge an agent's authorized scope. Apply [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) to execution in every phase, including research, documentation, and release work. Apply [AI_GUIDELINES.md](AI_GUIDELINES.md) §24 whenever a phase uses Cursor for prompt presentation and post-execution review. Apply [CURSOR_USAGE_ANALYTICS.md](CURSOR_USAGE_ANALYTICS.md) whenever a phase uses Cursor for usage metrics and measurement; this document does not define telemetry fields, model selection, automatic After consumption, or usage-value display formats.
+Lifecycle transitions do not enlarge an agent's authorized scope. Apply [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) to execution in every phase, including research, documentation, and release work. Apply [AI_GUIDELINES.md](AI_GUIDELINES.md) §24 whenever a phase uses Cursor for prompt presentation, post-execution review, or model routing. Apply [CURSOR_USAGE_ANALYTICS.md](CURSOR_USAGE_ANALYTICS.md) whenever a phase uses Cursor for usage metrics and measurement; this document does not define telemetry fields, automatic After consumption, or usage-value display formats.
 
 The Global documentation map in MAG_ECOSYSTEM.md includes this lifecycle and MAG_IMPLEMENTATION_PATTERNS.md. Keep that map synchronized when an approved Global document or authority boundary changes.
 
@@ -126,6 +127,47 @@ Before advancing from a completed logical stage or phase, complete the mandatory
 
 Research/architecture iterations and intermediate actions within the same approved logical phase do not create artificial Git checkpoints. Existing project phase/stage identifiers remain historical identifiers; record their mapping to this lifecycle without renumbering completed history.
 
+### Coherent lifecycle blocks
+
+Related approved lifecycle actions that share one uninterrupted objective **SHOULD** execute as one coherent block when no material state change or recovery boundary requires separation.
+
+Typical uninterrupted release objective:
+
+```text
+Gate
+→ Release Finalization
+→ package/release actions
+→ Stable Release actions
+→ Post-Release Verification
+→ final documentation closure
+```
+
+These actions must **not** automatically become separate Git checkpoints, validation cycles, Cursor/Work invocations, or Product Owner confirmation cycles merely because lifecycle labels changed.
+
+Coherent blocks may remove artificial checkpoints, repeated validation, repeated confirmations, and micro-procedures. They **MUST NOT** remove mandatory Global checkpoints or genuine Product Owner-controlled authorization boundaries. Distinct gates retain separate evidence and formal results even when executed within one coherent block.
+
+Apply the material-change and checkpoint-protection filters in [AI_GUIDELINES.md](AI_GUIDELINES.md) §§18–20 and [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) §10. Lifecycle label change alone is not a checkpoint reason.
+
+### Immediate gate evaluation
+
+When the Product Owner activates or authorizes a gate and all evidence required to evaluate that gate is already available, evaluate the gate immediately in the same interaction and return the formally defined gate result (`PASS`, `BLOCKED`, or another result defined for that gate). Do not request another Product Owner confirmation solely to begin evaluation of the already-authorized gate.
+
+Required semantics:
+
+```text
+Product Owner authorization/activation
+→ immediate gate evaluation
+→ PASS / BLOCKED / other formally defined gate result
+```
+
+Clarifications:
+
+- Product Owner control remains unchanged.
+- Required Product Owner authorization is still mandatory.
+- Missing, contradictory, or stale evidence is a stop condition, not a satisfied prerequisite.
+- Gate `PASS` is only the gate result.
+- Gate `PASS` does **not** authorize a later Product Owner-controlled lifecycle stage when Global rules or the project Roadmap define that authorization separately.
+- Implementation authorization, Gate 3 approval of release finalization, Stable Release authorization, Git/tag/publication authorization, and similar remain separate where this lifecycle defines them.
 
 ## 4. Phase 0 — Idea and Evaluation
 
@@ -1134,7 +1176,7 @@ Completing one release is not project abandonment; an active product normally en
 
 ## 22. Transition and Completion Summary
 
-This summary makes phase outputs and next transitions explicit. Each transition also requires the entry conditions of its destination and the closure prerequisite in section 3. “Allowed” means eligible under the recorded authorization, not an instruction for an agent to continue automatically.
+This summary makes phase outputs and next transitions explicit. Each transition also requires the entry conditions of its destination and the closure prerequisite in section 3. “Allowed” means eligible under the recorded authorization, not an instruction for an agent to continue automatically. Gate PASS alone does not authorize the next Product Owner-controlled stage when this lifecycle defines separate authorization.
 
 | Current phase | Required output / validation basis | Next allowed transition |
 | --- | --- | --- |
@@ -1167,7 +1209,8 @@ Phase 8 PASS confirms readiness of the final artifact, not publication. Stable s
 - **[MAG_ECOSYSTEM.md](MAG_ECOSYSTEM.md)** owns ecosystem identity, development-class taxonomy, namespace registry, documentation map, naming, context isolation, and the documentation authority model.
 - **[AI_GUIDELINES.md](AI_GUIDELINES.md)** owns detailed development workflow and operational standards.
 - **[AI_AGENTS_RULES.md](AI_AGENTS_RULES.md)** owns coding-agent execution boundaries, stop/report mechanics, and applicable checkpoint rules.
-- **[CURSOR_USAGE_ANALYTICS.md](CURSOR_USAGE_ANALYTICS.md)** owns Cursor routing, model selection, tracking, reporting, optimization, and history methodology.
+- **[CURSOR_USAGE_ANALYTICS.md](CURSOR_USAGE_ANALYTICS.md)** owns Cursor usage measurement and telemetry methodology only.
+- **[AI_GUIDELINES.md](AI_GUIDELINES.md) §24.4** owns Cursor model-selection / model-routing policy.
 - **[MAG_IMPLEMENTATION_PATTERNS.md](MAG_IMPLEMENTATION_PATTERNS.md)** owns source-backed reusable technical knowledge and its qualification and maintenance rules.
 - **Active project documentation** owns the approved product requirements, architecture, sequencing, verified structure, and project history under MAG_ECOSYSTEM.md.
 - **Actual code and verified evidence** establish what exists and what has been demonstrated; they do not silently redefine approved requirements.

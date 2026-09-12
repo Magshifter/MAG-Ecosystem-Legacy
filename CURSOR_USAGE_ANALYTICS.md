@@ -1,13 +1,13 @@
 # MAG Ecosystem — Cursor Usage Analytics
 
 - MAG-Document-ID: `CURSOR_USAGE_ANALYTICS.md`
-- MAG-Content-Updated: `2026-09-11T12:30:00+03:00`
+- MAG-Content-Updated: `2026-09-12T10:56:10+03:00`
 
 This document is the reusable MAG standard for **measuring, reporting, comparing, and optimizing Cursor usage** across MAG projects.
 
-It is **methodology**, not a procedure-history log. Do not append project or procedure rows to this file.
+It is **telemetry and usage methodology only**, not a procedure-history log and **not** a model-selection policy owner. Do not append project or procedure rows to this file.
 
-Project identity (`#N`, `A<N>`, `B<N>`, `Global`), Global vs active-development documentation, context isolation, and the Global documentation authority map are defined in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). ChatGPT → Product Owner → Cursor prompt presentation, post-execution review, and broader development workflow are in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24 and related sections. Coding-agent execution, stop conditions, and the redundant pre-commit review rule are in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md).
+Project identity (`#N`, `A<N>`, `B<N>`, `Global`), Global vs active-development documentation, context isolation, and the Global documentation authority map are defined in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). ChatGPT → Product Owner → Cursor prompt presentation, post-execution review, **Cursor model-selection / model-routing policy**, and broader development workflow are in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24 and related sections. Coding-agent execution, stop conditions, and the redundant pre-commit review rule are in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md).
 
 Lifecycle timing is defined in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md); this document remains authoritative for Cursor measurement, Cursor Models Before/After methodology, automatic After telemetry consumption, visible-delta calculation, reporting, and metric finalization. Reusable technical knowledge and its capture procedure belong in [`MAG_IMPLEMENTATION_PATTERNS.md`](MAG_IMPLEMENTATION_PATTERNS.md).
 
@@ -36,9 +36,9 @@ A cheaper procedure that weakens those priorities is not an improvement.
 
 ## 2. Mandatory Cursor procedure pre-flight (FIRST operational rules)
 
-Before **every** Cursor procedure, ChatGPT must complete Cursor chat routing and Cursor model selection, establish **Cursor Models Before** when applicable for analytics/history, and present the procedure only after Product Owner approval to receive the prepared prompt.
+Before **every** Cursor procedure, ChatGPT must complete Cursor chat routing, recommend the Cursor model per [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24.4, establish **Cursor Models Before** when applicable for analytics/history, and present the procedure only after Product Owner approval to receive the prepared prompt (or continue under an already-authorized continuation per `AI_GUIDELINES.md` §24.1).
 
-Presentation order and post-execution review belong in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24. This section owns usage metrics and measurement procedure only.
+Presentation order, post-execution review, and **model-selection / model-routing policy** belong in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24. This document owns usage metrics and measurement procedure only.
 
 ### 2.1 Cursor procedure prompt presentation
 
@@ -120,76 +120,31 @@ Do not assign XenForo `#N` markers to non-`#N` products. Unregistered MAG-brande
 
 Do **not** silently invent a canonical Cursor Agent chat name when the actual chat name has not been established. If the required chat name is unknown or ambiguous, resolve it with the user before instructing execution.
 
-### 2.5 Cursor model selection — core principle
+### 2.5 Cursor model recommendation — telemetry recording
 
-Before every Cursor procedure, ChatGPT must recommend the preferred Cursor model/mode.
+Before every Cursor procedure, ChatGPT must recommend the preferred Cursor model/mode using the normative policy in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24.4.
 
-Required format:
+Required recorded format:
 
 ```text
 Cursor model: <model / mode>
 ```
 
-Model selection must happen before the Cursor procedure prompt is presented or executed.
+This document **records** the selected model for measurement and history. It does **not** define model-selection policy, escalation policy, or the current model recommendation matrix.
 
-Use the cheapest model/mode appropriate for the task, but escalate when complexity, uncertainty, or risk justifies it.
+**Historical note:** Prior Global revisions of this document contained a normative model-selection matrix and escalation policy. That policy ownership has moved to `AI_GUIDELINES.md` §24.4. Do not treat this file as a second policy owner.
 
-Consider: task complexity; uncertainty; implementation risk; debugging difficulty; security impact; XenForo integration risk; regression risk; reasoning requirements; usage efficiency.
+### 2.6 Validation independence (telemetry)
 
-**Core rule:** Model strength should scale with task complexity, uncertainty, and risk — not with habit.
+Selecting a cheaper or stronger model must **not** reduce validation requirements. Correctness, security, XenForo compatibility, performance, scope control, maintainability, testing, validation quality, and documentation accuracy remain unchanged regardless of selected model. Normative model-routing rules remain in `AI_GUIDELINES.md` §24.4.
 
-### 2.6 Model selection matrix
-
-**Auto** — default for ordinary implementation when a specific model is not required. Use for routine implementation, small fixes, rollback, documentation changes, cleanup, simple multi-file changes, and well-specified tasks. Prefer Auto when the prompt is precise, architecture is already decided, risk is low/moderate, and no special reasoning model is required.
-
-**Composer 2.5** — low-cost execution for very clear mechanical tasks: renames, cleanup, formatting, repetitive edits, simple documentation updates, known-pattern changes, narrow deterministic implementation. Do not default to it for ambiguous debugging, architecture decisions, security-sensitive code, uncertain XenForo behavior, or complex refactoring.
-
-**Grok 4.6 / Low** — small coding tasks when specific Grok execution is preferred over Auto: trivial edits, simple rollback, minor cleanup, tiny localized changes.
-
-**Grok 4.6 / Medium** — primary normal manual Grok coding mode: normal feature implementation, ordinary debugging, several related files, medium-complexity refactoring, implementation from already approved architecture. Default manual Grok level when manual Grok selection is appropriate.
-
-**Grok 4.6 / High** — when materially deeper reasoning is required: difficult bugs, multi-subsystem interactions, uncertain root cause, larger refactors, state/lifecycle problems, non-obvious XenForo integration, significant regression risk.
-
-**Grok 4.6 / Extra High** — use rarely: very difficult debugging, architecture-sensitive implementation, complex legacy behavior, multiple failed prior attempts, high-cost mistakes, deeply coupled code, exhaustive reasoning justified. Do not use for routine work.
-
-**GPT-5.6 Sol** — strong alternative/escalation: complex debugging, difficult code reasoning, large dependency analysis, weak/inconsistent Grok results, second high-quality implementation approach, high-risk code review.
-
-**Claude Opus** — strong alternative perspective: architecture review, code review, large-context reasoning, evaluating another model's implementation, alternative debugging analysis, second opinion on risky changes.
-
-### 2.7 Escalation policy
-
-Normal starting point:
-
-- Auto for ordinary well-specified work;
-- Composer 2.5 for cheap deterministic/mechanical work.
-
-Escalate to:
-
-- Grok 4.6 / Medium when manual model control or normal development reasoning is useful;
-- Grok 4.6 / High when complexity, uncertainty, or regression risk materially increases;
-- Grok 4.6 / Extra High only for genuinely exceptional/high-risk cases.
-
-Alternative escalation: GPT-5.6 Sol or Claude Opus when that family is likely to materially improve the result.
-
-Do **not** escalate merely because a stronger model exists.
-
-If a cheaper model produces repeated mistakes, unexplained edits, scope drift, weak reasoning, uncertain implementation, or failed validation, escalate to an appropriate stronger model instead of repeatedly spending requests on the same weak path.
-
-### 2.8 Validation independence
-
-Selecting a cheaper model must **not** reduce validation requirements. Correctness, security, XenForo compatibility, performance, scope control, maintainability, testing, validation quality, and documentation accuracy remain unchanged regardless of selected model.
-
-### 2.9 Model availability
-
-Keep this policy maintainable if Cursor's available models, modes, or names change. Do not invent unavailable model names or capabilities. The permanent governing principle remains: model strength scales with task complexity, uncertainty, and risk — not with habit.
-
-### 2.10 Plain text in the Cursor workflow
+### 2.7 Plain text in the Cursor workflow
 
 The Cursor procedure prompt must be provided in **Plain text** inside the copyable prompt block. Detailed Plain text execution rules for ChatGPT (including prohibitions on Writing Blocks / rich editable blocks for copyable technical content) live in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md). This analytics document preserves the sequence in §2.3 without duplicating that full output policy.
 
-### 2.11 Usage tracking authority
+### 2.8 Usage tracking authority
 
-This file remains the authoritative source for Cursor Models Before/After methodology, automatic After telemetry consumption and failure handling, visible deltas, post-execution usage-value display, history placement, and related usage rules. Prompt presentation and post-execution review belong in `AI_GUIDELINES.md` §24. Never invent usage values. Do not reintroduce deprecated tracking fields this document intentionally excludes, including request-count metrics.
+This file remains the authoritative source for Cursor Models Before/After methodology, automatic After telemetry consumption and failure handling, visible deltas, post-execution usage-value display, history placement, and related usage rules. Prompt presentation, post-execution review, and Cursor model-selection / model-routing policy belong in `AI_GUIDELINES.md` §24. Never invent usage values. Do not reintroduce deprecated tracking fields this document intentionally excludes, including request-count metrics.
 
 ---
 
@@ -451,7 +406,7 @@ Quota optimization that is in scope here:
 - reuse immediately preceding valid verification when it still applies;
 - separate meaningful procedures so cost can be compared;
 - prefer safe manual/user work where the agent adds little value;
-- choose the cheapest appropriate Cursor model/mode per §2, and escalate only when justified.
+- choose the Cursor model/mode per `AI_GUIDELINES.md` §24.4, and escalate only when justified.
 
 Do not move work to the user when that materially increases correctness, security, compatibility, or release risk.
 

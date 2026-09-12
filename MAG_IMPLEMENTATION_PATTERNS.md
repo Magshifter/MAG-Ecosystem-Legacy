@@ -1,7 +1,7 @@
 # MAG Implementation Patterns
 
 - MAG-Document-ID: `MAG_IMPLEMENTATION_PATTERNS.md`
-- MAG-Content-Updated: `2026-09-11T12:30:00+03:00`
+- MAG-Content-Updated: `2026-09-12T10:56:10+03:00`
 
 Reusable, source-backed implementation knowledge for MAG development.
 
@@ -780,7 +780,7 @@ Status: **Verified Fact / Reusable Pattern**
 
 Source context:
 - `GlobalLinksFavicons / docs/P01__GLF__CURSOR_USAGE_HISTORY.md`
-- Global authority remains `AI_AGENTS_RULES.md` and `CURSOR_USAGE_ANALYTICS.md`
+- Global authority remains `AI_AGENTS_RULES.md`, `AI_GUIDELINES.md` §24 for model routing, and `CURSOR_USAGE_ANALYTICS.md` for usage telemetry.
 
 Recorded #1 lesson:
 
@@ -798,7 +798,7 @@ For a task with uncertain XenForo behavior:
 
 This improves context targeting and makes repeated audits less likely.
 
-Do not split procedures mechanically when separation would increase cost without improving clarity or verification. Global Cursor workflow and model-selection rules remain authoritative.
+Do not split procedures mechanically when separation would increase cost without improving clarity or verification. Global Cursor workflow remains authoritative in `AI_GUIDELINES.md` §24; usage telemetry remains in `CURSOR_USAGE_ANALYTICS.md`.
 
 ---
 

@@ -1,19 +1,19 @@
 # MAG Pipeline v2 Evaluation
 
 - MAG-Document-ID: `MAG_PIPELINE_V2_EVALUATION.md`
-- MAG-Content-Updated: `2026-09-11T07:10:00+03:00`
+- MAG-Content-Updated: `2026-09-12T10:56:10+03:00`
 
-Status: EXPERIMENTAL EVALUATION FRAMEWORK — NOT GLOBAL AUTHORITY
+Status: **CLOSED / ARCHIVED EVALUATION RECORD — NOT GLOBAL AUTHORITY**
 
 ## Authority disclaimer and promotion gate
 
-These are project-scoped working documents for `#2` ([MAG] Tag Synchronizer), not Global authority. They may evolve during the approved pilot. Registration and metadata establish identity/version tracking and synchronization eligibility only; they grant no substantive authority. They cannot override approved TZ, Architecture, Roadmap, or Global rules. Only expressly approved, bounded pilot procedural exceptions may apply within their recorded scope; no exception extends to another project or cycle.
+These are project-scoped working documents for `#2` ([MAG] Tag Synchronizer), not Global authority. Registration and metadata establish identity/version tracking and synchronization eligibility only; they grant no substantive authority. They cannot override approved TZ, Architecture, Roadmap, or Global rules.
 
-Per-finding disposition and the separate Global promotion gate are defined in §12. Pilot results, registration, synchronization, Git commit, and pilot activation do not grant Global authority. Preserve evidence and decision history for every finding.
+After Product Owner-approved Global promotion on `2026-09-12`, this file remains **historical evaluation evidence only**. It is **not** parallel process authority. Active HOW rules live only in the seven-file Global documentation set. Preserve evidence and decision history for every finding.
 
 ## 1. Purpose
 
-This document evaluates whether MAG Pipeline v2 produces a real improvement over the current MAG workflow.
+This document evaluates whether MAG Pipeline v2 produced a real improvement over the prior MAG workflow.
 
 Primary success target:
 
@@ -28,22 +28,22 @@ Quality must not materially regress.
 
 ## 2. Pilot identity
 
-Active evaluated pilot (Product Owner approved activation):
+Evaluated pilot (Product Owner approved activation; now closed):
 
 - Project: `#2` — [MAG] Tag Synchronizer
 - Project marker: `P02__TS`
 - Release / upgrade: `1.1.0`
 - Pilot start boundary: development cycle `1.1.0` (Pipeline v2 active for this cycle)
-- Pilot end boundary: completion of development cycle `1.1.0`, or earlier Product Owner deactivation
-- Baseline chosen for comparison: PENDING — no reliable comparable value has yet been established
-- Baseline strategy: select and lock the closest completed MAG body of work using §3 before the first substantive `#2` / `1.1.0` implementation increment
-- Date started:
-- Product Owner approval: YES — Pipeline v2 activated for `#2` / `1.1.0` only
-- Initial Cursor Models value, if available:
+- Pilot end boundary: completion of development cycle `1.1.0` and Product Owner-approved Global promotion on `2026-09-12`
+- Baseline chosen for comparison: **COMPLETE** as qualitative pilot baseline — Product Owner confirmed practical validation of Pipeline v2 process behavior during `#2` / `1.1.0`; no reliable comparable quantitative Wall-clock baseline was locked
+- Baseline strategy: qualitative validated-process baseline for Global promotion; quantitative ≥30% claim remains `unavailable`
+- Date started: during `#2` / `1.1.0` preparatory and release cycle
+- Product Owner approval: YES — Pipeline v2 activated for `#2` / `1.1.0` only; later approved Global promotion of validated findings
+- Initial Cursor Models value, if available: `unavailable`
 
-Evaluation target: the MAG Pipeline v2 experiment for the active pilot above, governed by `MAG_PIPELINE_V2_EXPERIMENT.md`.
+Evaluation target: the MAG Pipeline v2 experiment for the pilot above, governed historically by `MAG_PIPELINE_V2_EXPERIMENT.md`.
 
-Evaluation status: **NOT COMPLETED**. Do not treat evaluation results as completed before the pilot lifecycle provides evidence. Do not invent efficiency values, Cursor usage values, or success claims.
+Evaluation status: **COMPLETE — PARTIAL PASS (qualitative) — PROMOTED**. Do not invent missing efficiency percentages. Validated findings were promoted into Global documentation; Pipeline v2 is no longer parallel authority.
 
 Do not invent missing values.
 
@@ -73,14 +73,12 @@ If reliable evidence cannot establish an exact baseline value before implementat
 
 ### 3.2 Current baseline-lock status
 
-- Selected baseline: `PENDING`
-- Approved selection method: `PENDING PRODUCT OWNER RATIFICATION`
-- Comparability rationale: `PENDING`
-- Known limitations: exact historical time evidence has not yet been established
-- Confidence: `PENDING`
-- Lock date/boundary: must be recorded before the first substantive `#2` / `1.1.0` implementation increment
-
-Required Product Owner decision: ratify either a reliable selected baseline or the §3.1 selection method and its evidence boundary before implementation begins.
+- Selected baseline: **COMPLETE** — qualitative validated-process baseline for `#2` / `1.1.0`
+- Approved selection method: Product Owner practical validation of Pipeline v2 during `#2` / `1.1.0`; quantitative Wall-clock baseline remains `unavailable`
+- Comparability rationale: process-friction findings and gate/checkpoint behavior were validated in practice; numeric time comparison was not locked
+- Known limitations: exact historical comparable Wall-clock evidence was not established
+- Confidence: high for qualitative promotion; unavailable for ≥30% numeric claim
+- Lock date/boundary: `2026-09-12` Product Owner Global-promotion decision
 
 Do not claim precise percentage improvement from a weak baseline. When exact history is unavailable, use clearly labeled proxy metrics and qualitative evidence.
 
@@ -143,6 +141,46 @@ Record whether each checkpoint was a stage boundary, risk-preservation checkpoin
 Count cases where completed work had to return to an earlier step because of misunderstood requirement, incorrect architecture, implementation defect, validation failure, documentation-state error, release-state error, or process error.
 
 Fewer procedures are not an improvement if rework increases materially.
+
+### 4.8 Coherent-block execution metrics
+
+Record these metrics **per coherent block** (§3.1 in `MAG_PIPELINE_V2_EXPERIMENT.md`) for future comparison. Use `unavailable` when evidence was not captured; do not invent measured improvements.
+
+- Cursor/Work invocation count;
+- Git checkpoint count;
+- repeated validations without invalidation;
+- Product Owner confirmation count;
+- documentation-only status update count;
+- execution round-trip count;
+- executor-failure recovery loops.
+
+Relate counts to the coherent block boundary and note whether Filters A and B (§3.2) were applied before repeated actions.
+
+### 4.9 Experimental Cursor model-routing evidence
+
+For each applicable **substantive Cursor procedure**, capture routing evidence. Use `unavailable` when a field was not recorded; do not invent values.
+
+Record:
+
+- task/stage and task category;
+- selected model;
+- short selection reason;
+- whether a lower model likely would have been sufficient;
+- escalation/de-escalation and concrete trigger;
+- execution and validation result;
+- rework attributable to under-selection;
+- unnecessary reasoning, redesign, scope expansion, latency/cost friction, or other over-selection evidence.
+
+Classify each routing decision as exactly one of:
+
+- `Appropriate selection`
+- `Over-selection`
+- `Under-selection`
+- `Unclear`
+
+Do **not** treat model price, token usage, or procedure count alone as proof of routing quality.
+
+`CURSOR_USAGE_ANALYTICS.md` owns Cursor usage and telemetry methodology only. It does **not** define model-selection policy.
 
 ## 5. Quality metrics
 
@@ -313,18 +351,20 @@ Pilot PASS / PARTIAL PASS / FAIL describes the overall evaluation result. It is 
 
 These finding IDs are fixed for the pilot. Evidence, friction, quality impact, Over-batching incidents, and final disposition must be traceable to the applicable ID.
 
-| Finding ID | Finding | Scope / intent |
-| --- | --- | --- |
-| `V2-F01` | Coherent batching | Test whether related approved actions can be executed as one reviewable batch without crossing gates or weakening control |
-| `V2-F02` | Risk-scaled procedure depth | Test deterministic S/N/H depth using the highest applicable material risk |
-| `V2-F03` | Documentation boundary batching | Test synchronization at ownership and logical closure boundaries instead of after every micro-decision |
-| `V2-F04` | Evidence reuse / reduced repeated validation | Test reuse of still-valid evidence while restoring verification when scope, risk, or state invalidates it |
-| `V2-F05` | Cursor minimization / executor selection | Test use of the lowest-friction safe executor without expanding authority or weakening verification |
-| `V2-F06` | Prompt and context optimization | Test concise task-specific prompts and reduced duplicated context under current Global presentation rules |
-| `V2-F07` | Git checkpoint consolidation | Test fewer logical checkpoints while preserving reviewability, rollback safety, and Product Owner Git control |
-| `V2-F08` | Release-flow consolidation | Test coherent release-input/execution handling while preserving all distinct Global gates and release authority |
+| Finding ID | Finding | Scope / intent | Final disposition |
+| --- | --- | --- | --- |
+| `V2-F01` | Coherent batching | Test whether related approved actions can be executed as one reviewable batch without crossing gates or weakening control | **PROMOTED** → `AI_GUIDELINES.md` §18; `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` §3 |
+| `V2-F02` | Risk-scaled procedure depth | Test deterministic S/N/H depth using the highest applicable material risk | **PROMOTED** (principle only) → `AI_GUIDELINES.md` §18 proportional/highest-risk practice; S/N/H labels not mandated |
+| `V2-F03` | Documentation boundary batching | Test synchronization at ownership and logical closure boundaries instead of after every micro-decision | **PROMOTED** → `AI_GUIDELINES.md` §18; sync mechanics remain `MAG_DOCUMENTATION_OPERATIONS.md` §10 |
+| `V2-F04` | Evidence reuse / reduced repeated validation | Test reuse of still-valid evidence while restoring verification when scope, risk, or state invalidates it | **PROMOTED** → `AI_GUIDELINES.md` §18; `AI_AGENTS_RULES.md` §9 |
+| `V2-F05` | Cursor minimization / executor selection | Test use of the lowest-friction safe executor without expanding authority or weakening verification | **PROMOTED** → `AI_GUIDELINES.md` §24.2; `AI_AGENTS_RULES.md` |
+| `V2-F06` | Prompt and context optimization | Test concise task-specific prompts and reduced duplicated context under current Global presentation rules | **PROMOTED** → `AI_GUIDELINES.md` §24 (already largely Global; reinforced) |
+| `V2-F07` | Git checkpoint consolidation | Test fewer logical checkpoints while preserving reviewability, rollback safety, and Product Owner Git control | **PROMOTED** → `AI_GUIDELINES.md` §20; `AI_AGENTS_RULES.md` §10 |
+| `V2-F08` | Release-flow consolidation | Test coherent release-input/execution handling while preserving all distinct Global gates and release authority | **PROMOTED** → `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` §3 coherent-block + Phase 8 gate preservation |
+| `V2-F09` | Cursor model routing | Test whether selecting the minimum sufficient Cursor model according to remaining decision complexity reduces over-selection without increasing under-selection, defects, rework, validation failures, or Product Owner burden | **PROMOTED** → `AI_GUIDELINES.md` §24.4; `CURSOR_USAGE_ANALYTICS.md` telemetry-only |
+| `V2-F10` | Coherent-block execution discipline | Test coherent lifecycle blocks, material-change and checkpoint-protection filters, `+` continuation, minimum sufficient safe path, and anti-pattern avoidance | **PROMOTED** → `AI_GUIDELINES.md` §§18/20/24; `AI_AGENTS_RULES.md` §§9–11; lifecycle §3 |
 
-Do not assign final dispositions before sufficient evidence and Product Owner decision. If a disposition later changes, append the new evidence, rationale, decision date, and prior-decision reference; never overwrite decision history.
+Final disposition date: `2026-09-12`. Product Owner approved Global promotion of validated findings. Prior `CONTINUE_EXPERIMENT` states are historical and superseded by the **PROMOTED** dispositions above. Do not overwrite the historical evidence blocks below; append only.
 
 ### 12.2 Finding disposition
 
@@ -353,7 +393,7 @@ Partial adoption operates finding-by-finding only. Complete and verify the full 
 
 ### 12.4 XF AI-agent integration finding
 
-This is a preserved auxiliary integration finding outside the fixed `V2-F01`–`V2-F08` optimization catalog. If later pilot evidence uses it to evaluate executor selection, cross-reference that evidence to `V2-F05` without renaming or erasing this prior decision record.
+This is a preserved auxiliary integration finding outside the fixed `V2-F01`–`V2-F10` optimization catalog. If later pilot evidence uses it to evaluate executor selection, cross-reference that evidence to `V2-F05` without renaming or erasing this prior decision record.
 
 - Finding ID: `P02-PV2-XF-AI-001`.
 - Description: integration of official XenForo AI-agent guidance into the existing MAG-only, single-folder Cursor workspace.
@@ -375,8 +415,8 @@ This is a preserved auxiliary integration finding outside the fixed `V2-F01`–`
 | --- | --- |
 | Primary finding ID | `V2-F03` — Documentation boundary batching |
 | Cross-reference | `V2-F05` — Cursor minimization / executor selection |
-| Current disposition | `CONTINUE_EXPERIMENT` |
-| Decision date | `2026-09-11` |
+| Current disposition | **PROMOTED** (was `CONTINUE_EXPERIMENT`; historical evidence preserved) |
+| Decision date | `2026-09-11`; promotion `2026-09-12` |
 
 **Evidence (factual):**
 
@@ -395,6 +435,74 @@ This is a preserved auxiliary integration finding outside the fixed `V2-F01`–`
 
 Do not invent a numerical time saving. Do not mark Drive synchronization complete until an executor with a proven safe in-place raw-content write path performs and verifies the synchronization. Process improvements derived from this evidence are recorded separately in `MAG_DOCUMENTATION_OPERATIONS.md` §10 and do not by themselves change the current Drive classification.
 
+### 12.6 Recorded pilot finding — #2 / `1.1.0` process execution
+
+**Classification:** PROCESS EXECUTION FINDING — not a Tag Synchronizer product defect.
+
+| Field | Value |
+| --- | --- |
+| Primary finding ID | `V2-F10` — Coherent-block execution discipline |
+| Cross-references | `V2-F01`, `V2-F03`, `V2-F04`, `V2-F05`, `V2-F07`, `V2-F08` |
+| Pilot project / cycle | `#2` — [MAG] Tag Synchronizer / `1.1.0` |
+| Current disposition | **PROMOTED** (was `CONTINUE_EXPERIMENT`; historical evidence preserved) |
+| Decision date | `2026-09-11`; promotion `2026-09-12` |
+
+**Observed process execution issues during the `#2` / `1.1.0` pilot:**
+
+- unnecessary lifecycle fragmentation;
+- repeated validation without material invalidation;
+- unnecessary Git checkpoint proposals;
+- repeated Cursor/Work procedures;
+- redundant Product Owner confirmations;
+- process expansion after executor failures.
+
+**Primary correction recorded in `MAG_PIPELINE_V2_EXPERIMENT.md`:**
+
+- coherent lifecycle blocks (§3.1);
+- Filter A — material-change filter (§3.2);
+- Filter B — checkpoint-protection filter (§3.2);
+- execution discipline and `+` continuation (§3.3);
+- micro-process anti-patterns (§3.4);
+- evidence reuse decision chain (§6.1);
+- minimum sufficient safe path over formal micro-step closure.
+
+**Product defect classification:** none. This finding records Pipeline v2 process execution friction only. It does not classify any observed `#2` / `1.1.0` product behavior as a defect.
+
+**Metrics:** capture per coherent block under §4.8 when reliable evidence exists. Do not invent measured improvements retroactively for completed release-cycle fragments.
+
+**Next action:** **COMPLETE** — validated rules promoted into Global documentation on `2026-09-12`. Pipeline v2 is no longer parallel authority. Quantitative pilot metrics remain `unavailable` where not measured.
+
+### 12.7 `V2-F09` — Cursor model routing evidence
+
+**Classification:** historical evidence framework. Not Global authority. After promotion, `AI_GUIDELINES.md` §24.4 owns model-selection policy; `CURSOR_USAGE_ANALYTICS.md` owns Cursor usage and telemetry methodology only.
+
+| Field | Value |
+| --- | --- |
+| Finding ID | `V2-F09` — Cursor model routing |
+| Cross-references | `V2-F05`, `V2-F06` |
+| Pilot project / cycle | `#2` — [MAG] Tag Synchronizer / `1.1.0` |
+| Current disposition | **PROMOTED** → `AI_GUIDELINES.md` §24.4 |
+| Governing historical experiment rule | `MAG_PIPELINE_V2_EXPERIMENT.md` §7.1 — Cursor model routing |
+
+**Purpose:** test whether selecting the minimum sufficient Cursor model according to remaining decision complexity reduces over-selection without increasing under-selection, defects, rework, validation failures, or Product Owner burden.
+
+**Per-procedure evidence fields** (§4.9):
+
+- selected model and task category;
+- selection reason;
+- lower-model sufficiency assessment;
+- escalation/de-escalation and concrete trigger;
+- execution and validation outcome;
+- over-selection or under-selection evidence;
+- model-related rework;
+- Product Owner or process friction attributable to routing.
+
+**Success signal:** deterministic or already-decided execution routes to **Composer 2.5** where sufficient, while Grok is used only when genuine unresolved reasoning or risk justifies it, without material quality regression.
+
+**Failure signal:** repeated Grok over-selection for deterministic work; repeated Composer/Low under-selection causing escalation or rework; or routing overhead exceeding the friction it removes.
+
+Do not invent measured routing outcomes retroactively. Record evidence opportunistically at substantive Cursor procedure closure when reliable contemporaneous capture is available.
+
 ## 13. Known experiment focus areas from #2
 
 **Classification:** historical observations from the completed `#2` pilot baseline, not current Global methodology.
@@ -404,6 +512,7 @@ The completed `[MAG] Tag Synchronizer` workflow provides concrete process lesson
 - architecture decisions were often followed by separate documentation-only procedures;
 - documentation synchronization occurred frequently across Roadmap, Architecture, CLASS_MAP, Changelog, and Cursor history;
 - release finalization was fragmented into multiple small procedures;
+- release-cycle stages (Gate → Release Finalization → Stable Release → PRV → documentation) were sometimes treated as separate checkpoint/validation/confirmation cycles without material invalidation (recorded in §12.6);
 - Cursor telemetry completion sometimes created additional handling under the methodology then in effect (including manual/deferred After finalization patterns later reduced by automatic MAG GPT|Cursor|Sync After telemetry in current Global `CURSOR_USAGE_ANALYTICS.md`);
 - repeated ChatGPT ↔ Product Owner ↔ Cursor handoffs added elapsed-time overhead;
 - simple deterministic Git actions were more efficiently handled manually;
@@ -415,56 +524,46 @@ These observations motivate the pilot but are not themselves proof that Pipeline
 
 ### Pilot result
 
-- Result: PASS / PARTIAL PASS / FAIL
-- Baseline / strategy locked:
-- Baseline lock date/boundary:
-- Baseline limitations and confidence:
-- Wall-clock elapsed-time reduction:
-- Active process / collaboration-time reduction:
-- Confidence:
-- Target ≥30% achieved: YES / NO / UNAVAILABLE
-- Approx. 40% target achieved: YES / NO / UNAVAILABLE
+- Result: **PARTIAL PASS** (qualitative) — **PROMOTED**
+- Baseline / strategy locked: qualitative validated-process baseline for `#2` / `1.1.0`; quantitative Wall-clock baseline unavailable
+- Baseline lock date/boundary: `2026-09-12` Product Owner promotion decision after practical `#2` / `1.1.0` validation
+- Baseline limitations and confidence: no inventable ≥30% comparison; confidence high for process friction findings, low for quantitative time claims
+- Wall-clock elapsed-time reduction: `unavailable`
+- Active process / collaboration-time reduction: `unavailable`
+- Confidence: high for qualitative promotion of validated process rules; unavailable for numeric PASS threshold
+- Target ≥30% achieved: **UNAVAILABLE**
+- Approx. 40% target achieved: **UNAVAILABLE**
 
 ### Quality result
 
-- Critical regression:
-- Non-critical regression:
-- XenForo/XFRM compatibility:
-- Validation quality:
-- Release quality:
-- Documentation accuracy:
-- Product Owner control:
-- Over-batching incidents:
-- Distinct technical validation / Practical Acceptance / Release Readiness / Release Finalization evidence:
+- Critical regression: none identified from process experiment itself
+- Non-critical regression: process friction recorded in §12.6; product defects not attributed to Pipeline v2
+- XenForo/XFRM compatibility: preserved as hard constraint throughout pilot
+- Validation quality: preserved; anti-revalidation rules promoted without weakening required validation
+- Release quality: release gates preserved as distinct boundaries
+- Documentation accuracy: Global injection completed Locally; Drive sync remains a separate operation
+- Product Owner control: preserved; redundant confirmations reduced, genuine gates retained
+- Over-batching incidents: recorded as process smell risk; over-batching controls promoted
+- Distinct technical validation / Practical Acceptance / Release Readiness / Release Finalization evidence: retained as distinct Global boundaries
 
 ### Highest-value optimizations
 
-1.
-2.
-3.
+1. Coherent blocks + Filters A/B + execution discipline (`V2-F01`, `V2-F10`, `V2-F04`, `V2-F07`)
+2. Model-routing authority migration to `AI_GUIDELINES.md` §24.4 (`V2-F09`)
+3. Immediate gate evaluation with gate PASS ≠ next-stage authorization
 
 ### Weak or failed optimizations
 
-1.
-2.
-3.
+1. Quantitative ≥30% time reduction remains unmeasured
+2. Drive in-place sync executor friction persisted as operational evidence (`V2-F03`/`V2-F05`)
+3. XF AI-agent integration remains deferred (`P02-PV2-XF-AI-001`)
 
 ### Per-finding disposition record
 
-Repeat for each finding, applying §12:
-
-- Finding ID and description:
-- Evidence, limitations, and quality impact:
-- Disposition: GLOBAL_CANDIDATE / KEEP_PROJECT_ONLY / CONTINUE_EXPERIMENT / REJECT
-- Approved project scope:
-- Decision rationale:
-- Next action or test, if authorized:
-- Global proposal / owning documents, for GLOBAL_CANDIDATE only:
-- Promotion-gate completion evidence, if separately approved and completed:
-- Prior decision references:
+Final dispositions are recorded in §12.1. Summary: `V2-F01`–`V2-F10` **PROMOTED**; `P02-PV2-XF-AI-001` remains `CONTINUE_EXPERIMENT` / deferred.
 
 ### Product Owner decision
 
-- Decision:
-- Date:
-- Notes:
+- Decision: **VALIDATED / READY FOR GLOBAL PROMOTION → PROMOTED** after Local Global injection on `2026-09-12`
+- Date: `2026-09-12`
+- Notes: Pipeline v2 is closed as historical evidence. No parallel policy authority remains. `#2` product documentation cleanup remains a separate task.

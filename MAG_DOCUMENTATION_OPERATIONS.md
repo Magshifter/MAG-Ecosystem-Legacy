@@ -1,13 +1,15 @@
 # MAG Documentation Operations
 
 - MAG-Document-ID: `MAG_DOCUMENTATION_OPERATIONS.md`
-- MAG-Content-Updated: `2026-09-11T12:30:00+03:00`
+- MAG-Content-Updated: `2026-09-12T10:56:10+03:00`
 
 ## 1. Purpose and authority
 
 This document is the Global MAG authority for documentation synchronization across managed Local Git repositories, Google Drive, ChatGPT, and Cursor.
 
 It governs documentation identity validation, synchronization scope and commands, comparison, conflict handling, approval, execution, verification, cleanup, reporting, and Git handoff boundaries. It does not redefine substantive document authority, the MAG development lifecycle, general agent permissions, or Git development policy.
+
+Broader material-change and evidence-invalidation principles for development validation live in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §18. This document remains canonical for documentation-sync evidence reuse, Fast Sync, and invalidation of sync-specific proven state.
 
 The canonical writable workflow is:
 
@@ -411,9 +413,21 @@ Confirm proven source state
 → Report
 ```
 
-Expand back to the full synchronization workflow only when new evidence invalidates a previously proven condition.
+Expand back to the full synchronization workflow only when new evidence invalidates a previously proven condition. Do not repeat documentation operations when no relevant source, metadata, identity, classification, authority, or approval state changed.
 
 Fast Sync does not bypass conflict detection, metadata validation, identity resolution, registration checks, Product Owner approval boundaries, or required verification. It reduces repeated analysis; it does not reduce safety.
+
+Intended Local documentation change sequence remains:
+
+```text
+edit Local
+→ validate
+→ synchronize Local ↔ Drive
+→ verify IDENTICAL / valid FORMAT_ONLY
+→ Git checkpoint
+```
+
+Do not weaken safe Drive update requirements.
 
 ### 10.2 Proven evidence reuse
 

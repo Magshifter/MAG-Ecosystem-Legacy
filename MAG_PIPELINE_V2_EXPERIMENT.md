@@ -1,21 +1,36 @@
 # MAG Pipeline v2 Experiment
 
 - MAG-Document-ID: `MAG_PIPELINE_V2_EXPERIMENT.md`
-- MAG-Content-Updated: `2026-09-11T08:17:00+03:00`
+- MAG-Content-Updated: `2026-09-12T10:56:10+03:00`
 
-Status: EXPERIMENTAL — NOT GLOBAL AUTHORITY
+Status: **CLOSED EXPERIMENT — HISTORICAL RECORD — NOT GLOBAL AUTHORITY**
 
-Active approved pilot: `#2` — [MAG] Tag Synchronizer / `1.1.0` — ACTIVE
+Pilot: `#2` — [MAG] Tag Synchronizer / `1.1.0`
+
+Disposition: **PROMOTED** — validated findings injected into MAG Global documentation on `2026-09-12`. This file is **no longer parallel process authority**.
 
 ## Authority disclaimer and promotion gate
 
-These are project-scoped working documents for `#2` ([MAG] Tag Synchronizer), not Global authority. They may evolve during the approved pilot. Registration and metadata establish identity/version tracking and synchronization eligibility only; they grant no substantive authority. They cannot override approved TZ, Architecture, Roadmap, or Global rules. Only expressly approved, bounded pilot procedural exceptions may apply within their recorded scope; no exception extends to another project or cycle.
+These are project-scoped working documents for `#2` ([MAG] Tag Synchronizer), not Global authority. Registration and metadata establish identity/version tracking and synchronization eligibility only; they grant no substantive authority. They cannot override approved TZ, Architecture, Roadmap, or Global rules.
 
-Apply the per-finding disposition model and separate Global promotion gate in `MAG_PIPELINE_V2_EVALUATION.md` §12. A pilot result or finding classification never grants Global authority. Preserve evidence and decision history; this experiment remains limited to the approved `#2` pilot.
+After Product Owner-approved Global promotion on `2026-09-12`, active HOW rules live only in the seven-file Global documentation set. Preserve this experiment body as historical evidence. Do not treat experimental sections below as continuing operational policy.
+
+### Post-promotion ownership map
+
+| Validated theme | Global owner after promotion |
+| --- | --- |
+| Coherent blocks / immediate gate evaluation | `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` §3 |
+| Material-change filter, evidence reuse, coherent execution, minimum sufficient safe path | `AI_GUIDELINES.md` §18 |
+| Checkpoint-protection filter | `AI_GUIDELINES.md` §20; `AI_AGENTS_RULES.md` §10 |
+| `+` continuation, Cursor minimization, model routing | `AI_GUIDELINES.md` §24 |
+| Executor-failure recovery, anti-patterns | `AI_AGENTS_RULES.md` §11 |
+| Documentation Fast Sync / sync evidence reuse | `MAG_DOCUMENTATION_OPERATIONS.md` §10 |
+| Cursor usage telemetry only | `CURSOR_USAGE_ANALYTICS.md` |
+| Artifact immutability | `AI_GUIDELINES.md` §21 (unchanged, already Global) |
 
 ## 1. Purpose
 
-MAG Pipeline v2 is a controlled process experiment intended to reduce total elapsed development time and procedural friction without reducing correctness, security, XenForo/XFRM compatibility, maintainability, validation quality, documentation accuracy, or Product Owner control.
+MAG Pipeline v2 was a controlled process experiment intended to reduce total elapsed development time and procedural friction without reducing correctness, security, XenForo/XFRM compatibility, maintainability, validation quality, documentation accuracy, or Product Owner control.
 
 Primary target:
 
@@ -47,7 +62,7 @@ Product Owner approval has been given to activate the Pipeline v2 experiment for
 | Pilot project | `#2` — [MAG] Tag Synchronizer |
 | Project marker | `P02__TS` |
 | Approved development cycle | `1.1.0` |
-| Pipeline v2 status for this cycle | ACTIVE |
+| Pipeline v2 status for this cycle | **COMPLETE / PROMOTED** (historical; no longer parallel authority) |
 | Governing experiment document | `MAG_PIPELINE_V2_EXPERIMENT.md` |
 | Evaluation document | `MAG_PIPELINE_V2_EVALUATION.md` |
 
@@ -115,6 +130,131 @@ A coherent batch may contain several already-approved related actions when they:
 Do not create separate AI procedures solely because individual edits could technically be separated.
 
 Pipeline v2 optimizes unnecessary fragmentation. Fewer procedures are not an objective by themselves.
+
+### 3.1 Coherent lifecycle block rule
+
+Related lifecycle actions **SHOULD** be treated as one coherent block when no material state change or recovery boundary requires separation.
+
+Typical uninterrupted release objective:
+
+```text
+Gate
+→ Release Finalization
+→ package/release actions
+→ Stable Release actions
+→ Post-Release Verification (PRV)
+→ final documentation closure
+```
+
+These actions **MUST NOT** automatically become separate Git checkpoints, validation cycles, Cursor or Work invocations, or Product Owner confirmation cycles merely because lifecycle labels changed.
+
+Checkpoint separation is justified only by a **concrete material reason**, such as:
+
+- product or source changed;
+- architecture or requirements changed;
+- release artifact changed;
+- an irreversible or high-risk action requires a rollback boundary;
+- release identity changed;
+- a mandatory Global checkpoint applies;
+- Product Owner explicitly requests a checkpoint;
+- continuing without separation would create meaningful audit or recovery risk.
+
+Lifecycle labels alone are **not** material-change evidence.
+
+### 3.2 Mandatory action filters
+
+Before requesting any repeated validation, Cursor or Work run, Git checkpoint, documentation-only procedure, or Product Owner confirmation, apply both filters.
+
+When Filter A shows no relevant invalidation and Filter B shows no meaningful recovery value, continue within the current coherent block.
+
+**Filter A — What materially changed?**
+
+Ask: *What materially changed since the existing evidence was obtained?*
+
+If nothing relevant changed:
+
+- reuse existing evidence;
+- do not repeat validation;
+- do not repeat package inspection;
+- do not repeat runtime checks;
+- do not repeat Product Owner practical verification;
+- do not reopen completed analysis.
+
+A lifecycle or status transition alone is **not** evidence invalidation.
+
+If change is narrow, perform only the minimum narrow validation required.
+
+**Filter B — What does this checkpoint protect?**
+
+Before proposing a Git commit or checkpoint, ask: *What material state or recovery boundary does this checkpoint protect?*
+
+If the answer is only:
+
+- status changed;
+- documentation status marker changed;
+- validation report exists;
+- lifecycle phase name changed;
+- a mechanical next step completed;
+
+then **do not** create a separate checkpoint unless Global explicitly requires one.
+
+If no meaningful recovery or audit value is created, accumulate changes into the coherent block's next justified checkpoint.
+
+### 3.3 Execution discipline
+
+When the Product Owner gives `+`, interpret it as authorization to continue the already-defined next action in the current approved procedure.
+
+Do **not**:
+
+- ask for another confirmation for the same already-approved step;
+- create a new planning cycle;
+- reopen prior analysis;
+- re-explain the same decision.
+
+If an execution tool such as Cursor or Work fails:
+
+- diagnose the concrete failure;
+- correct the current execution step;
+- preserve previously established evidence;
+- continue through the **minimum sufficient safe path**.
+
+Do **not** transform a tool or executor failure into:
+
+- a new lifecycle phase;
+- a new approval framework;
+- a new documentation-governance process;
+- repeated full audits;
+- repeated planning without evidence invalidation.
+
+Prefer **minimum sufficient safe path** over **formal closure of every micro-step**.
+
+This does **not** authorize unsafe shortcuts or bypass mandatory Global gates.
+
+### 3.4 Micro-process anti-patterns
+
+Record the following as Pipeline v2 process smells:
+
+**A.** `status changed → edit docs → commit → push` repeated several times during one uninterrupted objective without material change.
+
+**B.** `validation passed → lifecycle status changed → repeat same validation` without relevant evidence invalidation.
+
+**C.** `approved next action → request confirmation again → execute one mechanical step → request confirmation again` without a new Product Owner decision.
+
+**D.** `Cursor/Work failure → redesign process → create new governance procedure` when the correct response is to fix or reroute the current executor step.
+
+### 3.5 Product Owner control (preserved)
+
+Pipeline v2 reduces redundant confirmations, not real decision gates. Product Owner control remains mandatory for:
+
+- architecture approval;
+- implementation authorization;
+- mandatory lifecycle gates;
+- Stable Release authorization;
+- Git, tag, and release publication authorization where required;
+- scope expansion;
+- Critical issue resolution.
+
+No new approval layer is introduced by this experiment.
 
 ## 4. Risk-scaled procedure levels
 
@@ -198,6 +338,21 @@ Verified evidence should be reused until invalidated by a relevant platform-vers
 
 Do not repeat an audit merely because a later stage refers to the same mechanism.
 
+### 6.1 Evidence reuse decision chain
+
+Before new validation:
+
+```text
+Existing evidence
+→ material changes since evidence
+→ potential invalidation
+→ minimum new validation
+```
+
+If no relevant invalidation exists, reuse evidence. If invalidation is narrow, validate narrowly. Do not run broad regression merely because lifecycle status changed.
+
+Apply Filter A (§3.2) before any repeated validation, inspection, or analysis.
+
 ## 7. Executor selection and Cursor minimization
 
 **Use the lowest-friction safe executor that preserves Product Owner control, approved scope, required verification, and auditability.**
@@ -232,6 +387,60 @@ Pipeline v2 evaluates an optimized ChatGPT → Product Owner → Cursor workflow
 - provide immediate post-execution review and a progressive Ukrainian learning note per `AI_GUIDELINES.md` §24.3.
 
 This experiment measures whether reduced context duplication and clearer presentation improve AI/Cursor workflow efficiency without weakening engineering rigor or Product Owner control.
+
+#### Cursor model routing (experimental)
+
+**Classification:** experimental Pipeline v2 practice for the approved `#2` / `1.1.0` pilot only. **Not** Global authority. Does not change Global lifecycle semantics, Product Owner control, or which actions require Product Owner authorization.
+
+`MAG-Ecosystem` / `CURSOR_USAGE_ANALYTICS.md` owns Cursor usage and telemetry methodology only. It does **not** define model-selection policy.
+
+Model selection is based on the **complexity of technical decisions still unresolved**, not file type, number of files, or whether code is being edited. Use the **minimum sufficient** model reliably strong enough for the remaining decisions.
+
+Unresolved Product semantics or Architecture must return to **Product Owner + ChatGPT** before Cursor implementation.
+
+**Default and escalation models**
+
+| Model | Use when |
+| --- | --- |
+| **Composer 2.5** | Default for deterministic/mechanical work, known-path implementation, approved detailed plans, known tests/commands, localization, XML/templates, metadata, cleanup, and multi-file implementation when **no material engineering decision remains** |
+| **Grok 4.6 Low** | Small localized uncertainty within an otherwise approved path |
+| **Grok 4.6 Medium** | Normal engineering decisions within approved Architecture |
+| **Grok 4.6 High** | Complex root cause, transactions, concurrency/reentrancy, security, difficult lifecycle, upgrade/migration/compatibility, multi-subsystem integration, or broad regression-risk reasoning |
+| **Grok 4.6 Extra High** | Exceptional escalation when High is insufficient or uncertainty/failure cost is extreme |
+
+**Routing rules**
+
+- **Composer** is the first candidate for execution-dominant work even when PHP or multiple files are involved.
+- Escalation above Composer requires a **concrete reason**.
+- Whenever recommending Grok, provide **one short reason** why the lower model is insufficient.
+- Escalation during execution should go only as high as newly observed reasoning/risk requires.
+- Unnecessary model strength should be captured as **over-selection evidence** in `MAG_PIPELINE_V2_EVALUATION.md`.
+
+**Decision tree**
+
+```text
+1. Are Product semantics or Architecture still unresolved?
+   → YES: stop Cursor implementation; return to Product Owner + ChatGPT
+   → NO: continue
+
+2. Is remaining work execution-dominant with no material engineering decision left?
+   → YES: Composer 2.5
+   → NO: continue
+
+3. Is uncertainty small and localized within an approved path?
+   → YES: Grok 4.6 Low
+   → NO: continue
+
+4. Is the work normal engineering within approved Architecture?
+   → YES: Grok 4.6 Medium
+   → NO: continue
+
+5. Does the work involve complex root cause, transactions, concurrency/reentrancy,
+   security, difficult lifecycle, upgrade/migration/compatibility, multi-subsystem
+   integration, or broad regression-risk reasoning?
+   → YES: Grok 4.6 High (Extra High only when High is insufficient or failure cost is extreme)
+   → NO: re-evaluate from step 2 with a concrete reason
+```
 
 ### 7.2 XenForo Native Tooling First (experimental)
 
@@ -384,6 +593,8 @@ Avoid documentation-only Cursor procedures between every approved micro-decision
 
 Do not create artificial Git checkpoints for every intermediate action.
 
+Apply Filter B (§3.2) before proposing any Git checkpoint.
+
 Default checkpoint boundary:
 
 work  
@@ -394,6 +605,8 @@ work
 → push  
 → clean-status verification
 
+Within a coherent lifecycle block (§3.1), prefer one justified checkpoint at the block boundary unless a concrete material reason requires separation.
+
 Additional checkpoints are justified when they materially improve rollback safety, isolate high-risk work, or preserve an important stable baseline.
 
 The Product Owner retains final Git control.
@@ -401,6 +614,8 @@ The Product Owner retains final Git control.
 ## 10. Validation strategy
 
 Validation remains risk-based and evidence-based.
+
+Apply Filter A (§3.2) and the evidence reuse decision chain (§6.1) before any repeated validation.
 
 Do not weaken required testing to save time.
 
@@ -517,11 +732,11 @@ Pipeline v2 does not authorize automatic progression.
 
 Stop and return control to the Product Owner when a requirement decision is needed, architecture must change, scope expansion is proposed, a Critical issue is found, a release gate requires approval, a Git/release action requires Product Owner authorization, or evidence contradicts the approved design.
 
-### 15.1 Current #2 documentation-repair boundary
+### 15.1 Historical #2 documentation-repair boundary
 
-The separate Documentation Department task affecting `P02__TS__TZ.md`, `P02__TS__Architecture.md`, `P02__TS__Roadmap.md`, `P02__TS__CLASS_MAP.md`, and `docs/P02__TS__IDEA.md` is current pilot context only.
+The separate Documentation Department task affecting `P02__TS__TZ.md`, `P02__TS__Architecture.md`, `P02__TS__Roadmap.md`, `P02__TS__CLASS_MAP.md`, and `docs/P02__TS__IDEA.md` was historical pilot context only and is **COMPLETE** for the `#2` / `1.1.0` cycle.
 
-This hardening procedure does not execute, register, adopt, add metadata to, correct, rename, or synchronize those documents. That task remains a separate subsequent coherent block. Pre-Implementation Gate remains not started, I1 is not started, and Tag Synchronizer `1.1.0` implementation remains not authorized.
+For release-cycle execution after gate authorization, apply §3.1–§3.4 (coherent blocks, action filters, execution discipline, anti-patterns). Do not fragment an uninterrupted release objective into micro-checkpoints or repeated confirmations without a concrete material reason.
 
 ## 16. Pilot closure
 

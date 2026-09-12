@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Development Guidelines
 
 - MAG-Document-ID: `AI_GUIDELINES.md`
-- MAG-Content-Updated: `2026-09-11T12:30:00+03:00`
+- MAG-Content-Updated: `2026-09-12T10:56:10+03:00`
 
 This document is the **Global MAG development standard**. It defines **how** MAG software is developed with AI assistance.
 
@@ -13,9 +13,9 @@ Identity classes (`#N`, `A<N>`, `B<N>`), registry, and context isolation are own
 
 Detailed coding-agent execution boundaries, mandatory Cursor pre-flight, Plain text output requirements, checkpoint mechanics, and report formats belong in `AI_AGENTS_RULES.md`.
 
-ChatGPT → Product Owner → Cursor prompt presentation and post-execution review belong in §24 of this document.
+ChatGPT → Product Owner → Cursor prompt presentation, post-execution review, and **Cursor model-selection / model-routing policy** belong in §24 of this document.
 
-Cursor model selection, usage metrics, Cursor Models Before/After methodology (including automatic After telemetry consumption and failure handling), post-execution usage-value display, history recording, and forecasting methodology belong in `CURSOR_USAGE_ANALYTICS.md`. Project measurement history belongs in the project repository. Do not duplicate that methodology or the model-selection matrix here.
+Cursor usage metrics, Cursor Models Before/After methodology (including automatic After telemetry consumption and failure handling), post-execution usage-value display, history recording, and forecasting methodology belong in `CURSOR_USAGE_ANALYTICS.md`. That document is **telemetry only** and does **not** own model-selection policy. Project measurement history belongs in the project repository. Do not duplicate telemetry methodology here.
 
 ---
 
@@ -58,7 +58,7 @@ Use the authority model in `MAG_ECOSYSTEM.md`. For implementation work, apply it
 | README / overview | Descriptive only. |
 | Idea | Non-authoritative research. |
 
-`AI_AGENTS_RULES.md` (when present) additionally constrains repository-task execution and states mandatory Cursor pre-flight and Plain text execution requirements. Cursor prompt presentation and post-execution review remain in §24 of this document. Cursor model selection and usage metrics remain in `CURSOR_USAGE_ANALYTICS.md`. If Global documents conflict, **stop and report** rather than silently choosing one.
+`AI_AGENTS_RULES.md` (when present) additionally constrains repository-task execution and states mandatory Cursor pre-flight and Plain text execution requirements. Cursor prompt presentation, post-execution review, and model-selection policy remain in §24 of this document. Cursor usage metrics remain in `CURSOR_USAGE_ANALYTICS.md`. If Global documents conflict, **stop and report** rather than silently choosing one.
 
 For `#N` XenForo add-on work, AI must not invent XenForo APIs or rely on assumptions when installed XenForo source can be inspected.
 
@@ -216,7 +216,7 @@ A stage may be marked complete only when the project's Roadmap conditions are sa
 
 Architecture approval alone does not complete a stage. The presence of placeholder or Alpha code alone does not complete a stage.
 
-Do not interpret stage closure as requiring a Git commit after every tiny action, command, inspection, audit step, or intermediate Cursor procedure. Git checkpoints correspond to completed and approved logical stages/phases or other explicitly approved meaningful checkpoints.
+Do not interpret stage closure as requiring a Git commit after every tiny action, command, inspection, audit step, or intermediate Cursor procedure. Git checkpoints correspond to completed and approved logical stages/phases or other explicitly approved meaningful checkpoints under §20.
 
 ---
 
@@ -441,20 +441,63 @@ Validation effort must be **proportional** to the change and to verification alr
 
 Do not introduce redundant procedures merely to repeat already sufficient verification.
 
+### Material-change filter
+
+Before repeating validation, package inspection, runtime checks, Product Owner practical verification, research, or completed analysis, ask:
+
+**What materially changed since the existing evidence was obtained?**
+
+If nothing relevant changed:
+
+- reuse existing evidence;
+- do not repeat the validation or analysis;
+- do not reopen completed work solely because a lifecycle label or status marker changed.
+
+A lifecycle or status transition alone is **not** evidence invalidation.
+
+If the change is narrow, perform only the minimum narrow validation required.
+
+### Evidence reuse and invalidation
+
+Before new validation:
+
+```text
+Existing evidence
+→ material changes since evidence
+→ potential invalidation
+→ minimum new validation
+```
+
+Existing evidence remains valid until a relevant change invalidates it. Typical invalidation triggers include: changed requirement; changed approved architecture; changed implementation scope or code path; repository change affecting the earlier evidence; relevant XenForo/XFRM/platform/environment change; failed validation; contradictory new evidence; previously unknown API behavior; release artifact change; or another concrete reason making prior evidence unreliable.
+
+Do not run broad regression merely because lifecycle status changed.
+
 A later documentation-only or already-approved synchronization does not require a new full review, security audit, or release-finalization suite unless the synchronization introduces unexpected changes, unresolved issues, or invalidates previous verification.
 
 Release Finalization (when a project uses it) verifies the **artifact and deployment boundary**. It does not repeat the preceding stage audit unless that audit has been invalidated (production behavior changed after the audit, a release-blocking defect was found, packaging exposed a problem requiring production changes, or another concrete reason).
 
+Evidence reuse does **not** skip mandatory Product Owner Practical Acceptance for a release scope that has not yet reached explicit **PASS**, Gate 3 approval, Stable Release authorization, or other genuine Product Owner decision gates.
+
+### Coherent execution blocks
+
+Related approved actions that share one logical objective **SHOULD** execute as one coherent block when no material state change or recovery boundary requires separation.
+
+Lifecycle labels alone are not material-change evidence and must not automatically create separate validation cycles, Cursor/Work invocations, documentation-only procedures, Git checkpoints, or Product Owner confirmations.
+
+Distinct lifecycle gates retain separate evidence and formal results even when executed within one coherent block. Coherent blocks may remove artificial overhead; they must **not** collapse, silently merge, remove, or redefine mandatory Global gates or genuine Product Owner authorization boundaries.
+
+Split or stop a coherent block when continuing would materially harm reviewability, rollback safety, root-cause isolation, validation clarity, scope control, or Product Owner understanding/control.
+
 ### Proportional point-change execution
 
-When a change is already understood, approved, and technically verified, use a **point procedure** limited to the exact change and the validation that change actually requires.
+When a change is already understood, approved, and technically verified, use a **point procedure** limited to the exact change and the validation that change actually requires. Prefer the **minimum sufficient safe path**.
 
 - Do not repeat architecture analysis, source audits, research, broad regression review, or already-valid verification without a concrete new uncertainty or risk.
 - Do not split one simple deterministic correction into multiple artificial procedures when one procedure can safely perform the change, synchronize the local installed copy when required, and enable Product Owner verification.
 - Validation remains proportional to actual change and risk.
 - Expand scope only when new uncertainty, dependency, unexpected behavior, security/compatibility concern, or other material risk justifies it.
 
-This optimization must not weaken required validation.
+This optimization must not weaken required validation or authorize unsafe shortcuts.
 
 ### Product Owner Practical Acceptance
 
@@ -482,9 +525,35 @@ The verified local working copy is authoritative for pending local changes.
 
 The configured remote records the last published repository state.
 
-Each completed and approved logical stage or project phase must be closed with documentation synchronization and a Git checkpoint before work proceeds to the next stage or phase.
+Each completed and approved logical stage or project phase must be closed with documentation synchronization and a Git checkpoint before work proceeds to the next stage or phase, unless a coherent block's next justified checkpoint already covers that material boundary under the checkpoint-protection rules below and in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md) §10.
 
-This does **not** require a commit after every tiny action, command, inspection, audit step, or intermediate Cursor procedure. Git checkpoints correspond to completed and approved logical stages/phases or other explicitly approved meaningful checkpoints.
+This does **not** require a commit after every tiny action, command, inspection, audit step, intermediate Cursor procedure, lifecycle label change, status-marker change, or mechanical sub-step. Git checkpoints correspond to completed and approved logical stages/phases or other explicitly approved meaningful checkpoints that protect material audit or recovery state.
+
+### Checkpoint-protection filter
+
+Before proposing an intermediate Git checkpoint, ask:
+
+**What material state or recovery boundary does this checkpoint protect?**
+
+Do **not** create a separate checkpoint merely because:
+
+- a lifecycle label changed;
+- a gate or documentation status marker changed;
+- a validation report exists;
+- a mechanical next step completed.
+
+Create or retain a checkpoint when it protects meaningful state such as:
+
+- material product or source change;
+- architecture or requirements change;
+- release artifact or release identity change;
+- an irreversible or high-risk transformation requiring a rollback boundary;
+- immutable artifact association;
+- a mandatory Global checkpoint;
+- an explicit Product Owner request;
+- another meaningful audit or recovery need.
+
+Where [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) explicitly mandates a checkpoint, that remains authoritative.
 
 Do not commit incomplete, unreviewed, or known-broken work merely to satisfy the checkpoint rule.
 
@@ -670,19 +739,30 @@ When a production observation conflicts with documentation, inspect code and con
 
 Do not optimize development merely to reduce Cursor quota usage. Correctness, XenForo compatibility, security, maintainability, testing, and documentation remain higher priorities.
 
-When Cursor analytics or Cursor procedure presentation apply, follow §24 of this document for presentation and post-execution review, `CURSOR_USAGE_ANALYTICS.md` for model selection and usage metrics, and `AI_AGENTS_RULES.md` for mandatory execution and Plain text requirements. Do not invent usage percentages.
+When Cursor analytics or Cursor procedure presentation apply, follow §24 of this document for presentation, post-execution review, and model selection; follow `CURSOR_USAGE_ANALYTICS.md` for usage metrics and telemetry only; and follow `AI_AGENTS_RULES.md` for mandatory execution and Plain text requirements. Do not invent usage percentages.
 
 ---
 
-## 24. Cursor prompt presentation and post-execution review
+## 24. Cursor prompt presentation, continuation, and model routing
 
-This section is the Global authority for ChatGPT → Product Owner → Cursor presentation and post-execution review.
+This section is the Global authority for ChatGPT → Product Owner → Cursor presentation, post-execution review, and **Cursor model-selection / model-routing policy**.
 
-Cursor usage metrics, measurement procedure, and post-execution usage-value display belong in [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). Coding-agent Plain text execution requirements remain in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md). Progressive Product Owner technical-lead learning as a permanent MAG development principle is recorded in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md).
+Cursor usage metrics, measurement procedure, and post-execution usage-value display belong in [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). That document does **not** own model-selection policy. Coding-agent Plain text execution requirements remain in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md). Progressive Product Owner technical-lead learning as a permanent MAG development principle is recorded in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md).
 
 ### 24.1 When to present a Cursor prompt
 
-Provide a prepared Cursor prompt only after the Product Owner has approved receiving it for that procedure.
+Provide a prepared Cursor prompt only after the Product Owner has approved receiving it for that procedure, **or** when the Product Owner continues an already-authorized next action with `+` or equivalent continuation within the same approved procedure/coherent block.
+
+`+` means: continue the already-defined next action in the current approved procedure.
+
+Do **not**:
+
+- ask for another confirmation for the same already-approved step;
+- create a new planning cycle for that same step;
+- reopen prior analysis without evidence invalidation;
+- re-explain the same decision.
+
+`+` does **not** authorize a new Product Owner decision, a new gate, scope expansion, Git/release publication, or the next lifecycle stage when Global rules require separate authorization.
 
 ### 24.2 Cursor prompt presentation order
 
@@ -691,11 +771,13 @@ Present information in this order:
 1. **Cursor prompt** — first. A dedicated plain-text code block containing only the exact text intended for paste into Cursor. Do not place explanations or execution metadata before it. Keep the prompt concise and task-specific; reference applicable authoritative MAG rules instead of duplicating them unnecessarily.
 2. **Ціль/задача** — maximally concise, informative Ukrainian description of the procedure's purpose and expected result.
 3. **Cursor chat** — exact target chat. Never invent an unknown Cursor chat; resolve ambiguity with the Product Owner first.
-4. **Cursor model** — recommended model/mode per [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md) §2.5.
+4. **Cursor model** — recommended model/mode per §24.4.
 
 Do not place explanations, Cursor usage values, or other execution metadata before the copyable prompt block.
 
 Do not require **Cursor Models Before** in the user-facing prompt presentation block. Before remains part of analytics methodology in `CURSOR_USAGE_ANALYTICS.md` when applicable.
+
+Prefer the lowest-friction safe executor that preserves Product Owner control, approved scope, required verification, and auditability. Do not create a Cursor or Work procedure merely to avoid a simpler safe path. A Cursor task should normally execute a complete coherent task rather than split without a risk-based reason.
 
 ### 24.3 Post-execution review
 
@@ -710,6 +792,64 @@ After a meaningful Cursor procedure, ChatGPT must immediately provide:
 Learning notes must be practical, stage-specific, concise, non-repetitive, and progressively deeper as Product Owner experience grows.
 
 Present applicable Cursor usage values separately, per `CURSOR_USAGE_ANALYTICS.md`, without commentary or interpretation in the usage-values block.
+
+### 24.4 Cursor model-selection / model-routing policy
+
+This subsection is the **canonical Global owner** of Cursor model-selection and model-routing policy.
+
+Stable principles:
+
+- Model selection is based on the **complexity of technical decisions still unresolved**, not file type, number of files, or whether code is being edited.
+- Use the **minimum sufficient** model reliably strong enough for the remaining decisions.
+- Unresolved Product semantics or Architecture must return to **Product Owner + ChatGPT** before Cursor implementation.
+- Deterministic or already-decided execution must not default to an unnecessarily expensive reasoning model.
+- Escalation above the minimum sufficient model requires a concrete reason.
+- Whenever recommending a stronger reasoning model over the lower candidate, provide one short reason why the lower model is insufficient.
+- Escalation during execution should go only as high as newly observed reasoning or risk requires.
+- Unnecessary model strength is over-selection and should be avoided.
+- Selecting a cheaper model must not reduce validation requirements.
+
+#### Current model recommendations
+
+These named recommendations are subordinate to the stable principles above and may be updated when Cursor's available models change without rewriting unrelated lifecycle rules. Do not invent unavailable model names.
+
+| Model | Prefer when |
+| --- | --- |
+| **Composer 2.5** | Default for deterministic/mechanical work, known-path implementation, approved detailed plans, known tests/commands, localization, XML/templates, metadata, cleanup, and multi-file implementation when **no material engineering decision remains**. First candidate for execution-dominant work even when PHP or multiple files are involved. |
+| **Auto** | Ordinary well-specified work when a specific model is not required and Composer is not the clearer fit. |
+| **Grok 4.6 Low** | Small localized uncertainty within an otherwise approved path. |
+| **Grok 4.6 Medium** | Normal engineering decisions within approved Architecture. |
+| **Grok 4.6 High** | Complex root cause, transactions, concurrency/reentrancy, security, difficult lifecycle, upgrade/migration/compatibility, multi-subsystem integration, or broad regression-risk reasoning. |
+| **Grok 4.6 Extra High** | Exceptional escalation when High is insufficient or uncertainty/failure cost is extreme. |
+| **GPT-5.6 Sol / Claude Opus** | Alternative escalation when that family is likely to materially improve the result after justified Grok escalation, or for strong second-opinion review. |
+
+Decision tree:
+
+```text
+1. Are Product semantics or Architecture still unresolved?
+   → YES: stop Cursor implementation; return to Product Owner + ChatGPT
+   → NO: continue
+
+2. Is remaining work execution-dominant with no material engineering decision left?
+   → YES: Composer 2.5 (or Auto when Composer is not the clearer fit)
+   → NO: continue
+
+3. Is uncertainty small and localized within an approved path?
+   → YES: Grok 4.6 Low
+   → NO: continue
+
+4. Is the work normal engineering within approved Architecture?
+   → YES: Grok 4.6 Medium
+   → NO: continue
+
+5. Does the work involve complex root cause, transactions, concurrency/reentrancy,
+   security, difficult lifecycle, upgrade/migration/compatibility, multi-subsystem
+   integration, or broad regression-risk reasoning?
+   → YES: Grok 4.6 High (Extra High only when High is insufficient or failure cost is extreme)
+   → NO: re-evaluate from step 2 with a concrete reason
+```
+
+Record the selected model for telemetry in `CURSOR_USAGE_ANALYTICS.md`. Do not maintain a second normative matrix there.
 
 ---
 

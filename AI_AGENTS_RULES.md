@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Coding Agent Rules
 
 - MAG-Document-ID: `AI_AGENTS_RULES.md`
-- MAG-Content-Updated: `2026-09-11T12:30:00+03:00`
+- MAG-Content-Updated: `2026-09-12T10:56:10+03:00`
 
 These rules define **how coding agents may execute** work in MAG repositories.
 
@@ -17,7 +17,7 @@ Reusable-knowledge capture mechanics belong in [`MAG_IMPLEMENTATION_PATTERNS.md`
 
 Which agent is used is a user/tooling choice. These rules do not change when a more capable agent is introduced. Tool capability does not grant permission to exceed the approved task.
 
-Cursor usage accounting, Cursor chat/model pre-flight workflow, detailed model-selection matrix, escalation policy, and MAG Cursor report-field methodology belong in [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). Do not invent usage percentages here. Do not duplicate the complete model matrix in this file.
+Cursor model-selection / model-routing policy belongs in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24.4. Cursor usage accounting, Before/After telemetry, and MAG Cursor report-field methodology belong in [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). Do not invent usage percentages here. Do not duplicate the model matrix in this file.
 
 ---
 
@@ -27,11 +27,11 @@ These rules are **mandatory prerequisites** for every Cursor-assisted procedure.
 
 ### 1.1 Mandatory Cursor pre-flight
 
-For every Cursor procedure, follow [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24 for prompt approval, presentation order, post-execution review, and the Ukrainian learning note. That section alone owns presentation; do not recreate its ordered block here.
+For every Cursor procedure, follow [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24 for prompt approval/continuation, presentation order, post-execution review, model routing, and the Ukrainian learning note. That section alone owns presentation and model-selection policy; do not recreate its ordered block here.
 
 Mandatory execution and Plain text requirements remain in this document. Respect **GLOBAL + active development identity** isolation and the approved repository/tool context. Resolve an unknown or ambiguous Cursor chat with the Product Owner; do not invent it.
 
-Routing, model selection/escalation, usage tracking, automatic After telemetry and failure handling, and separate usage-value display remain in [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). Before remains an analytics field, not a required item in the user-facing prompt presentation block. Do not routinely request manual After reporting.
+Chat routing for measurement context, usage tracking, automatic After telemetry and failure handling, and separate usage-value display remain in [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). Before remains an analytics field, not a required item in the user-facing prompt presentation block. Do not routinely request manual After reporting.
 
 ### 1.2 Plain text output — mandatory
 
@@ -190,7 +190,9 @@ If installed source is insufficient and external documentation research becomes 
 
 Validation effort must match the **actual change and risk**.
 
-Reuse immediately preceding **valid** verification where it still applies. Do not repeat expensive checks (broad regression, security, or performance suites; full release-finalization) without a concrete reason.
+Apply the material-change filter and evidence-reuse rules in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §18. Reuse immediately preceding **valid** verification where it still applies. Do not repeat expensive checks (broad regression, security, or performance suites; full release-finalization) without a concrete reason. A lifecycle or status transition alone is not evidence invalidation.
+
+Prefer the **minimum sufficient safe path**: when the objective is approved, evidence remains valid, and no authority/risk/scope boundary changed, execute the smallest safe procedure. Do not re-analyze merely to re-create ceremony.
 
 Release-artifact rules, Release Finalization scope, and Release Presentation gating are defined in `AI_GUIDELINES.md` and `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 8. Agents must not overwrite canonical `_releases` ZIP filenames. Test builds must be renamed immediately. Do not build the final release ZIP before required Release Presentation data is approved and applied.
 
@@ -254,6 +256,14 @@ When a required operation is simple, deterministic, and better done by the user,
 
 Ready-to-copy technical commands must be provided in **Plain text** per §1.2.
 
+### Checkpoint-protection filter
+
+Before proposing an intermediate Git checkpoint, ask:
+
+**What material state or recovery boundary does this checkpoint protect?**
+
+Do **not** create a separate checkpoint merely because a lifecycle label, status marker, validation report, or mechanical sub-step changed. Apply the detailed checkpoint-protection rules in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §20. Where the lifecycle explicitly mandates a checkpoint, that remains authoritative.
+
 Standard checkpoint:
 
 ```text
@@ -282,6 +292,8 @@ Authoritative stage/phase closure discipline is defined in [`AI_GUIDELINES.md`](
 
 When the approved task is a completed stage checkpoint, synchronize that project's changelog as part of the same increment. A stage is not complete until required changelog synchronization is finished.
 
+Within a coherent block, prefer one justified checkpoint at the material boundary rather than status-only intermediate commits.
+
 ---
 
 ## 11. Stop and report
@@ -305,6 +317,25 @@ Then tell the user:
 
 Do not silently bypass the rule, assume permission, invent the missing decision, perform a prohibited operation because it seems necessary, or abandon the task without explaining how to unblock it.
 
+### Executor / tool failure recovery
+
+If an execution tool such as Cursor or Work fails:
+
+1. diagnose the concrete failure;
+2. correct or safely reroute the current execution step;
+3. preserve previously established valid evidence;
+4. continue through the minimum sufficient safe path.
+
+Do **not** transform a tool/executor failure into:
+
+- a new lifecycle phase;
+- a new approval framework;
+- a new documentation-governance process;
+- repeated full audits;
+- repeated planning without evidence invalidation.
+
+Documentation executor capability failures additionally follow [`MAG_DOCUMENTATION_OPERATIONS.md`](MAG_DOCUMENTATION_OPERATIONS.md) §§8.1, 10.3, and 16.
+
 ### Incomplete user actions
 
 If a previously requested user action was only partial or unsuccessful, stop again. State what succeeded, what remains, why work cannot continue, the exact next user action, and how success can be recognized.
@@ -327,6 +358,17 @@ Incomplete?
   └── NO  → Continue
 ```
 
+### Micro-process anti-patterns
+
+Treat the following as process smells and avoid them:
+
+**A.** `status changed → edit docs → commit → push` repeated during one uninterrupted objective without material change.
+
+**B.** `validation passed → lifecycle status changed → repeat same validation` without relevant evidence invalidation.
+
+**C.** `approved next action → request confirmation again → execute one mechanical step → request confirmation again` without a new Product Owner decision.
+
+**D.** `Cursor/Work failure → redesign process → create new governance procedure` when the correct response is to fix or reroute the current executor step.
 ---
 
 ## 12. Procedure report
@@ -349,7 +391,7 @@ Classify discovered issues as:
 
 Do not `git commit` or `git push` unless explicitly requested.
 
-When Cursor procedures apply, follow `AI_GUIDELINES.md` §24 for presentation and post-execution review. Follow `CURSOR_USAGE_ANALYTICS.md` for model selection, Before/After tracking, telemetry handling, and separate usage-value display.
+When Cursor procedures apply, follow `AI_GUIDELINES.md` §24 for presentation, post-execution review, and model selection. Follow `CURSOR_USAGE_ANALYTICS.md` for Before/After tracking, telemetry handling, and separate usage-value display only.
 
 ---
 
