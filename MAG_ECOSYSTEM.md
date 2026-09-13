@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-13T14:15:00+00:00`
+- MAG-Content-Updated: `2026-09-13T22:00:07+00:00`
 
 This document is the navigation and governance foundation for MAG software development across approved development classes.
 
@@ -89,11 +89,12 @@ Each `#N` XenForo project also has a **short, stable project code** used in docu
 | --- | --- | --- | --- | --- | --- |
 | #1 | `P01__GLF` | [MAG] Global Links Favicons | Active / Stable 1.4.3 | `GlobalLinksFavicons` | `C:\laragon\repos\GlobalLinksFavicons` |
 | #2 | `P02__TS` | [MAG] Tag Synchronizer | Active / Stable 1.0.0 | `TagSynchronizer` | `C:\laragon\repos\TagSynchronizer` |
+| #3 | `P03__SL` | [MAG] Simple Landing | Active / Targeted Research | `SimpleLanding` | `C:\laragon\repos\SimpleLanding` |
 | #4 | `P04__DG` | [MAG] Doc&Guide | Active / Phase 2 Requirements | `DocGuide` | `C:\laragon\repos\DocGuide` |
 
 The `#N` registry table is the canonical current-fact source for identity, current lifecycle/status label, current stable version where shown, Git repository, and local path. Narrative below may explain classification, history, and meaning; it must not independently restate volatile current status, version, or path.
 
-Approved historical `#N` identities are immutable and are not renumbered. Unused gaps remain available for future assignment unless the Product Owner explicitly retires or reserves them. `#3` currently represents no product; it is not invented here and is not automatically retired. `#3` may be assigned later only by an explicit Product Owner decision. The existence of `#4` does not require the next XenForo project to become `#5`. Agents must not silently fill a gap, skip to a higher number, or invent a product to occupy an unused identifier. Identities in other namespaces do not consume or reserve `#N` slots.
+Approved historical `#N` identities are immutable and are not renumbered. Unused gaps remain available for future assignment unless the Product Owner explicitly retires or reserves them. Agents must not silently fill a gap, skip to a higher number, or invent a product to occupy an unused identifier. Identities in other namespaces do not consume or reserve `#N` slots.
 
 Applicable XenForo-specific Global rules continue to apply to `#N` products.
 
