@@ -1,7 +1,7 @@
 # MAG Add-on Development Lifecycle
 
 - MAG-Document-ID: `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
-- MAG-Content-Updated: `2026-09-13T13:45:00+00:00`
+- MAG-Content-Updated: `2026-09-13T14:15:00+00:00`
 
 This document defines the Global MAG lifecycle for developing and maintaining **MAG XenForo add-ons (`#N`)**.
 
@@ -246,7 +246,7 @@ Follow the approved-project bootstrap procedure in [MAG_ECOSYSTEM.md](MAG_ECOSYS
 
 ### Documentation actions
 
-Instantiate all nine canonical project documents defined in MAG_ECOSYSTEM.md as one coherent Product Owner-approved bootstrap package. A mandatory container is not mandatory substantive work. Use honest initial-state content where requirements, architecture, implementation, usage records, or audit findings do not yet exist. Document creation grants neither substantive approval nor implementation authorization.
+Instantiate the eight bootstrap-created canonical project documents defined in MAG_ECOSYSTEM.md as one coherent Product Owner-approved bootstrap package. Do not create `CURSOR_USAGE_HISTORY` until the first qualifying telemetry event. A mandatory container is not mandatory substantive work. Use honest initial-state content where requirements, architecture, implementation, or audit findings do not yet exist. CLASS_MAP may be `No implementation exists yet.` Document creation grants neither substantive approval nor implementation authorization.
 
 AUDIT is the standard parent/core evidence document. Use it directly or add only justified child audits; do not create a mandatory child-audit set.
 
@@ -282,7 +282,7 @@ Operational Drive/Local availability procedures belong to MAG_DOCUMENTATION_OPER
 
 **Resume Bootstrap:** existing Level 1 state → Level 2 Local/Git. Reuse the identity, current Drive package when it exists, approvals, and completed work. Create or complete the Local structure including `/docs/`. Reconcile current canonical Drive bodies into the approved Local locations when those counterparts exist. Then complete the separately authorized Git baseline required for Local/Git Bootstrap Complete and stable registration. Deferred Drive counterparts remain **Drive Reconciliation Pending** and do not block Phase 1 completion. Do not repeat requirements or architecture solely because bootstrap started on another device.
 
-One approved bootstrap scope covers the package; do not require nine approvals or repeat an already sufficient bootstrap authorization. Detailed batch onboarding, safe writes, reconciliation, and whole-package verification belong to MAG_DOCUMENTATION_OPERATIONS.md §5.
+One approved bootstrap scope covers the package; do not require per-document approvals or repeat an already sufficient bootstrap authorization. Detailed batch onboarding, safe writes, reconciliation, and whole-package verification belong to MAG_DOCUMENTATION_OPERATIONS.md §5.
 
 ### Independent Local/Git and Drive states
 
@@ -303,7 +303,7 @@ Record Local/Git and Drive states explicitly in README and Roadmap. Do not treat
 Phase 1 completion requires **Local/Git Bootstrap Complete**:
 
 - verified permanent identity and canonical naming;
-- the nine-document package describing the actual current state;
+- the conceptual nine-document package in its actual current state (eight bootstrap-created files; `CURSOR_USAGE_HISTORY` only if already triggered);
 - Local repository structure;
 - the Product Owner-authorized Git baseline and stable registration;
 - successful local package verification.
@@ -631,7 +631,7 @@ Potentially affected:
 - `P<NN>__<CODE>__Changelog.md`
 - `P<NN>__<CODE>__README.md`
 - `P<NN>__<CODE>__Overview.md`
-- `P<NN>__<CODE>__CURSOR_USAGE_HISTORY.md`
+- `P<NN>__<CODE>__CURSOR_USAGE_HISTORY.md` (create on first qualifying telemetry if absent)
 
 TZ changes only when approved product requirements change.
 
@@ -1123,7 +1123,7 @@ This matrix defines timing. Approval details, execution mechanics, evidence stan
 | Overview | Only when a separate descriptive overview is useful | When the verified product description changes | Review with affected documentation; not a separate product gate | Descriptive; preserve relevant history without duplicating TZ |
 | AUDIT | Phase 1 parent/core document with honest evidence status | Record evidence directly or index justified child audits | Evidence supports dependent decisions; it does not approve requirements or architecture | Preserve source/version context, earlier findings, and corrections |
 | Child research / audit evidence | Phase 3 or another phase with a real need beyond the parent AUDIT | During investigation; append or clearly identify revalidation and corrected conclusions | Evidence review before a dependent decision; findings do not approve architecture | Retain source/version context and distinguish earlier findings from later corrections |
-| Cursor usage history | Phase 1 stating no procedures are recorded yet where applicable; populate from the first applicable procedure under CURSOR_USAGE_ANALYTICS.md | At required procedure checkpoints and after a release or coherent body of work | Follow the authoritative reporting and synchronization sequence in CURSOR_USAGE_ANALYTICS.md (prefer automatic After telemetry; do not invent values) | Preserve measurements and historical forecasts; do not invent telemetry or rewrite forecasts to match actuals |
+| Cursor usage history | Lazy-created on the first qualifying procedure under CURSOR_USAGE_ANALYTICS.md; not a Phase 1 physical file | At required procedure checkpoints and after a release or coherent body of work once the file exists | Follow the authoritative reporting and synchronization sequence in CURSOR_USAGE_ANALYTICS.md (prefer automatic After telemetry; do not invent values) | Preserve measurements and historical forecasts; do not invent telemetry or rewrite forecasts to match actuals |
 | MAG_IMPLEMENTATION_PATTERNS.md | Global knowledge base; never bootstrap a project-local copy | When verified work yields qualified reusable knowledge; review candidates by Phase 10 | Authorized Global documentation scope; apply its own entry rules | Preserve traceable evidence and correct superseded conclusions using its maintenance rules |
 | MAG_ECOSYSTEM.md | Existing Global registry and authority map | On approved project bootstrap, relevant status/identity changes, closure, or approved Global documentation-map changes | Authorized Global documentation scope | Retain permanent project identity; do not reuse closed project identifiers |
 | MAG_ADDON_DEVELOPMENT_LIFECYCLE.md | Global lifecycle adoption | When an approved lifecycle, gate, or documentation-timing decision changes | Product Owner approval of Global process changes | Do not retroactively claim that earlier projects followed later procedures |
@@ -1137,7 +1137,7 @@ This matrix defines timing. Approval details, execution mechanics, evidence stan
 5. During finalization: complete Release Presentation; verify documentation against the actual shipping artifact and version.
 6. After release: record relevant real-environment findings, complete applicable history synchronization, and review reusable-knowledge candidates.
 
-The nine canonical documents are created in Phase 1 as mandatory containers with honest current-state records. AUDIT exists ≠ an audit was performed. CURSOR_USAGE_HISTORY exists ≠ telemetry may be invented. CLASS_MAP exists ≠ implementation exists. Architecture exists ≠ architecture is approved. Do not fabricate audit findings, telemetry, requirements, or code maps to populate them. Create optional child audits and other additional documents only when they have real information to own. Mandatory history synchronization follows its owning Global rules even when no product documentation changed.
+The conceptual nine-document package remains canonical. Phase 1 physically creates eight bootstrap containers with honest current-state records. `CURSOR_USAGE_HISTORY` is created later under CURSOR_USAGE_ANALYTICS.md. AUDIT exists ≠ an audit was performed. CLASS_MAP exists ≠ implementation exists. Architecture exists ≠ architecture is approved. Do not fabricate audit findings, telemetry, requirements, or code maps to populate them. Create optional child audits and other additional documents only when they have real information to own. Mandatory history synchronization follows its owning Global rules even when no product documentation changed and even when HISTORY does not yet exist.
 
 
 ## 19. Lifecycle Scaling Rules
@@ -1234,7 +1234,7 @@ This summary makes phase outputs and next transitions explicit. Each transition 
 | --- | --- | --- |
 | Phase 0 — Idea and Evaluation | Sufficient product evaluation for a decision | Gate 0, further evaluation, deferral, or rejection |
 | Gate 0 — Project Approval | Product Owner approval of project creation | Phase 1 |
-| Phase 1 — Project Bootstrap | Verified identity and nine-document package; Full / Local/Git-First / Resume Local/Git completion requires Local structure, approved Git baseline, and stable registration. Drive Reconciliation Pending does not block Phase 1 completion | Phase 2 documentation work may begin in Drive-First with Bootstrap Incomplete — Local/Git Pending; other gates remain applicable |
+| Phase 1 — Project Bootstrap | Verified identity and eight bootstrap-created package files; HISTORY absent until first qualifying telemetry. Full / Local/Git-First / Resume Local/Git completion requires Local structure, approved Git baseline, and stable registration. Drive Reconciliation Pending does not block Phase 1 completion | Phase 2 documentation work may begin in Drive-First with Bootstrap Incomplete — Local/Git Pending; other gates remain applicable |
 | Phase 2 — Requirements Definition | Coherent complete TZ; explicit Approved First Release Scope on Roadmap; resolved blocking product decisions | Gate 1 |
 | Gate 1 — Requirements Approval | Approved complete WHAT and approved implementation-bound first-release slice. Does not require the full TZ to ship in 1.0.0 | Phase 3, or Phase 4 when existing evidence is sufficient and that conclusion is recorded |
 | Phase 3 — Targeted Research and Verification | Traceable evidence sufficient for the next decision; unresolved blockers identified | Phase 4 when dependencies are resolved; Phase 2 if requirements need revision |

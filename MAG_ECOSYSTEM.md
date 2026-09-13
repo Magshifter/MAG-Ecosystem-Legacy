@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-13T13:45:00+00:00`
+- MAG-Content-Updated: `2026-09-13T14:15:00+00:00`
 
 This document is the navigation and governance foundation for MAG software development across approved development classes.
 
@@ -85,11 +85,13 @@ Future namespace classes such as `C`, `D`, etc. require explicit Product Owner a
 
 Each `#N` XenForo project also has a **short, stable project code** used in documentation filenames. That code is a filesystem/UI representation of `#N`. It does **not** replace `#N` in Global registry, reports, or AI context.
 
-| ID | Code | Product | Status | Git repository |
-| --- | --- | --- | --- | --- |
-| #1 | `P01__GLF` | [MAG] Global Links Favicons | Active / Stable 1.4.3 | `GlobalLinksFavicons` |
-| #2 | `P02__TS` | [MAG] Tag Synchronizer | Active / Stable 1.0.0 | `TagSynchronizer` |
-| #4 | `P04__DG` | [MAG] Doc&Guide | Active / Phase 2 Requirements | `DocGuide` |
+| ID | Code | Product | Status | Git repository | Local path |
+| --- | --- | --- | --- | --- | --- |
+| #1 | `P01__GLF` | [MAG] Global Links Favicons | Active / Stable 1.4.3 | `GlobalLinksFavicons` | `C:\laragon\repos\GlobalLinksFavicons` |
+| #2 | `P02__TS` | [MAG] Tag Synchronizer | Active / Stable 1.0.0 | `TagSynchronizer` | `C:\laragon\repos\TagSynchronizer` |
+| #4 | `P04__DG` | [MAG] Doc&Guide | Active / Phase 2 Requirements | `DocGuide` | `C:\laragon\repos\DocGuide` |
+
+The `#N` registry table is the canonical current-fact source for identity, current lifecycle/status label, current stable version where shown, Git repository, and local path. Narrative below may explain classification, history, and meaning; it must not independently restate volatile current status, version, or path.
 
 Approved historical `#N` identities are immutable and are not renumbered. Unused gaps remain available for future assignment unless the Product Owner explicitly retires or reserves them. `#3` currently represents no product; it is not invented here and is not automatically retired. `#3` may be assigned later only by an explicit Product Owner decision. The existence of `#4` does not require the next XenForo project to become `#5`. Agents must not silently fill a gap, skip to a higher number, or invent a product to occupy an unused identifier. Identities in other namespaces do not consume or reserve `#N` slots.
 
@@ -99,25 +101,22 @@ Applicable XenForo-specific Global rules continue to apply to `#N` products.
 
 `A<N>` is a **permanent logical desktop/development application identifier** within the `A<N>` namespace. It is assigned once and is not reused.
 
-| ID | Product | Classification | Status | Git repository |
-| --- | --- | --- | --- | --- |
-| A1 | [MAG] GPT\|Cursor\|Sync | MAG Desktop / Development Application | Active / Stable 1.1.1 | `MAG-GPT-Cursor-Sync` |
+| ID | Product | Classification | Status | Git repository | Local path |
+| --- | --- | --- | --- | --- | --- |
+| A1 | [MAG] GPT\|Cursor\|Sync | MAG Desktop / Development Application | Active / Stable 1.1.1 | `MAG-GPT-Cursor-Sync` | `C:\laragon\repos\MAG-Workflow-Bridge` |
+
+The `A<N>` registry table is the canonical current-fact source for A1 identity, classification, status, version, Git repository, and local path.
 
 **A1 — concise registry metadata**
 
 - Identity: A1 is a registered MAG Ecosystem development identity, but it is not a XenForo `#N` project. It must not consume `#3` or any other `#N` slot.
 - Product category: Windows desktop / development workflow utility.
 - Purpose: Connect ChatGPT Desktop, Cursor Agent, and Cursor Terminal through controlled local workflows that reduce repetitive manual transfer operations.
+- Current status, version, repository, and local path: the `A<N>` registry table above.
 
-Global documentation contains only this concise product-level identity, status, and purpose metadata. Detailed architecture, hotkeys, TER mechanics, terminal implementation, telemetry, installation, and release history remain owned by the A1 product repository.
+Global documentation contains only this concise product-level identity, classification, and purpose metadata. Detailed architecture, hotkeys, TER mechanics, terminal implementation, telemetry, installation, and release history remain owned by the A1 product repository.
 
-Local clone convention (current workstation):
-
-```text
-C:\laragon\repos\MAG-Workflow-Bridge
-```
-
-The public repository name is `MAG-GPT-Cursor-Sync`. Some internal technical identifiers retain the historical `MAG Workflow Bridge` name for compatibility.
+Some internal technical identifiers retain the historical `MAG Workflow Bridge` name for compatibility. That historical name does not change the public Git repository identity in the registry table.
 
 ### `B<N>` — MAG Mobile Applications
 
@@ -127,21 +126,13 @@ No `B<N>` product is currently registered. Do not invent a `B1`.
 
 ## Local clone convention
 
-```text
-C:\laragon\repos\<repository-name>
-```
-
-Examples:
+Current workstation layout:
 
 ```text
-C:\laragon\repos\GlobalLinksFavicons
-C:\laragon\repos\TagSynchronizer
-C:\laragon\repos\DocGuide
-C:\laragon\repos\MAG-Workflow-Bridge
-C:\laragon\repos\MAG-Ecosystem
+C:\laragon\repos\<folder>
 ```
 
-This Global documentation repository is `MAG-Ecosystem`. It is not a numbered product identity in any development class.
+Registered development local paths are in the identity tables above. This Global documentation repository is `MAG-Ecosystem` at `C:\laragon\repos\MAG-Ecosystem`. It is not a numbered product identity in any development class.
 
 ## Documentation levels
 
@@ -232,7 +223,7 @@ Development documentation must cite Global files as **`MAG-Ecosystem` / `<filena
 
 ## Project documentation standard
 
-Every newly approved `#N` XenForo project must receive the following nine canonical documents as one bootstrap package. A mandatory canonical container/identity is **not** mandatory substantive work. Creation never implies a passed gate, approved requirements, approved architecture, performed audit, recorded telemetry, or existing implementation. Authority is defined by the logical document, not by its mere creation or filename. This requirement does not apply to `A<N>` or `B<N>` and does not authorize migration or renaming of existing or historical project documents.
+Every newly approved `#N` XenForo project has the following **conceptual nine-document package**. A mandatory canonical container/identity is **not** mandatory substantive work. Creation never implies a passed gate, approved requirements, approved architecture, performed audit, recorded telemetry, or existing implementation. Authority is defined by the logical document, not by its mere creation or filename. This requirement does not apply to `A<N>` or `B<N>` and does not authorize migration or renaming of existing or historical project documents.
 
 | Logical document | Canonical filename | Role |
 | --- | --- | --- |
@@ -243,12 +234,20 @@ Every newly approved `#N` XenForo project must receive the following nine canoni
 | Changelog | `P<NN>__<CODE>__Changelog.md` | Historical record of released and staged changes. |
 | README | `P<NN>__<CODE>__README.md` | Descriptive project entry point and bootstrap status. |
 | IDEA | `P<NN>__<CODE>__IDEA.md` | Non-authoritative product exploration, Phase 0 reasoning/evaluation, alternatives, historical/superseded concepts, and future concepts that do not belong to authoritative TZ. |
-| CURSOR_USAGE_HISTORY | `P<NN>__<CODE>__CURSOR_USAGE_HISTORY.md` | Procedure usage records under CURSOR_USAGE_ANALYTICS.md; no invented telemetry. |
+| CURSOR_USAGE_HISTORY | `P<NN>__<CODE>__CURSOR_USAGE_HISTORY.md` | Canonical telemetry container; lazy-created under CURSOR_USAGE_ANALYTICS.md. No invented telemetry. |
 | AUDIT | `P<NN>__<CODE>__AUDIT.md` | Parent/core document for research and verification evidence; findings do not approve requirements or architecture. |
 
-The package establishes ownership, not speculative content. Where substantive information is unavailable, record an honest state such as `Not yet defined`, `Not yet approved`, `No implementation exists yet`, `No Cursor procedures recorded yet`, or `No audit findings yet`. AUDIT exists ≠ an audit was performed. CURSOR_USAGE_HISTORY exists ≠ telemetry may be invented. CLASS_MAP exists ≠ implementation exists. Architecture exists ≠ architecture is approved.
+Bootstrap creates **eight** containers immediately: README, TZ, Roadmap, Architecture, CLASS_MAP, Changelog, IDEA, and AUDIT.
 
-AUDIT may hold evidence directly for a small project or index justified child audits such as NATIVE_SOURCE_AUDIT, DONOR_AUDIT, SECURITY_AUDIT, or PERFORMANCE_AUDIT. Child audits are optional and created only for a real evidence-preservation need.
+`CURSOR_USAGE_HISTORY` remains a canonical package member but is **lazy-created** when the first qualifying Cursor/Codex/agent procedure produces telemetry worth recording under `CURSOR_USAGE_ANALYTICS.md`. Absence before that event is valid. It is not package corruption, bootstrap failure, or missing required product documentation. Once created, ordinary naming, metadata, placement, and history rules apply. Do not invent telemetry to create the file. Do not backfill fake historical telemetry. Existing projects that already have the file keep it. Do not retrofit `#1` or `#2` solely for this rule.
+
+Package verification **PASS**es when the eight bootstrap-created files exist correctly, identity and metadata are otherwise valid, and `CURSOR_USAGE_HISTORY` is either not yet triggered or exists and is valid. The initial eight-file state is the normal bootstrap package, not an exception.
+
+The package establishes ownership, not speculative content. Where substantive information is unavailable, record an honest state such as `Not yet defined`, `Not yet approved`, `No implementation exists yet`, or `No audit findings yet`. AUDIT exists ≠ an audit was performed. CLASS_MAP exists ≠ implementation exists. Architecture exists ≠ architecture is approved.
+
+CLASS_MAP is a mandatory bootstrap-created container. Before implementation exists, honest minimal content equivalent to `No implementation exists yet.` is valid. Do not require speculative classes, namespaces, handlers, listeners, or file maps. Once implementation exists, CLASS_MAP becomes substantive under normal documentation rules.
+
+AUDIT is a mandatory parent container. It may hold evidence directly for a small project. Child audits are optional and created only when a real audit surface requires them. Do not generate empty child audits by default. Do not delete existing historical child audits merely because they are currently empty.
 
 Additional documents are optional, created only when useful:
 
@@ -462,16 +461,16 @@ When a new MAG development is approved in a given identity class:
 1. Assign a permanent identifier in that class (`#N`, `A<N>`, or `B<N>` as applicable) by explicit Product Owner decision. For `#N`, verify the chosen identifier against the current registry. Do not renumber an approved identity, invent a product, silently fill an unused gap, or assume that a higher existing identity forces the next number. Unused gaps remain assignable unless explicitly retired.
 2. Record product name, status, project code, intended Git repository name, and applicable filename convention metadata. A permanent `#N` identity may be assigned after Project Approval even when Local/Git is unavailable; record pending prerequisites without claiming stable registration.
 3. Create the development repository structure (separate from `MAG-Ecosystem`) when applicable and available. For `#N`, Full Bootstrap or Local/Git-First completes Local/Git prerequisites; Drive-First Bootstrap may defer them under the explicit incomplete state below. Git actions remain separately Product Owner-controlled.
-4. For every new `#N`, instantiate the nine-document package above in one coherent Product Owner-approved bootstrap scope, validate it, synchronize Drive counterparts when that work is in the approved scope, and verify the complete local package without per-file approval loops. Deferred Drive counterparts remain Drive Reconciliation Pending. For `A<N>` and `B<N>`, select documentation from actual approved needs; the XenForo package does not apply.
+4. For every new `#N`, instantiate the eight bootstrap-created documents above in one coherent Product Owner-approved bootstrap scope, validate it, synchronize Drive counterparts when that work is in the approved scope, and verify the local package without per-file approval loops. Do not instantiate `CURSOR_USAGE_HISTORY` until its lazy-creation trigger. Deferred Drive counterparts remain Drive Reconciliation Pending. For `A<N>` and `B<N>`, select documentation from actual approved needs; the XenForo package does not apply.
 5. Do not copy another development's requirements, architecture, or code "as a template" beyond true Global process.
 6. Do not create copies or pointer files of Global process documents in the new development.
 7. Do not create shared components as part of bootstrap.
 
 For `#N`, Drive-First, Local/Git-First, Full, and Resume are normal documentation-surface paths owned by `MAG_DOCUMENTATION_OPERATIONS.md` §5. Drive-First follows Project Approval and permits substantive documentation work on Drive under **Bootstrap Incomplete — Local/Git Pending**. Local/Git-First may complete Local/Git Bootstrap Complete while Drive is deferred. Resume Bootstrap reuses the permanent identity, current Drive documents when they exist, and completed work; establishes the Local repository structure including `/docs/`; and completes the separately authorized Git baseline required for **Local/Git Bootstrap Complete** and stable registration. Reconcile an existing Drive package into Local when those counterparts exist. Deferred Drive counterparts remain **Drive Reconciliation Pending** and do not invalidate Phase 1 completion or revert registration to provisional. Do not restart requirements or architecture merely because the device changed. Lifecycle states and two-level bootstrap authority belong to `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 1. Bootstrap completion does not authorize commit, push, tag, or release.
 
-`#2` [MAG] Tag Synchronizer is registered. Its Git repository exists. Status is **Active / Stable 1.0.0**. Stable Release 1.0.0 is released; Post-Release Verification is the next lifecycle stage and has not started. It inherits Global rules by reference. It must not contain local copies of Global documentation files from `MAG-Ecosystem`.
+`#2` [MAG] Tag Synchronizer is registered. Current identity, status, version, repository, and local path are in the `#N` registry table above. After the released Stable 1.0.0, Post-Release Verification is the next lifecycle stage and has not started. It inherits Global rules by reference. It must not contain local copies of Global documentation files from `MAG-Ecosystem`.
 
-`#4` [MAG] Doc&Guide is an approved XenForo identity (`P04__DG`, repository `DocGuide`). It is registered. Phase 1 is **Completed** (**Local/Git Bootstrap Complete**). Drive-First → Resume Bootstrap established the local repository, canonical `docs/` package, minimum add-on identity, and approved Git baseline on `main` / `origin/main`. Phase 2 Requirements is active. Drive state is **Drive Reconciliation Pending**. Implementation is not authorized. It inherits Global rules by reference and must not contain local copies of Global documentation files from `MAG-Ecosystem`.
+`#4` [MAG] Doc&Guide is an approved XenForo identity. Current identity, status, repository, and local path are in the `#N` registry table above. Phase 1 reached **Local/Git Bootstrap Complete** through Drive-First → Resume Bootstrap. Drive state remains **Drive Reconciliation Pending**. Implementation is not authorized. It inherits Global rules by reference and must not contain local copies of Global documentation files from `MAG-Ecosystem`.
 
 ## Current MAG-Ecosystem repository contents
 

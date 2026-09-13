@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Development Guidelines
 
 - MAG-Document-ID: `AI_GUIDELINES.md`
-- MAG-Content-Updated: `2026-09-13T13:45:00+00:00`
+- MAG-Content-Updated: `2026-09-13T14:15:00+00:00`
 
 This document is the **Global MAG development standard**. It defines **how** MAG software is developed with AI assistance.
 
@@ -505,6 +505,21 @@ When a change is already understood, approved, and technically verified, use a *
 
 This optimization must not weaken required validation or authorize unsafe shortcuts.
 
+### Adaptive Validation Matrix applicability
+
+The Adaptive Validation Matrix form lives in [`MAG_XENFORO_ADDON_BLUEPRINT.md`](MAG_XENFORO_ADDON_BLUEPRINT.md). It is evidence/applicability framing, not a policy owner, and not default ceremony.
+
+Use the full/explicit Matrix for:
+
+- medium/high-risk increments;
+- formal audits;
+- release/release-candidate validation where applicable;
+- changes where multiple evidence dimensions materially matter.
+
+For small/low-risk deterministic changes, use concise validation evidence appropriate to the change (for example `git diff --check`, targeted tests, lint/build result, relevant source verification, exact before/after state). Do not fill a full Matrix of N/A rows for a tiny deterministic edit. N/A remains valid where the owning rule permits it.
+
+Required Product Owner Practical Acceptance, Gate 3, and other mandatory owning verification rules are not waived by using concise evidence.
+
 ### Product Owner Practical Acceptance
 
 Per [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) Phase 7, technical or automated validation alone does not complete Integration and Final Validation. Required Product Owner Practical Acceptance must reach explicit **PASS** before Gate 3 — Release Readiness.
@@ -569,6 +584,8 @@ Historical documentation and Git history remain historical records and must not 
 
 The **user** owns `git add`, `git commit`, and `git push` unless they explicitly request the agent to perform them.
 
+Never force-push `main` unless the Product Owner explicitly authorizes that exact force-push operation. No inferred authorization. Normal commit approval, normal push approval, release approval, Direct Agent Mode, Full Bootstrap, and checkpoint authorization do not grant force-push permission. If force-push appears necessary: inspect, report, and wait for Product Owner decision. Do not provide destructive auto-recovery. Compact Git recovery behavior is in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md) §10.
+
 If a stage reveals unresolved **Critical** issues, the stage is not closed and progression is blocked.
 
 **Drive-First / Local/Git-First Bootstrap:** approved documentation work may progress under MAG_ADDON_DEVELOPMENT_LIFECYCLE.md Phase 1 and MAG_DOCUMENTATION_OPERATIONS.md §5. Drive-First is a normal `#N` bootstrap state: documentation may proceed while Local/Git closure remains pending. Local/Git-First may complete Local/Git Bootstrap Complete while Drive remains **Drive Reconciliation Pending**. Neither path claims implementation, commit, push, tag, or release authorization. Drive reconciliation is not required for Phase 1 completion or stable registration. A Pool status change alone is not a Git checkpoint.
@@ -603,7 +620,7 @@ Do not claim Git state was verified unless it was actually inspected.
 
 Preserve unrelated user changes.
 
-Canonical `#N` package identity and filenames are defined in `MAG_ECOSYSTEM.md`. Operational instantiation (nine documents under `docs/`, public root `README.md`, `IDEA.md` casing) is defined in `MAG_XENFORO_ADDON_BLUEPRINT.md`. Do not maintain a second package tree here.
+Canonical `#N` package identity and filenames are defined in `MAG_ECOSYSTEM.md`. Operational instantiation (eight bootstrap-created documents under `docs/`, lazy `CURSOR_USAGE_HISTORY`, public root `README.md`, `IDEA.md` casing) is defined in `MAG_XENFORO_ADDON_BLUEPRINT.md`. Do not maintain a second package tree here.
 
 New `#N` projects use that Blueprint/`docs/` layout. `#1` and `#2` historical root/`docs/` mixes and `Idea.md` casing are grandfathered. Do not migrate, rename, or retrofit them, and do not treat those historical layouts as new-project templates.
 

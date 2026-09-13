@@ -1,7 +1,7 @@
 # MAG Ecosystem — Cursor Usage Analytics
 
 - MAG-Document-ID: `CURSOR_USAGE_ANALYTICS.md`
-- MAG-Content-Updated: `2026-09-13T13:45:00+00:00`
+- MAG-Content-Updated: `2026-09-13T14:15:00+00:00`
 
 This document is the reusable MAG standard for **measuring, reporting, comparing, and optimizing Cursor usage** across MAG projects.
 
@@ -451,10 +451,10 @@ Do not copy another project’s procedure log into this Global standard.
 
 ## 13. Where historical records live
 
-| Kind of record | Logical home (do not create new files solely from this section) |
+| Kind of record | Logical home |
 | --- | --- |
 | Methodology (this document) | `MAG-Ecosystem` / `CURSOR_USAGE_ANALYTICS.md` |
-| `#N` / `A<N>` / `B<N>` procedure logs, release summaries, project forecasts vs actual | That development's repository, as project history (not TZ/Roadmap requirements). Canonical history filename example: `docs/P01__GLF__CURSOR_USAGE_HISTORY.md`. |
+| `#N` / `A<N>` / `B<N>` procedure logs, release summaries, project forecasts vs actual | That development's repository, as project history (not TZ/Roadmap requirements). Canonical history filename example: `docs/P01__GLF__CURSOR_USAGE_HISTORY.md`. Create that `#N` file only under History completeness below. |
 | Global documentation-reorganization / ecosystem-process measurements | `MAG-Ecosystem` process history, separate from this methodology file |
 
 Do not silently rewrite measured historical records because methodology later changes. If a field is retired or reinterpreted, keep old rows as recorded and note the interpretation change in notes or a later dated correction. Corrections must be transparent.
@@ -465,7 +465,11 @@ Existing `#1` analytics history remains in the `#1` repository until a later con
 
 ### History completeness
 
-Every meaningful completed Cursor procedure must be recorded in the appropriate project or process usage-history document.
+`CURSOR_USAGE_HISTORY` is a canonical `#N` package member and is **lazy-created**. Create the project history file, using `templates/xenforo-addon/P0N__XXX__CURSOR_USAGE_HISTORY.md` when instantiating a new `#N` file, when the first qualifying Cursor/Codex/agent procedure produces telemetry worth recording. Absence before that event is valid. It is not package corruption, bootstrap failure, or missing required product documentation.
+
+Do not create the file at bootstrap. Do not invent telemetry to satisfy the container. Do not backfill fake historical telemetry. Existing projects that already have the file keep it. After creation, ordinary naming, metadata, placement, and history rules apply.
+
+Every meaningful completed Cursor procedure must be recorded in the appropriate project or process usage-history document. If that document does not yet exist, create it as part of recording the first qualifying procedure.
 
 When Before/After telemetry is fully known at the end of the main procedure — including when After arrived via a valid automatic MAG GPT|Cursor|Sync footer — record it in that procedure's history entry immediately.
 

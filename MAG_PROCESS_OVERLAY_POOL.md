@@ -1,7 +1,7 @@
 # MAG Process Overlay Pool
 
 - MAG-Document-ID: `MAG_PROCESS_OVERLAY_POOL.md`
-- MAG-Content-Updated: `2026-09-13T13:45:00+00:00`
+- MAG-Content-Updated: `2026-09-13T14:15:00+00:00`
 
 This file is the ecosystem-level **MAG Process Overlay Pool**. It is a single registered Global process asset containing multiple internal process records (MPO entries).
 
@@ -96,6 +96,6 @@ Promotion is a Global documentation normalization procedure. After promotion, ca
 - Affected operational assets: `MAG_XENFORO_ADDON_BLUEPRINT.md`; `templates/xenforo-addon/*` only where they record Drive-First / Local/Git pending / Drive Reconciliation Pending state.
 - Activation decision: Product Owner approved this bootstrap optimization as ACTIVE on `2026-09-13` as the first MAG Process Overlay Pool entry. Wave 1 Product Owner decision on `2026-09-13` amended Drive independence from Phase 1 completion without promoting this entry.
 - Validation evidence: Wave 1 canonicalized Local/Git vs Drive states. `#4` Resume Bootstrap reached Local/Git Bootstrap Complete with Drive Reconciliation Pending. Wave 2 Product Owner procedure promoted the remaining Level 1 / Level 2 payload into Lifecycle Phase 1.
-- Known limitations: none for current operation. Historical ACTIVE wording below the promotion result is not executable.
+- Known limitations: none for current operation. Historical ACTIVE overlay wording was removed at promotion; this record is not executable.
 - Promotion readiness: promoted.
 - Promotion result: **PROMOTED** on `2026-09-13` by Wave 2 Product Owner-authorized Global normalization. Canonical documents are self-contained. Do not consult this entry for current bootstrap HOW. No MPO-002 created.

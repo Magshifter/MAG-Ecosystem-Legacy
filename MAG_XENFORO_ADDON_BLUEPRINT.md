@@ -1,7 +1,7 @@
 # MAG XenForo Add-on Blueprint
 
 - MAG-Document-ID: `MAG_XENFORO_ADDON_BLUEPRINT.md`
-- MAG-Content-Updated: `2026-09-13T13:45:00+00:00`
+- MAG-Content-Updated: `2026-09-13T14:15:00+00:00`
 
 ## Purpose, scope, and authority
 
@@ -13,7 +13,7 @@ Use current authorities from `MAG-Ecosystem`: MAG_ECOSYSTEM.md (identity and doc
 
 ## Operating principles
 
-- **Minimum Interaction:** one approved bootstrap scope covers routine package preparation, validation, applicable writes, and whole-package verification. Do not request nine approvals or reconfirm a known decision.
+- **Minimum Interaction:** one approved bootstrap scope covers routine package preparation, validation, applicable writes, and whole-package verification. Do not request per-document approvals or reconfirm a known decision.
 - **Exception-Driven Intervention:** surface conflicts, critical ambiguity, failed validation, unsafe writes, identity collisions, Git/Drive divergence, new product or architecture decisions, and Global conflicts. Existing separate gates and Git authorizations still apply.
 - **No Repeated Work:** reuse current context, approvals, existing documents, and still-valid evidence. Resume at the interrupted step after resolution.
 - **No Speculative Content:** state what is unknown or absent. Creation does not imply requirements approval, implementation, a passed gate, or a release.
@@ -29,7 +29,7 @@ The templates are supporting template assets under MAG_DOCUMENTATION_OPERATIONS.
 
 ## Canonical package and ownership
 
-Instantiate all nine assets from `templates/xenforo-addon/` into `docs/`, preserving the approved suffix casing:
+The conceptual nine-document package is owned by `MAG_ECOSYSTEM.md`. At bootstrap, instantiate the eight bootstrap-created assets from `templates/xenforo-addon/` into `docs/`, preserving the approved suffix casing. Do not instantiate `CURSOR_USAGE_HISTORY` until the first qualifying telemetry event under `CURSOR_USAGE_ANALYTICS.md`. The HISTORY template remains available for that later instantiation. Absence of HISTORY before that event is valid and is not a package failure.
 
 | Asset suffix | Canonical project filename | Owner |
 | --- | --- | --- |
@@ -37,15 +37,17 @@ Instantiate all nine assets from `templates/xenforo-addon/` into `docs/`, preser
 | TZ | `P<NN>__<CODE>__TZ.md` | Approved product WHAT; creation alone does not approve it. |
 | Roadmap | `P<NN>__<CODE>__Roadmap.md` | Lifecycle, sequencing, gates, A/I progress, approved first-release slice, release state, next approved step. |
 | Architecture | `P<NN>__<CODE>__Architecture.md` | Approved product HOW and architecture decisions. |
-| CLASS_MAP | `P<NN>__<CODE>__CLASS_MAP.md` | Implemented/current structure only. |
+| CLASS_MAP | `P<NN>__<CODE>__CLASS_MAP.md` | Mandatory container; honest `No implementation exists yet.` until real code exists. |
 | Changelog | `P<NN>__<CODE>__Changelog.md` | Historical staged/released product changes, not plans. |
 | IDEA | `P<NN>__<CODE>__IDEA.md` | Non-authoritative product exploration, Phase 0 reasoning/evaluation, alternatives, historical/superseded concepts, and future concepts. |
-| CURSOR_USAGE_HISTORY | `P<NN>__<CODE>__CURSOR_USAGE_HISTORY.md` | Procedure and telemetry history under Global analytics. |
-| AUDIT | `P<NN>__<CODE>__AUDIT.md` | Research/evidence parent. |
+| CURSOR_USAGE_HISTORY | `P<NN>__<CODE>__CURSOR_USAGE_HISTORY.md` | Canonical; lazy-created on first qualifying telemetry. Not a bootstrap file. |
+| AUDIT | `P<NN>__<CODE>__AUDIT.md` | Mandatory research/evidence parent. |
 
 Maintain each fact in its owner; use references elsewhere. An explicitly required bootstrap-pending notice may appear in internal README with a link to the detailed Roadmap record. A mandatory container is not mandatory substantive work. Empty substantive domains receive honest current-state text, not fabricated entries. Creation does not imply approval, implementation, a performed audit, or telemetry. No OVERVIEW or automatic child-audit templates are included.
 
-AUDIT may hold evidence directly. When evidence complexity justifies a child, use a prefixed NATIVE_SOURCE_AUDIT, DONOR_AUDIT, SECURITY_AUDIT, PERFORMANCE_AUDIT, or another evidence-specific document. The parent records its link, purpose, scope, status, principal result, and relationship to decisions; do not duplicate the child's full content. Findings do not authorize architecture or implementation.
+CLASS_MAP is created at bootstrap with honest pre-implementation content. Do not invent classes, namespaces, handlers, listeners, or file maps.
+
+AUDIT may hold evidence directly. When evidence complexity justifies a child, use a prefixed NATIVE_SOURCE_AUDIT, DONOR_AUDIT, SECURITY_AUDIT, PERFORMANCE_AUDIT, or another evidence-specific document. The parent records its link, purpose, scope, status, principal result, and relationship to decisions; do not duplicate the child's full content. Do not generate empty child audits by default. Findings do not authorize architecture or implementation.
 
 ## Repository and public README
 
@@ -55,7 +57,7 @@ Default layout, created only as each part becomes justified:
 <repository>/
   README.md
   docs/
-    <nine canonical project documents>
+    <eight bootstrap-created canonical documents; CURSOR_USAGE_HISTORY when triggered>
   src/addons/MAG/<AddOnName>/
   tests/                         (only when justified)
 ```
@@ -70,7 +72,7 @@ The add-on skeleton is the verified native structure needed by the approved boot
 
 Use MAG_ADDON_DEVELOPMENT_LIFECYCLE.md Phase 1 and MAG_DOCUMENTATION_OPERATIONS.md §5. Full Bootstrap is Level 1 then Level 2 without interruption.
 
-Project Approval → Product Owner creates/provides the approved GitHub repository → verify identity → establish Local structure → instantiate nine documents → prepare public README → establish the authorized native skeleton → validate → Product Owner-controlled Git checkpoint → complete **Local/Git Bootstrap Complete** / stable registration → report. Synchronize applicable Drive counterparts when available and authorized; otherwise record **Drive Reconciliation Pending**. Drive sync is not required before Phase 1 completion.
+Project Approval → Product Owner creates/provides the approved GitHub repository → verify identity → establish Local structure → instantiate the eight bootstrap-created documents → prepare public README → establish the authorized native skeleton → validate → Product Owner-controlled Git checkpoint → complete **Local/Git Bootstrap Complete** / stable registration → report. Synchronize applicable Drive counterparts when available and authorized; otherwise record **Drive Reconciliation Pending**. Drive sync is not required before Phase 1 completion.
 
 Reuse an existing repository or counterpart. This is a typical sequence, not an extra checkpoint rule: a separately approved pre-checkpoint Drive batch is also governed by Documentation Operations. Local/Git completion requires the approved Git baseline. Do not silently downgrade unavailable Local/Git steps. Do not treat unavailable Drive counterparts as incomplete Phase 1.
 
@@ -86,7 +88,7 @@ Record **Bootstrap Incomplete — Local/Git Pending** in internal README and Roa
 
 Local/Git-First is a normal documentation-operations path (Lifecycle Level 1 then Level 2 while Drive is deferred), not an exception.
 
-Project Approval → establish Local repository and `/docs/` → instantiate nine documents → prepare public README/skeleton as authorized → validate → Product Owner-controlled Git baseline → **Local/Git Bootstrap Complete** / stable registration. Record **Drive Reconciliation Pending**. Do not claim Drive Reconciled. Implementation remains separately unauthorized.
+Project Approval → establish Local repository and `/docs/` → instantiate the eight bootstrap-created documents → prepare public README/skeleton as authorized → validate → Product Owner-controlled Git baseline → **Local/Git Bootstrap Complete** / stable registration. Record **Drive Reconciliation Pending**. Do not claim Drive Reconciled. Implementation remains separately unauthorized.
 
 ## Resume Bootstrap
 
@@ -100,7 +102,7 @@ Preserve existing Local work and stop affected overwrites on conflict. Do not re
 
 The Product Owner controls repository publication, commit, push, tag, and release. Provide exact commands using verified repository paths, branch/remotes, and an explicit file list at the appropriate checkpoint. Do not run them automatically. Check the index and diff first; exclude unrelated work. A template or finished bootstrap does not grant Git or implementation authorization.
 
-For Drive, resolve the approved project folder and all nine intended counterparts before writes. Use the controlled batch workflow in MAG_DOCUMENTATION_OPERATIONS.md §5, including safe transport and complete readback; preserve existing IDs and create only proven missing files. Report partial execution honestly and resume only unresolved actions. Do not redefine normal SYNC classifications or safeguards here.
+For Drive, resolve the approved project folder and the eight bootstrap-created counterparts before writes. Include `CURSOR_USAGE_HISTORY` only when that file already exists. Use the controlled batch workflow in MAG_DOCUMENTATION_OPERATIONS.md §5, including safe transport and complete readback; preserve existing IDs and create only proven missing files. Report partial execution honestly and resume only unresolved actions. Do not redefine normal SYNC classifications or safeguards here.
 
 This supporting package lives locally at the repository root plus templates/xenforo-addon and on Drive under MAG Projects / Operations with the same relative layout. Transfer templates as supporting template assets under MAG_DOCUMENTATION_OPERATIONS.md §4, not as instantiated project metadata. Package transfer is a separately approved operation and does not change the seven-file Global authority set.
 
@@ -141,7 +143,13 @@ Use MAG-Ecosystem / AI_GUIDELINES.md §16 and the Lifecycle requirements, archit
 
 ## Adaptive Validation Matrix
 
-The matrix records applicability and evidence required by owning Global rules and applicable ACTIVE overlays; it does not independently define or waive validation requirements. Place an applicable instance with the evidence owner, normally AUDIT; Roadmap references the result. Select checks based on actual change/risk and reuse valid evidence. Blank fields below are a form, never proof of execution.
+This matrix is an available evidence/applicability frame. It is not a policy owner and is not default ceremony for every documentation or implementation change. Applicability is owned by `AI_GUIDELINES.md` §18.
+
+Use the full/explicit matrix for medium/high-risk increments, formal audits, release/release-candidate validation where applicable, and changes where multiple evidence dimensions materially matter.
+
+For small/low-risk deterministic changes, record concise validation evidence appropriate to the change. Do not fill a full matrix of N/A rows for a tiny deterministic edit.
+
+The matrix records applicability and evidence required by owning Global rules and applicable ACTIVE overlays; it does not independently define or waive validation requirements. Place an applicable instance with the evidence owner, normally AUDIT; Roadmap references the result. Select checks based on actual change/risk and reuse valid evidence. Blank fields below are a form, never proof of execution. Use this table only when the full/explicit frame applies.
 
 | Area | Applicable | Reason | Evidence | Result |
 | --- | --- | --- | --- | --- |
@@ -206,7 +214,7 @@ Use a compact report, not a new permanent Bootstrap Completion file:
 - GitHub: <verified repository / pending>
 - Local repository: <verified path / pending>
 - Google Drive: <folder, counterpart verification / Drive Reconciled / Drive Reconciliation Pending>
-- Core documentation: <nine files, metadata and content verification>
+- Core documentation: <eight bootstrap-created files; HISTORY present only if already triggered; metadata and content verification>
 - Add-on skeleton: <verified authorized state / pending>
 - Registration: <actual provisional or stable state>
 - Local/Git bootstrap: <Local/Git Bootstrap Complete / Bootstrap Incomplete — Local/Git Pending>
@@ -218,4 +226,4 @@ Report Drive-First Local/Git incompleteness explicitly. Report Drive Reconciliat
 
 ## Blueprint boundary
 
-The package contains this document and nine templates only. Operational frames stay here and are instantiated in their existing project owners when needed. No automatic child audits, OVERVIEW, separate increment/decision/matrix/acceptance/release/checklist files, speculative directories, or real project are created by publishing this asset. It does not change Global authority, bypass approval, grant implementation scope, or authorize Git/release actions.
+The package contains this document and nine templates only. Bootstrap instantiates eight project documents; the HISTORY template is used later when telemetry is first recorded. Operational frames stay here and are instantiated in their existing project owners when needed. No automatic child audits, OVERVIEW, separate increment/decision/matrix/acceptance/release/checklist files, speculative directories, or real project are created by publishing this asset. It does not change Global authority, bypass approval, grant implementation scope, or authorize Git/release actions.

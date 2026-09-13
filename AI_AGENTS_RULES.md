@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Coding Agent Rules
 
 - MAG-Document-ID: `AI_AGENTS_RULES.md`
-- MAG-Content-Updated: `2026-09-13T13:45:00+00:00`
+- MAG-Content-Updated: `2026-09-13T14:15:00+00:00`
 
 These rules define **how coding agents may execute** work in MAG repositories.
 
@@ -248,6 +248,7 @@ They must **not**, unless explicitly requested:
 - `git add`
 - `git commit`
 - `git push`
+- `git push --force` / force-push
 - branch creation or management
 - merge
 - release tagging
@@ -255,6 +256,23 @@ They must **not**, unless explicitly requested:
 - `git reset`, restore, or discard of user work
 
 The user reviews, stages, commits, and publishes.
+
+Never force-push `main` unless the Product Owner explicitly authorizes that exact force-push operation. The force-push rule is owned by [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §20. Normal commit, push, release, Direct Agent Mode, Full Bootstrap, and checkpoint authorization do not inherit it.
+
+### Git recovery
+
+Default pattern: **Inspect → Report → Product Owner decision**. Agents must not improvise destructive recovery. Harmless deterministic conditions already covered by Global HOW (for example CRLF checkout warnings, or inspecting the agent's own approved dirty files) may continue. Do not treat every warning as a shutdown.
+
+| Condition | Inspect | Do not mutate automatically | Report / next |
+| --- | --- | --- | --- |
+| Dirty working tree | `git status`, `git diff`; which files belong to the approved task vs unrelated work | stash, reset, restore, discard, or commit unless that exact action is already authorized | Report the tree. PO decides keep, separate, or checkpoint. |
+| Wrong branch | `git branch -vv`; expected identity/branch from `MAG_ECOSYSTEM.md` | checkout, create, merge, or rebase | Report current vs expected. PO decision required. |
+| Failed push | status, tracking branch, remote, exact error | force-push, rebase onto published `main`, or rewrite history | Report local/remote state and the error. PO decision required. |
+| Remote divergence | status, log, ahead/behind; fetch only if inspection is authorized | `reset --hard`, force-push, or history rewrite | Report divergence. PO decision required. |
+| Repository/path rename | actual cwd vs registry local path and expected repository identity | rename, move, or retarget the clone | Report mismatch. PO decision required. |
+| Mistaken project identity | GLOBAL + active identity; registry; repository name | continue in the wrong identity; reclassify; copy Global files | Stop the affected work. PO decision required. |
+| Remote URL mismatch | `git remote -v` vs expected repository | change the remote URL | Report mismatch. PO decision required. |
+| Force-push request | why it appears necessary; current branch; whether the branch is `main` | force-push; infer authorization | Inspect → Report → PO. Never force-push `main` without explicit authorization of that exact operation. |
 
 Do not treat an incomplete manual step as completed.
 
