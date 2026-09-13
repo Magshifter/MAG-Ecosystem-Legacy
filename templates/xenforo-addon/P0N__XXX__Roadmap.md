@@ -7,11 +7,22 @@ Template asset: substitute identity and timestamp before project use. Follow MAG
 
 ## Current Lifecycle Phase
 
-Not yet defined. Record the verified phase under MAG-Ecosystem / MAG_ADDON_DEVELOPMENT_LIFECYCLE.md. In Drive-First, record **Bootstrap Incomplete — Local/Git Pending** and the current authoritative Drive source without resetting substantive progress.
+Not yet defined. Record the verified phase under MAG-Ecosystem / MAG_ADDON_DEVELOPMENT_LIFECYCLE.md. In Drive-First, record **Bootstrap Incomplete — Local/Git Pending** and the current authoritative Drive source without resetting substantive progress. After Local/Git Bootstrap Complete, record **Drive Reconciliation Pending** or **Drive Reconciled** independently; Drive pending does not reopen Phase 1.
 
 ## Current Version / Increment
 
 Not yet defined. No implementation exists yet.
+
+## Approved First Release Scope
+
+Not yet approved — required before Gate 1 / Phase 2 completion.
+
+TZ remains the complete product WHAT. This Roadmap owns the implementation-bound slice. Do not invent bucket contents. Gate 1 does not mean every TZ item ships in 1.0.0.
+
+- Included in 1.0.0: Not yet approved.
+- Deferred to later 1.x: Not yet approved.
+- Future major: Not yet approved.
+- Explicitly out of first release: Not yet approved.
 
 ## Architecture Blocks
 

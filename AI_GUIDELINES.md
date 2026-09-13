@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Development Guidelines
 
 - MAG-Document-ID: `AI_GUIDELINES.md`
-- MAG-Content-Updated: `2026-09-13T09:58:00+00:00`
+- MAG-Content-Updated: `2026-09-13T13:20:00+00:00`
 
 This document is the **Global MAG development standard**. It defines **how** MAG software is developed with AI assistance.
 
@@ -569,7 +569,7 @@ The **user** owns `git add`, `git commit`, and `git push` unless they explicitly
 
 If a stage reveals unresolved **Critical** issues, the stage is not closed and progression is blocked.
 
-**Drive-First Bootstrap:** while MPO-001 is ACTIVE, approved documentation work may progress while Local/Git closure remains pending under MAG_ADDON_DEVELOPMENT_LIFECYCLE.md Phase 1 and MAG_DOCUMENTATION_OPERATIONS.md §5. Drive-First is a normal `#N` bootstrap state, not an exception. It preserves the explicit incomplete bootstrap state; it does not claim a completed Git checkpoint or stable registration and does not authorize implementation, commit, push, tag, or release. Resume Bootstrap completes the deferred prerequisites without repeating approved substantive work. A Pool status change alone is not a Git checkpoint.
+**Drive-First Bootstrap:** while MPO-001 is ACTIVE, approved documentation work may progress while Local/Git closure remains pending under MAG_ADDON_DEVELOPMENT_LIFECYCLE.md Phase 1 and MAG_DOCUMENTATION_OPERATIONS.md §5. Drive-First is a normal `#N` bootstrap state, not an exception. It preserves the explicit incomplete Local/Git bootstrap state; it does not claim a completed Git checkpoint or stable registration and does not authorize implementation, commit, push, tag, or release. Resume Bootstrap completes deferred Local/Git prerequisites without repeating approved substantive work. Drive reconciliation remains a separate documentation-operations obligation and is not required for Phase 1 completion or stable registration. A Pool status change alone is not a Git checkpoint.
 
 ### Stage and phase closure sequence
 

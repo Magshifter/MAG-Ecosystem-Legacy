@@ -1,7 +1,7 @@
 # MAG Add-on Development Lifecycle
 
 - MAG-Document-ID: `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
-- MAG-Content-Updated: `2026-09-13T10:08:03+00:00`
+- MAG-Content-Updated: `2026-09-13T13:20:00+00:00`
 
 This document defines the Global MAG lifecycle for developing and maintaining **MAG XenForo add-ons (`#N`)**.
 
@@ -222,7 +222,7 @@ Only the Product Owner may approve creation of a new MAG project.
 
 Approval authorizes:
 
-- assignment of the next sequential #N;
+- assignment of a permanent `#N` identity by explicit Product Owner decision, following `MAG_ECOSYSTEM.md` (approved identities are immutable; unused gaps remain available unless retired; agents must not silently fill a gap or renumber);
 - assignment of a stable project code;
 - repository bootstrap;
 - canonical project documentation bootstrap.
@@ -252,25 +252,39 @@ AUDIT is the standard parent/core evidence document. Use it directly or add only
 
 ### Bootstrap modes
 
-**Full Bootstrap:** establish the approved identity and verified documentation package, Local repository structure including `/docs/`, applicable counterparts, and the separately authorized Git baseline required for stable registration.
+**Full Bootstrap:** establish the approved identity and verified documentation package, Local repository structure including `/docs/`, and the separately authorized Git baseline required for **Local/Git Bootstrap Complete** and stable registration. Synchronize applicable Drive counterparts in the same procedure when they are available and authorized. Drive reconciliation is not a Phase 1 completion predicate.
 
 **Drive-First Bootstrap:** after Gate 0, establish the permanent identity and canonical package on Drive when Local/Git is unavailable. Record **Bootstrap Incomplete — Local/Git Pending** in README and Roadmap. Requirements, targeted research, architecture, and other approved documentation work may continue on Drive, subject to their normal substantive approval gates. Drive-First is a normal Phase 1 state, not an exception. An ACTIVE Process Overlay may temporarily specialize bootstrap HOW until promotion. This path does not claim Phase 1 fully complete, stable registration, implementation authorization, or release readiness.
 
-**Resume Bootstrap:** reuse the identity, current Drive package, approvals, and completed work. Create or complete the Local structure including `/docs/`, reconcile the current canonical Drive bodies into the approved Local locations, then complete the separately authorized Git baseline and stable registration. Do not repeat requirements or architecture solely because bootstrap started on another device.
+**Resume Bootstrap:** reuse the identity, current Drive package when it exists, approvals, and completed work. Create or complete the Local structure including `/docs/`. Reconcile current canonical Drive bodies into the approved Local locations when those counterparts exist. Then complete the separately authorized Git baseline required for Local/Git Bootstrap Complete and stable registration. Deferred Drive counterparts remain **Drive Reconciliation Pending** and do not block Phase 1 completion. Do not repeat requirements or architecture solely because bootstrap started on another device.
 
 One approved bootstrap scope covers the package; do not require nine approvals or repeat an already sufficient bootstrap authorization. Detailed batch onboarding, safe writes, reconciliation, and whole-package verification belong to MAG_DOCUMENTATION_OPERATIONS.md §5.
 
+### Independent Local/Git and Drive states
+
+Google Drive is a documentation synchronization surface. It is not a mandatory predicate for Phase 1 completion or stable MAG registration.
+
+These states are independent:
+
+| State | Meaning |
+| --- | --- |
+| **Local/Git Bootstrap Complete** | Required local repository state exists; canonical local documentation/package state is verified; the Git baseline required for registration exists and is verified. Stable MAG registration may exist. Product implementation remains separately governed by lifecycle authorization. |
+| **Drive Reconciliation Pending** | Local/Git bootstrap may already be complete. Drive synchronization remains an outstanding documentation-operations obligation. This does not invalidate Phase 1 completion and does not revert a development to provisional or unregistered. |
+| **Drive Reconciled** | Applicable Drive counterparts have been synchronized and verified under MAG_DOCUMENTATION_OPERATIONS.md. |
+
+Record Local/Git and Drive states explicitly in README and Roadmap. Do not treat Drive Reconciliation Pending as Bootstrap Incomplete — Local/Git Pending.
+
 ### Completion conditions
 
-Full bootstrap completion requires:
+Phase 1 completion requires **Local/Git Bootstrap Complete**:
 
 - verified permanent identity and canonical naming;
 - the nine-document package describing the actual current state;
-- Local repository structure and reconciled applicable counterparts;
+- Local repository structure;
 - the Product Owner-authorized Git baseline and stable registration;
-- successful package verification.
+- successful local package verification.
 
-Drive-First permits documentation work to proceed while these Local/Git conditions remain explicitly pending. Resume Bootstrap closes them without resetting verified substantive progress. Bootstrap completion alone never authorizes commit, push, tag, or release.
+Drive-First permits documentation work to proceed while these Local/Git conditions remain explicitly pending. Resume Bootstrap closes the Local/Git conditions without resetting verified substantive progress. A remaining Drive Reconciliation Pending obligation does not prevent Phase 1 completion. Bootstrap completion alone never authorizes commit, push, tag, or release.
 
 ## 6. Phase 2 — Requirements Definition
 
@@ -310,9 +324,9 @@ Do not silently infer architecture from donor code or existing accidental implem
 
 Primary authoritative document:
 
-- `P<NN>__<CODE>__TZ.md`
+- `P<NN>__<CODE>__TZ.md` — complete product WHAT.
 
-Roadmap should record Requirements Definition as the active phase and must not claim implementation progress that does not exist.
+Roadmap records Requirements Definition as the active phase and owns the **Approved First Release Scope**. It must not claim implementation progress that does not exist.
 
 IDEA remains non-authoritative and need not remain current product truth.
 
@@ -322,15 +336,28 @@ IDEA remains non-authoritative and need not remain current product truth.
 - unresolved product decisions that block architecture are resolved;
 - scope and non-goals are explicit;
 - compatibility target is sufficiently defined for technical investigation;
-- Product Owner approves the TZ.
+- Product Owner approves the TZ as complete product WHAT;
+- Roadmap contains an explicit **Approved First Release Scope** approved by the Product Owner.
+
+Phase 2 cannot close, and Gate 1 cannot PASS, until both the TZ and the first-release slice are approved. This procedure does not invent that slice.
 
 ### Gate 1 — Requirements Approval
 
-The Product Owner approves WHAT the product must do.
+Gate 1 PASSes when:
 
-After approval, TZ becomes authoritative for product requirements.
+1. product WHAT is sufficiently understood and approved in TZ; and
+2. the implementation-bound release slice is explicitly approved in Roadmap.
 
-Architecture must not silently change approved requirements.
+TZ remains the complete product WHAT owner. Gate 1 does **not** mean every item in the complete TZ must ship in 1.0.0. The full TZ remains valid when only a subset is selected for first release.
+
+The Approved First Release Scope uses four conceptual buckets owned by Roadmap:
+
+- Included in 1.0.0
+- Deferred to later 1.x
+- Future major
+- Explicitly out of first release
+
+After Gate 1, TZ remains authoritative for product requirements. Architecture must not silently change approved requirements. Implementation planning uses the approved first-release slice, not the entire TZ by default.
 
 
 ## 7. Phase 3 — Targeted Research and Verification
@@ -1063,9 +1090,9 @@ This matrix defines timing. Approval details, execution mechanics, evidence stan
 | Document | Create | Update / finalize | Approval or review point | Historical handling |
 | --- | --- | --- | --- | --- |
 | IDEA | Phase 1 canonical package container; useful Phase 0 notes may precede identity assignment and are preserved when adopted | During exploration; preserve useful rejected, superseded, or deferred alternatives as history | Supports Gate 0; does not approve requirements | Non-authoritative product exploration; do not convert old ideas into retroactively approved decisions; historical reasoning need not remain current truth |
-| TZ | Phase 1 with honest initial status; define substantive requirements in Phase 2 | On approved requirement changes; verify release scope in Phase 7 | Gate 1; Product Owner approval for changed requirements | Preserve traceability of approved changes; do not rewrite requirements to match accidental behavior |
+| TZ | Phase 1 with honest initial status; define substantive requirements in Phase 2 | On approved requirement changes; verify release scope in Phase 7 | Gate 1 (complete WHAT); Product Owner approval for changed requirements | Preserve traceability of approved changes; do not rewrite requirements to match accidental behavior; first-release slice belongs to Roadmap |
 | Architecture | Phase 1 with honest initial status; develop design in Phase 4 from sufficient verified evidence | On approved design changes; synchronize verified implementation details during Phase 6 and before release | Gate 2 for the relevant design; reapproval when an affected decision changes | Preserve decision history; distinguish approved design from implemented state |
-| Roadmap | Phase 1 with real initial status and sequencing | At phase transitions, increment completion, scope changes, and release closure | Product Owner approves executable scope and sequencing | Preserve completed stages; distinguish completed, current, pending validation, and planned work |
+| Roadmap | Phase 1 with real initial status and sequencing | At phase transitions, increment completion, scope changes, and release closure; record Approved First Release Scope before Gate 1 | Product Owner approves executable scope, sequencing, and the first-release slice required for Gate 1 | Preserve completed stages; distinguish completed, current, pending validation, and planned work |
 | CLASS_MAP | Phase 1 stating that no implementation exists yet where applicable; populate from real code in Phase 6 | After changes to actual classes and responsibilities; verify before release when affected | Review with the affected increment under agent/development rules | Describe current code; do not list planned classes as implemented |
 | Changelog | Phase 1 stating the actual initial state; record staged/released changes only when they exist | During development and Phase 8 release finalization | Review as part of the release/checkpoint process | Preserve released and staged historical facts; distinguish unreleased work from shipped releases |
 | README | Phase 1 with verified identity and bootstrap status | When verified product state, dependencies, installation, or usage changes; finalize for release | Review for accuracy before release | Descriptive; must not introduce requirements |
@@ -1183,9 +1210,9 @@ This summary makes phase outputs and next transitions explicit. Each transition 
 | --- | --- | --- |
 | Phase 0 — Idea and Evaluation | Sufficient product evaluation for a decision | Gate 0, further evaluation, deferral, or rejection |
 | Gate 0 — Project Approval | Product Owner approval of project creation | Phase 1 |
-| Phase 1 — Project Bootstrap | Verified identity and nine-document package; Full/Resume completion also requires Local structure, approved Git baseline, and stable registration | Phase 2 documentation work may begin in Drive-First with Bootstrap Incomplete — Local/Git Pending; other gates remain applicable |
-| Phase 2 — Requirements Definition | Coherent requirements, explicit scope, resolved blocking product decisions | Gate 1 |
-| Gate 1 — Requirements Approval | Approved WHAT | Phase 3, or Phase 4 when existing evidence is sufficient and that conclusion is recorded |
+| Phase 1 — Project Bootstrap | Verified identity and nine-document package; Full/Resume Local/Git completion requires Local structure, approved Git baseline, and stable registration. Drive Reconciliation Pending does not block Phase 1 completion | Phase 2 documentation work may begin in Drive-First with Bootstrap Incomplete — Local/Git Pending; other gates remain applicable |
+| Phase 2 — Requirements Definition | Coherent complete TZ; explicit Approved First Release Scope on Roadmap; resolved blocking product decisions | Gate 1 |
+| Gate 1 — Requirements Approval | Approved complete WHAT and approved implementation-bound first-release slice. Does not require the full TZ to ship in 1.0.0 | Phase 3, or Phase 4 when existing evidence is sufficient and that conclusion is recorded |
 | Phase 3 — Targeted Research and Verification | Traceable evidence sufficient for the next decision; unresolved blockers identified | Phase 4 when dependencies are resolved; Phase 2 if requirements need revision |
 | Phase 4 — Architecture Planning | Design sufficient for current scope, grounded in verified facts | Gate 2, or targeted Phase 3 iteration |
 | Gate 2 — Architecture Approval | Approved HOW for the relevant scope | Phase 5 |

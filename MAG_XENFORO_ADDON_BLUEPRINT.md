@@ -1,7 +1,7 @@
 # MAG XenForo Add-on Blueprint
 
 - MAG-Document-ID: `MAG_XENFORO_ADDON_BLUEPRINT.md`
-- MAG-Content-Updated: `2026-09-13T10:08:03+00:00`
+- MAG-Content-Updated: `2026-09-13T13:20:00+00:00`
 
 ## Purpose, scope, and authority
 
@@ -35,7 +35,7 @@ Instantiate all nine assets from `templates/xenforo-addon/` into `docs/`, preser
 | --- | --- | --- |
 | README | `P<NN>__<CODE>__README.md` | Internal entry/navigation; link current lifecycle facts to Roadmap. |
 | TZ | `P<NN>__<CODE>__TZ.md` | Approved product WHAT; creation alone does not approve it. |
-| Roadmap | `P<NN>__<CODE>__Roadmap.md` | Lifecycle, sequencing, gates, A/I progress, release state, next approved step. |
+| Roadmap | `P<NN>__<CODE>__Roadmap.md` | Lifecycle, sequencing, gates, A/I progress, approved first-release slice, release state, next approved step. |
 | Architecture | `P<NN>__<CODE>__Architecture.md` | Approved product HOW and architecture decisions. |
 | CLASS_MAP | `P<NN>__<CODE>__CLASS_MAP.md` | Implemented/current structure only. |
 | Changelog | `P<NN>__<CODE>__Changelog.md` | Historical staged/released product changes, not plans. |
@@ -70,9 +70,9 @@ The add-on skeleton is the verified native structure needed by the approved boot
 
 Use MAG_ADDON_DEVELOPMENT_LIFECYCLE.md Phase 1, MAG_DOCUMENTATION_OPERATIONS.md §5, and currently ACTIVE overlay MPO-001. Full Bootstrap is Level 1 then Level 2 without interruption.
 
-Project Approval → Product Owner creates/provides the approved GitHub repository → verify identity → establish Local structure → instantiate nine documents → prepare public README → establish the authorized native skeleton → validate → Product Owner-controlled Git checkpoint → synchronize applicable Drive counterparts → verify whole package → complete stable registration → report.
+Project Approval → Product Owner creates/provides the approved GitHub repository → verify identity → establish Local structure → instantiate nine documents → prepare public README → establish the authorized native skeleton → validate → Product Owner-controlled Git checkpoint → complete **Local/Git Bootstrap Complete** / stable registration → report. Synchronize applicable Drive counterparts when available and authorized; otherwise record **Drive Reconciliation Pending**. Drive sync is not required before Phase 1 completion.
 
-Reuse an existing repository or counterpart. This is a typical sequence, not an extra checkpoint rule: a separately approved pre-checkpoint Drive batch is also governed by Documentation Operations. Stable completion requires all applicable prerequisites, including the approved Git baseline. Do not silently downgrade unavailable steps.
+Reuse an existing repository or counterpart. This is a typical sequence, not an extra checkpoint rule: a separately approved pre-checkpoint Drive batch is also governed by Documentation Operations. Local/Git completion requires the approved Git baseline. Do not silently downgrade unavailable Local/Git steps. Do not treat unavailable Drive counterparts as incomplete Phase 1.
 
 ## Drive-First Bootstrap
 
@@ -86,9 +86,9 @@ Record **Bootstrap Incomplete — Local/Git Pending** in internal README and Roa
 
 Resume Bootstrap continues an existing Level 1 state into Level 2 when Local/Git is available and Product Owner authorizes it.
 
-Re-fetch and reuse the same Drive IDs, identity, documents, approvals, and evidence → inspect Local availability and divergence → create/complete the approved repository and /docs/ → reconcile current canonical Drive bodies into Local → prepare remaining public README/skeleton as authorized → validate → Product Owner-controlled Git baseline → verify applicable counterparts and complete stable registration.
+Re-fetch and reuse the same identity, documents, approvals, and evidence, including Drive IDs when counterparts exist → inspect Local availability and divergence → create/complete the approved repository and /docs/ → reconcile current canonical Drive bodies into Local when those counterparts exist → prepare remaining public README/skeleton as authorized → validate → Product Owner-controlled Git baseline → **Local/Git Bootstrap Complete** and stable registration. Record **Drive Reconciliation Pending** when Drive counterparts remain unsynchronized.
 
-Preserve existing Local work and stop affected overwrites on conflict. Do not restart IDEA, TZ, Architecture, AUDIT, or Roadmap because the device changed. Resume the substantive phase already reached; report remaining prerequisites accurately.
+Preserve existing Local work and stop affected overwrites on conflict. Do not restart IDEA, TZ, Architecture, AUDIT, or Roadmap because the device changed. Resume the substantive phase already reached; report remaining Local/Git or Drive obligations accurately without treating Drive pending as Phase 1 incomplete.
 
 ## Git/GitHub and Drive execution
 
@@ -199,15 +199,16 @@ Use a compact report, not a new permanent Bootstrap Completion file:
 
 - GitHub: <verified repository / pending>
 - Local repository: <verified path / pending>
-- Google Drive: <folder, counterpart verification / pending>
+- Google Drive: <folder, counterpart verification / Drive Reconciled / Drive Reconciliation Pending>
 - Core documentation: <nine files, metadata and content verification>
 - Add-on skeleton: <verified authorized state / pending>
 - Registration: <actual provisional or stable state>
+- Local/Git bootstrap: <Local/Git Bootstrap Complete / Bootstrap Incomplete — Local/Git Pending>
 - Current lifecycle phase: <Roadmap reference>
 - Material pending items: <remaining action, owner, blocker>
 - Result: <supported classification and next approved step>
 
-Report Drive-First incompleteness explicitly. Full completion requires verified applicable prerequisites; a prepared package alone is not a stable project.
+Report Drive-First Local/Git incompleteness explicitly. Report Drive Reconciliation Pending without treating it as failed Phase 1. Local/Git Bootstrap Complete requires the approved Git baseline; a prepared package alone is not a stable project.
 
 ## Blueprint boundary
 

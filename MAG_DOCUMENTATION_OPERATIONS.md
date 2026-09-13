@@ -1,7 +1,7 @@
 # MAG Documentation Operations
 
 - MAG-Document-ID: `MAG_DOCUMENTATION_OPERATIONS.md`
-- MAG-Content-Updated: `2026-09-13T10:08:03+00:00`
+- MAG-Content-Updated: `2026-09-13T13:20:00+00:00`
 
 ## 1. Purpose and authority
 
@@ -108,7 +108,7 @@ These states are distinct:
 | Global operational asset | Ecosystem-level execution asset such as `MAG_XENFORO_ADDON_BLUEPRINT.md`. Implements Global HOW plus ACTIVE overlays. Not a project document and not an eighth canonical authority owner. |
 | Unregistered document | Audit/registration anomaly. Excluded from writable SYNC. |
 | Provisional project document | Instantiated project document inside an approved Level 1 / controlled bootstrap, adoption, or registration procedure. Normal controlled state, not an error. |
-| Stable registered document | All stable-registration prerequisites satisfied, including applicable Local authoritative state and approved Git baseline. |
+| Stable registered document | All stable-registration prerequisites satisfied, including applicable Local authoritative state and approved Git baseline. Drive reconciliation is independent; **Drive Reconciliation Pending** does not make a locally registered document provisional. |
 | Experimental registered document | Historical or expressly approved non-process working evidence. Synchronization eligibility only; not process authority. |
 
 Provisional is the expected Level 1 project-document state. Ordinary stable SYNC discovery must not silently include provisional documents. Controlled Level 1 bootstrap operations may work with their explicitly identified provisional package. No additional metadata field is required to represent provisional state.
@@ -172,7 +172,7 @@ Use adoption when a pre-existing document with an approved authoritative or non-
 10. complete the separate Git handoff for stable discovery;
 11. use SYNC afterward for counterparts.
 
-Resume Bootstrap reconciles its already established canonical Drive package under the bootstrap subsection below; it is not unrelated individual-document adoption. Do not treat adoption as new authorship. A concurrent substantive body edit requires a new substantive timestamp.
+Resume Bootstrap follows the Drive-First/Resume subsection below. It is not unrelated individual-document adoption. Do not treat adoption as new authorship. A concurrent substantive body edit requires a new substantive timestamp.
 
 ### New counterpart
 
@@ -231,7 +231,7 @@ A newly approved development identity does not by itself claim stable registrati
 
 ### Controlled XenForo bootstrap batch
 
-An explicit Product Owner authorization to create the new `#N` project/bootstrap may cover its complete standard package as one operation. Prepare the package within that scope, validate it, create/synchronize all applicable counterparts, verify the whole batch, and report. Do not request separate approval for each document or repeat an existing authorization that already covers the prepared scope. If authorization is not yet sufficient, present the concrete package for one batch approval before writes.
+An explicit Product Owner authorization to create the new `#N` project/bootstrap may cover its complete standard package as one operation. Prepare the package within that scope, validate it, create/synchronize Drive counterparts when Drive writes are in the approved scope, verify the whole batch, and report. Deferred Drive counterparts remain **Drive Reconciliation Pending** and do not block Local/Git Bootstrap Complete. Do not request separate approval for each document or repeat an already sufficient bootstrap authorization. If authorization is not yet sufficient, present the concrete package for one batch approval before writes.
 
 Before writes, resolve every canonical filename and document role against MAG_ECOSYSTEM.md; confirm the approved project identity/code, canonical locations, existing Drive IDs or verified absence, metadata, source direction, and exact proposed actions. Check for identity collisions, duplicate counterparts, divergent bodies, and executor capability. Record enough per-file execution evidence to resume a partial batch safely.
 
@@ -247,9 +247,9 @@ After Project Approval, Drive-First may establish the permanent identity and can
 
 The missing Local repository/approved Git baseline is an expected incomplete bootstrap prerequisite, not a reason to block approved Drive-side documentation work or falsely declare stable registration. These identified provisional documents stay inside the active bootstrap procedure and are excluded from ordinary SYNC discovery. Substantive edits still require appropriate scope/approval, timestamps, conflict checks, and readback verification.
 
-Resume Bootstrap reuses the same identity, approved scope, canonical Drive IDs, current bodies, and verified substantive work. Re-fetch the current package; check whether Local counterparts are absent or already exist. Create/complete the approved Local repository structure including `/docs/` and assign one canonical Local path per document using the approved root/`docs/` layout. Reconcile Drive into Local without restarting requirements or architecture. Preserve names, metadata, and raw bytes where possible; compare any existing Local content and resolve conflicts before overwriting it. Do not infer Local authority merely because a repository has become available.
+Resume Bootstrap reuses the same identity, approved scope, current bodies, and verified substantive work. Re-fetch the current Drive package when counterparts exist; check whether Local counterparts are absent or already exist. Create/complete the approved Local repository structure including `/docs/` and assign one canonical Local path per document using the approved root/`docs/` layout. Reconcile Drive into Local when those counterparts exist, without restarting requirements or architecture. Preserve names, metadata, and raw bytes where possible; compare any existing Local content and resolve conflicts before overwriting it. Do not infer Local authority merely because a repository has become available.
 
-Validate the reconciled whole package, then hand off the Git baseline under §18. Commit, push, tag, and release remain separately Product Owner-controlled; completing documentation or resuming bootstrap does not authorize them. Establish stable registration only after all identity, Local, metadata, applicable-counterpart, verification, and approved Git baseline prerequisites are proven. Until then, report the remaining incomplete state and preserve completed work for the next resume.
+Validate the Local package, then hand off the Git baseline under §18. Commit, push, tag, and release remain separately Product Owner-controlled; completing documentation or resuming bootstrap does not authorize them. Establish stable registration after identity, Local, metadata, local verification, and approved Git baseline prerequisites are proven (**Local/Git Bootstrap Complete**). Drive counterparts are not a stable-registration predicate. If applicable Drive counterparts remain unsynchronized, record **Drive Reconciliation Pending**. That obligation remains real under this document and does not invalidate Phase 1 completion or revert registration to provisional. **Drive Reconciled** means applicable counterparts have been synchronized and verified here. Until Local/Git predicates are proven, report the remaining incomplete Local/Git state and preserve completed work for the next resume.
 
 ## 6. Scope resolution
 

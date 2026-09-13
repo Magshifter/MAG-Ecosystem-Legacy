@@ -1,7 +1,7 @@
 # MAG Process Overlay Pool
 
 - MAG-Document-ID: `MAG_PROCESS_OVERLAY_POOL.md`
-- MAG-Content-Updated: `2026-09-13T10:08:03+00:00`
+- MAG-Content-Updated: `2026-09-13T13:20:00+00:00`
 
 This file is the ecosystem-level **MAG Process Overlay Pool**. It is a single registered Global process asset containing multiple internal process records (MPO entries).
 
@@ -89,7 +89,7 @@ Promotion is a Global documentation normalization procedure. After promotion, ca
 - Area: `#N` Phase 1 Project Bootstrap / documentation and repository authority
 - Status: ACTIVE
 - Problem: Bootstrap treated Local/Git unavailability as an exceptional path, which forced extra exception wording and blocked clear, immediate Documentation Bootstrap while Local/Git was pending.
-- Current canonical behavior: Lifecycle and related owners describe Full, Drive-First, and Resume Bootstrap as normal Phase 1 modes. Drive-First is a normal pause with Local/Git pending. Two-level Documentation/Repository Bootstrap Authority remains an ACTIVE overlay here and is not yet durable canonical Lifecycle policy.
+- Current canonical behavior: Lifecycle owns Phase 1 completion as **Local/Git Bootstrap Complete**. Drive-First, Full, and Resume remain normal Phase 1 modes. Drive reconciliation is an independent documentation-operations obligation (**Drive Reconciliation Pending** / **Drive Reconciled**) and is not a Phase 1 or stable-registration predicate. Two-level Documentation/Repository Bootstrap Authority remains an ACTIVE overlay here and is not yet durable canonical Lifecycle policy.
 - Active/proposed behavior: Phase 1 Bootstrap has two cumulative operational authority levels.
 
   **Level 1 — Documentation Bootstrap Authority**
@@ -120,25 +120,26 @@ Promotion is a Global documentation normalization procedure. After promotion, ca
 
   - Local repository establishment/reconciliation;
   - canonical `/docs/`;
-  - current Drive package reconciliation;
+  - reconciliation of an existing Drive package into Local when counterparts exist;
   - authorized native skeleton where applicable;
   - local/package validation;
   - preparation of the Git baseline;
-  - stable registration after separately authorized Git baseline and successful verification.
+  - **Local/Git Bootstrap Complete** and stable registration after separately authorized Git baseline and successful local verification;
+  - Drive counterpart synchronization when executed, leaving **Drive Reconciliation Pending** when that work is deferred.
 
-  Does not authorize product implementation.
+  Does not authorize product implementation. Drive reconciliation is not required to complete Level 2, Phase 1, or stable registration.
 
   **Mode mapping**
 
-  - Full Bootstrap: Level 1 → Level 2 without interruption.
+  - Full Bootstrap: Level 1 → Level 2 without interruption. Drive sync may occur in the same procedure when available; it is not a Phase 1 predicate.
   - Drive-First: Level 1 → pause with Local/Git pending. This is a normal bootstrap state, not an exception.
-  - Resume Bootstrap: existing Level 1 state → Level 2.
+  - Resume Bootstrap: existing Level 1 state → Level 2 Local/Git. Reuse the Drive package when it exists. Deferred Drive counterparts remain Drive Reconciliation Pending.
 
-- Scope: process/HOW for `#N` Phase 1 bootstrap authority and the Drive-First / Resume / Full mode relationship. Does not change product WHAT, implementation authorization, commit/push/tag/release, or stable-registration prerequisites beyond restating that they remain separately authorized.
+- Scope: process/HOW for `#N` Phase 1 bootstrap authority and the Drive-First / Resume / Full mode relationship. Does not change product WHAT, implementation authorization, commit/push/tag/release. Stable-registration prerequisites are Local/Git predicates; Drive remains a separate Docs Ops obligation.
 - Affected Global owners: `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` (Phase 1); `MAG_ECOSYSTEM.md` (bootstrap narrative); `AI_GUIDELINES.md` §20 Local/Git closure; `AI_AGENTS_RULES.md` Git-closure wording; `MAG_DOCUMENTATION_OPERATIONS.md` §5 Drive-First/Resume.
 - Affected operational assets: `MAG_XENFORO_ADDON_BLUEPRINT.md`; `templates/xenforo-addon/*` only where they record Drive-First / Local/Git pending state.
-- Activation decision: Product Owner approved this bootstrap optimization as ACTIVE on `2026-09-13` as the first MAG Process Overlay Pool entry.
+- Activation decision: Product Owner approved this bootstrap optimization as ACTIVE on `2026-09-13` as the first MAG Process Overlay Pool entry. Wave 1 Product Owner decision on `2026-09-13` amended Drive independence from Phase 1 completion without promoting this entry.
 - Validation evidence: approved for real-world validation across one or more `#N` bootstrap/workflows. Historical Pipeline v2 experiment/evaluation documents are separate historical evidence and are not this entry.
-- Known limitations: two-level authority is not yet promoted into canonical Lifecycle wording; those owners acknowledge ACTIVE overlay precedence instead of duplicating Level 1/Level 2 as permanent rules. Surrounding exception semantics for Drive-First were removed in the post-Pool consistency pass; this entry remains the temporary owner of the Level 1/Level 2 delta.
-- Promotion readiness: not ready. Remains ACTIVE until validated in real bootstrap work and then explicitly promoted.
+- Known limitations: two-level authority is not yet promoted into canonical Lifecycle wording; those owners acknowledge ACTIVE overlay precedence instead of duplicating Level 1/Level 2 as permanent rules. Phase 1 Local/Git vs Drive states are now also recorded in Lifecycle Phase 1 per the Wave 1 Product Owner decision; this overlay remains ACTIVE pending a later promotion decision.
+- Promotion readiness: not ready. Remains ACTIVE until explicitly promoted.
 - Promotion result: not promoted.

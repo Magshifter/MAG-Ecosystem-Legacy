@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-13T11:20:00+00:00`
+- MAG-Content-Updated: `2026-09-13T13:20:00+00:00`
 
 This document is the navigation and governance foundation for MAG software development across approved development classes.
 
@@ -73,7 +73,7 @@ Each namespace:
 - assigns permanent identities;
 - does not reuse retired identities.
 
-Unused identifiers are not silently reserved.
+Unused identifiers are not silently reserved. Approved historical identities are immutable. Unused gaps remain available for future assignment unless explicitly retired by the Product Owner.
 
 A repository using MAG branding does not automatically receive an identity. Classification and initial identity assignment require explicit Product Owner approval. Reclassification between namespaces requires explicit Product Owner approval and a controlled documentation migration.
 
@@ -91,7 +91,7 @@ Each `#N` XenForo project also has a **short, stable project code** used in docu
 | #2 | `P02__TS` | [MAG] Tag Synchronizer | Active / Stable 1.0.0 | `TagSynchronizer` |
 | #4 | `P04__DG` | [MAG] Doc&Guide | Active / Phase 2 Requirements | `DocGuide` |
 
-`#3` and later are assigned **sequentially when a XenForo project is approved**. Do not reserve unused numbers, invent products, or skip identifiers. Identities in other namespaces do not consume or reserve `#N` slots. `#4` is an already approved identity recorded here for Local registry; this row does not invent `#3`.
+Approved historical `#N` identities are immutable and are not renumbered. Unused gaps remain available for future assignment unless the Product Owner explicitly retires or reserves them. `#3` currently represents no product; it is not invented here and is not automatically retired. `#3` may be assigned later only by an explicit Product Owner decision. The existence of `#4` does not require the next XenForo project to become `#5`. Agents must not silently fill a gap, skip to a higher number, or invent a product to occupy an unused identifier. Identities in other namespaces do not consume or reserve `#N` slots.
 
 Applicable XenForo-specific Global rules continue to apply to `#N` products.
 
@@ -101,10 +101,11 @@ Applicable XenForo-specific Global rules continue to apply to `#N` products.
 
 | ID | Product | Classification | Status | Git repository |
 | --- | --- | --- | --- | --- |
-| A1 | [MAG] GPT\|Cursor\|Sync | MAG Desktop / Development Application | Active / Stable 1.1.0 | `MAG-GPT-Cursor-Sync` |
+| A1 | [MAG] GPT\|Cursor\|Sync | MAG Desktop / Development Application | Active / Stable 1.1.1 | `MAG-GPT-Cursor-Sync` |
 
 **A1 — concise registry metadata**
 
+- Identity: A1 is a registered MAG Ecosystem development identity, but it is not a XenForo `#N` project. It must not consume `#3` or any other `#N` slot.
 - Product category: Windows desktop / development workflow utility.
 - Purpose: Connect ChatGPT Desktop, Cursor Agent, and Cursor Terminal through controlled local workflows that reduce repetitive manual transfer operations.
 
@@ -171,7 +172,7 @@ Synchronization-managed status is explicit. The existence of a Markdown file alo
 
 Global registration is represented by the authoritative Global documentation set below together with valid metadata and the applicable Local authoritative state. Stable development registration follows the approved development identity, canonical Local repository, applicable development documentation model and authority, valid metadata, and approved Git baseline.
 
-Before Git handoff, provisional registration may exist inside an explicit Product Owner-approved controlled registration, adoption, or `#N` bootstrap procedure. Drive-First Bootstrap permits continued documentation work within that approved scope under **Bootstrap Incomplete — Local/Git Pending**. These documents are not part of default SYNC discovery or the stable registered documentation set; Resume Bootstrap completes the missing prerequisites under `MAG_DOCUMENTATION_OPERATIONS.md` §5.
+Before Git handoff, provisional registration may exist inside an explicit Product Owner-approved controlled registration, adoption, or `#N` bootstrap procedure. Drive-First Bootstrap permits continued documentation work within that approved scope under **Bootstrap Incomplete — Local/Git Pending**. These documents are not part of default SYNC discovery or the stable registered documentation set. Resume Bootstrap completes Local/Git prerequisites under `MAG_DOCUMENTATION_OPERATIONS.md` §5. Drive reconciliation is a separate documentation-operations obligation and is not required for Phase 1 completion or stable registration; see `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 1.
 
 Document onboarding, adoption, counterpart creation, rename, retirement, and unregistered-file handling are governed by `MAG_DOCUMENTATION_OPERATIONS.md`.
 
@@ -235,8 +236,8 @@ Every newly approved `#N` XenForo project must receive the following nine canoni
 
 | Logical document | Canonical filename | Role |
 | --- | --- | --- |
-| TZ | `P<NN>__<CODE>__TZ.md` | Product requirements. Authoritative for **what** the add-on must do. |
-| Roadmap | `P<NN>__<CODE>__Roadmap.md` | Approved implementation sequencing and verified stage progress. |
+| TZ | `P<NN>__<CODE>__TZ.md` | Complete product requirements. Authoritative for **what** the add-on must do. Does not by itself decide the first implementation-bound release slice. |
+| Roadmap | `P<NN>__<CODE>__Roadmap.md` | Approved implementation sequencing, verified stage progress, and the approved first-release implementation slice. |
 | Architecture | `P<NN>__<CODE>__Architecture.md` | Approved implementation architecture. |
 | CLASS_MAP | `P<NN>__<CODE>__CLASS_MAP.md` | Current code structure and class responsibilities. |
 | Changelog | `P<NN>__<CODE>__Changelog.md` | Historical record of released and staged changes. |
@@ -345,9 +346,9 @@ Each Global file has one primary authority. Do not duplicate its detailed rules 
 | `MAG_DOCUMENTATION_OPERATIONS.md` | Documentation identity validation, synchronization scope and commands, comparison, conflict handling, approval, execution, verification, cleanup, reporting, and Git handoff boundaries. |
 | `MAG_PROCESS_OVERLAY_POOL.md` | Ecosystem-level ACTIVE process/HOW overlays only. Not an eighth canonical authority owner. Individual MPO records are not standalone documents. |
 | Global operational assets | Blueprint and XenForo templates implement Global rules and ACTIVE overlays. They do not independently define policy. |
-| Project TZ | **What** that `#N` product must do. Functional requirements. Canonical file: `P<NN>__<CODE>__TZ.md`. |
+| Project TZ | **What** that `#N` product must do. Complete functional requirements. Canonical file: `P<NN>__<CODE>__TZ.md`. Does not require every requirement to ship in 1.0.0. |
 | Project Architecture | Approved implementation architecture for that product. Describes intended and verified structure; it does not override TZ. |
-| Project Roadmap | Approved sequencing and verified progress. Controls what may be implemented **now**. |
+| Project Roadmap | Approved sequencing, verified progress, and the approved first-release implementation slice. Controls what may be implemented **now**. Gate 1 semantics are in `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`. |
 | Project CLASS_MAP | Current classes and responsibilities as they exist in code. |
 | Project README / overview documents | Descriptive. Not a source of new requirements or process. |
 | Project IDEA | Non-authoritative product exploration, Phase 0 reasoning/evaluation, alternatives, historical/superseded concepts, and future concepts. Must not override TZ, Architecture, Roadmap, Global HOW, or ACTIVE overlays. Need not remain current product truth. |
@@ -458,19 +459,19 @@ This repository must **not** design, specify, or implement License Manager funct
 
 When a new MAG development is approved in a given identity class:
 
-1. Assign the next sequential identifier in that class (`#N`, `A<N>`, or `B<N>` as applicable). For `#N`, verify the next unused XenForo slot against the current registry and existing identities before assignment; do not infer availability from an example.
+1. Assign a permanent identifier in that class (`#N`, `A<N>`, or `B<N>` as applicable) by explicit Product Owner decision. For `#N`, verify the chosen identifier against the current registry. Do not renumber an approved identity, invent a product, silently fill an unused gap, or assume that a higher existing identity forces the next number. Unused gaps remain assignable unless explicitly retired.
 2. Record product name, status, project code, intended Git repository name, and applicable filename convention metadata. A permanent `#N` identity may be assigned after Project Approval even when Local/Git is unavailable; record pending prerequisites without claiming stable registration.
 3. Create the development repository structure (separate from `MAG-Ecosystem`) when applicable and available. For `#N`, Full Bootstrap completes Local/Git prerequisites; Drive-First Bootstrap may defer them under the explicit incomplete state below. Git actions remain separately Product Owner-controlled.
-4. For every new `#N`, instantiate the nine-document package above in one coherent Product Owner-approved bootstrap scope, validate it, create/synchronize applicable counterparts, and verify the complete package without per-file approval loops. For `A<N>` and `B<N>`, select documentation from actual approved needs; the XenForo package does not apply.
+4. For every new `#N`, instantiate the nine-document package above in one coherent Product Owner-approved bootstrap scope, validate it, synchronize Drive counterparts when that work is in the approved scope, and verify the complete local package without per-file approval loops. Deferred Drive counterparts remain Drive Reconciliation Pending. For `A<N>` and `B<N>`, select documentation from actual approved needs; the XenForo package does not apply.
 5. Do not copy another development's requirements, architecture, or code "as a template" beyond true Global process.
 6. Do not create copies or pointer files of Global process documents in the new development.
 7. Do not create shared components as part of bootstrap.
 
-For `#N`, Drive-First Bootstrap follows Project Approval and permits substantive documentation work on Drive under **Bootstrap Incomplete — Local/Git Pending**. While MPO-001 is ACTIVE, Drive-First is a normal bootstrap state (Level 1 pause), not an exception. Resume Bootstrap reuses the permanent identity, current Drive documents, and completed work; establishes the Local repository structure including `/docs/`; reconciles the Drive package into its approved canonical Local locations; and completes the separately authorized Git baseline and stable registration. Do not restart requirements or architecture merely because the device changed. Lifecycle states belong to `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 1, specialized by any currently ACTIVE bootstrap overlay; batch onboarding, reconciliation, and verification mechanics belong to `MAG_DOCUMENTATION_OPERATIONS.md` §5. Bootstrap completion does not authorize commit, push, tag, or release.
+For `#N`, Drive-First Bootstrap follows Project Approval and permits substantive documentation work on Drive under **Bootstrap Incomplete — Local/Git Pending**. While MPO-001 is ACTIVE, Drive-First is a normal bootstrap state (Level 1 pause), not an exception. Resume Bootstrap reuses the permanent identity, current Drive documents when they exist, and completed work; establishes the Local repository structure including `/docs/`; and completes the separately authorized Git baseline required for **Local/Git Bootstrap Complete** and stable registration. Reconcile an existing Drive package into Local when those counterparts exist. Deferred Drive counterparts remain **Drive Reconciliation Pending** and do not invalidate Phase 1 completion or revert registration to provisional. Do not restart requirements or architecture merely because the device changed. Lifecycle states belong to `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 1, specialized by any currently ACTIVE bootstrap overlay; batch onboarding, reconciliation, and verification mechanics belong to `MAG_DOCUMENTATION_OPERATIONS.md` §5. Bootstrap completion does not authorize commit, push, tag, or release.
 
 `#2` [MAG] Tag Synchronizer is registered. Its Git repository exists. Status is **Active / Stable 1.0.0**. Stable Release 1.0.0 is released; Post-Release Verification is the next lifecycle stage and has not started. It inherits Global rules by reference. It must not contain local copies of Global documentation files from `MAG-Ecosystem`.
 
-`#4` [MAG] Doc&Guide is an approved XenForo identity (`P04__DG`, repository `DocGuide`). Drive-First → Resume Bootstrap is complete. Local repository, canonical `docs/` package, minimum add-on identity, and approved Git baseline on `main` / `origin/main` are established. Phase 2 Requirements is active. Google Drive synchronization remains a separate later Product Owner action and is not implied by Local/Git bootstrap completion. Implementation is not authorized. It inherits Global rules by reference and must not contain local copies of Global documentation files from `MAG-Ecosystem`.
+`#4` [MAG] Doc&Guide is an approved XenForo identity (`P04__DG`, repository `DocGuide`). It is registered. Phase 1 is **Completed** (**Local/Git Bootstrap Complete**). Drive-First → Resume Bootstrap established the local repository, canonical `docs/` package, minimum add-on identity, and approved Git baseline on `main` / `origin/main`. Phase 2 Requirements is active. Drive state is **Drive Reconciliation Pending**. Implementation is not authorized. It inherits Global rules by reference and must not contain local copies of Global documentation files from `MAG-Ecosystem`.
 
 ## Current MAG-Ecosystem repository contents
 
