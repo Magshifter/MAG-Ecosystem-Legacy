@@ -1,7 +1,7 @@
 # MAG Add-on Development Lifecycle
 
 - MAG-Document-ID: `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
-- MAG-Content-Updated: `2026-09-12T10:56:10+03:00`
+- MAG-Content-Updated: `2026-09-13T10:08:03+00:00`
 
 This document defines the Global MAG lifecycle for developing and maintaining **MAG XenForo add-ons (`#N`)**.
 
@@ -39,6 +39,8 @@ The lifecycle applies to GLOBAL + the active `#N` XenForo project. Project docum
 Lifecycle transitions do not enlarge an agent's authorized scope. Apply [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) to execution in every phase, including research, documentation, and release work. Apply [AI_GUIDELINES.md](AI_GUIDELINES.md) §24 whenever a phase uses Cursor for prompt presentation, post-execution review, or model routing. Apply [CURSOR_USAGE_ANALYTICS.md](CURSOR_USAGE_ANALYTICS.md) whenever a phase uses Cursor for usage metrics and measurement; this document does not define telemetry fields, automatic After consumption, or usage-value display formats.
 
 The Global documentation map in MAG_ECOSYSTEM.md includes this lifecycle and MAG_IMPLEMENTATION_PATTERNS.md. Keep that map synchronized when an approved Global document or authority boundary changes.
+
+Process/HOW execution must honor currently ACTIVE entries in [`MAG_PROCESS_OVERLAY_POOL.md`](MAG_PROCESS_OVERLAY_POOL.md) inside their explicit scope. An ACTIVE overlay may temporarily specialize this lifecycle's process behavior until promotion, rejection, or withdrawal. Do not enlarge overlay scope and do not duplicate an ACTIVE overlay as a second permanent rule set here.
 
 If another Global document contains an incompatible lifecycle sequence or documentation-timing rule, identify the exact conflict for Product Owner resolution and synchronize the owning documents through an approved change. Do not silently select a rule or duplicate its detailed implementation here.
 
@@ -123,7 +125,7 @@ Planned work must not be represented as implemented work.
 
 ### Closure prerequisite for phase transitions
 
-Before advancing from a completed logical stage or phase, complete the mandatory closure procedure in [AI_GUIDELINES.md](AI_GUIDELINES.md) §20 and the applicable execution/checkpoint rules in [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) §10. An output ready for review is not a closed phase. Every transition in this document is subject to that prerequisite.
+Before advancing from a completed logical stage or phase, complete the mandatory closure procedure in [AI_GUIDELINES.md](AI_GUIDELINES.md) §20 and the applicable execution/checkpoint rules in [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) §10. An output ready for review is not a closed phase. Local/Git closure applies to Full Bootstrap and Resume Bootstrap completion. Documentation-only Drive-First progression in Phase 1 does not require Local/Git closure while Local/Git remains pending. Drive-First is a normal Phase 1 pause state while the current ACTIVE bootstrap overlay applies.
 
 Research/architecture iterations and intermediate actions within the same approved logical phase do not create artificial Git checkpoints. Existing project phase/stage identifiers remain historical identifiers; record their mapping to this lifecycle without renumbering completed history.
 
@@ -195,16 +197,15 @@ Do not define detailed implementation architecture during this phase.
 
 ### Conditional work
 
-Create an Idea document when the concept requires research, alternatives, unresolved thinking, or historical preservation.
+Working IDEA material may be used when the concept requires research, alternatives, unresolved thinking, or historical preservation.
 
-The Idea document remains non-authoritative.
+IDEA is non-authoritative. It does not need to remain current product truth. Distinguish historical or superseded reasoning from later approved TZ when both exist.
 
 ### Documentation actions
 
-Optional:
-- `P<NN>__<CODE>__Idea.md`
+Before Gate 0, a permanent `#N` may not yet exist. Phase 0 reasoning may remain outside the canonical project structure until Project Approval.
 
-Before project approval, a permanent #N may not yet exist. Working idea material may therefore remain outside the canonical project documentation structure until the project is approved.
+After Gate 0, Phase 1 instantiates `P<NN>__<CODE>__IDEA.md` as a mandatory package container. Presence of that file is not completed evaluation and does not approve the project.
 
 ### Completion conditions
 
@@ -245,36 +246,31 @@ Follow the approved-project bootstrap procedure in [MAG_ECOSYSTEM.md](MAG_ECOSYS
 
 ### Documentation actions
 
-Create documents as they become applicable.
+Instantiate all nine canonical project documents defined in MAG_ECOSYSTEM.md as one coherent Product Owner-approved bootstrap package. A mandatory container is not mandatory substantive work. Use honest initial-state content where requirements, architecture, implementation, usage records, or audit findings do not yet exist. Document creation grants neither substantive approval nor implementation authorization.
 
-Canonical project documentation set:
+AUDIT is the standard parent/core evidence document. Use it directly or add only justified child audits; do not create a mandatory child-audit set.
 
-- `P<NN>__<CODE>__TZ.md`
-- `P<NN>__<CODE>__Roadmap.md`
-- `P<NN>__<CODE>__Architecture.md`
-- `P<NN>__<CODE>__CLASS_MAP.md`
-- `P<NN>__<CODE>__Changelog.md`
-- `P<NN>__<CODE>__README.md`
+### Bootstrap modes
 
-Optional when justified:
+**Full Bootstrap:** establish the approved identity and verified documentation package, Local repository structure including `/docs/`, applicable counterparts, and the separately authorized Git baseline required for stable registration.
 
-- `P<NN>__<CODE>__Idea.md`
-- `P<NN>__<CODE>__Overview.md`
-- `P<NN>__<CODE>__CURSOR_USAGE_HISTORY.md`
-research/audit documents
+**Drive-First Bootstrap:** after Gate 0, establish the permanent identity and canonical package on Drive when Local/Git is unavailable. Record **Bootstrap Incomplete — Local/Git Pending** in README and Roadmap. Requirements, targeted research, architecture, and other approved documentation work may continue on Drive, subject to their normal substantive approval gates. Drive-First is a normal Phase 1 state, not an exception. An ACTIVE Process Overlay may temporarily specialize bootstrap HOW until promotion. This path does not claim Phase 1 fully complete, stable registration, implementation authorization, or release readiness.
 
-Not every document must contain speculative content during bootstrap.
+**Resume Bootstrap:** reuse the identity, current Drive package, approvals, and completed work. Create or complete the Local structure including `/docs/`, reconcile the current canonical Drive bodies into the approved Local locations, then complete the separately authorized Git baseline and stable registration. Do not repeat requirements or architecture solely because bootstrap started on another device.
 
-A document should be created when it has real information to own.
+One approved bootstrap scope covers the package; do not require nine approvals or repeat an already sufficient bootstrap authorization. Detailed batch onboarding, safe writes, reconciliation, and whole-package verification belong to MAG_DOCUMENTATION_OPERATIONS.md §5.
 
 ### Completion conditions
 
-- project identity exists;
-- project is registered;
-- repository exists;
-- documentation naming is established;
-- Requirements Definition may begin.
+Full bootstrap completion requires:
 
+- verified permanent identity and canonical naming;
+- the nine-document package describing the actual current state;
+- Local repository structure and reconciled applicable counterparts;
+- the Product Owner-authorized Git baseline and stable registration;
+- successful package verification.
+
+Drive-First permits documentation work to proceed while these Local/Git conditions remain explicitly pending. Resume Bootstrap closes them without resetting verified substantive progress. Bootstrap completion alone never authorizes commit, push, tag, or release.
 
 ## 6. Phase 2 — Requirements Definition
 
@@ -284,7 +280,7 @@ Define WHAT the product must do before deciding HOW it will be implemented.
 
 ### Entry conditions
 
-Project bootstrap is sufficiently complete.
+Full Bootstrap is complete, or the approved Drive-First identity and verified canonical package are available with Local/Git prerequisites explicitly pending under Phase 1.
 
 ### Required work
 
@@ -300,9 +296,11 @@ Define:
 - permissions expectations;
 - compatibility requirements;
 - dependency requirements;
-- localization requirements where applicable;
+- localization readiness for every `#N`: TZ must consider user-facing and admin-facing text and require XenForo-native phrases/localization where that text exists;
 - relevant edge cases;
 - unresolved product decisions.
+
+Localization readiness begins with requirements and architecture. Hardcoded user/admin-facing UI strings are not the normal implementation path. Multiple translations are not required at bootstrap; record applicability honestly when no UI/text exists.
 
 Do not turn implementation convenience into a product requirement.
 
@@ -316,7 +314,7 @@ Primary authoritative document:
 
 Roadmap should record Requirements Definition as the active phase and must not claim implementation progress that does not exist.
 
-Idea remains non-authoritative.
+IDEA remains non-authoritative and need not remain current product truth.
 
 ### Completion conditions
 
@@ -445,7 +443,8 @@ Where applicable, establish:
 - compatibility boundaries;
 - security boundaries;
 - performance-sensitive paths;
-- class responsibilities at the architectural level.
+- class responsibilities at the architectural level;
+- XenForo-native phrase/localization design for user-facing and admin-facing UI text where it exists.
 
 Architecture decisions may be approved incrementally.
 
@@ -637,6 +636,7 @@ Where applicable verify:
 - packaging;
 - frontend behavior;
 - ACP behavior;
+- localization readiness of user/admin-facing text, including native phrase use and resolution where applicable;
 - failure paths;
 - cleanup behavior.
 
@@ -1062,16 +1062,17 @@ This matrix defines timing. Approval details, execution mechanics, evidence stan
 
 | Document | Create | Update / finalize | Approval or review point | Historical handling |
 | --- | --- | --- | --- | --- |
-| Idea | Phase 0 when useful; before identity assignment, working notes may remain outside the canonical project structure | During evaluation; preserve useful rejected or deferred alternatives | Supports Gate 0; does not approve requirements | Non-authoritative; do not convert old ideas into retroactively approved decisions |
-| TZ | Phase 2, once actual requirements can be stated | On approved requirement changes; verify release scope in Phase 7 | Gate 1; Product Owner approval for changed requirements | Preserve traceability of approved changes; do not rewrite requirements to match accidental behavior |
-| Architecture | Phase 4, based on sufficient verified evidence | On approved design changes; synchronize verified implementation details during Phase 6 and before release | Gate 2 for the relevant design; reapproval when an affected decision changes | Preserve decision history; distinguish approved design from implemented state |
+| IDEA | Phase 1 canonical package container; useful Phase 0 notes may precede identity assignment and are preserved when adopted | During exploration; preserve useful rejected, superseded, or deferred alternatives as history | Supports Gate 0; does not approve requirements | Non-authoritative product exploration; do not convert old ideas into retroactively approved decisions; historical reasoning need not remain current truth |
+| TZ | Phase 1 with honest initial status; define substantive requirements in Phase 2 | On approved requirement changes; verify release scope in Phase 7 | Gate 1; Product Owner approval for changed requirements | Preserve traceability of approved changes; do not rewrite requirements to match accidental behavior |
+| Architecture | Phase 1 with honest initial status; develop design in Phase 4 from sufficient verified evidence | On approved design changes; synchronize verified implementation details during Phase 6 and before release | Gate 2 for the relevant design; reapproval when an affected decision changes | Preserve decision history; distinguish approved design from implemented state |
 | Roadmap | Phase 1 with real initial status and sequencing | At phase transitions, increment completion, scope changes, and release closure | Product Owner approves executable scope and sequencing | Preserve completed stages; distinguish completed, current, pending validation, and planned work |
-| CLASS_MAP | Phase 6 when real code structure exists, or when documenting an existing codebase | After changes to actual classes and responsibilities; verify before release when affected | Review with the affected increment under agent/development rules | Describe current code; do not list planned classes as implemented |
-| Changelog | When meaningful staged or released changes first exist | During development and Phase 8 release finalization | Review as part of the release/checkpoint process | Preserve released and staged historical facts; distinguish unreleased work from shipped releases |
-| README | Phase 1 when useful identity/status information exists | When verified product state, dependencies, installation, or usage changes; finalize for release | Review for accuracy before release | Descriptive; must not introduce requirements |
+| CLASS_MAP | Phase 1 stating that no implementation exists yet where applicable; populate from real code in Phase 6 | After changes to actual classes and responsibilities; verify before release when affected | Review with the affected increment under agent/development rules | Describe current code; do not list planned classes as implemented |
+| Changelog | Phase 1 stating the actual initial state; record staged/released changes only when they exist | During development and Phase 8 release finalization | Review as part of the release/checkpoint process | Preserve released and staged historical facts; distinguish unreleased work from shipped releases |
+| README | Phase 1 with verified identity and bootstrap status | When verified product state, dependencies, installation, or usage changes; finalize for release | Review for accuracy before release | Descriptive; must not introduce requirements |
 | Overview | Only when a separate descriptive overview is useful | When the verified product description changes | Review with affected documentation; not a separate product gate | Descriptive; preserve relevant history without duplicating TZ |
-| Research / audit evidence | Phase 3 or another phase with a real evidence-preservation need | During investigation; append or clearly identify revalidation and corrected conclusions | Evidence review before a dependent decision; findings do not approve architecture | Retain source/version context and distinguish earlier findings from later corrections |
-| Cursor usage history | At the first applicable procedure, according to CURSOR_USAGE_ANALYTICS.md | At required procedure checkpoints and after a release or coherent body of work | Follow the authoritative reporting and synchronization sequence in CURSOR_USAGE_ANALYTICS.md (prefer automatic After telemetry; do not invent values) | Preserve measurements and historical forecasts; do not invent telemetry or rewrite forecasts to match actuals |
+| AUDIT | Phase 1 parent/core document with honest evidence status | Record evidence directly or index justified child audits | Evidence supports dependent decisions; it does not approve requirements or architecture | Preserve source/version context, earlier findings, and corrections |
+| Child research / audit evidence | Phase 3 or another phase with a real need beyond the parent AUDIT | During investigation; append or clearly identify revalidation and corrected conclusions | Evidence review before a dependent decision; findings do not approve architecture | Retain source/version context and distinguish earlier findings from later corrections |
+| Cursor usage history | Phase 1 stating no procedures are recorded yet where applicable; populate from the first applicable procedure under CURSOR_USAGE_ANALYTICS.md | At required procedure checkpoints and after a release or coherent body of work | Follow the authoritative reporting and synchronization sequence in CURSOR_USAGE_ANALYTICS.md (prefer automatic After telemetry; do not invent values) | Preserve measurements and historical forecasts; do not invent telemetry or rewrite forecasts to match actuals |
 | MAG_IMPLEMENTATION_PATTERNS.md | Global knowledge base; never bootstrap a project-local copy | When verified work yields qualified reusable knowledge; review candidates by Phase 10 | Authorized Global documentation scope; apply its own entry rules | Preserve traceable evidence and correct superseded conclusions using its maintenance rules |
 | MAG_ECOSYSTEM.md | Existing Global registry and authority map | On approved project bootstrap, relevant status/identity changes, closure, or approved Global documentation-map changes | Authorized Global documentation scope | Retain permanent project identity; do not reuse closed project identifiers |
 | MAG_ADDON_DEVELOPMENT_LIFECYCLE.md | Global lifecycle adoption | When an approved lifecycle, gate, or documentation-timing decision changes | Product Owner approval of Global process changes | Do not retroactively claim that earlier projects followed later procedures |
@@ -1085,7 +1086,7 @@ This matrix defines timing. Approval details, execution mechanics, evidence stan
 5. During finalization: complete Release Presentation; verify documentation against the actual shipping artifact and version.
 6. After release: record relevant real-environment findings, complete applicable history synchronization, and review reusable-knowledge candidates.
 
-Do not create empty audit reports or speculative code maps to satisfy a phase. A document is created when it has real information to own. Mandatory history synchronization follows its owning Global rules even when no product documentation changed.
+The nine canonical documents are created in Phase 1 as mandatory containers with honest current-state records. AUDIT exists ≠ an audit was performed. CURSOR_USAGE_HISTORY exists ≠ telemetry may be invented. CLASS_MAP exists ≠ implementation exists. Architecture exists ≠ architecture is approved. Do not fabricate audit findings, telemetry, requirements, or code maps to populate them. Create optional child audits and other additional documents only when they have real information to own. Mandatory history synchronization follows its owning Global rules even when no product documentation changed.
 
 
 ## 19. Lifecycle Scaling Rules
@@ -1182,7 +1183,7 @@ This summary makes phase outputs and next transitions explicit. Each transition 
 | --- | --- | --- |
 | Phase 0 — Idea and Evaluation | Sufficient product evaluation for a decision | Gate 0, further evaluation, deferral, or rejection |
 | Gate 0 — Project Approval | Product Owner approval of project creation | Phase 1 |
-| Phase 1 — Project Bootstrap | Verified identity, registry entry, repository, canonical naming, and initial status | Phase 2 |
+| Phase 1 — Project Bootstrap | Verified identity and nine-document package; Full/Resume completion also requires Local structure, approved Git baseline, and stable registration | Phase 2 documentation work may begin in Drive-First with Bootstrap Incomplete — Local/Git Pending; other gates remain applicable |
 | Phase 2 — Requirements Definition | Coherent requirements, explicit scope, resolved blocking product decisions | Gate 1 |
 | Gate 1 — Requirements Approval | Approved WHAT | Phase 3, or Phase 4 when existing evidence is sufficient and that conclusion is recorded |
 | Phase 3 — Targeted Research and Verification | Traceable evidence sufficient for the next decision; unresolved blockers identified | Phase 4 when dependencies are resolved; Phase 2 if requirements need revision |

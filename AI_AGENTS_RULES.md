@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Coding Agent Rules
 
 - MAG-Document-ID: `AI_AGENTS_RULES.md`
-- MAG-Content-Updated: `2026-09-12T10:56:10+03:00`
+- MAG-Content-Updated: `2026-09-13T09:58:00+00:00`
 
 These rules define **how coding agents may execute** work in MAG repositories.
 
@@ -12,6 +12,8 @@ Coding agents are **implementation tools**. They do not own strategy, independen
 Respect **GLOBAL + active development identity** isolation per `MAG_ECOSYSTEM.md`. XenForo-specific execution rules apply only when that identity is a `#N` XenForo add-on project.
 
 Ordered phase transitions and documentation timing are defined in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md). That lifecycle does not expand the execution scope authorized under this document.
+
+Honor currently ACTIVE entries in [`MAG_PROCESS_OVERLAY_POOL.md`](MAG_PROCESS_OVERLAY_POOL.md) inside their explicit scope. Do not enlarge overlay scope. Treat only Status `ACTIVE` as an overlay; DRAFT, VALIDATED, PROMOTED, REJECTED, and WITHDRAWN records have no execution effect unless Status is ACTIVE. An unresolved conflict between ACTIVE overlays, or ambiguous overlay scope, is a stop condition for the affected action.
 
 Reusable-knowledge capture mechanics belong in [`MAG_IMPLEMENTATION_PATTERNS.md`](MAG_IMPLEMENTATION_PATTERNS.md). Evaluation integration at procedure completion belongs in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §22. Do not duplicate those procedures here.
 
@@ -256,6 +258,8 @@ When a required operation is simple, deterministic, and better done by the user,
 
 Ready-to-copy technical commands must be provided in **Plain text** per §1.2.
 
+For `#N` Drive-First Bootstrap while Local/Git closure remains pending, follow AI_GUIDELINES.md §20, MAG_ADDON_DEVELOPMENT_LIFECYCLE.md Phase 1, and any currently ACTIVE Process Overlay (MPO-001). Drive-First is a normal bootstrap state, not an exception. Pending Local/Git is reported explicitly; it does not block approved Drive-side documentation work or grant Git/implementation authorization. A Pool status change alone is not a Git checkpoint.
+
 ### Checkpoint-protection filter
 
 Before proposing an intermediate Git checkpoint, ask:
@@ -302,6 +306,7 @@ Stop **before** continuing when:
 
 - Requirements are ambiguous and cannot be resolved safely from approved sources.
 - Authoritative documents conflict.
+- Two ACTIVE Process Overlay Pool entries conflict, or overlay scope is ambiguous.
 - Undocumented XenForo behavior must be verified beyond targeted installed-source inspection (or that inspection is insufficient).
 - Implementation would cross an approved rule boundary.
 - A required manual or user action is incomplete.

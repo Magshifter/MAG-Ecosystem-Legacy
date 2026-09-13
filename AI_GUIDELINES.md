@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Development Guidelines
 
 - MAG-Document-ID: `AI_GUIDELINES.md`
-- MAG-Content-Updated: `2026-09-12T10:56:10+03:00`
+- MAG-Content-Updated: `2026-09-13T09:58:00+00:00`
 
 This document is the **Global MAG development standard**. It defines **how** MAG software is developed with AI assistance.
 
@@ -58,7 +58,11 @@ Use the authority model in `MAG_ECOSYSTEM.md`. For implementation work, apply it
 | README / overview | Descriptive only. |
 | Idea | Non-authoritative research. |
 
-`AI_AGENTS_RULES.md` (when present) additionally constrains repository-task execution and states mandatory Cursor pre-flight and Plain text execution requirements. Cursor prompt presentation, post-execution review, and model-selection policy remain in §24 of this document. Cursor usage metrics remain in `CURSOR_USAGE_ANALYTICS.md`. If Global documents conflict, **stop and report** rather than silently choosing one.
+`AI_AGENTS_RULES.md` (when present) additionally constrains repository-task execution and states mandatory Cursor pre-flight and Plain text execution requirements. Cursor prompt presentation, post-execution review, and model-selection policy remain in §24 of this document. Cursor usage metrics remain in `CURSOR_USAGE_ANALYTICS.md`.
+
+Process execution must consider canonical Global rules and currently ACTIVE entries in [`MAG_PROCESS_OVERLAY_POOL.md`](MAG_PROCESS_OVERLAY_POOL.md). If an ACTIVE overlay conflicts with canonical process wording inside its explicit scope, follow the overlay until promotion, rejection, or withdrawal. DRAFT and historical statuses have no execution effect. The Pool is not an eighth canonical Global authority owner; governance is defined in `MAG_ECOSYSTEM.md`. Commands are in §26.
+
+If Global documents conflict, or two ACTIVE overlays conflict, **stop and report** rather than silently choosing one.
 
 For `#N` XenForo add-on work, AI must not invent XenForo APIs or rely on assumptions when installed XenForo source can be inspected.
 
@@ -565,6 +569,8 @@ The **user** owns `git add`, `git commit`, and `git push` unless they explicitly
 
 If a stage reveals unresolved **Critical** issues, the stage is not closed and progression is blocked.
 
+**Drive-First Bootstrap:** while MPO-001 is ACTIVE, approved documentation work may progress while Local/Git closure remains pending under MAG_ADDON_DEVELOPMENT_LIFECYCLE.md Phase 1 and MAG_DOCUMENTATION_OPERATIONS.md §5. Drive-First is a normal `#N` bootstrap state, not an exception. It preserves the explicit incomplete bootstrap state; it does not claim a completed Git checkpoint or stable registration and does not authorize implementation, commit, push, tag, or release. Resume Bootstrap completes the deferred prerequisites without repeating approved substantive work. A Pool status change alone is not a Git checkpoint.
+
 ### Stage and phase closure sequence
 
 1. Complete the approved work for the current logical stage/phase.
@@ -870,3 +876,54 @@ AI-assisted MAG development must remain:
 Work proceeds from verified code and verified XenForo behavior, not from assumptions, silent conflict resolution, or speculative future architecture.
 
 **GLOBAL defines HOW. Active development defines WHAT.**
+
+---
+
+## 26. Process Overlay Pool commands
+
+Governance of the MAG Process Overlay Pool is defined in `MAG_ECOSYSTEM.md`. Records live in `MAG_PROCESS_OVERLAY_POOL.md`. These commands are the operational interface. They do not authorize product implementation, Git, or release.
+
+### `PROCESS CHANGE`
+
+Create or update a Pool entry and prepare it for Product Owner activation.
+
+```text
+identify process problem
+→ create/update DRAFT MPO entry
+→ resolve scope/owners/conflicts
+→ present concise decision
+→ Product Owner approval
+→ set ACTIVE
+```
+
+Do not rewrite all Global owners merely to activate an experimental optimization. One concise Product Owner activation decision is enough to move a prepared DRAFT to ACTIVE. Do not create a separate registration, Drive file, or project experiment document per MPO.
+
+### `PROCESS POOL STATUS`
+
+Return a concise status of Pool entries grouped by ACTIVE, VALIDATED, promotion-ready, DRAFT, and REJECTED/WITHDRAWN where useful.
+
+### `PROMOTE PROCESS POOL`
+
+Promote all eligible VALIDATED entries.
+
+### `PROMOTE MPO-XXX`
+
+Promote one eligible validated entry.
+
+Promotion procedure:
+
+```text
+read validated entry
+→ resolve canonical owner(s)
+→ identify all conflicting/obsolete wording
+→ produce integration plan
+→ Product Owner approval where required
+→ update canonical Global owners
+→ update affected operational assets
+→ remove obsolete workaround/overlay wording
+→ cross-document consistency verification
+→ mark entry PROMOTED
+→ normal documentation closure
+```
+
+After promotion, canonical Global documents must be self-contained. Do not leave permanent “see MPO-XXX for current rule” dependencies in normalized Global wording. The Pool stores history and delta trace, not permanent policy indirection. Do not create a Git checkpoint solely because a Pool status changed.

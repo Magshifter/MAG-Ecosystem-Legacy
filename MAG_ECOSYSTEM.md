@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-12T10:56:10+03:00`
+- MAG-Content-Updated: `2026-09-13T10:08:03+00:00`
 
 This document is the navigation and governance foundation for MAG software development across approved development classes.
 
@@ -26,6 +26,24 @@ Specialized forms:
 - Mobile work → **GLOBAL + active `B<N>`**
 
 Unrelated development-specific WHAT documentation must remain excluded unless explicitly required.
+
+### Process/HOW governance hierarchy
+
+```text
+Product Owner
+    ↓
+MAG Process Overlay Pool (ACTIVE entries only)
+    ↓
+Canonical Global authority documents
+    ↓
+Global operational assets
+    ↓
+Active development
+```
+
+This hierarchy applies to process/HOW only. It does not change product WHAT.
+
+The MAG Process Overlay Pool is a controlled active overlay layer, not an eighth canonical Global authority document. Canonical Global documents remain the durable normalized authority. ACTIVE Pool entries may override conflicting canonical process wording inside their explicit scope until promoted, rejected, or withdrawn.
 
 ## Purpose of MAG Ecosystem
 
@@ -126,11 +144,11 @@ This Global documentation repository is `MAG-Ecosystem`. It is not a numbered pr
 
 ### Global
 
-Lives in this repository (`MAG-Ecosystem`). Applies to every MAG development unless a development document is explicitly authorized to specialize a Global rule (and only after a reported, approved conflict resolution).
+Lives in this repository (`MAG-Ecosystem`). Applies to every MAG development unless a development document is explicitly authorized to specialize a Global rule (and only after a reported, approved conflict resolution), or unless a currently ACTIVE MAG Process Overlay Pool entry specializes process/HOW inside its recorded scope.
 
 ### Active development identity
 
-Lives in that development's own Git repository. Describes that product only.
+Lives in that development's own Git repository after Local/Git bootstrap is complete. For an approved `#N` Drive-First Bootstrap, Google Drive holds the canonical project documentation while Local/Git is pending. Describes that product only.
 
 Work on an active development identity means **GLOBAL + that identity** (for example GLOBAL + `#2`, GLOBAL + `A1`). Documentation from other approved developments is excluded unless a task specifically requires it (for example a real shared-component change).
 
@@ -151,29 +169,57 @@ Synchronization-managed status is explicit. The existence of a Markdown file alo
 
 Global registration is represented by the authoritative Global documentation set below together with valid metadata and the applicable Local authoritative state. Stable development registration follows the approved development identity, canonical Local repository, applicable development documentation model and authority, valid metadata, and approved Git baseline.
 
-Before Git handoff, provisional registration may exist only inside the explicit Product Owner-approved controlled registration or adoption procedure that created it. Provisional documents are available for validation and review within that procedure but are not part of default SYNC discovery or the stable registered documentation set.
+Before Git handoff, provisional registration may exist inside an explicit Product Owner-approved controlled registration, adoption, or `#N` bootstrap procedure. Drive-First Bootstrap permits continued documentation work within that approved scope under **Bootstrap Incomplete — Local/Git Pending**. These documents are not part of default SYNC discovery or the stable registered documentation set; Resume Bootstrap completes the missing prerequisites under `MAG_DOCUMENTATION_OPERATIONS.md` §5.
 
 Document onboarding, adoption, counterpart creation, rename, retirement, and unregistered-file handling are governed by `MAG_DOCUMENTATION_OPERATIONS.md`.
 
 ## Global documentation set
 
-The current Global documentation set comprises **seven** authoritative files in this repository:
+The current Global documentation set comprises **seven** authoritative files in this repository. These remain the durable canonical authority owners:
 
 | File | Role |
 | --- | --- |
 | `MAG_ECOSYSTEM.md` | This file. MAG Ecosystem identity, development-class taxonomy, namespace registry, documentation map, context isolation, and high-level governance. |
-| `AI_GUIDELINES.md` | Global MAG development workflow and operational rules; §24 owns Cursor prompt presentation, post-execution review, and Cursor model-selection / model-routing policy. |
+| `AI_GUIDELINES.md` | Global MAG development workflow and operational rules; §24 owns Cursor prompt presentation, post-execution review, and Cursor model-selection / model-routing policy. §26 owns Process Overlay command text. |
 | `AI_AGENTS_RULES.md` | Mandatory execution rules and boundaries for AI coding agents and related development tools, including Cursor procedure pre-flight and Plain text output requirements. |
 | `CURSOR_USAGE_ANALYTICS.md` | Authoritative Cursor usage measurement and telemetry methodology only: chat routing for measurement context, Cursor Models Before/After tracking (including automatic After telemetry consumption and failure handling), reporting, forecasting, and analytics. Does **not** own model-selection policy. |
 | `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Canonical ordered lifecycle for `#N` XenForo add-ons: stage gates, transitions, and documentation timing. References detailed operational rules in their owning Global documents. |
 | `MAG_IMPLEMENTATION_PATTERNS.md` | Global reusable technical knowledge base: verified, source-backed implementation patterns (predominantly XenForo/XFRM for `#N` products), compatibility lessons, failure modes, and related evidence-backed findings. Subordinate to Global process documents and active-development TZ, Roadmap, and Architecture. Does not define product requirements. |
 | `MAG_DOCUMENTATION_OPERATIONS.md` | Authoritative documentation synchronization protocol across managed Local Git repositories, Google Drive, ChatGPT, and Cursor. |
 
-These Global files exist only in `MAG-Ecosystem`. Individual product repositories must **not** create copies, companions, or pointer files named `MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `CURSOR_USAGE_ANALYTICS.md`, `MAG_IMPLEMENTATION_PATTERNS.md`, `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`, or `MAG_DOCUMENTATION_OPERATIONS.md`.
+These seven files are not joined by an eighth equivalent authority owner.
+
+### MAG Process Overlay Pool
+
+`MAG_PROCESS_OVERLAY_POOL.md` is the ecosystem-level process overlay asset for Product Owner-approved HOW corrections, optimizations, and temporary ACTIVE deltas.
+
+- It is owned at ecosystem level, not by a project.
+- Scope is process/HOW only.
+- ACTIVE entries participate in execution according to the precedence model below.
+- Canonical Global documents remain the durable normalized authority.
+- Global operational assets apply canonical rules and currently ACTIVE overlays; they do not independently define policy.
+- Promotion integrates a validated entry into its canonical Global owners and affected operational assets, then retires the overlay effect.
+
+Entry lifecycle, schema, and records live in that file. Individual MPO records are not separate registered documents. Process Overlay commands are `PROCESS CHANGE`, `PROCESS POOL STATUS`, `PROMOTE PROCESS POOL`, and `PROMOTE MPO-XXX` (operational text in `AI_GUIDELINES.md` §26).
+
+Do not rewrite multiple Global owners merely to activate an experimental process optimization. Do not create project-specific process experiment/evaluation documents by default.
+
+### Global operational assets
+
+Operational assets implement and reify current Global rules plus applicable ACTIVE overlays for repeatable execution. They are subordinate to process authority. They cannot independently create policy, cannot redefine product WHAT, and must be aligned when owning Global rules or ACTIVE overlays change. They are **not** members of the seven canonical Global authority documents.
+
+| Asset | Kind | Sync / registration |
+| --- | --- | --- |
+| `MAG_XENFORO_ADDON_BLUEPRINT.md` | Registered Global operational asset | Ordinary two-bullet metadata. Eligible for `SYNC GLOBAL` as an operational asset, not as a project document or eighth authority owner. |
+| `templates/xenforo-addon/*` | Supporting template assets | Not instantiated project documents. Transfer only through the approved package path in `MAG_DOCUMENTATION_OPERATIONS.md` §4. Outside ordinary SYNC discovery. |
+
+The Blueprint consumes ACTIVE overlay rules. It is not the owner of those rules. Detailed identity and transport rules remain in `MAG_DOCUMENTATION_OPERATIONS.md`.
+
+These Global files and assets exist only in `MAG-Ecosystem`. Individual product repositories must **not** create copies, companions, or pointer files named `MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `CURSOR_USAGE_ANALYTICS.md`, `MAG_IMPLEMENTATION_PATTERNS.md`, `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`, `MAG_DOCUMENTATION_OPERATIONS.md`, `MAG_PROCESS_OVERLAY_POOL.md`, or `MAG_XENFORO_ADDON_BLUEPRINT.md`.
 
 Developments inherit Global rules by reading this repository. Product-specific requirements belong in that development's authoritative WHAT documentation, using the filename conventions defined below. Development-specific Cursor measurement history may be stored locally (for example `docs/P01__GLF__CURSOR_USAGE_HISTORY.md`).
 
-When a Global process rule changes, edit only `MAG-Ecosystem`. Do **not** synchronize that change into `#1`, `#2`, `A1`, or later registered developments merely to mirror Global wording.
+When a durable Global process rule changes, edit only `MAG-Ecosystem`. For a fast Product Owner-approved process correction still under evaluation, create or activate an MPO entry instead of rewriting multiple canonical owners. Do **not** synchronize Global process wording into `#1`, `#2`, `A1`, or later registered developments merely to mirror Global wording.
 
 `CURSOR_USAGE_ANALYTICS.md` is Cursor usage and telemetry methodology only. It is not a measurement-history log and does not own model-selection policy. Cursor model-selection / model-routing policy belongs in `AI_GUIDELINES.md` §24. MAG Ecosystem process measurements belong in a separate MAG-Ecosystem history artifact when that artifact is later approved. Do not copy analytics rules or the model-selection matrix into this file.
 
@@ -183,7 +229,7 @@ Development documentation must cite Global files as **`MAG-Ecosystem` / `<filena
 
 ## Project documentation standard
 
-Each `#N` XenForo project repository should use this standard **logical** set. Authority is defined by the logical document, not by an unprefixed filename.
+Every newly approved `#N` XenForo project must receive the following nine canonical documents as one bootstrap package. A mandatory canonical container/identity is **not** mandatory substantive work. Creation never implies a passed gate, approved requirements, approved architecture, performed audit, recorded telemetry, or existing implementation. Authority is defined by the logical document, not by its mere creation or filename. This requirement does not apply to `A<N>` or `B<N>` and does not authorize migration or renaming of existing or historical project documents.
 
 | Logical document | Canonical filename | Role |
 | --- | --- | --- |
@@ -192,13 +238,18 @@ Each `#N` XenForo project repository should use this standard **logical** set. A
 | Architecture | `P<NN>__<CODE>__Architecture.md` | Approved implementation architecture. |
 | CLASS_MAP | `P<NN>__<CODE>__CLASS_MAP.md` | Current code structure and class responsibilities. |
 | Changelog | `P<NN>__<CODE>__Changelog.md` | Historical record of released and staged changes. |
-| README | `P<NN>__<CODE>__README.md` | Descriptive project entry point. |
+| README | `P<NN>__<CODE>__README.md` | Descriptive project entry point and bootstrap status. |
+| IDEA | `P<NN>__<CODE>__IDEA.md` | Non-authoritative product exploration, Phase 0 reasoning/evaluation, alternatives, historical/superseded concepts, and future concepts that do not belong to authoritative TZ. |
+| CURSOR_USAGE_HISTORY | `P<NN>__<CODE>__CURSOR_USAGE_HISTORY.md` | Procedure usage records under CURSOR_USAGE_ANALYTICS.md; no invented telemetry. |
+| AUDIT | `P<NN>__<CODE>__AUDIT.md` | Parent/core document for research and verification evidence; findings do not approve requirements or architecture. |
 
-Optional, created only when useful:
+The package establishes ownership, not speculative content. Where substantive information is unavailable, record an honest state such as `Not yet defined`, `Not yet approved`, `No implementation exists yet`, `No Cursor procedures recorded yet`, or `No audit findings yet`. AUDIT exists ≠ an audit was performed. CURSOR_USAGE_HISTORY exists ≠ telemetry may be invented. CLASS_MAP exists ≠ implementation exists. Architecture exists ≠ architecture is approved.
 
-- Idea — `P<NN>__<CODE>__Idea.md` — non-authoritative research and working notes.
+AUDIT may hold evidence directly for a small project or index justified child audits such as NATIVE_SOURCE_AUDIT, DONOR_AUDIT, SECURITY_AUDIT, or PERFORMANCE_AUDIT. Child audits are optional and created only for a real evidence-preservation need.
+
+Additional documents are optional, created only when useful:
+
 - Overview — `P<NN>__<CODE>__Overview.md` — descriptive product overview.
-- Cursor usage history — `P<NN>__<CODE>__CURSOR_USAGE_HISTORY.md` (often under `docs/`).
 - Other project documents when they serve a real, documented need, using the same filename prefix.
 
 Physical layout inside a project repository may place some of these files at the repository root or under `docs/`. The **logical names and authority** above remain unchanged.
@@ -209,9 +260,13 @@ Non-`#N` developments use the ecosystem-level filename conventions below when a 
 
 ### Experimental / Evaluation documents
 
-Experimental / Evaluation documents are optional project-scoped working evidence: hypotheses, temporary procedures, candidate workflows, observations, metrics, and evaluation results. They may evolve throughout the approved experiment. Registration and metadata establish identity/version tracking and synchronization eligibility only; they grant no substantive authority. They cannot override approved TZ, Architecture, Roadmap, or Global rules. Only expressly approved, bounded pilot procedural exceptions may apply within their recorded scope; no exception extends to another project or cycle.
+Future process optimizations use the MAG Process Overlay Pool. Do **not** create a separate project-specific `PIPELINE_EXPERIMENT`, `PROCESS_EXPERIMENT`, `PROCESS_EVALUATION`, or equivalent document by default. A project may provide evidence, observations, validation cases, measurements, or implementation experience for an MPO entry; the process delta remains ecosystem-level.
 
-Promotion follows documented evaluation, selection of findings for full or partial adoption, a scoped proposal for the owning Global documents, explicit Product Owner approval, and verified updates there. No automatic promotion follows PASS, PARTIAL PASS, registration, synchronization, or Git commit.
+Historical Experimental / Evaluation documents already present remain historical evidence. Do not automatically rename, delete, or migrate them, and do not change their historical meaning. They still cannot override approved TZ, Architecture, Roadmap, or Global rules, and they are not parallel Global process authority.
+
+New Experimental registered documents, if ever approved, remain non-authoritative working evidence for a documented non-process need. Registration and metadata establish identity/version tracking and synchronization eligibility only.
+
+Promotion of a validated process overlay is a controlled Global documentation normalization procedure (`PROMOTE MPO-XXX` / `PROMOTE PROCESS POOL`). No automatic promotion follows PASS, PARTIAL PASS, registration, synchronization, or Git commit.
 
 The following existing documents have stable registration as **Experimental registered documents** for project `#2`, retained under their current canonical names and locations as an explicit naming/location exception:
 
@@ -220,13 +275,13 @@ The following existing documents have stable registration as **Experimental regi
 
 Both retain the existing Drive folder `<DRIVE-FOLDER:MAG_PIPELINE_V2>`. Physical placement in the ecosystem repository or Drive does not place them in the seven-file Global authority set. They belong to `SYNC #2` or exact-filename scope, not `SYNC GLOBAL`. Do not create copies in TagSynchronizer or rename existing counterparts. The approved Git baseline was established in `2e16465`, followed by the Evaluation pilot-activation record in `3c5f864`; both documents are now available for stable discovery in their registered project scope. Stable registration grants synchronization eligibility only, not substantive authority. Detailed registration and validation rules remain in `MAG_DOCUMENTATION_OPERATIONS.md` §5.
 
-**Pipeline v2 post-promotion state:** after Product Owner-approved Global promotion of validated `#2` / `1.1.0` findings, these two documents remain **historical experiment / evaluation evidence only**. They are **not** parallel Global process authority. Active HOW rules live only in the seven-file Global documentation set.
+**Pipeline v2 post-promotion state:** after Product Owner-approved Global promotion of validated `#2` / `1.1.0` findings, these two documents remain **historical experiment / evaluation evidence only**. They are **not** parallel Global process authority. Durable HOW remains in the seven-file Global documentation set. Currently ACTIVE Process Overlay Pool entries may temporarily specialize process/HOW inside their explicit scope until promotion, rejection, or withdrawal.
 
 ### Documentation filename conventions
 
 This is the authoritative MAG convention for development-specific documentation filenames at the ecosystem level.
 
-1. Global-only files keep their existing unique filenames (`MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `CURSOR_USAGE_ANALYTICS.md`, `MAG_IMPLEMENTATION_PATTERNS.md`, `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`, `MAG_DOCUMENTATION_OPERATIONS.md`). Do **not** add a `GLOBAL__` prefix to them.
+1. Global-only files keep their existing unique filenames (`MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `CURSOR_USAGE_ANALYTICS.md`, `MAG_IMPLEMENTATION_PATTERNS.md`, `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`, `MAG_DOCUMENTATION_OPERATIONS.md`, `MAG_PROCESS_OVERLAY_POOL.md`, `MAG_XENFORO_ADDON_BLUEPRINT.md`). Do **not** add a `GLOBAL__` prefix to them.
 2. `#N` XenForo project documentation uses `P<NN>__<CODE>__<Document>.md`.
 3. `A<N>` desktop/application product documentation uses `A<NN>__<CODE>__<Document>.md` when adopted through an approved procedure.
 4. `B<N>` mobile product documentation uses `B<NN>__<CODE>__<Document>.md` when adopted through an approved procedure.
@@ -260,7 +315,7 @@ Examples:
 
 When working on a MAG development:
 
-1. Load **Global** MAG documentation from `MAG-Ecosystem`.
+1. Load **Global** MAG documentation from `MAG-Ecosystem`, including currently ACTIVE Process Overlay Pool entries and applicable operational assets.
 2. Load **that development's** product documentation and code.
 3. Do **not** load other developments' TZ, Roadmap, Architecture, CLASS_MAP, Changelog, or research notes unless the task explicitly requires them.
 
@@ -286,12 +341,14 @@ Each Global file has one primary authority. Do not duplicate its detailed rules 
 | `CURSOR_USAGE_ANALYTICS.md` | Cursor usage measurement and telemetry methodology only (chat routing for measurement context, Before/After tracking, reporting, forecasting). Does **not** own model-selection policy. |
 | `MAG_IMPLEMENTATION_PATTERNS.md` | Reusable, source-backed technical knowledge base and its capture/maintenance procedure. Subordinate to Global process documents and active-development TZ, Roadmap, and Architecture. Not a source of product requirements or process rules. |
 | `MAG_DOCUMENTATION_OPERATIONS.md` | Documentation identity validation, synchronization scope and commands, comparison, conflict handling, approval, execution, verification, cleanup, reporting, and Git handoff boundaries. |
+| `MAG_PROCESS_OVERLAY_POOL.md` | Ecosystem-level ACTIVE process/HOW overlays only. Not an eighth canonical authority owner. Individual MPO records are not standalone documents. |
+| Global operational assets | Blueprint and XenForo templates implement Global rules and ACTIVE overlays. They do not independently define policy. |
 | Project TZ | **What** that `#N` product must do. Functional requirements. Canonical file: `P<NN>__<CODE>__TZ.md`. |
 | Project Architecture | Approved implementation architecture for that product. Describes intended and verified structure; it does not override TZ. |
 | Project Roadmap | Approved sequencing and verified progress. Controls what may be implemented **now**. |
 | Project CLASS_MAP | Current classes and responsibilities as they exist in code. |
 | Project README / overview documents | Descriptive. Not a source of new requirements or process. |
-| Project Idea | Non-authoritative research. Must not override TZ, Architecture, Roadmap, or Global rules. |
+| Project IDEA | Non-authoritative product exploration, Phase 0 reasoning/evaluation, alternatives, historical/superseded concepts, and future concepts. Must not override TZ, Architecture, Roadmap, Global HOW, or ACTIVE overlays. Need not remain current product truth. |
 | Changelog and Git history | Historical. Preserve as history. Do not rewrite the past to match a later decision. |
 
 **Code currently in the development repository is authoritative for what exists.** Requirements and process documents are authoritative for what is approved. Planned work is not implemented work.
@@ -300,11 +357,24 @@ Each Global file has one primary authority. Do not duplicate its detailed rules 
 
 Meaningful conflicts must be **reported**, not silently resolved by assumption.
 
+For process/HOW conflicts, apply this precedence:
+
+1. explicit current Product Owner decision;
+2. ACTIVE MAG Process Overlay Pool entry, inside its explicit scope;
+3. canonical Global owning document;
+4. Global operational asset such as Blueprint/templates;
+5. active-development process representation.
+
+This precedence does not apply to product WHAT, approved project requirements, architecture decisions, implementation scope, or release content. An ACTIVE overlay must not silently redefine those boundaries. If it explicitly affects Git, release, security, registration, or lifecycle authorization, that effect must be stated in the Pool entry.
+
+If two ACTIVE overlays conflict, or overlay scope is ambiguous, stop the affected action and require Product Owner resolution. Do not choose arbitrarily. If a newer explicit Product Owner decision makes an overlay impossible, record supersession or withdrawal.
+
 Examples of meaningful conflicts:
 
 - Global process vs. a development-specific instruction;
 - TZ vs. Architecture vs. Roadmap vs. current code;
 - two Global documents disagreeing after migration;
+- two ACTIVE overlays disagreeing inside overlapping scope;
 - an undocumented XenForo behavior vs. an assumed API.
 
 Report the conflict, identify the documents and facts involved, and wait for resolution. Do not invent a compromise that changes product behavior or process without approval.
@@ -386,13 +456,15 @@ This repository must **not** design, specify, or implement License Manager funct
 
 When a new MAG development is approved in a given identity class:
 
-1. Assign the next sequential identifier in that class (`#N`, `A<N>`, or `B<N>` as applicable). For `#N`, assign the next XenForo slot. `#3` is the next available XenForo project identity.
-2. Record product name, status, Git repository name, and applicable filename convention metadata.
-3. Create the development Git repository (separate from `MAG-Ecosystem`) when the approved product requires one.
-4. Add the standard documentation set for that class only as the development needs it. For `#N`, use `P<NN>__<CODE>__TZ.md` first when requirements exist.
+1. Assign the next sequential identifier in that class (`#N`, `A<N>`, or `B<N>` as applicable). For `#N`, verify the next unused XenForo slot against the current registry and existing identities before assignment; do not infer availability from an example.
+2. Record product name, status, project code, intended Git repository name, and applicable filename convention metadata. A permanent `#N` identity may be assigned after Project Approval even when Local/Git is unavailable; record pending prerequisites without claiming stable registration.
+3. Create the development repository structure (separate from `MAG-Ecosystem`) when applicable and available. For `#N`, Full Bootstrap completes Local/Git prerequisites; Drive-First Bootstrap may defer them under the explicit incomplete state below. Git actions remain separately Product Owner-controlled.
+4. For every new `#N`, instantiate the nine-document package above in one coherent Product Owner-approved bootstrap scope, validate it, create/synchronize applicable counterparts, and verify the complete package without per-file approval loops. For `A<N>` and `B<N>`, select documentation from actual approved needs; the XenForo package does not apply.
 5. Do not copy another development's requirements, architecture, or code "as a template" beyond true Global process.
 6. Do not create copies or pointer files of Global process documents in the new development.
 7. Do not create shared components as part of bootstrap.
+
+For `#N`, Drive-First Bootstrap follows Project Approval and permits substantive documentation work on Drive under **Bootstrap Incomplete — Local/Git Pending**. While MPO-001 is ACTIVE, Drive-First is a normal bootstrap state (Level 1 pause), not an exception. Resume Bootstrap reuses the permanent identity, current Drive documents, and completed work; establishes the Local repository structure including `/docs/`; reconciles the Drive package into its approved canonical Local locations; and completes the separately authorized Git baseline and stable registration. Do not restart requirements or architecture merely because the device changed. Lifecycle states belong to `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 1, specialized by any currently ACTIVE bootstrap overlay; batch onboarding, reconciliation, and verification mechanics belong to `MAG_DOCUMENTATION_OPERATIONS.md` §5. Bootstrap completion does not authorize commit, push, tag, or release.
 
 `#2` [MAG] Tag Synchronizer is registered. Its Git repository exists. Status is **Active / Stable 1.0.0**. Stable Release 1.0.0 is released; Post-Release Verification is the next lifecycle stage and has not started. It inherits Global rules by reference. It must not contain local copies of Global documentation files from `MAG-Ecosystem`.
 
@@ -407,3 +479,6 @@ This Global documentation repository currently contains:
 - `MAG_IMPLEMENTATION_PATTERNS.md`
 - `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
 - `MAG_DOCUMENTATION_OPERATIONS.md`
+- `MAG_PROCESS_OVERLAY_POOL.md`
+- `MAG_XENFORO_ADDON_BLUEPRINT.md`
+- `templates/xenforo-addon/*`
