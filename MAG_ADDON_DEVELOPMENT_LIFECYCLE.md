@@ -1,7 +1,7 @@
 # MAG Add-on Development Lifecycle
 
 - MAG-Document-ID: `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
-- MAG-Content-Updated: `2026-09-13T13:20:00+00:00`
+- MAG-Content-Updated: `2026-09-13T13:45:00+00:00`
 
 This document defines the Global MAG lifecycle for developing and maintaining **MAG XenForo add-ons (`#N`)**.
 
@@ -36,11 +36,11 @@ Project identity and documentation authority remain in MAG_ECOSYSTEM.md.
 
 The lifecycle applies to GLOBAL + the active `#N` XenForo project. Project document authority, identity, naming, and context isolation remain defined in [MAG_ECOSYSTEM.md](MAG_ECOSYSTEM.md).
 
-Lifecycle transitions do not enlarge an agent's authorized scope. Apply [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) to execution in every phase, including research, documentation, and release work. Apply [AI_GUIDELINES.md](AI_GUIDELINES.md) §24 whenever a phase uses Cursor for prompt presentation, post-execution review, or model routing. Apply [CURSOR_USAGE_ANALYTICS.md](CURSOR_USAGE_ANALYTICS.md) whenever a phase uses Cursor for usage metrics and measurement; this document does not define telemetry fields, automatic After consumption, or usage-value display formats.
+Lifecycle transitions do not enlarge an agent's authorized scope. Apply [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) to execution in every phase, including research, documentation, and release work. Apply [AI_GUIDELINES.md](AI_GUIDELINES.md) §24 whenever a phase uses Cursor: operating modes, Coordinator Mode presentation, Direct Agent Mode execution surface, post-execution review, or model routing. Apply [CURSOR_USAGE_ANALYTICS.md](CURSOR_USAGE_ANALYTICS.md) whenever a phase uses Cursor for usage metrics and measurement; this document does not define telemetry fields, automatic After consumption, or usage-value display formats.
 
 The Global documentation map in MAG_ECOSYSTEM.md includes this lifecycle and MAG_IMPLEMENTATION_PATTERNS.md. Keep that map synchronized when an approved Global document or authority boundary changes.
 
-Process/HOW execution must honor currently ACTIVE entries in [`MAG_PROCESS_OVERLAY_POOL.md`](MAG_PROCESS_OVERLAY_POOL.md) inside their explicit scope. An ACTIVE overlay may temporarily specialize this lifecycle's process behavior until promotion, rejection, or withdrawal. Do not enlarge overlay scope and do not duplicate an ACTIVE overlay as a second permanent rule set here.
+Process/HOW execution must honor currently ACTIVE entries in [`MAG_PROCESS_OVERLAY_POOL.md`](MAG_PROCESS_OVERLAY_POOL.md) inside their explicit scope. An ACTIVE overlay may temporarily specialize this lifecycle's process behavior until promotion, rejection, or withdrawal. Do not enlarge overlay scope. Durable Phase 1 bootstrap authority lives in this document; it does not depend on an ACTIVE overlay.
 
 If another Global document contains an incompatible lifecycle sequence or documentation-timing rule, identify the exact conflict for Product Owner resolution and synchronize the owning documents through an approved change. Do not silently select a rule or duplicate its detailed implementation here.
 
@@ -125,7 +125,7 @@ Planned work must not be represented as implemented work.
 
 ### Closure prerequisite for phase transitions
 
-Before advancing from a completed logical stage or phase, complete the mandatory closure procedure in [AI_GUIDELINES.md](AI_GUIDELINES.md) §20 and the applicable execution/checkpoint rules in [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) §10. An output ready for review is not a closed phase. Local/Git closure applies to Full Bootstrap and Resume Bootstrap completion. Documentation-only Drive-First progression in Phase 1 does not require Local/Git closure while Local/Git remains pending. Drive-First is a normal Phase 1 pause state while the current ACTIVE bootstrap overlay applies.
+Before advancing from a completed logical stage or phase, complete the mandatory closure procedure in [AI_GUIDELINES.md](AI_GUIDELINES.md) §20 and the applicable execution/checkpoint rules in [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) §10. An output ready for review is not a closed phase. Local/Git closure applies to Full Bootstrap, Local/Git-First, and Resume Bootstrap completion of Local/Git predicates. Documentation-only Drive-First progression in Phase 1 does not require Local/Git closure while Local/Git remains pending. Drive-First is a normal Phase 1 pause (Level 1) with Local/Git pending.
 
 Research/architecture iterations and intermediate actions within the same approved logical phase do not create artificial Git checkpoints. Existing project phase/stage identifiers remain historical identifiers; record their mapping to this lifecycle without renumbering completed history.
 
@@ -250,13 +250,37 @@ Instantiate all nine canonical project documents defined in MAG_ECOSYSTEM.md as 
 
 AUDIT is the standard parent/core evidence document. Use it directly or add only justified child audits; do not create a mandatory child-audit set.
 
+### Two-level bootstrap authority
+
+Phase 1 has two cumulative operational authority levels. They do not change product WHAT, Git ownership, implementation authorization, or release authority.
+
+**Level 1 — Documentation Bootstrap Authority**
+
+Activated after Gate 0 and Product Owner authorization of Project Bootstrap.
+
+Authorizes: approved project identity use; Blueprint package instantiation; canonical Drive project package when Drive is in scope; provisional documentation state; metadata establishment and package verification; continued Requirements / Research / Architecture documentation work under their normal substantive gates.
+
+Does not authorize: stable registration; Local/Git completion claims; product implementation; commit/push/tag/release.
+
+**Level 2 — Repository Bootstrap Authority**
+
+Activated when Local/Git is available and Product Owner authorizes Full Bootstrap, Local/Git-First, or Resume Bootstrap.
+
+Authorizes: Local repository establishment/reconciliation; canonical `/docs/`; reconciliation of an existing Drive package into Local when counterparts exist; authorized native skeleton where applicable; local/package validation; preparation of the Git baseline; **Local/Git Bootstrap Complete** and stable registration after separately authorized Git baseline and successful local verification; Drive counterpart synchronization when executed, leaving **Drive Reconciliation Pending** when that work is deferred.
+
+Does not authorize product implementation. Drive reconciliation is not required to complete Level 2, Phase 1, or stable registration.
+
 ### Bootstrap modes
 
-**Full Bootstrap:** establish the approved identity and verified documentation package, Local repository structure including `/docs/`, and the separately authorized Git baseline required for **Local/Git Bootstrap Complete** and stable registration. Synchronize applicable Drive counterparts in the same procedure when they are available and authorized. Drive reconciliation is not a Phase 1 completion predicate.
+Operational Drive/Local availability procedures belong to MAG_DOCUMENTATION_OPERATIONS.md §5. This subsection owns their Phase 1 meaning.
 
-**Drive-First Bootstrap:** after Gate 0, establish the permanent identity and canonical package on Drive when Local/Git is unavailable. Record **Bootstrap Incomplete — Local/Git Pending** in README and Roadmap. Requirements, targeted research, architecture, and other approved documentation work may continue on Drive, subject to their normal substantive approval gates. Drive-First is a normal Phase 1 state, not an exception. An ACTIVE Process Overlay may temporarily specialize bootstrap HOW until promotion. This path does not claim Phase 1 fully complete, stable registration, implementation authorization, or release readiness.
+**Full Bootstrap:** Level 1 then Level 2 without interruption. Establish the approved identity and verified documentation package, Local repository structure including `/docs/`, and the separately authorized Git baseline required for **Local/Git Bootstrap Complete** and stable registration. Synchronize applicable Drive counterparts in the same procedure when they are available and authorized. Drive reconciliation is not a Phase 1 completion predicate.
 
-**Resume Bootstrap:** reuse the identity, current Drive package when it exists, approvals, and completed work. Create or complete the Local structure including `/docs/`. Reconcile current canonical Drive bodies into the approved Local locations when those counterparts exist. Then complete the separately authorized Git baseline required for Local/Git Bootstrap Complete and stable registration. Deferred Drive counterparts remain **Drive Reconciliation Pending** and do not block Phase 1 completion. Do not repeat requirements or architecture solely because bootstrap started on another device.
+**Drive-First Bootstrap:** Level 1 pause with Local/Git pending. After Gate 0, establish the permanent identity and canonical package on Drive when Local/Git is unavailable. Record **Bootstrap Incomplete — Local/Git Pending** in README and Roadmap. Requirements, targeted research, architecture, and other approved documentation work may continue on Drive, subject to their normal substantive approval gates. Drive-First is a normal Phase 1 state, not an exception. This path does not claim Phase 1 fully complete, stable registration, implementation authorization, or release readiness.
+
+**Local/Git-First Bootstrap:** Level 1 then Level 2 while Drive is unavailable or intentionally deferred. Completes Local/Git Bootstrap Complete and stable registration. Record **Drive Reconciliation Pending**. Later Drive reconciliation is a documentation-operations obligation and does not reopen Phase 1.
+
+**Resume Bootstrap:** existing Level 1 state → Level 2 Local/Git. Reuse the identity, current Drive package when it exists, approvals, and completed work. Create or complete the Local structure including `/docs/`. Reconcile current canonical Drive bodies into the approved Local locations when those counterparts exist. Then complete the separately authorized Git baseline required for Local/Git Bootstrap Complete and stable registration. Deferred Drive counterparts remain **Drive Reconciliation Pending** and do not block Phase 1 completion. Do not repeat requirements or architecture solely because bootstrap started on another device.
 
 One approved bootstrap scope covers the package; do not require nine approvals or repeat an already sufficient bootstrap authorization. Detailed batch onboarding, safe writes, reconciliation, and whole-package verification belong to MAG_DOCUMENTATION_OPERATIONS.md §5.
 
@@ -284,7 +308,7 @@ Phase 1 completion requires **Local/Git Bootstrap Complete**:
 - the Product Owner-authorized Git baseline and stable registration;
 - successful local package verification.
 
-Drive-First permits documentation work to proceed while these Local/Git conditions remain explicitly pending. Resume Bootstrap closes the Local/Git conditions without resetting verified substantive progress. A remaining Drive Reconciliation Pending obligation does not prevent Phase 1 completion. Bootstrap completion alone never authorizes commit, push, tag, or release.
+Drive-First permits documentation work to proceed while these Local/Git conditions remain explicitly pending. Local/Git-First and Resume Bootstrap close the Local/Git conditions without resetting verified substantive progress. A remaining Drive Reconciliation Pending obligation does not prevent Phase 1 completion. Bootstrap completion alone never authorizes commit, push, tag, or release.
 
 ## 6. Phase 2 — Requirements Definition
 
@@ -294,7 +318,7 @@ Define WHAT the product must do before deciding HOW it will be implemented.
 
 ### Entry conditions
 
-Full Bootstrap is complete, or the approved Drive-First identity and verified canonical package are available with Local/Git prerequisites explicitly pending under Phase 1.
+Full Bootstrap or Local/Git-First is complete, or the approved Drive-First identity and verified canonical package are available with Local/Git prerequisites explicitly pending under Phase 1.
 
 ### Required work
 
@@ -1210,7 +1234,7 @@ This summary makes phase outputs and next transitions explicit. Each transition 
 | --- | --- | --- |
 | Phase 0 — Idea and Evaluation | Sufficient product evaluation for a decision | Gate 0, further evaluation, deferral, or rejection |
 | Gate 0 — Project Approval | Product Owner approval of project creation | Phase 1 |
-| Phase 1 — Project Bootstrap | Verified identity and nine-document package; Full/Resume Local/Git completion requires Local structure, approved Git baseline, and stable registration. Drive Reconciliation Pending does not block Phase 1 completion | Phase 2 documentation work may begin in Drive-First with Bootstrap Incomplete — Local/Git Pending; other gates remain applicable |
+| Phase 1 — Project Bootstrap | Verified identity and nine-document package; Full / Local/Git-First / Resume Local/Git completion requires Local structure, approved Git baseline, and stable registration. Drive Reconciliation Pending does not block Phase 1 completion | Phase 2 documentation work may begin in Drive-First with Bootstrap Incomplete — Local/Git Pending; other gates remain applicable |
 | Phase 2 — Requirements Definition | Coherent complete TZ; explicit Approved First Release Scope on Roadmap; resolved blocking product decisions | Gate 1 |
 | Gate 1 — Requirements Approval | Approved complete WHAT and approved implementation-bound first-release slice. Does not require the full TZ to ship in 1.0.0 | Phase 3, or Phase 4 when existing evidence is sufficient and that conclusion is recorded |
 | Phase 3 — Targeted Research and Verification | Traceable evidence sufficient for the next decision; unresolved blockers identified | Phase 4 when dependencies are resolved; Phase 2 if requirements need revision |

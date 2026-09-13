@@ -18,7 +18,7 @@ Not yet defined. Refer to the approved TZ when available.
 
 ## Current Lifecycle State
 
-Refer to `P<NN>__<CODE>__Roadmap.md` for the current phase, gates, and next approved step. For Drive-First, explicitly record **Bootstrap Incomplete — Local/Git Pending** here and link the Roadmap record; do not claim Local/Git completion. After Local/Git Bootstrap Complete, record **Drive Reconciliation Pending** or **Drive Reconciled** from Roadmap; Drive pending does not invalidate Phase 1.
+Refer to `P<NN>__<CODE>__Roadmap.md` for the current phase, gates, and next approved step. For Drive-First, explicitly record **Bootstrap Incomplete — Local/Git Pending** here and link the Roadmap record; do not claim Local/Git completion. After Local/Git Bootstrap Complete (including Local/Git-First), record **Drive Reconciliation Pending** or **Drive Reconciled** from Roadmap; Drive pending does not invalidate Phase 1.
 
 ## Compatibility
 

@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Development Guidelines
 
 - MAG-Document-ID: `AI_GUIDELINES.md`
-- MAG-Content-Updated: `2026-09-13T13:20:00+00:00`
+- MAG-Content-Updated: `2026-09-13T13:45:00+00:00`
 
 This document is the **Global MAG development standard**. It defines **how** MAG software is developed with AI assistance.
 
@@ -13,7 +13,7 @@ Identity classes (`#N`, `A<N>`, `B<N>`), registry, and context isolation are own
 
 Detailed coding-agent execution boundaries, mandatory Cursor pre-flight, Plain text output requirements, checkpoint mechanics, and report formats belong in `AI_AGENTS_RULES.md`.
 
-ChatGPT → Product Owner → Cursor prompt presentation, post-execution review, and **Cursor model-selection / model-routing policy** belong in §24 of this document.
+ChatGPT → Product Owner → Cursor prompt presentation, **operating-mode selection (Coordinator Mode / Direct Agent Mode)**, post-execution review, and **Cursor model-selection / model-routing policy** belong in §24 of this document.
 
 Cursor usage metrics, Cursor Models Before/After methodology (including automatic After telemetry consumption and failure handling), post-execution usage-value display, history recording, and forecasting methodology belong in `CURSOR_USAGE_ANALYTICS.md`. That document is **telemetry only** and does **not** own model-selection policy. Project measurement history belongs in the project repository. Do not duplicate telemetry methodology here.
 
@@ -137,7 +137,9 @@ Cursor IDE is the **primary environment** for:
 
 ### Cursor Agent
 
-Cursor Agent is a **last-resort implementation tool**.
+Cursor Agent is an **execution tool** for approved, clearly specified repository work.
+
+Operating mode (Coordinator Mode vs Direct Agent Mode) is owned in §24. Direct Agent Mode lets the agent session work directly under Global HOW. It does **not** enlarge this permitted-task list, grant Git/release authority, or bypass gates.
 
 Cursor Agent must **not** be used for:
 
@@ -529,7 +531,7 @@ The verified local working copy is authoritative for pending local changes.
 
 The configured remote records the last published repository state.
 
-Each completed and approved logical stage or project phase must be closed with documentation synchronization and a Git checkpoint before work proceeds to the next stage or phase, unless a coherent block's next justified checkpoint already covers that material boundary under the checkpoint-protection rules below and in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md) §10.
+Each completed and approved logical stage or project phase must be closed with documentation synchronization and a Git checkpoint before work proceeds to the next stage or phase, unless a coherent block's next justified checkpoint already covers that material boundary under the checkpoint-protection rules in this section. [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md) §10 requires compliance with this filter; it does not own a second copy.
 
 This does **not** require a commit after every tiny action, command, inspection, audit step, intermediate Cursor procedure, lifecycle label change, status-marker change, or mechanical sub-step. Git checkpoints correspond to completed and approved logical stages/phases or other explicitly approved meaningful checkpoints that protect material audit or recovery state.
 
@@ -569,7 +571,7 @@ The **user** owns `git add`, `git commit`, and `git push` unless they explicitly
 
 If a stage reveals unresolved **Critical** issues, the stage is not closed and progression is blocked.
 
-**Drive-First Bootstrap:** while MPO-001 is ACTIVE, approved documentation work may progress while Local/Git closure remains pending under MAG_ADDON_DEVELOPMENT_LIFECYCLE.md Phase 1 and MAG_DOCUMENTATION_OPERATIONS.md §5. Drive-First is a normal `#N` bootstrap state, not an exception. It preserves the explicit incomplete Local/Git bootstrap state; it does not claim a completed Git checkpoint or stable registration and does not authorize implementation, commit, push, tag, or release. Resume Bootstrap completes deferred Local/Git prerequisites without repeating approved substantive work. Drive reconciliation remains a separate documentation-operations obligation and is not required for Phase 1 completion or stable registration. A Pool status change alone is not a Git checkpoint.
+**Drive-First / Local/Git-First Bootstrap:** approved documentation work may progress under MAG_ADDON_DEVELOPMENT_LIFECYCLE.md Phase 1 and MAG_DOCUMENTATION_OPERATIONS.md §5. Drive-First is a normal `#N` bootstrap state: documentation may proceed while Local/Git closure remains pending. Local/Git-First may complete Local/Git Bootstrap Complete while Drive remains **Drive Reconciliation Pending**. Neither path claims implementation, commit, push, tag, or release authorization. Drive reconciliation is not required for Phase 1 completion or stable registration. A Pool status change alone is not a Git checkpoint.
 
 ### Stage and phase closure sequence
 
@@ -601,25 +603,13 @@ Do not claim Git state was verified unless it was actually inspected.
 
 Preserve unrelated user changes.
 
-Expected **add-on** repository form (logical; exact paths may vary):
+Canonical `#N` package identity and filenames are defined in `MAG_ECOSYSTEM.md`. Operational instantiation (nine documents under `docs/`, public root `README.md`, `IDEA.md` casing) is defined in `MAG_XENFORO_ADDON_BLUEPRINT.md`. Do not maintain a second package tree here.
 
-```text
-RepositoryRoot
-├── .git
-├── .gitignore
-├── P<NN>__<CODE>__README.md
-├── P<NN>__<CODE>__TZ.md
-├── P<NN>__<CODE>__Idea.md          (optional)
-├── docs/
-│   └── P<NN>__<CODE>__*.md
-└── src/addons/MAG/<AddOnDirectory>
-```
+New `#N` projects use that Blueprint/`docs/` layout. `#1` and `#2` historical root/`docs/` mixes and `Idea.md` casing are grandfathered. Do not migrate, rename, or retrofit them, and do not treat those historical layouts as new-project templates.
 
-Canonical project documentation filenames are defined in `MAG_ECOSYSTEM.md`. Do not invent a second naming layer.
+Global process files live in `MAG-Ecosystem`, not inside each add-on.
 
-Global process files live in `MAG-Ecosystem`, not inside each add-on, once migration of those files is complete.
-
-Do not claim a MAG add-on repository must keep copies of Global `AI_GUIDELINES.md` after that migration is approved.
+Do not claim a MAG add-on repository must keep copies of Global `AI_GUIDELINES.md`.
 
 ---
 
@@ -749,15 +739,39 @@ When Cursor analytics or Cursor procedure presentation apply, follow §24 of thi
 
 ---
 
-## 24. Cursor prompt presentation, continuation, and model routing
+## 24. Operating modes, Cursor prompt presentation, continuation, and model routing
 
-This section is the Global authority for ChatGPT → Product Owner → Cursor presentation, post-execution review, and **Cursor model-selection / model-routing policy**.
+This section is the Global authority for **MAG operating modes**, ChatGPT → Product Owner → Cursor presentation (Coordinator Mode), Direct Agent Mode execution surface, post-execution review, and **Cursor model-selection / model-routing policy**.
 
-Cursor usage metrics, measurement procedure, and post-execution usage-value display belong in [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). That document does **not** own model-selection policy. Coding-agent Plain text execution requirements remain in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md). Progressive Product Owner technical-lead learning as a permanent MAG development principle is recorded in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md).
+Cursor usage metrics, measurement procedure, and post-execution usage-value display belong in [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). That document does **not** own model-selection policy or operating-mode selection. Coding-agent Plain text execution requirements remain in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md). Progressive Product Owner technical-lead learning as a permanent MAG development principle is recorded in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md).
+
+### 24.0 Operating modes
+
+Mode selection affects coordination surface only. Both modes consume the same Global HOW. Mode selection does **not** change Product Owner authority, Git ownership, lifecycle gates, implementation authorization, release authorization, context isolation, scope boundaries, stop-on-conflict, or strategically required approvals. Direct Agent Mode does **not** create a parallel governance system.
+
+**Coordinator Mode**
+
+ChatGPT coordinates the procedure and prepares execution instructions. Cursor, Codex, or another execution agent performs repository work. ChatGPT may review results and coordinate next steps. This is the traditional MAG path.
+
+In Coordinator Mode, use the established presentation: model recommendation → short reason → plain-text execution prompt per §24.1–24.2.
+
+**Direct Agent Mode**
+
+Cursor, Codex, or another approved agent session works directly under Global MAG HOW for the active development identity. ChatGPT is optional between individual operations.
+
+The execution agent may inspect, plan, perform an already authorized procedure, report results, and continue an already approved coherent block.
+
+Direct Agent Mode must **not** require artificial prompt-copy theater when the agent already holds the active context and authority. Do not require “ready to receive?” handshakes, repeated restatement of already-approved instructions, or copy/paste through ChatGPT when no coordination value exists.
+
+Explicit Product Owner decisions and authorization boundaries remain mandatory where Global HOW requires them. Direct Agent Mode does **not** authorize Git, gates, implementation, or release by default.
+
+If the Product Owner does not name a mode, infer the surface actually in use (ChatGPT preparing a paste prompt = Coordinator Mode; an in-repository agent session with Global HOW loaded = Direct Agent Mode) and do not force a mode switch.
 
 ### 24.1 When to present a Cursor prompt
 
-Provide a prepared Cursor prompt only after the Product Owner has approved receiving it for that procedure, **or** when the Product Owner continues an already-authorized next action with `+` or equivalent continuation within the same approved procedure/coherent block.
+**Coordinator Mode only.** Provide a prepared Cursor prompt only after the Product Owner has approved receiving it for that procedure, **or** when the Product Owner continues an already-authorized next action with `+` or equivalent continuation within the same approved procedure/coherent block.
+
+Direct Agent Mode does not present a paste prompt for work the agent is already authorized to execute in the current session.
 
 `+` means: continue the already-defined next action in the current approved procedure.
 
@@ -772,7 +786,7 @@ Do **not**:
 
 ### 24.2 Cursor prompt presentation order
 
-Present information in this order:
+**Coordinator Mode.** Present information in this order:
 
 1. **Cursor prompt** — first. A dedicated plain-text code block containing only the exact text intended for paste into Cursor. Do not place explanations or execution metadata before it. Keep the prompt concise and task-specific; reference applicable authoritative MAG rules instead of duplicating them unnecessarily.
 2. **Ціль/задача** — maximally concise, informative Ukrainian description of the procedure's purpose and expected result.
@@ -787,7 +801,7 @@ Prefer the lowest-friction safe executor that preserves Product Owner control, a
 
 ### 24.3 Post-execution review
 
-After a meaningful Cursor procedure, ChatGPT must immediately provide:
+After a meaningful Cursor procedure in **Coordinator Mode**, ChatGPT must immediately provide:
 
 1. **Analysis** — whether the completed work met the approved task.
 2. **Confirmed result** — what succeeded.
@@ -799,6 +813,8 @@ Learning notes must be practical, stage-specific, concise, non-repetitive, and p
 
 Present applicable Cursor usage values separately, per `CURSOR_USAGE_ANALYTICS.md`, without commentary or interpretation in the usage-values block.
 
+In **Direct Agent Mode**, report in the same session under [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md). Optional later ChatGPT review is not a required extra gate and does not authorize Git, implementation, or the next lifecycle stage.
+
 ### 24.4 Cursor model-selection / model-routing policy
 
 This subsection is the **canonical Global owner** of Cursor model-selection and model-routing policy.
@@ -807,7 +823,7 @@ Stable principles:
 
 - Model selection is based on the **complexity of technical decisions still unresolved**, not file type, number of files, or whether code is being edited.
 - Use the **minimum sufficient** model reliably strong enough for the remaining decisions.
-- Unresolved Product semantics or Architecture must return to **Product Owner + ChatGPT** before Cursor implementation.
+- Unresolved Product semantics or Architecture must return to the **Product Owner** (with ChatGPT in Coordinator Mode) before Cursor implementation.
 - Deterministic or already-decided execution must not default to an unnecessarily expensive reasoning model.
 - Escalation above the minimum sufficient model requires a concrete reason.
 - Whenever recommending a stronger reasoning model over the lower candidate, provide one short reason why the lower model is insufficient.
@@ -833,7 +849,7 @@ Decision tree:
 
 ```text
 1. Are Product semantics or Architecture still unresolved?
-   → YES: stop Cursor implementation; return to Product Owner + ChatGPT
+   → YES: stop Cursor implementation; return to the Product Owner (ChatGPT coordinates in Coordinator Mode)
    → NO: continue
 
 2. Is remaining work execution-dominant with no material engineering decision left?

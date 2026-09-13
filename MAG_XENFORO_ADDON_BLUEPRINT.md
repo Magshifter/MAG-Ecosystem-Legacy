@@ -1,15 +1,15 @@
 # MAG XenForo Add-on Blueprint
 
 - MAG-Document-ID: `MAG_XENFORO_ADDON_BLUEPRINT.md`
-- MAG-Content-Updated: `2026-09-13T13:20:00+00:00`
+- MAG-Content-Updated: `2026-09-13T13:45:00+00:00`
 
 ## Purpose, scope, and authority
 
 A supporting operational asset for new MAG XenForo `#N` projects: GLOBAL → Blueprint → concrete project. GLOBAL defines HOW; `#N` defines WHAT. This Blueprint supplies reusable structure and working frames, not a new Global authority, product specification, implementation permission, or universal application lifecycle.
 
-Consume currently ACTIVE Process Overlay Pool entries for HOW. This Blueprint does not own those overlays and cannot create overlay rules. While MPO-001 is ACTIVE, apply the two-level bootstrap authority model from `MAG_PROCESS_OVERLAY_POOL.md` during package execution. Drive-First is a normal Level 1 pause with Local/Git pending, not an exception.
+Consume currently ACTIVE Process Overlay Pool entries for HOW. This Blueprint does not own those overlays and cannot create overlay rules. Apply two-level bootstrap authority and Phase 1 completion states from `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 1. Apply Drive-First, Local/Git-First, Full, and Resume surface paths from `MAG_DOCUMENTATION_OPERATIONS.md` §5. Drive-First is a normal Level 1 pause with Local/Git pending, not an exception.
 
-Use current authorities from `MAG-Ecosystem`: MAG_ECOSYSTEM.md (identity and document ownership); MAG_PROCESS_OVERLAY_POOL.md (ACTIVE HOW overlays only); AI_GUIDELINES.md (development, localization, closure and ChatGPT coordination); AI_AGENTS_RULES.md (execution and Git boundaries); CURSOR_USAGE_ANALYTICS.md (telemetry); MAG_ADDON_DEVELOPMENT_LIFECYCLE.md (phases and gates); MAG_IMPLEMENTATION_PATTERNS.md (applicable verified knowledge); MAG_DOCUMENTATION_OPERATIONS.md (onboarding and transport). Read these owners instead of treating this asset as a replacement for their detailed rules. Report a conflict and stop the affected work.
+Use current authorities from `MAG-Ecosystem`: MAG_ECOSYSTEM.md (identity and document ownership); MAG_PROCESS_OVERLAY_POOL.md (ACTIVE HOW overlays only; PROMOTED records have no overlay effect); AI_GUIDELINES.md (development, localization, closure, operating modes, and ChatGPT coordination); AI_AGENTS_RULES.md (execution and Git boundaries); CURSOR_USAGE_ANALYTICS.md (telemetry); MAG_ADDON_DEVELOPMENT_LIFECYCLE.md (phases and gates); MAG_IMPLEMENTATION_PATTERNS.md (applicable verified knowledge); MAG_DOCUMENTATION_OPERATIONS.md (onboarding and transport). Read these owners instead of treating this asset as a replacement for their detailed rules. Report a conflict and stop the affected work.
 
 ## Operating principles
 
@@ -68,7 +68,7 @@ The add-on skeleton is the verified native structure needed by the approved boot
 
 ## Full Bootstrap
 
-Use MAG_ADDON_DEVELOPMENT_LIFECYCLE.md Phase 1, MAG_DOCUMENTATION_OPERATIONS.md §5, and currently ACTIVE overlay MPO-001. Full Bootstrap is Level 1 then Level 2 without interruption.
+Use MAG_ADDON_DEVELOPMENT_LIFECYCLE.md Phase 1 and MAG_DOCUMENTATION_OPERATIONS.md §5. Full Bootstrap is Level 1 then Level 2 without interruption.
 
 Project Approval → Product Owner creates/provides the approved GitHub repository → verify identity → establish Local structure → instantiate nine documents → prepare public README → establish the authorized native skeleton → validate → Product Owner-controlled Git checkpoint → complete **Local/Git Bootstrap Complete** / stable registration → report. Synchronize applicable Drive counterparts when available and authorized; otherwise record **Drive Reconciliation Pending**. Drive sync is not required before Phase 1 completion.
 
@@ -76,15 +76,21 @@ Reuse an existing repository or counterpart. This is a typical sequence, not an 
 
 ## Drive-First Bootstrap
 
-Drive-First is a normal bootstrap state (MPO-001 Level 1, Local/Git pending), not an exception.
+Drive-First is a normal bootstrap state (Lifecycle Level 1, Local/Git pending), not an exception.
 
 Project Approval → resolve permanent identity/code → prepare and create the canonical Drive package in one approved batch → verify → continue approved IDEA, TZ, Roadmap, Architecture, and AUDIT work under the normal substantive gates.
 
 Record **Bootstrap Incomplete — Local/Git Pending** in internal README and Roadmap. Drive is the current authoritative source for this controlled bootstrap. Do not simulate a repository, Git checkpoint, skeleton, or stable registration. Lack of Local/Git does not invalidate completed documentation work.
 
+## Local/Git-First Bootstrap
+
+Local/Git-First is a normal documentation-operations path (Lifecycle Level 1 then Level 2 while Drive is deferred), not an exception.
+
+Project Approval → establish Local repository and `/docs/` → instantiate nine documents → prepare public README/skeleton as authorized → validate → Product Owner-controlled Git baseline → **Local/Git Bootstrap Complete** / stable registration. Record **Drive Reconciliation Pending**. Do not claim Drive Reconciled. Implementation remains separately unauthorized.
+
 ## Resume Bootstrap
 
-Resume Bootstrap continues an existing Level 1 state into Level 2 when Local/Git is available and Product Owner authorizes it.
+Resume Bootstrap continues an existing Level 1 state into Level 2 when Local/Git is available, or completes a deferred Drive surface after Local/Git-First, when Product Owner authorizes it.
 
 Re-fetch and reuse the same identity, documents, approvals, and evidence, including Drive IDs when counterparts exist → inspect Local availability and divergence → create/complete the approved repository and /docs/ → reconcile current canonical Drive bodies into Local when those counterparts exist → prepare remaining public README/skeleton as authorized → validate → Product Owner-controlled Git baseline → **Local/Git Bootstrap Complete** and stable registration. Record **Drive Reconciliation Pending** when Drive counterparts remain unsynchronized.
 

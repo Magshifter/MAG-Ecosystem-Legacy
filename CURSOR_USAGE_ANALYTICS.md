@@ -1,13 +1,13 @@
 # MAG Ecosystem — Cursor Usage Analytics
 
 - MAG-Document-ID: `CURSOR_USAGE_ANALYTICS.md`
-- MAG-Content-Updated: `2026-09-12T10:56:10+03:00`
+- MAG-Content-Updated: `2026-09-13T13:45:00+00:00`
 
 This document is the reusable MAG standard for **measuring, reporting, comparing, and optimizing Cursor usage** across MAG projects.
 
 It is **telemetry and usage methodology only**, not a procedure-history log and **not** a model-selection policy owner. Do not append project or procedure rows to this file.
 
-Project identity (`#N`, `A<N>`, `B<N>`, `Global`), Global vs active-development documentation, context isolation, and the Global documentation authority map are defined in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). ChatGPT → Product Owner → Cursor prompt presentation, post-execution review, **Cursor model-selection / model-routing policy**, and broader development workflow are in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24 and related sections. Coding-agent execution, stop conditions, and the redundant pre-commit review rule are in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md).
+Project identity (`#N`, `A<N>`, `B<N>`, `Global`), Global vs active-development documentation, context isolation, and the Global documentation authority map are defined in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). Operating modes, ChatGPT → Product Owner → Cursor prompt presentation, post-execution review, **Cursor model-selection / model-routing policy**, and broader development workflow are in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24 and related sections. Coding-agent execution, stop conditions, and the redundant pre-commit review rule are in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md).
 
 Lifecycle timing is defined in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md); this document remains authoritative for Cursor measurement, Cursor Models Before/After methodology, automatic After telemetry consumption, visible-delta calculation, reporting, and metric finalization. Reusable technical knowledge and its capture procedure belong in [`MAG_IMPLEMENTATION_PATTERNS.md`](MAG_IMPLEMENTATION_PATTERNS.md).
 
@@ -36,7 +36,9 @@ A cheaper procedure that weakens those priorities is not an improvement.
 
 ## 2. Mandatory Cursor procedure pre-flight (FIRST operational rules)
 
-Before **every** Cursor procedure, ChatGPT must complete Cursor chat routing, recommend the Cursor model per [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24.4, establish **Cursor Models Before** when applicable for analytics/history, and present the procedure only after Product Owner approval to receive the prepared prompt (or continue under an already-authorized continuation per `AI_GUIDELINES.md` §24.1).
+Before **every** Cursor procedure in **Coordinator Mode**, ChatGPT must complete Cursor chat routing, recommend the Cursor model per [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24.4, establish **Cursor Models Before** when applicable for analytics/history, and present the procedure only after Product Owner approval to receive the prepared prompt (or continue under an already-authorized continuation per `AI_GUIDELINES.md` §24.1).
+
+**Direct Agent Mode** does not require that ChatGPT presentation handoff. Record telemetry per this document when a procedure occurs; do not invent missing Before/After values. Operating-mode and presentation rules remain in `AI_GUIDELINES.md` §24.
 
 Presentation order, post-execution review, and **model-selection / model-routing policy** belong in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24. This document owns usage metrics and measurement procedure only.
 

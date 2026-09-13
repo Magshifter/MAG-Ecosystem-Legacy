@@ -7,7 +7,7 @@ Template asset: substitute identity and timestamp before project use. Follow MAG
 
 ## Current Lifecycle Phase
 
-Not yet defined. Record the verified phase under MAG-Ecosystem / MAG_ADDON_DEVELOPMENT_LIFECYCLE.md. In Drive-First, record **Bootstrap Incomplete — Local/Git Pending** and the current authoritative Drive source without resetting substantive progress. After Local/Git Bootstrap Complete, record **Drive Reconciliation Pending** or **Drive Reconciled** independently; Drive pending does not reopen Phase 1.
+Not yet defined. Record the verified phase under MAG-Ecosystem / MAG_ADDON_DEVELOPMENT_LIFECYCLE.md. In Drive-First, record **Bootstrap Incomplete — Local/Git Pending** and the current authoritative Drive source without resetting substantive progress. After Local/Git Bootstrap Complete (including Local/Git-First), record **Drive Reconciliation Pending** or **Drive Reconciled** independently; Drive pending does not reopen Phase 1.
 
 ## Current Version / Increment
 

@@ -1,7 +1,7 @@
 # MAG Documentation Operations
 
 - MAG-Document-ID: `MAG_DOCUMENTATION_OPERATIONS.md`
-- MAG-Content-Updated: `2026-09-13T13:20:00+00:00`
+- MAG-Content-Updated: `2026-09-13T13:45:00+00:00`
 
 ## 1. Purpose and authority
 
@@ -133,7 +133,7 @@ Promotion of historical experiment findings remains a separate substantive decis
 
 ### New document
 
-Use this individual-document lifecycle when the logical document does not yet exist. For the approved `#N` package, use Controlled XenForo bootstrap batch below, including its Drive-First/Resume path:
+Use this individual-document lifecycle when the logical document does not yet exist. For the approved `#N` package, use Controlled XenForo bootstrap batch below, including its Drive-First / Local/Git-First / Resume path:
 
 ```text
 Approve need
@@ -241,15 +241,34 @@ Create only proven missing counterparts; update existing raw files safely in pla
 
 After execution, verify each intended counterpart and the complete nine-document package: identity, metadata, location, content, and absence of unintended duplicates. Use byte-level comparison where possible; accept FORMAT_ONLY only when the representation-only difference is proven. Report per-file results and any remaining prerequisites. Normal SYNC outside this controlled bootstrap scope is unchanged.
 
-### Drive-First and Resume Bootstrap
+### Documentation surface availability
 
-After Project Approval, Drive-First may establish the permanent identity and canonical package on Google Drive without Local/Git. Drive-First is a normal bootstrap state while the current ACTIVE Process Overlay applies, not an exception. Record **Bootstrap Incomplete — Local/Git Pending** in README and Roadmap and reflect pending registration accurately in the existing identity record where applicable. Do not introduce a metadata field or another registry file. Explicitly record Drive as the current authoritative documentation source in the controlled scope.
+These paths are operational availability modes, not exceptions. They do not change lifecycle gates, Git authority, implementation authorization, or release authority. Phase 1 completion and two-level bootstrap authority remain in `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 1.
+
+| Path | Meaning |
+| --- | --- |
+| **Drive-First** | Drive/documentation work may begin when Local/Git is unavailable. Later Local/Git bootstrap/reconciliation occurs. |
+| **Local/Git-First** | Local repository and Git bootstrap/work may complete when Drive is unavailable or intentionally deferred. Record **Drive Reconciliation Pending**. Later Drive reconciliation occurs. |
+| **Full** | Local/Git and Drive surfaces are available within the same coherent bootstrap/sync procedure. |
+| **Resume** | Continue from an already established partial state toward the missing surface(s). |
+
+### Drive-First Bootstrap
+
+After Project Approval, Drive-First may establish the permanent identity and canonical package on Google Drive without Local/Git. Drive-First is a normal documentation-operations path, not an exception. Record **Bootstrap Incomplete — Local/Git Pending** in README and Roadmap and reflect pending registration accurately in the existing identity record where applicable. Do not introduce a metadata field or another registry file. Explicitly record Drive as the current authoritative documentation source in the controlled scope.
 
 The missing Local repository/approved Git baseline is an expected incomplete bootstrap prerequisite, not a reason to block approved Drive-side documentation work or falsely declare stable registration. These identified provisional documents stay inside the active bootstrap procedure and are excluded from ordinary SYNC discovery. Substantive edits still require appropriate scope/approval, timestamps, conflict checks, and readback verification.
 
+### Local/Git-First
+
+After Project Approval, Local/Git-First may establish the Local repository, canonical `/docs/` package, and authorized Git baseline when Drive is unavailable or deferred. Completing Local/Git Bootstrap Complete and stable registration does not require Drive counterparts. Record **Drive Reconciliation Pending**. Do not silently declare **Drive Reconciled**. Do not authorize implementation, commit, push, tag, or release merely because Local/Git bootstrap is complete.
+
+When Drive later becomes available, reconcile applicable counterparts under this document without restarting approved substantive work. Preserve Local identity, metadata, and bodies; compare before overwrite; stop on conflict.
+
+### Resume Bootstrap
+
 Resume Bootstrap reuses the same identity, approved scope, current bodies, and verified substantive work. Re-fetch the current Drive package when counterparts exist; check whether Local counterparts are absent or already exist. Create/complete the approved Local repository structure including `/docs/` and assign one canonical Local path per document using the approved root/`docs/` layout. Reconcile Drive into Local when those counterparts exist, without restarting requirements or architecture. Preserve names, metadata, and raw bytes where possible; compare any existing Local content and resolve conflicts before overwriting it. Do not infer Local authority merely because a repository has become available.
 
-Validate the Local package, then hand off the Git baseline under §18. Commit, push, tag, and release remain separately Product Owner-controlled; completing documentation or resuming bootstrap does not authorize them. Establish stable registration after identity, Local, metadata, local verification, and approved Git baseline prerequisites are proven (**Local/Git Bootstrap Complete**). Drive counterparts are not a stable-registration predicate. If applicable Drive counterparts remain unsynchronized, record **Drive Reconciliation Pending**. That obligation remains real under this document and does not invalidate Phase 1 completion or revert registration to provisional. **Drive Reconciled** means applicable counterparts have been synchronized and verified here. Until Local/Git predicates are proven, report the remaining incomplete Local/Git state and preserve completed work for the next resume.
+Resume may also complete a deferred Drive surface after Local/Git-First. Validate the Local package, then hand off the Git baseline under §18. Commit, push, tag, and release remain separately Product Owner-controlled; completing documentation or resuming bootstrap does not authorize them. Establish stable registration after identity, Local, metadata, local verification, and approved Git baseline prerequisites are proven (**Local/Git Bootstrap Complete**). Drive counterparts are not a stable-registration predicate. If applicable Drive counterparts remain unsynchronized, record **Drive Reconciliation Pending**. That obligation remains real under this document and does not invalidate Phase 1 completion or revert registration to provisional. **Drive Reconciled** means applicable counterparts have been synchronized and verified here. Until Local/Git predicates are proven, report the remaining incomplete Local/Git state and preserve completed work for the next resume.
 
 ## 6. Scope resolution
 

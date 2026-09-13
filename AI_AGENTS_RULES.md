@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Coding Agent Rules
 
 - MAG-Document-ID: `AI_AGENTS_RULES.md`
-- MAG-Content-Updated: `2026-09-13T09:58:00+00:00`
+- MAG-Content-Updated: `2026-09-13T13:45:00+00:00`
 
 These rules define **how coding agents may execute** work in MAG repositories.
 
@@ -19,7 +19,7 @@ Reusable-knowledge capture mechanics belong in [`MAG_IMPLEMENTATION_PATTERNS.md`
 
 Which agent is used is a user/tooling choice. These rules do not change when a more capable agent is introduced. Tool capability does not grant permission to exceed the approved task.
 
-Cursor model-selection / model-routing policy belongs in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24.4. Cursor usage accounting, Before/After telemetry, and MAG Cursor report-field methodology belong in [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). Do not invent usage percentages here. Do not duplicate the model matrix in this file.
+Cursor model-selection / model-routing policy and operating modes (Coordinator Mode / Direct Agent Mode) belong in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24. Cursor usage accounting, Before/After telemetry, and MAG Cursor report-field methodology belong in [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). Do not invent usage percentages here. Do not duplicate the model matrix in this file.
 
 ---
 
@@ -29,7 +29,11 @@ These rules are **mandatory prerequisites** for every Cursor-assisted procedure.
 
 ### 1.1 Mandatory Cursor pre-flight
 
-For every Cursor procedure, follow [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24 for prompt approval/continuation, presentation order, post-execution review, model routing, and the Ukrainian learning note. That section alone owns presentation and model-selection policy; do not recreate its ordered block here.
+For every Cursor procedure, follow [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24. That section owns operating modes, Coordinator Mode presentation, Direct Agent Mode execution surface, post-execution review, and model-selection policy; do not recreate them here.
+
+**Coordinator Mode:** follow §24.1–24.3 prompt approval/continuation, presentation order, and ChatGPT review, including the Ukrainian learning note.
+
+**Direct Agent Mode:** execute the already authorized procedure in this session under Global HOW. Do not require a ChatGPT paste prompt, a “ready to receive?” handshake, or restatement of already-approved instructions. Model routing in §24.4 still applies. Git, gates, implementation authorization, and release remain Product Owner-controlled.
 
 Mandatory execution and Plain text requirements remain in this document. Respect **GLOBAL + active development identity** isolation and the approved repository/tool context. Resolve an unknown or ambiguous Cursor chat with the Product Owner; do not invent it.
 
@@ -37,7 +41,7 @@ Chat routing for measurement context, usage tracking, automatic After telemetry 
 
 ### 1.2 Plain text output — mandatory
 
-ChatGPT must provide Cursor prompts and copyable code/commands **exclusively in Plain text format**.
+ChatGPT in **Coordinator Mode** must provide Cursor prompts and copyable code/commands **exclusively in Plain text format**. In **Direct Agent Mode**, the same Plain text rule applies to any copyable technical content the agent emits for the Product Owner; it does not require routing that content through ChatGPT.
 
 This requirement applies to:
 
@@ -258,15 +262,11 @@ When a required operation is simple, deterministic, and better done by the user,
 
 Ready-to-copy technical commands must be provided in **Plain text** per §1.2.
 
-For `#N` Drive-First Bootstrap while Local/Git closure remains pending, follow AI_GUIDELINES.md §20, MAG_ADDON_DEVELOPMENT_LIFECYCLE.md Phase 1, and any currently ACTIVE Process Overlay (MPO-001). Drive-First is a normal bootstrap state, not an exception. Pending Local/Git is reported explicitly; it does not block approved Drive-side documentation work or grant Git/implementation authorization. A Pool status change alone is not a Git checkpoint.
+For `#N` Drive-First or Local/Git-First Bootstrap, follow MAG_ADDON_DEVELOPMENT_LIFECYCLE.md Phase 1 and MAG_DOCUMENTATION_OPERATIONS.md §5. Pending Local/Git or pending Drive reconciliation is reported explicitly. Neither path grants Git/implementation authorization. A Pool status change alone is not a Git checkpoint.
 
 ### Checkpoint-protection filter
 
-Before proposing an intermediate Git checkpoint, ask:
-
-**What material state or recovery boundary does this checkpoint protect?**
-
-Do **not** create a separate checkpoint merely because a lifecycle label, status marker, validation report, or mechanical sub-step changed. Apply the detailed checkpoint-protection rules in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §20. Where the lifecycle explicitly mandates a checkpoint, that remains authoritative.
+Apply the canonical checkpoint-protection filter in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §20. Do not propose an intermediate Git checkpoint unless it protects a material state or recovery boundary defined there. Where the lifecycle explicitly mandates a checkpoint, that remains authoritative.
 
 Standard checkpoint:
 
