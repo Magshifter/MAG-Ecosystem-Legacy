@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-13T10:08:03+00:00`
+- MAG-Content-Updated: `2026-09-13T11:20:00+00:00`
 
 This document is the navigation and governance foundation for MAG software development across approved development classes.
 
@@ -89,8 +89,9 @@ Each `#N` XenForo project also has a **short, stable project code** used in docu
 | --- | --- | --- | --- | --- |
 | #1 | `P01__GLF` | [MAG] Global Links Favicons | Active / Stable 1.4.3 | `GlobalLinksFavicons` |
 | #2 | `P02__TS` | [MAG] Tag Synchronizer | Active / Stable 1.0.0 | `TagSynchronizer` |
+| #4 | `P04__DG` | [MAG] Doc&Guide | Active / Phase 2 Requirements | `DocGuide` |
 
-`#3` and later are assigned **sequentially when a XenForo project is approved**. Do not reserve unused numbers, invent products, or skip identifiers. Identities in other namespaces do not consume or reserve `#N` slots.
+`#3` and later are assigned **sequentially when a XenForo project is approved**. Do not reserve unused numbers, invent products, or skip identifiers. Identities in other namespaces do not consume or reserve `#N` slots. `#4` is an already approved identity recorded here for Local registry; this row does not invent `#3`.
 
 Applicable XenForo-specific Global rules continue to apply to `#N` products.
 
@@ -134,6 +135,7 @@ Examples:
 ```text
 C:\laragon\repos\GlobalLinksFavicons
 C:\laragon\repos\TagSynchronizer
+C:\laragon\repos\DocGuide
 C:\laragon\repos\MAG-Workflow-Bridge
 C:\laragon\repos\MAG-Ecosystem
 ```
@@ -467,6 +469,8 @@ When a new MAG development is approved in a given identity class:
 For `#N`, Drive-First Bootstrap follows Project Approval and permits substantive documentation work on Drive under **Bootstrap Incomplete — Local/Git Pending**. While MPO-001 is ACTIVE, Drive-First is a normal bootstrap state (Level 1 pause), not an exception. Resume Bootstrap reuses the permanent identity, current Drive documents, and completed work; establishes the Local repository structure including `/docs/`; reconciles the Drive package into its approved canonical Local locations; and completes the separately authorized Git baseline and stable registration. Do not restart requirements or architecture merely because the device changed. Lifecycle states belong to `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 1, specialized by any currently ACTIVE bootstrap overlay; batch onboarding, reconciliation, and verification mechanics belong to `MAG_DOCUMENTATION_OPERATIONS.md` §5. Bootstrap completion does not authorize commit, push, tag, or release.
 
 `#2` [MAG] Tag Synchronizer is registered. Its Git repository exists. Status is **Active / Stable 1.0.0**. Stable Release 1.0.0 is released; Post-Release Verification is the next lifecycle stage and has not started. It inherits Global rules by reference. It must not contain local copies of Global documentation files from `MAG-Ecosystem`.
+
+`#4` [MAG] Doc&Guide is an approved XenForo identity (`P04__DG`, repository `DocGuide`). Drive-First → Resume Bootstrap is complete. Local repository, canonical `docs/` package, minimum add-on identity, and approved Git baseline on `main` / `origin/main` are established. Phase 2 Requirements is active. Google Drive synchronization remains a separate later Product Owner action and is not implied by Local/Git bootstrap completion. Implementation is not authorized. It inherits Global rules by reference and must not contain local copies of Global documentation files from `MAG-Ecosystem`.
 
 ## Current MAG-Ecosystem repository contents
 
