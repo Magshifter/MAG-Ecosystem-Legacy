@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-13T22:48:41+00:00`
+- MAG-Content-Updated: `2026-09-14T06:15:06+00:00`
 
 This document is the navigation and governance foundation for MAG software development across approved development classes.
 
@@ -92,6 +92,7 @@ Each `#N` XenForo project also has a **short, stable project code** used in docu
 | #3 | `P03__SL` | [MAG] Simple Landing | Active / Targeted Research | `SimpleLanding` | `C:\laragon\repos\SimpleLanding` |
 | #4 | `P04__DG` | [MAG] Doc&Guide | Active / Phase 2 Requirements | `DocGuide` | `C:\laragon\repos\DocGuide` |
 | #5 | `P05__3DR` | [MAG] XFRM 3D Model | Active / Requirements Definition and Targeted Research | `XFRM3DModel` | `C:\laragon\repos\XFRM3DModel` |
+| #6 | `P06__DT` | [MAG] Design Toolkit | Active / Initial requirements discovery | `DesignToolkit` | `C:\laragon\repos\DesignToolkit` |
 
 The `#N` registry table is the canonical current-fact source for identity, current lifecycle/status label, current stable version where shown, Git repository, and local path. Narrative below may explain classification, history, and meaning; it must not independently restate volatile current status, version, or path.
 
