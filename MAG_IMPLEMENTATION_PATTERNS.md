@@ -1,7 +1,7 @@
 # MAG Implementation Patterns
 
 - MAG-Document-ID: `MAG_IMPLEMENTATION_PATTERNS.md`
-- MAG-Content-Updated: `2026-09-12T10:56:10+03:00`
+- MAG-Content-Updated: `2026-09-16T02:20:00+03:00`
 
 Reusable, source-backed implementation knowledge for MAG development.
 
@@ -55,6 +55,17 @@ For a concrete task:
 - [Cross-version tests may need semantic rather than literal assertions](#cross-version-tests-may-need-semantic-rather-than-literal-assertions)
 - [Audit-scope optimization lesson](#audit-scope-optimization-lesson)
 - [XenForo add-on Release Presentation metadata](#xenforo-add-on-release-presentation-metadata)
+- [Portable baseline + capability-gated acceleration](#portable-baseline--capability-gated-acceleration)
+- [Server-approved resource map with a closed client URI resolver](#server-approved-resource-map-with-a-closed-client-uri-resolver)
+- [Additive native configuration with ownership-aware rollback](#additive-native-configuration-with-ownership-aware-rollback)
+- [Host-agnostic core with host-specific native adapters](#host-agnostic-core-with-host-specific-native-adapters)
+- [Explicit confirmation over native host files](#explicit-confirmation-over-native-host-files)
+- [Shared dependency resolution for security and authoring](#shared-dependency-resolution-for-security-and-authoring)
+- [Batch classify-validate then transactional confirmation](#batch-classify-validate-then-transactional-confirmation)
+- [One WebGL context per logical viewer group](#one-webgl-context-per-logical-viewer-group)
+- [Nullable metrics — unknown is not zero](#nullable-metrics--unknown-is-not-zero)
+- [Source metrics separate from derivative metrics](#source-metrics-separate-from-derivative-metrics)
+- [XenForo unique Job enqueue defaults to manual](#xenforo-unique-job-enqueue-defaults-to-manual)
 - [Source map](#source-map)
 
 ---
@@ -481,6 +492,8 @@ When external network work is not required to complete the current HTTP response
 
 Do not generalize this into "all Jobs are always better". Apply it when synchronous remote work would block or multiply in a rendering request.
 
+Related XenForo enqueue fact: `enqueueUnique()` defaults to **manual** jobs. For automatic background work, see [XenForo unique Job enqueue defaults to manual](#xenforo-unique-job-enqueue-defaults-to-manual).
+
 ---
 
 ## Request-level reuse and bounded background work
@@ -521,6 +534,8 @@ For repeated per-item rendering work:
 5. do not let the enqueue budget suppress already-cached successful rendering.
 
 The numeric budget `50` is **Project-Specific**, not a Global default.
+
+Related XenForo enqueue fact: unique Job identity does not by itself make the job automatic. See [XenForo unique Job enqueue defaults to manual](#xenforo-unique-job-enqueue-defaults-to-manual).
 
 ---
 
@@ -850,9 +865,567 @@ Limitations / revalidation boundary:
 
 ---
 
+## Portable baseline + capability-gated acceleration
+
+Status: **Reusable Pattern** (strong pattern; not universally mandatory)
+
+Verified scope: **General MAG architecture/design guidance**; evidence origin **#5 XFRM 3D Model** isolated format-stack benchmark research (2026-09-15)
+
+Source context:
+
+- `XFRM3DModel / research/core-3d-pipeline-benchmark/` (project evidence archive)
+- `XFRM3DModel / docs/P05__3DR__AUDIT.md` (measured findings summary)
+
+### Problem
+
+A product may need richer performance or format coverage than every host can guarantee. Hard-coding optional heavy capabilities into the only code path makes baseline functionality unavailable on minimum supported hosts.
+
+### Principle
+
+Keep **core functionality** available on the minimum guaranteed host/runtime baseline. Treat heavier capabilities (extra runtimes, native tools, background workers, advanced transforms) as **optional accelerations** that activate only when the host exposes suitable capability and policy allows them. Optional acceleration must not be the sole way to deliver baseline behavior.
+
+### When to use
+
+- baseline vs enhanced behavior depends on host tooling, extensions, or resources;
+- a cheaper portable path and a faster optional path both exist;
+- Architecture must decide what is mandatory vs opportunistic;
+- degraded mode must remain safe and usable.
+
+### Benefits
+
+- broader host compatibility;
+- clearer failure modes when acceleration is absent;
+- easier reasoning about minimum supported configuration;
+- evidence can compare baseline and accelerated paths without prematurely selecting one stack globally.
+
+### Risks
+
+- two paths to maintain if not bounded by clear capability gates;
+- silent fallback to a weaker path may hide quality/security gaps;
+- capability detection can be wrong or stale;
+- optional native tooling introduces packaging, licensing, and sandbox concerns.
+
+### Guardrails
+
+- define baseline behavior explicitly in product Architecture;
+- gate acceleration on verified capability checks and policy, not assumptions;
+- never make security, permission inheritance, or authoritative download behavior depend on optional acceleration;
+- record project-specific stack evidence locally; generalize only the principle to Global documentation;
+- degraded mode must be explicit to operators/authors where quality differs materially.
+
+### Limitations / revalidation boundary
+
+This pattern is architectural guidance, not a mandate to add dual pipelines everywhere. Apply only when evidence shows a real baseline vs accelerated split. Revalidate when host guarantees, licensing, or performance budgets change.
+
+---
+
+## Server-approved resource map with a closed client URI resolver
+
+Status: **Verified Fact / Reusable Pattern**
+
+Verified scope: **#5 XFRM 3D Model accepted Increments 1–11**; Forum and XFRM viewers; local package members including glTF + `.bin` sidecars
+
+Source context:
+- `XFRM3DModel / docs/P05__3DR__Architecture.md`
+- `XFRM3DModel / docs/P05__3DR__TZ.md`
+- `XFRM3DModel / docs/P05__3DR__CLASS_MAP.md`
+
+### Problem
+
+Embedded URIs in untrusted or author-supplied files can instruct a browser loader to fetch remote URLs, protocol-relative URLs, `file:` URLs, or path-traversal members. Trusting those URIs bypasses native ACL and can leak filesystem layout.
+
+### Pattern / rule
+
+The server determines the exact local resource/package members the client may resolve. Client-side loaders must resolve **only** through that server-approved map.
+
+- membership is server-authoritative;
+- the client uses a closed resolver over that map;
+- reject remote, protocol-relative, `file:`, traversal, and unmapped members;
+- serve allowed members through native URLs so native ACL remains in force.
+
+### When to use
+
+- a client loader follows URIs found inside a package (glTF, similar formats, or future MAG package types);
+- files may include sidecars that must remain inside a known membership set;
+- the product must not allow arbitrary browser fetches from embedded references.
+
+### Key constraints
+
+- do not let the client construct fetch URLs from raw embedded strings;
+- do not expose internal storage paths;
+- unmapped members fail closed;
+- native attachment/resource download URLs remain the access path.
+
+### Why it is safer / maintainable
+
+It keeps useful browser loaders without trusting embedded URIs, preserves host ACL, and prevents a second unofficial fetch path.
+
+### Proven MAG evidence
+
+#5 glTF URI policy plus `.bin` sidecar-only package membership: viewer and authoring resolve members only when the server has already approved them.
+
+Limitations / revalidation boundary:
+
+This is a security/architecture pattern, not a mandate to use glTF. Exact reject lists and package formats are product Architecture. Revalidate when a new loader, CDN, or URI scheme is introduced.
+
+---
+
+## Additive native configuration with ownership-aware rollback
+
+Status: **Verified Fact / Reusable Pattern**
+
+Verified scope: **#5 XFRM 3D Model** native attachment / XFRM resource extension management
+
+Source context:
+- `XFRM3DModel / docs/P05__3DR__Architecture.md`
+- `XFRM3DModel / docs/P05__3DR__TZ.md`
+
+### Problem
+
+MAG add-ons often need to augment shared XenForo/native options (allowed extensions, similar host lists). Blindly writing those options on install claims values the administrator already set. Blindly stripping them on uninstall removes human configuration or values other add-ons still need.
+
+### Pattern / rule
+
+`Claim only what you added; never reclaim a human deletion; never uninstall-strip shared host configuration.`
+
+When augmenting shared native configuration:
+
+1. detect whether the native value already exists;
+2. do not claim a pre-existing value as MAG-owned;
+3. record ownership only when MAG actually added it;
+4. rebuild/upgrade must not fight a later administrator deletion;
+5. uninstall must not remove shared values blindly.
+
+### When to use
+
+An add-on writes into XenForo Options or other shared host configuration that humans or other add-ons also manage.
+
+### Key constraints
+
+- ownership is an add-on-side fact, not a reason to overwrite the native option on every rebuild;
+- if an administrator later removes a MAG-added value, do not automatically restore it unless product Architecture explicitly requires a repair action;
+- uninstall cleanup applies only to values MAG owns and that are safe to remove.
+
+### Why it is safer / maintainable
+
+It avoids fighting administrators, avoids stealing pre-existing config, and keeps uninstall from damaging the host.
+
+### Proven MAG evidence
+
+#5 native extension management records MAG ownership only for extensions the add-on appended; pre-existing host values stay unclaimed.
+
+Limitations / revalidation boundary:
+
+Do not copy #5 option IDs or extension lists. Revalidate against the specific native option format (whitespace lists, JSON, etc.) on the installed XenForo/XFRM version.
+
+---
+
+## Host-agnostic core with host-specific native adapters
+
+Status: **Reusable Pattern**
+
+Verified scope: **#5 XFRM 3D Model** Forum + XFRM Source Package authoring and Source analysis
+
+Source context:
+- `XFRM3DModel / docs/P05__3DR__Architecture.md`
+- `XFRM3DModel / docs/P05__3DR__CLASS_MAP.md`
+
+### Problem
+
+Duplicating business rules against Forum entities in one path and XFRM entities in another causes the hosts to disagree about validation, grouping, or lifecycle.
+
+### Pattern / rule
+
+Shared product logic should operate on stable domain abstractions rather than Forum/XFRM entities directly.
+
+Host adapters own:
+
+- native identity;
+- native file enumeration and read;
+- lifecycle hooks;
+- ACL / visibility;
+- persistence association to the native content.
+
+Core owns:
+
+- grouping;
+- validation;
+- shared business rules.
+
+### When to use
+
+The same MAG product feature must run on more than one XenForo content host, or is likely to gain another host later.
+
+### Key constraints
+
+- adapters must not reimplement core rules with host-specific shortcuts;
+- native files remain authoritative; MAG records associate to them rather than replacing them;
+- ACL stays in the adapter / native permission path.
+
+### Why it is safer / maintainable
+
+One rule change applies to every host. Host differences stay in a thin adapter instead of leaking into every service.
+
+### Proven MAG evidence
+
+#5 Source Package authoring and later Source analysis share host-agnostic planners/services with Forum and XFRM native-file adapters.
+
+Limitations / revalidation boundary:
+
+This does not require a particular class tree. Do not treat #5 `SourceFile` / host class names as Global requirements.
+
+---
+
+## Explicit confirmation over native host files
+
+Status: **Verified Fact / Reusable Pattern**
+
+Verified scope: **#5 XFRM 3D Model Increment 8+**; Forum and XFRM authoring
+
+Source context:
+- `XFRM3DModel / docs/P05__3DR__TZ.md`
+- `XFRM3DModel / docs/P05__3DR__Architecture.md`
+- `XFRM3DModel / docs/P05__3DR__IDEA.md`
+
+### Problem
+
+Silently treating every eligible native file as managed MAG content creates surprise ownership, fights host workflows, and is hard to reverse. Product-level intent is not the same as “a compatible file exists.”
+
+### Pattern / rule
+
+Native host files remain authoritative. MAG should not silently claim eligible files as managed product content when product-level intent is required.
+
+Preferred flow:
+
+native files → classify → validate → review → explicit confirmation → managed records
+
+### When to use
+
+MAG adds a managed layer on top of files the host already stores (attachments, resource version files, similar native blobs).
+
+### Key constraints
+
+- classification may be automatic; **claiming** must not be;
+- unmanaged eligible files must remain valid native files;
+- confirmation is the write boundary for MAG-managed records.
+
+### Why it is safer / maintainable
+
+Authors see what MAG will manage. Existing native content is not rewritten by side effect.
+
+### Proven MAG evidence
+
+#5 replaced silent attachment auto-association with explicit `Add 3D model(s)` confirmation. Historical silent association remains a removed path, not a pattern to copy.
+
+Limitations / revalidation boundary:
+
+The confirmation UI is product-specific. The reusable rule is explicit intent before MAG persistence, not a particular button label.
+
+---
+
+## Shared dependency resolution for security and authoring
+
+Status: **Reusable Pattern**
+
+Verified scope: **#5 XFRM 3D Model** glTF URI/dependency inspection used by viewer security and authoring package validation
+
+Source context:
+- `XFRM3DModel / docs/P05__3DR__Architecture.md`
+- `XFRM3DModel / docs/P05__3DR__CLASS_MAP.md`
+
+### Problem
+
+Separate parsers for “what the viewer will fetch” and “what authoring will accept” can disagree. One path may allow a package the other later rejects, or worse, security may miss a member authoring treated as local.
+
+### Pattern / rule
+
+Do not maintain separate dependency parsers for runtime security and authoring package validation when they describe the same membership problem.
+
+Use one shared dependency model/parser where practical so the system cannot disagree with itself about package membership.
+
+### When to use
+
+A format declares additional files by URI or similar references, and both authoring and runtime must honor the same membership/security policy.
+
+### Key constraints
+
+- security must not be a looser copy of the authoring parser;
+- shared parser output should name members, blocked URIs, and required relative URIs consistently;
+- product-specific extra checks may wrap the shared parser; they must not replace it with a second URI grammar.
+
+### Why it is safer / maintainable
+
+Membership bugs are fixed once. Runtime cannot silently fetch what authoring never validated.
+
+### Proven MAG evidence
+
+#5 reuses glTF URI/dependency inspection for viewer security and Source Package authoring.
+
+Limitations / revalidation boundary:
+
+Sharing a parser is required only where the membership grammar is the same. Unrelated formats may keep dedicated parsers. Do not treat glTF as the only MAG package type.
+
+---
+
+## Batch classify-validate then transactional confirmation
+
+Status: **Reusable Pattern**
+
+Verified scope: **#5 XFRM 3D Model** batch STL/GLB/glTF authoring on Forum and XFRM
+
+Source context:
+- `XFRM3DModel / docs/P05__3DR__Architecture.md`
+- `XFRM3DModel / docs/P05__3DR__TZ.md`
+
+### Problem
+
+Multi-file import that validates the whole batch as one unit lets one invalid package block unrelated valid items, or persist a mixed half-applied state.
+
+### Pattern / rule
+
+For multi-file authoring/import:
+
+1. classify files;
+2. identify primaries;
+3. resolve dependencies;
+4. create proposed logical items;
+5. validate each item independently;
+6. explicitly confirm valid items;
+7. persist transactionally / idempotently.
+
+One invalid package must not poison unrelated valid items.
+
+### When to use
+
+Authors attach or select multiple files that may form several independent logical items (with or without sidecars).
+
+### Key constraints
+
+- item-level validation results should be visible before confirmation;
+- persistence of confirmed items should be idempotent on retry;
+- do not require every file in the native set to become MAG-managed.
+
+### Why it is safer / maintainable
+
+Partial success is explainable. Retry does not duplicate already confirmed items.
+
+### Proven MAG evidence
+
+#5 batch Source Package authoring classifies STL/GLB/glTF (and glTF sidecars), validates proposed items independently, and confirms only valid items.
+
+Limitations / revalidation boundary:
+
+Supported formats and grouping UI are product Architecture. The reusable rule is independent item validation plus explicit, idempotent confirmation.
+
+---
+
+## One WebGL context per logical viewer group
+
+Status: **Reusable Pattern**
+
+Verified scope: **#5 XFRM 3D Model** Model Set multi-item viewer
+
+Source context:
+- `XFRM3DModel / docs/P05__3DR__Architecture.md`
+- `XFRM3DModel / docs/P05__3DR__CLASS_MAP.md`
+
+### Problem
+
+Creating one WebGL renderer/canvas per file exhausts browser GPU contexts, leaks GPU memory, and lets stale async loads apply to the wrong item.
+
+### Pattern / rule
+
+When one logical content group contains multiple 3D items:
+
+- use one renderer / canvas / WebGL context;
+- switch the active model inside it;
+- dispose previous geometries, materials, and textures;
+- protect against stale async load completion;
+- isolate per-item failure so one bad file does not destroy the group viewer.
+
+Do not create one renderer per file unless Architecture truly requires isolated contexts.
+
+### When to use
+
+A MAG surface presents several GPU-rendered items as one user-facing group (tabs, playlist, set).
+
+### Key constraints
+
+- switch must dispose GPU resources from the previous item;
+- in-flight loads must be ignored if the user has already switched away;
+- item failure should show an item error, not unmount the whole group by default.
+
+### Why it is safer / maintainable
+
+It stays within typical browser WebGL context limits and avoids cross-item state leaks.
+
+### Proven MAG evidence
+
+#5 Model Set viewer uses one WebGL context and switches items inside it.
+
+Limitations / revalidation boundary:
+
+This is a client GPU-resource pattern, not a mandate for a particular engine (Three.js or otherwise). Non-WebGL previews are out of scope. Do not copy #5 display-name or switching UX as Global requirements.
+
+---
+
+## Nullable metrics — unknown is not zero
+
+Status: **Verified Fact / Reusable Pattern**
+
+Verified scope: **#5 XFRM 3D Model Increment 11** Source Analysis / Model Info
+
+Source context:
+- `XFRM3DModel / docs/P05__3DR__TZ.md`
+- `XFRM3DModel / docs/P05__3DR__Architecture.md`
+- `XFRM3DModel / docs/P05__3DR__CLASS_MAP.md`
+
+### Problem
+
+Persisting unknown measurements as `0` makes UI, ranking, and later optimization treat “not measured” as “empty/cheap.” Failed or unsupported analysis becomes indistinguishable from a real zero.
+
+### Pattern / rule
+
+Persist analysis metrics as **nullable** when the value is unknown or unavailable.
+
+Do not invent zero values merely to simplify UI or storage.
+
+UI and consumers must distinguish:
+
+- measured zero;
+- unknown;
+- unsupported;
+- failed analysis.
+
+### When to use
+
+MAG persists counts, sizes, estimates, or similar measurements that a given analyzer may not be able to obtain.
+
+### Key constraints
+
+- schema columns for optional measurements should be nullable;
+- status (complete / failed / unsupported) is not a substitute for faking metric numbers;
+- estimates that cannot be computed must stay null rather than a guessed number.
+
+### Why it is safer / maintainable
+
+Later comparison, filtering, and optimization can trust numbers that exist and ignore numbers that do not.
+
+### Proven MAG evidence
+
+#5 Source Analysis stores nullable source metrics and treats unknown as unknown in Model Info (for example a format may report triangles without inventing a vertex count).
+
+Limitations / revalidation boundary:
+
+Do not promote #5 complexity class cutoffs or memory-estimate formulas. Those remain product-local and, where documented as provisional, must not become Global defaults.
+
+---
+
+## Source metrics separate from derivative metrics
+
+Status: **Reusable Pattern**
+
+Verified scope: **#5 XFRM 3D Model Increment 11** `SourceAnalysis` persistence designed independently of future Viewer Asset / derivative metrics
+
+Source context:
+- `XFRM3DModel / docs/P05__3DR__TZ.md`
+- `XFRM3DModel / docs/P05__3DR__Architecture.md`
+- `XFRM3DModel / docs/P05__3DR__CLASS_MAP.md`
+
+### Problem
+
+Overwriting original-file measurements with post-optimization measurements destroys the ability to compare source vs derivative honestly and makes rollback/debug impossible.
+
+### Pattern / rule
+
+Original/source metrics and generated/optimized derivative metrics are different data domains.
+
+Do not overwrite source metrics with derivative metrics.
+
+Use separate persistence or contracts so later optimization layers can compare source vs derivative without rewriting history.
+
+### When to use
+
+A MAG product analyzes author-supplied files and may later generate optimized/preview derivatives of those files.
+
+### Key constraints
+
+- source rows remain source even after a derivative exists;
+- derivative metrics, if added later, get their own store or explicitly versioned contract;
+- analysis failure of a derivative must not erase successful source metrics.
+
+### Why it is safer / maintainable
+
+Optimization quality can be measured against an unchanged source baseline.
+
+### Proven MAG evidence
+
+#5 persists Source metrics in a dedicated table/contract (`metrics_kind=source`) and keeps Viewer Asset / optimization metrics out of that store. Derivative metrics themselves were **not** implemented in Increments 1–11; only the separation was.
+
+Limitations / revalidation boundary:
+
+This pattern does **not** implement ViewerAsset, optimization, or rebuild. Do not treat #5 table names as required Global schema.
+
+---
+
+## XenForo unique Job enqueue defaults to manual
+
+Status: **Verified Fact / Reusable Pattern / Needs Revalidation**
+
+Verified scope: **XenForo Job Manager as used by #5**; installed-source finding recorded in `#5` AUDIT and applied in Increment 11 analysis Jobs. Do not generalize beyond verified XenForo `enqueueUnique()` behavior.
+
+Source context:
+- `XFRM3DModel / docs/P05__3DR__AUDIT.md` (Jobs section)
+- `XFRM3DModel / docs/P05__3DR__Architecture.md`
+- `XFRM3DModel / docs/P05__3DR__TZ.md`
+- related Global entries: [Deferred external work from rendering](#deferred-external-work-from-rendering), [Request-level reuse and bounded background work](#request-level-reuse-and-bounded-background-work)
+
+### Problem
+
+Developers reasonably treat `enqueueUnique()` as “run this background job once.” On XenForo, the method defaults to **manual** execution. Unique jobs then wait for ACP/manual run instead of `job.php` / `xf:run-jobs`. Heavy work appears “queued” but never runs automatically.
+
+### Pattern / rule
+
+`enqueueUnique()` defaults to manual jobs.
+
+For automatic background work, enqueue with the correct **non-manual** mode (in verified XenForo source: pass `$manual = false`).
+
+When using this mechanism:
+
+- use a stable unique job key;
+- keep work idempotent and retry-safe;
+- isolate failures per logical item;
+- let the request path **queue** work only;
+- keep heavy parsing off page and authoring requests.
+
+### When to use
+
+MAG `#N` add-ons need automatic XenForo Jobs that must not collide (analysis, acquisition, rebuild-style work) and must not block HTTP.
+
+### Key constraints
+
+- unique identity ≠ automatic execution;
+- authoring/page success must not depend on job completion unless product Architecture requires a blocking contract;
+- per-item failure must not fail unrelated items or the host content save;
+- do not invent a second queue beside XenForo Jobs for the same work.
+
+### Why it is safer / maintainable
+
+Automatic work actually runs. HTTP stays bounded. Retry/unique keys prevent duplicate workers for the same item.
+
+### Proven MAG evidence
+
+#5 Viewer Item Source analysis uses `enqueueUnique(..., false)` so analysis is automatic; page/authoring only enqueue; malformed items fail in the job without breaking the viewer.
+
+Limitations / revalidation boundary:
+
+Revalidate `XF\Job\Manager::enqueueUnique()` signature and default `$manual` against the **installed** XenForo source before reuse. Do not assume other frameworks share this default. Numeric `jobMaxRunTime` values are environment/config, not Global defaults.
+
+---
+
 ## Source map
 
-This initial knowledge base was extracted only from approved Global documentation plus verified project #1 documentation.
+This knowledge base was extracted from approved Global documentation plus verified project documentation.
 
 Global authority reviewed:
 
@@ -861,7 +1434,7 @@ Global authority reviewed:
 - `AI_AGENTS_RULES.md`
 - `CURSOR_USAGE_ANALYTICS.md`
 
-Project #1 evidence reviewed:
+Project evidence reviewed:
 
 - `GlobalLinksFavicons / P01__GLF__TZ.md`
 - `GlobalLinksFavicons / docs/P01__GLF__Roadmap.md`
@@ -871,6 +1444,15 @@ Project #1 evidence reviewed:
 - `GlobalLinksFavicons / docs/P01__GLF__Overview.md`
 - `GlobalLinksFavicons / P01__GLF__README.md`
 - `GlobalLinksFavicons / docs/P01__GLF__CURSOR_USAGE_HISTORY.md`
+- `XFRM3DModel / research/core-3d-pipeline-benchmark/` (pattern evidence only; not product requirements)
+- `XFRM3DModel / docs/P05__3DR__AUDIT.md`
+- `XFRM3DModel / docs/P05__3DR__TZ.md` (accepted Increments 1–11)
+- `XFRM3DModel / docs/P05__3DR__Architecture.md`
+- `XFRM3DModel / docs/P05__3DR__CLASS_MAP.md`
+- `XFRM3DModel / docs/P05__3DR__Changelog.md`
+- `XFRM3DModel / docs/P05__3DR__IDEA.md` (local candidate list; Global promotion 2026-09-16)
+
+Later addition (2026-09-16): reusable patterns from accepted `#5` Increments 1–11 (URI map, native-option ownership, host adapters, explicit confirmation, shared dependency parsing, batch confirmation, one WebGL context per group, nullable metrics, source vs derivative metric domains, `enqueueUnique()` manual default). Not promoted from that work: provisional complexity thresholds, product-specific Model Info UX, unimplemented ViewerAsset/optimization/rebuild, format roadmap, research candidates.
 
 Excluded from this initial extraction:
 
