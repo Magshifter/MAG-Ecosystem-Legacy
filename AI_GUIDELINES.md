@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Development Guidelines
 
 - MAG-Document-ID: `AI_GUIDELINES.md`
-- MAG-Content-Updated: `2026-09-13T14:15:00+00:00`
+- MAG-Content-Updated: `2026-09-15T08:50:00+00:00`
 
 This document is the **Global MAG development standard**. It defines **how** MAG software is developed with AI assistance.
 
@@ -710,9 +710,12 @@ Rules:
 
 - Promote only evidence-backed findings. Do not generalize from donor behavior, assumptions, planned architecture, hypotheses, or accidental implementation behavior.
 - Keep product requirements, approved project architecture, project code structure, product-specific behavior, and project history in the active development identity's documentation.
+- When ChatGPT identifies a technically valuable reusable candidate during MAG work — implementation pattern, architecture technique, optimization, security practice, debugging technique, benchmark methodology, workflow improvement, or similar — **explicitly flag it to the Product Owner** as a candidate for the Global MAG knowledge library while the context and evidence are still available. Do not wait only for procedure close-out if the finding is already clear.
+- Project-specific evidence, measurements, fixtures, and stack choices stay in the active `#N` / `A<N>` / `B<N>` documentation or research archive. Only the **generalized reusable principle** may be promoted to Global documentation.
+- Promotion to `MAG_IMPLEMENTATION_PATTERNS.md` or other Global knowledge requires Product Owner approval. Identifying a candidate does **not** authorize Global edits, implementation, architecture changes, requirements changes, or scope expansion outside the approved procedure.
 - Add or update Global reusable knowledge only when there is a meaningful future reuse case. Do not turn the knowledge base into a development log.
 - If the approved procedure already includes Global documentation synchronization and a qualifying knowledge update is within scope, record it as part of that procedure.
-- If reusable knowledge is discovered while working only in an active development repository and modifying `MAG-Ecosystem` would cross the approved repository/procedure scope, do **not** modify Global documentation. Report the candidate to the product owner and wait for approval of a separate Global documentation update.
+- If reusable knowledge is discovered while working only in an active development repository and modifying `MAG-Ecosystem` would cross the approved repository/procedure scope, do **not** modify Global documentation without Product Owner approval of a separate Global documentation update. Until then, flag the candidate to the Product Owner.
 - Discovery of reusable knowledge does **not** authorize unrelated implementation, architecture changes, requirements changes, cross-project modifications, scope expansion, Git operations, or starting another development stage.
 
 Entry structure, status model, and maintenance mechanics remain authoritative in `MAG_IMPLEMENTATION_PATTERNS.md`.
