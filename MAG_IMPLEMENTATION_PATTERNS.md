@@ -1,7 +1,7 @@
 # MAG Implementation Patterns
 
 - MAG-Document-ID: `MAG_IMPLEMENTATION_PATTERNS.md`
-- MAG-Content-Updated: `2026-09-16T02:20:00+03:00`
+- MAG-Content-Updated: `2026-09-20T14:05:00+03:00`
 
 Reusable, source-backed implementation knowledge for MAG development.
 
@@ -66,6 +66,18 @@ For a concrete task:
 - [Nullable metrics — unknown is not zero](#nullable-metrics--unknown-is-not-zero)
 - [Source metrics separate from derivative metrics](#source-metrics-separate-from-derivative-metrics)
 - [XenForo unique Job enqueue defaults to manual](#xenforo-unique-job-enqueue-defaults-to-manual)
+- [Batch-prewarm sidecar TO_ONE relations with authoritative hydrated null](#batch-prewarm-sidecar-to_one-relations-with-authoritative-hydrated-null)
+- [Visibility-bounded render lifecycle](#visibility-bounded-render-lifecycle)
+- [XenForo in-place overlay body replacement](#xenforo-in-place-overlay-body-replacement)
+- [ACL-safe public counters and lists](#acl-safe-public-counters-and-lists)
+- [Stale unique-job recovery when the job row is missing](#stale-unique-job-recovery-when-the-job-row-is-missing)
+- [Explicit client teardown when framework elements lack destructors](#explicit-client-teardown-when-framework-elements-lack-destructors)
+- [Presentation suppression only when an equivalent managed surface exists](#presentation-suppression-only-when-an-equivalent-managed-surface-exists)
+- [One canonical client-side managed refresh implementation](#one-canonical-client-side-managed-refresh-implementation)
+- [Diagnose editor bootstrap layout shift at the collapsing ancestor](#diagnose-editor-bootstrap-layout-shift-at-the-collapsing-ancestor)
+- [Do not use editor lifecycle hooks merely to hide initialization layout movement](#do-not-use-editor-lifecycle-hooks-merely-to-hide-initialization-layout-movement)
+- [Explicit browser-static-asset deployment boundary](#explicit-browser-static-asset-deployment-boundary)
+- [Separate host eligibility from effective feature enablement](#separate-host-eligibility-from-effective-feature-enablement)
 - [Source map](#source-map)
 
 ---
@@ -1421,6 +1433,474 @@ Limitations / revalidation boundary:
 
 Revalidate `XF\Job\Manager::enqueueUnique()` signature and default `$manual` against the **installed** XenForo source before reuse. Do not assume other frameworks share this default. Numeric `jobMaxRunTime` values are environment/config, not Global defaults.
 
+Related: [Stale unique-job recovery when the job row is missing](#stale-unique-job-recovery-when-the-job-row-is-missing).
+
+---
+
+## Batch-prewarm sidecar TO_ONE relations with authoritative hydrated null
+
+Status: **Verified Fact / Reusable Pattern**
+
+Verified scope: **#5 XFRM 3D Model** Performance/UX P1; XenForo 2.3 entity relations on hot render paths
+
+Source context:
+- `XFRM3DModel / docs/P05__3DR__AUDIT.md` (Performance/UX)
+- `XFRM3DModel / docs/P05__3DR__CLASS_MAP.md`
+- related Global entry: [Request-level reuse and bounded background work](#request-level-reuse-and-bounded-background-work)
+
+### Problem
+
+A render loop that loads parent entities and then calls `findOne()` / `getBy*Id()` per child for each sidecar TO_ONE relation (analysis row, derivative row, optional profile, similar) scales as **O(items)** queries even when the parent batch was already identified.
+
+A second failure mode: after eager-loading a TO_ONE relation as `null`, code that treats “not loaded” the same as “not queried” may issue another `findOne()` and waste a query per parent.
+
+### Pattern / rule
+
+On the **hot path** (page render, thread expansion, version view):
+
+1. batch-collect the child entity IDs needed for the response;
+2. eager-load sidecar TO_ONE relations in the same repository/query batch (`with()`, `fetch()` + hydrate, or equivalent);
+3. consume the already-hydrated relation in services/getters;
+4. treat an **eager-loaded `null`** as authoritative absence — do not re-query merely because the relation is empty.
+
+Keep isolated `getBy*Id()` fallbacks only for **non-prewarmed** call sites (admin tools, one-off APIs, rare paths) and verify them separately.
+
+### When to use
+
+MAG `#N` add-ons attach optional per-item sidecar rows to entities already loaded in a loop (ViewerItem → analysis/asset, ModelSet → presentation profile, similar).
+
+### Key constraints
+
+- prewarm only relations actually needed for the response payload;
+- `array_key_exists` / `hasLoadedRelation()` (or equivalent) must distinguish “loaded null” from “not loaded”;
+- do not change payload shape or ACL semantics to save queries;
+- isolated paths must remain correct when prewarm did not run.
+
+### Why it is safer / maintainable
+
+Render cost becomes bounded by batch size, not per-item fan-out. Negative (no row) outcomes stop generating repeat queries.
+
+### Proven MAG evidence
+
+#5 batches `SourceAnalysis` and `ViewerAsset` on ViewerItem loads for forum/XFRM payload build; `PresentationProfileService` treats eager `null` as authoritative.
+
+Limitations / revalidation boundary:
+
+Relation names, repository methods, and `with()` syntax are XenForo-version-specific. Do not copy #5 table or class names as Global requirements. Revalidate against installed XenForo entity APIs.
+
+---
+
+## Visibility-bounded render lifecycle
+
+Status: **Reusable Pattern**
+
+Verified scope: **#5 XFRM 3D Model** Performance/UX P2; browser client viewers
+
+Source context:
+- `XFRM3DModel / docs/P05__3DR__AUDIT.md` (Performance/UX)
+- related Global entry: [One WebGL context per logical viewer group](#one-webgl-context-per-logical-viewer-group)
+
+### Problem
+
+A GPU-backed viewer that keeps an always-on animation/render loop for every mounted instance wastes CPU/GPU when many viewers exist off-screen (thread pages, long resource views). Destroying and recreating the renderer on every scroll boundary adds churn and fights the one-context-per-group rule.
+
+### Pattern / rule
+
+For lazy-initialized client viewers that use a persistent renderer/context:
+
+1. **lazy-init** on first need (viewport proximity or explicit user action);
+2. **keep** the renderer/context alive while the element remains mounted;
+3. **pause** the render/animation loop when off-screen (for example `IntersectionObserver`, visibility API, or equivalent);
+4. **resume** on re-entry and on direct user interaction with the control surface;
+5. **dispose** only on true teardown (navigation away, element removal, explicit `stop()`), not on every off-screen transition.
+
+Do not run unbounded `requestAnimationFrame` (or equivalent) for off-screen instances.
+
+### When to use
+
+MAG surfaces may mount multiple GPU viewers on one page and only a subset are visible at once.
+
+### Key constraints
+
+- complements [One WebGL context per logical viewer group](#one-webgl-context-per-logical-viewer-group) — pause/resume is not a substitute for per-item context disposal on switch;
+- stale async load tokens and resource disposal on item switch remain required;
+- if the framework removes the DOM node without calling handlers, pair with [Explicit client teardown when framework elements lack destructors](#explicit-client-teardown-when-framework-elements-lack-destructors).
+
+### Why it is safer / maintainable
+
+Idle work drops sharply without sacrificing fast re-display when the user scrolls back.
+
+### Proven MAG evidence
+
+#5 Model Set viewer pauses rAF off-screen via `IntersectionObserver` while retaining one `WebGLRenderer` per group.
+
+Limitations / revalidation boundary:
+
+Engine-specific (Three.js or other). Thresholds, `rootMargin`, and observer availability are implementation choices, not Global defaults.
+
+---
+
+## XenForo in-place overlay body replacement
+
+Status: **Verified Fact / Reusable Pattern**
+
+Verified scope: **#5 XFRM 3D Model** Performance/UX P3 and Hardening H3; XenForo 2.3 `XF.AjaxSubmit`
+
+Source context:
+- `XFRM3DModel / docs/P05__3DR__AUDIT.md` (Performance/UX, Hardening)
+- `XFRM3DModel / docs/P05__3DR__CLASS_MAP.md`
+
+### Problem
+
+Multi-step AJAX forms inside XenForo overlays default to `XF.showOverlay()` for each server reply. Without an explicit replace target, each step stacks a child overlay, leaves stale hidden containers, and breaks in-flow error UX when controllers return native `$this->error()`.
+
+### Pattern / rule
+
+For multi-step in-overlay flows (authoring, review, confirm):
+
+1. declare `data-replace` on the form so the reply replaces an **in-overlay body wrapper** (not the whole document);
+2. set `data-show-replacement="false"` when the default fade would briefly duplicate the replace target;
+3. return the next step (including validation errors) as the **same overlay view** with replace metadata — avoid native `$this->error()` child overlays for expected in-flow failures;
+4. scope the replace selector to the active overlay container when ancestors are not reachable from `querySelector` inside the form.
+
+Pending browser `File` inputs cannot survive a server-driven replace; disclose that constraint in copy when source switching or step replace clears selection.
+
+### When to use
+
+MAG `#N` add-ons implement wizard-style AJAX steps inside XenForo public or admin overlays.
+
+### Key constraints
+
+- replace target must be stable across steps;
+- security, ACL, and host-native file authority unchanged;
+- error replies must preserve enough posted state to correct and retry (review items, selection keys, similar);
+- do not invent a parallel modal system when XenForo overlay + `data-replace` suffices.
+
+### Why it is safer / maintainable
+
+One active overlay container, predictable focus/history, and errors stay in the same flow.
+
+### Proven MAG evidence
+
+#5 authoring uses `data-replace` on `.js-magXfrm3dAuthoringFlow`; analyze/confirm failures route through the same overlay view instead of `$this->error()`.
+
+Limitations / revalidation boundary:
+
+Revalidate against installed XenForo `XF.AjaxSubmit` / overlay behavior on the target XenForo version. Selector class names and template hooks are product-local.
+
+---
+
+## ACL-safe public counters and lists
+
+Status: **Verified Fact / Reusable Pattern**
+
+Verified scope: **#5 XFRM 3D Model** ASC-B3; public profile list, public totals, forum postbit counts
+
+Source context:
+- `XFRM3DModel / docs/P05__3DR__Architecture.md` (§27.10)
+- `XFRM3DModel / docs/P05__3DR__TZ.md` (§25.27)
+- `XFRM3DModel / docs/P05__3DR__CLASS_MAP.md`
+
+### Problem
+
+Reusing an unrestricted admin finder or a raw `COUNT(*)` for public surfaces (profile tab, postbit statistic, widgets) leaks existence of content the current visitor cannot view. Computing ACL per row inside a template loop does not scale and is easy to get wrong across surfaces.
+
+A second failure mode: a derived counter (postbit badge fed from a batch prewarm) silently falls back to a per-request query on surfaces that did not run the prewarm, changing cost and sometimes semantics.
+
+### Pattern / rule
+
+For every **visitor-visible** list or count:
+
+1. centralize predicates in one service/query used by **all** public surfaces that must agree (list, total, grouped count);
+2. key caches by visitor identity **and** permission context (for example `user_id` + `permission_combination_id`);
+3. keep administrator/unrestricted totals separate — never expose ACP totals on public templates;
+4. for derived counters that depend on batch prewarm, expose a **cache-only** getter on unbatched surfaces (omit the statistic) rather than an silent on-demand fallback query.
+
+### When to use
+
+MAG `#N` add-ons show per-user or per-author statistics drawn from managed content governed by XenForo node/category/resource visibility.
+
+### Key constraints
+
+- “equivalent visibility semantics” across profile and postbit is a product requirement when both exist;
+- batched `GROUP BY` counts must use the same WHERE predicates as the list finder;
+- do not denormalize a globally visible total if visibility is visitor-specific.
+
+### Why it is safer / maintainable
+
+Security and performance stay aligned; one predicate change updates every public surface.
+
+### Proven MAG evidence
+
+#5 `VisibleManagedModelQuery` powers profile list/total and batched postbit counts; postbit uses a prewarmed cache-only getter omitted elsewhere.
+
+Limitations / revalidation boundary:
+
+Forum vs XFRM predicate details are product Architecture. Revalidate against installed XenForo/XFRM permission and visibility APIs.
+
+---
+
+## Stale unique-job recovery when the job row is missing
+
+Status: **Verified Fact / Reusable Pattern**
+
+Verified scope: **#5 XFRM 3D Model** Hardening H2; XenForo `xf_job.unique_key`
+
+Source context:
+- `XFRM3DModel / docs/P05__3DR__AUDIT.md` (Hardening)
+- related Global entry: [XenForo unique Job enqueue defaults to manual](#xenforo-unique-job-enqueue-defaults-to-manual)
+
+### Problem
+
+Guarding `enqueueUnique()` with “skip if status is `queued`/`processing`” prevents duplicate jobs but leaves rows stuck when the matching `xf_job` row was cancelled, deleted, or never created (PHP abort, manual job delete, failed enqueue).
+
+### Pattern / rule
+
+Before skipping re-enqueue for `queued`/`processing` state:
+
+1. resolve the expected `xf_job` row by the same **unique key** used for `enqueueUnique()`;
+2. if the unique job **still exists** → keep the skip (no duplicate);
+3. if the unique job is **absent** → fall through to the normal enqueue path (reset to `queued`, call `enqueueUnique()` with the same key).
+
+Keep fingerprints, payloads, ACL, and idempotent `run()` behavior unchanged.
+
+### When to use
+
+MAG `#N` add-ons track per-item background work in entity state **and** XenForo unique Jobs.
+
+### Key constraints
+
+- do not create duplicate unique jobs when the row still exists;
+- recovery must be safe to run repeatedly;
+- missing attachment / invalid item paths remain skip-or-fail in `run()`, not enqueue storms.
+
+### Why it is safer / maintainable
+
+Public “stuck processing” UI recovers without admin DB surgery.
+
+### Proven MAG evidence
+
+#5 `UniqueJobPresence` wraps `jobManager()->getUniqueJob()` before analysis/asset enqueue skip.
+
+Limitations / revalidation boundary:
+
+Revalidate `getUniqueJob()` / unique key format against installed XenForo. Table/column names are illustrative.
+
+---
+
+## Explicit client teardown when framework elements lack destructors
+
+Status: **Verified Fact / Reusable Pattern**
+
+Verified scope: **#5 XFRM 3D Model** Hardening H1; XenForo 2.3 `XF.Element` handlers; in-page HTML replacement
+
+Source context:
+- `XFRM3DModel / docs/P05__3DR__AUDIT.md` (Hardening, viewer lifecycle)
+
+### Problem
+
+XenForo `XF.Element` handlers expose `init()` but no destructor. When AJAX or template replacement removes a managed DOM node, WebGL contexts, observers, timers, and in-flight loaders may outlive the node unless an existing `stop()` (or equivalent) is invoked.
+
+### Pattern / rule
+
+When a client handler owns GPU resources, observers, or cancellable async work:
+
+1. implement a single idempotent `stop()` (or equivalent) that disposes resources and invalidates in-flight tokens;
+2. register the active handler while mounted;
+3. on DOM removal (`!element.isConnected`), call the existing `stop()` — typically via one shared `MutationObserver` on a stable ancestor;
+4. do not duplicate disposal logic outside `stop()`;
+5. pair with [Visibility-bounded render lifecycle](#visibility-bounded-render-lifecycle): off-screen pause is not teardown.
+
+### When to use
+
+MAG `#N` add-ons attach long-lived client handlers to nodes that XenForo may replace in-page without a full navigation.
+
+### Key constraints
+
+- `stop()` must be safe to call twice;
+- full document navigation remains safe without special casing;
+- do not unregister listeners that die with the removed node unless they hold process-wide resources.
+
+### Why it is safer / maintainable
+
+Prevents orphan GPU/work leaks on common XenForo AJAX update paths.
+
+### Proven MAG evidence
+
+#5 `magViewerRemoval` calls existing viewer `stop()` when the handler target disconnects.
+
+Limitations / revalidation boundary:
+
+Observer placement and handler registration are implementation details. Revalidate XenForo element lifecycle on the target version.
+
+---
+
+## Presentation suppression only when an equivalent managed surface exists
+
+Status: **Reusable Pattern** (narrow UI integration rule)
+
+Verified scope: **#5 XFRM 3D Model** ASC-B4 Forum attachment list presentation
+
+Source context:
+- `XFRM3DModel / docs/P05__3DR__TZ.md` (§25.20)
+- `XFRM3DModel / docs/P05__3DR__Architecture.md`
+
+### Problem
+
+Hiding native host attachments globally to avoid duplicate presentation can remove files the visitor still needs (sidecars, dependencies, unrelated downloads) or hide content when MAG does not yet expose an equivalent viewer/download surface.
+
+### Pattern / rule
+
+Suppress native presentation of a host file **only when**:
+
+1. MAG already exposes an equivalent managed primary surface for that same native attachment (or an explicitly mapped primary in the viewer payload); and
+2. the visitor can still access required package members through the managed surface per product Architecture.
+
+Do not hide host files merely because MAG could manage them in theory. Defer suppression for sidecar/dependency identities until package membership is explicit.
+
+### When to use
+
+MAG adds its own viewer or download UI alongside native XenForo attachment lists.
+
+### Key constraints
+
+- native attachment bytes and ACL remain authoritative;
+- suppression is presentation-only unless Architecture explicitly migrates ownership;
+- admin and unrelated host workflows must remain intact.
+
+### Why it is safer / maintainable
+
+Avoids duplicate UI without breaking package completeness or native download paths.
+
+### Proven MAG evidence
+
+#5 Forum `post_macros` hides attachment IDs present in `MagXfrm3dViewerPayload` managed primaries only; XFRM native download list unchanged; sidecar hiding deferred.
+
+Limitations / revalidation boundary:
+
+Template hook names and payload fields are product-local. This rule does not mandate hiding; it bounds when hiding is safe.
+
+---
+
+## One canonical client-side managed refresh implementation
+
+Status: **Verified Fact / Reusable Pattern**
+
+Verified scope: **#5 Beyond 3D Viewer** `1.0.4` / `1000195` supporting-document and model managed-HTML refresh; XenForo 2.3 public JS
+
+Source context:
+- `Beyond3DViewer / docs/P05__3DR__AUDIT.md` (1.0.4 stabilization)
+- `Beyond3DViewer / docs/P05__3DR__CLASS_MAP.md`
+- `Beyond3DViewer / src/addons/MAG/Beyond3DViewer/_files/js/MAG/Beyond3DViewer/authoring.js`
+- `Beyond3DViewer / src/addons/MAG/Beyond3DViewer/_files/js/MAG/Beyond3DViewer/supporting.js`
+
+### Observed behavior
+
+Multiple call sites (supporting overlay XF.ajax and authoring `ajax-submit:response`) consume the same server JSON keys. Two independent DOM-replacement implementations against that contract diverged in risk: a later JSON or markup change would update one path and leave the other producing duplicate hosts, missed native-row filtering, or a no-op.
+
+### Pattern / conclusion
+
+Multiple call sites may exist. DOM mutation logic should have **one** canonical implementation. Do not keep a second independent fallback that consumes the same server JSON contract unless runtime inspection proves it is required. Call sites should delegate to the canonical helper and only use a non-HTML attachment-manager sync when the HTML keys are absent.
+
+### Limitations / revalidation boundary
+
+Product-local helper names, CSS hosts, and JSON keys are not Global requirements. Separate call sites can still fire twice on one response; unifying *implementations* does not automatically collapse *call sites*. Revalidate against the installed XenForo overlay/ajax-submit behavior.
+
+---
+
+## Diagnose editor bootstrap layout shift at the collapsing ancestor
+
+Status: **Verified Fact / Reusable Pattern**
+
+Verified scope: **#5 Beyond 3D Viewer** XFRM Resource Edit Froala/editor bootstrap; XenForo 2.3 overlay edit
+
+Source context:
+- `Beyond3DViewer / docs/P05__3DR__AUDIT.md` (Known Fragile Areas)
+- `Beyond3DViewer / src/addons/MAG/Beyond3DViewer/_data/templates.xml`
+
+### Observed behavior
+
+Editor initialization collapsed an ancestor row and shifted later MAG controls. Hiding the downstream MAG actions masked the movement without fixing the collapsing element.
+
+### Pattern / conclusion
+
+Do not hide downstream controls to mask FOUC/layout shift. Measure the element whose height actually collapses. Reserve or layout correction belongs at that structural ancestor. Keep the correction scoped to the verified host/surface.
+
+### Limitations / revalidation boundary
+
+Pixel floors, class names, and which XenForo editor surface collapses are product-local. Do not promote a numeric reserve height into a Global rule. Revalidate when the host template or editor chrome changes.
+
+---
+
+## Do not use editor lifecycle hooks merely to hide initialization layout movement
+
+Status: **Verified Fact / Reusable Pattern**
+
+Verified scope: **#5 Beyond 3D Viewer** Resource Edit editor bootstrap; XenForo 2.3 Froala / overlay edit
+
+Source context:
+- `Beyond3DViewer / docs/P05__3DR__AUDIT.md` (1.0.4 stabilization / FOUC)
+
+### Observed behavior
+
+Re-entrant editor timing or reveal hooks used only to hide initialization movement interfered with native editor bootstrap.
+
+### Pattern / conclusion
+
+Do not use editor lifecycle/reveal hooks merely to hide initialization layout movement. Preserve native lifecycle unless the integration actually requires a hook for a functional contract (save, replace target, ACL), not for cosmetic shift masking.
+
+### Limitations / revalidation boundary
+
+Does not forbid legitimate editor integration hooks. Revalidate against the installed editor and overlay version.
+
+---
+
+## Explicit browser-static-asset deployment boundary
+
+Status: **Verified Fact / Reusable Pattern**
+
+Verified scope: **#5 Beyond 3D Viewer** XenForo 2.3 add-on `_files` vs live `js/` tree; `xf-addon:rebuild`
+
+Source context:
+- `Beyond3DViewer / docs/P05__3DR__AUDIT.md` (Known Fragile Areas)
+- `Beyond3DViewer / docs/P05__3DR__CLASS_MAP.md`
+
+### Observed behavior
+
+`xf-addon:rebuild` updates addon data/templates but does not publish browser-served JS from `_files` into the web-accessible `js/` path used by the live board. Repo `_files`, live addon `_files`, and `www/js` can silently diverge.
+
+### Pattern / conclusion
+
+When addon rebuild does not publish browser-served assets, source/release `_files` and runtime `www/js` are distinct deployment surfaces. Deployment must copy and verify hashes explicitly. Do not assume rebuild equals browser-asset publish.
+
+### Limitations / revalidation boundary
+
+XenForo `js/` vs `_files` layout is version- and install-specific. Revalidate against the target board’s `development.js` / hashed JS mode. This does not replace `build.json` `additional_files` for packaged releases.
+
+---
+
+## Separate host eligibility from effective feature enablement
+
+Status: **Verified Fact / Reusable Pattern**
+
+Verified scope: **#5 Beyond 3D Viewer** Forum node / XFRM category MAG enablement; ContentGate
+
+Source context:
+- `Beyond3DViewer / docs/P05__3DR__Architecture.md`
+- `Beyond3DViewer / docs/P05__3DR__AUDIT.md` (Known Fragile Areas)
+
+### Observed behavior
+
+Whether MAG applies to a host/content domain at all is a different question from the tri-state `inherit` / `enabled` / `disabled` effective runtime inside eligible scope. Using one as a substitute for the other mis-diagnoses empty payloads, missing authoring buttons, and permission checks.
+
+### Pattern / conclusion
+
+Eligibility answers whether MAG applies to the host/content domain at all. Effective `inherit` / `enabled` / `disabled` answers runtime state inside eligible scope. Do not use one concept as a substitute for the other.
+
+### Limitations / revalidation boundary
+
+Column names, cache fields, and ContentGate class names are product-local. Revalidate against the current enablement rebuild path.
+
 ---
 
 ## Source map
@@ -1453,6 +1933,10 @@ Project evidence reviewed:
 - `XFRM3DModel / docs/P05__3DR__IDEA.md` (local candidate list; Global promotion 2026-09-16)
 
 Later addition (2026-09-16): reusable patterns from accepted `#5` Increments 1–11 (URI map, native-option ownership, host adapters, explicit confirmation, shared dependency parsing, batch confirmation, one WebGL context per group, nullable metrics, source vs derivative metric domains, `enqueueUnique()` manual default). Not promoted from that work: provisional complexity thresholds, product-specific Model Info UX, unimplemented ViewerAsset/optimization/rebuild, format roadmap, research candidates.
+
+Later addition (2026-09-17): reusable patterns from accepted `#5` Performance/UX, ASC-B3/B4, and Hardening (ORM sidecar prewarm + hydrated null, visibility-bounded render lifecycle, XenForo in-place overlay replacement, ACL-safe public counters/lists, stale unique-job recovery, explicit client teardown, narrow presentation-suppression rule). Validation discipline (call-site audit, click-path + invariant regression) recorded in `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 7. Not promoted: measured-optimization-only wording, deterministic fixture setup, Inc 12/13 storage/import lessons, small XenForo facts already covered elsewhere.
+
+Later addition (2026-09-20): reusable patterns from `#5` `[MAG] Beyond 3D Viewer` `1.0.4` stabilization (canonical managed-HTML client refresh, editor-bootstrap layout diagnosis at the collapsing ancestor, no cosmetic editor-lifecycle masking, explicit `_files` vs `www/js` deployment boundary, eligibility vs effective enablement). Current #5 repository is `Beyond3DViewer`; historical capture paths below that say `XFRM3DModel` remain the original evidence locations from those dates.
 
 Excluded from this initial extraction:
 

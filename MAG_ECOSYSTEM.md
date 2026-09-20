@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-14T06:15:06+00:00`
+- MAG-Content-Updated: `2026-09-20T14:05:00+03:00`
 
 This document is the navigation and governance foundation for MAG software development across approved development classes.
 
@@ -91,7 +91,7 @@ Each `#N` XenForo project also has a **short, stable project code** used in docu
 | #2 | `P02__TS` | [MAG] Tag Synchronizer | Active / Stable 1.0.0 | `TagSynchronizer` | `C:\laragon\repos\TagSynchronizer` |
 | #3 | `P03__SL` | [MAG] Simple Landing | Active / Targeted Research | `SimpleLanding` | `C:\laragon\repos\SimpleLanding` |
 | #4 | `P04__DG` | [MAG] Doc&Guide | Active / Phase 2 Requirements | `DocGuide` | `C:\laragon\repos\DocGuide` |
-| #5 | `P05__3DR` | [MAG] XFRM 3D Model | Active / Requirements Definition and Targeted Research | `XFRM3DModel` | `C:\laragon\repos\XFRM3DModel` |
+| #5 | `P05__3DR` | [MAG] Beyond 3D Viewer | Active / Development 1.0.4 (`1000195`) | `Beyond3DViewer` | `C:\laragon\repos\Beyond3DViewer` |
 | #6 | `P06__DT` | [MAG] Design Toolkit | Active / Initial requirements discovery | `DesignToolkit` | `C:\laragon\repos\DesignToolkit` |
 
 The `#N` registry table is the canonical current-fact source for identity, current lifecycle/status label, current stable version where shown, Git repository, and local path. Narrative below may explain classification, history, and meaning; it must not independently restate volatile current status, version, or path.
@@ -332,6 +332,14 @@ Examples:
 - work on Global documentation = GLOBAL only.
 
 Do not modify one MAG repository while the approved procedure is scoped to another.
+
+Current canonical authority is the current retrieved body of the logical document identified by MAG-Document-ID, together with an explicit current Product Owner decision where the HOW hierarchy requires it. Resolve that body from the managed documentation surface appropriate to the current working environment. This section does not assign ChatGPT to Local, and it does not make any one managed location the universal MAG authority.
+
+Conversation history, conversation summaries, ChatGPT Project copies, agent reports, and prior assistant statements are continuity or evidence claims. They do not become MAG authority merely because they are already in the session. If they conflict with a current canonical owner, report the conflict; do not silently prefer the conversation.
+
+A MAG coordination session must resolve current MAG_ECOSYSTEM.md before substantive MAG coordination, then only the further owners required by the task. If required identity, applicable owner, or required rule becomes uncertain later in the same session, re-resolve that current canonical authority. Do not assume an earlier read remains reliably represented.
+
+If required task-specific context cannot be recovered from current canonical documentation and still-reliable Product Owner decisions, stop authoritative coordination that depends on it and say what is unreliable. Do not invent the missing state.
 
 ## Documentation authority model
 
