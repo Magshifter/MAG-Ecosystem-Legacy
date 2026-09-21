@@ -1,7 +1,7 @@
 # MAG Implementation Patterns
 
 - MAG-Document-ID: `MAG_IMPLEMENTATION_PATTERNS.md`
-- MAG-Content-Updated: `2026-09-20T14:05:00+03:00`
+- MAG-Content-Updated: `2026-09-21T18:00:00+03:00`
 
 Reusable, source-backed implementation knowledge for MAG development.
 
@@ -78,6 +78,7 @@ For a concrete task:
 - [Do not use editor lifecycle hooks merely to hide initialization layout movement](#do-not-use-editor-lifecycle-hooks-merely-to-hide-initialization-layout-movement)
 - [Explicit browser-static-asset deployment boundary](#explicit-browser-static-asset-deployment-boundary)
 - [Separate host eligibility from effective feature enablement](#separate-host-eligibility-from-effective-feature-enablement)
+- [Partial add-on `_output` is unsafe as a development import source](#partial-add-on-_output-is-unsafe-as-a-development-import-source)
 - [Source map](#source-map)
 
 ---
@@ -1903,6 +1904,41 @@ Column names, cache fields, and ContentGate class names are product-local. Reval
 
 ---
 
+## Partial add-on `_output` is unsafe as a development import source
+
+Status: **Verified Fact / Reusable Pattern / Needs Revalidation**
+
+Verified scope: **#5 Beyond 3D Viewer; XenForo 2.3.12; `development.enabled = true`; `xf-addon:rebuild MAG/Beyond3DViewer -n`**
+
+Source context:
+- `#5` live repair: incomplete `src/addons/MAG/Beyond3DViewer/_output` after an isolated ACP/template export
+- restoration from add-on `_data/templates.xml` after deleting the incomplete `_output` tree
+- this does **not** assert a confirmed XenForo vendor bug; it records a MAG development-mode workflow hazard
+
+Observed behavior:
+
+With XenForo development mode enabled, a partial add-on `_output` tree existed and contained only one template (`public/mag_xfrm3d_presentation_overlay.html`). `xf-addon:rebuild` followed the development import path (`xf-dev:import`) rather than the approved `_data` XML path. That partial tree became the authoritative development import source. Add-on templates absent from `_output` were orphaned/removed from live XenForo. `public:mag_xfrm3d_viewer` became unknown. After the incomplete `_output` was deleted, rebuild from `_data/templates.xml` restored all 34 MAG templates.
+
+This is a dangerous development-mode workflow condition: presence of `_output` is enough to change the rebuild/import source, even when that tree is incomplete.
+
+Pattern:
+
+In XenForo development mode, a partial add-on `_output` tree may become the authoritative development import source. A rebuild/import can therefore remove add-on development data that is absent from that partial tree. Before rebuild/import, verify `_output` completeness or deliberately use the approved `_data` path. Do not assume a partial ACP-generated `_output` tree is safe.
+
+Operational checks that match this finding:
+
+1. Before `xf-addon:rebuild` / `xf-dev:import`, inspect whether `src/addons/<Vendor>/<AddOn>/_output` exists.
+2. If it exists, confirm it is a complete approved development export, not a single-template ACP save.
+3. If `_output` is absent, keep it absent unless a complete approved export is intentionally required.
+4. Do not ACP-save/export one isolated template as a substitute for `_data` completeness.
+5. After rebuild, verify expected template titles remain registered (including host-included public templates).
+
+Limitations / revalidation boundary:
+
+Verified on XenForo 2.3.12 with `development.enabled = true` for one MAG add-on. Do not treat this as a confirmed XenForo vendor defect unless installed XenForo source and a controlled reproduction prove product-level incorrectness. Revalidate the actual `xf-addon:rebuild` / `xf-dev:import` source-selection path on the target XenForo version before relying on this in another environment. Template counts and titles are project-local evidence, not a portable quota.
+
+---
+
 ## Source map
 
 This knowledge base was extracted from approved Global documentation plus verified project documentation.
@@ -1937,6 +1973,8 @@ Later addition (2026-09-16): reusable patterns from accepted `#5` Increments 1â€
 Later addition (2026-09-17): reusable patterns from accepted `#5` Performance/UX, ASC-B3/B4, and Hardening (ORM sidecar prewarm + hydrated null, visibility-bounded render lifecycle, XenForo in-place overlay replacement, ACL-safe public counters/lists, stale unique-job recovery, explicit client teardown, narrow presentation-suppression rule). Validation discipline (call-site audit, click-path + invariant regression) recorded in `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 7. Not promoted: measured-optimization-only wording, deterministic fixture setup, Inc 12/13 storage/import lessons, small XenForo facts already covered elsewhere.
 
 Later addition (2026-09-20): reusable patterns from `#5` `[MAG] Beyond 3D Viewer` `1.0.4` stabilization (canonical managed-HTML client refresh, editor-bootstrap layout diagnosis at the collapsing ancestor, no cosmetic editor-lifecycle masking, explicit `_files` vs `www/js` deployment boundary, eligibility vs effective enablement). Current #5 repository is `Beyond3DViewer`; historical capture paths below that say `XFRM3DModel` remain the original evidence locations from those dates.
+
+Later addition (2026-09-21): development-mode hazard that a partial add-on `_output` tree can become the authoritative `xf-dev:import` source during `xf-addon:rebuild`. Recorded as a MAG workflow hazard, not as a confirmed XenForo vendor bug.
 
 Excluded from this initial extraction:
 
