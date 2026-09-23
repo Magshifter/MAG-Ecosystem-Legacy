@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-23T20:55:00+03:00`
+- MAG-Content-Updated: `2026-09-23T21:05:00+03:00`
 
 This document is the navigation and governance foundation for MAG software development across approved development classes.
 
@@ -90,10 +90,10 @@ Each `#N` XenForo project also has a **short, stable project code** used in docu
 | #1 | `P01__GLF` | [MAG] Global Links Favicons | Active / Stable 1.4.3 | `GlobalLinksFavicons` | `C:\laragon\repos\GlobalLinksFavicons` |
 | #2 | `P02__TS` | [MAG] Tag Synchronizer | Active / Stable 1.0.0 | `TagSynchronizer` | `C:\laragon\repos\TagSynchronizer` |
 | #3 | `P03__SL` | [MAG] Simple Landing | Active / Targeted Research | `SimpleLanding` | `C:\laragon\repos\SimpleLanding` |
-| #4 | `P04__DG` | [MAG] Doc&Guide | Active / Phase 2 Requirements | `DocGuide` | `C:\laragon\repos\DocGuide` |
+| #4 | `P04__DG` | [MAG] Doc&Guide | Active / Phase 3 Targeted Research; preparatory baseline recorded / Gate 1 passed | `DocGuide` | `C:\laragon\repos\DocGuide` |
 | #5 | `P05__3DR` | [MAG] Beyond 3D Viewer | Active / Development 1.0.4 (`1000195`) | `Beyond3DViewer` | `C:\laragon\repos\Beyond3DViewer` |
 | #6 | `P06__DT` | [MAG] Design Toolkit | Active / Initial requirements discovery | `DesignToolkit` | `C:\laragon\repos\DesignToolkit` |
-| #8 | `P08__AE` | [MAG] ACP Enhancements | Active / Phase 7 COMPLETE; I01–I10 checkpointed; Product Owner Practical Acceptance PASS; Development 1.0.0 Alpha 1 (1000001); Gate 2 passed; Gate 3 NOT YET PASSED; READY FOR GATE 3 — RELEASE READINESS DECISION; Phase 8 NOT AUTHORIZED | `ACP-Enhancements` | `C:\laragon\repos\ACP-Enhancements` |
+| #8 | `P08__AE` | [MAG] ACP Enhancements | Active / Phase 8 COMPLETE; Gate 3 PASSED; release identity 1.0.0 (1000090); validated artifact ready; Stable publication NOT YET CONFIRMED; Phase 9 — Post-Release Verification NEXT | `ACP-Enhancements` | `C:\laragon\repos\ACP-Enhancements` |
 
 The `#N` registry table is the canonical current-fact source for identity, current lifecycle/status label, current stable version where shown, Git repository, and local path. Narrative below may explain classification, history, and meaning; it must not independently restate volatile current status, version, or path.
 
@@ -482,7 +482,7 @@ For `#N`, Drive-First, Local/Git-First, Full, and Resume are normal documentatio
 
 `#2` [MAG] Tag Synchronizer is registered. Current identity, status, version, repository, and local path are in the `#N` registry table above. After the released Stable 1.0.0, Post-Release Verification is the next lifecycle stage and has not started. It inherits Global rules by reference. It must not contain local copies of Global documentation files from `MAG-Ecosystem`.
 
-`#4` [MAG] Doc&Guide is an approved XenForo identity. Current identity, status, repository, and local path are in the `#N` registry table above. Phase 1 reached **Local/Git Bootstrap Complete** through Drive-First → Resume Bootstrap. Drive state remains **Drive Reconciliation Pending**. Implementation is not authorized. It inherits Global rules by reference and must not contain local copies of Global documentation files from `MAG-Ecosystem`.
+`#4` [MAG] Doc&Guide is an approved XenForo identity. Current identity, status, repository, and local path are in the `#N` registry table above. Phase 1 reached **Local/Git Bootstrap Complete** through Drive-First → Resume Bootstrap. Drive state: **Drive Reconciled**. Local and Drive documentation reconciled after the 2026-09-22 Drive-first Phase 3 preparation update; Git finalization remains separate. Implementation is not authorized. It inherits Global rules by reference and must not contain local copies of Global documentation files from `MAG-Ecosystem`.
 
 ## Current MAG-Ecosystem repository contents
 
