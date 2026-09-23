@@ -11,7 +11,7 @@ Not yet defined. Record the verified phase under MAG-Ecosystem / MAG_ADDON_DEVEL
 
 ## Current Version / Increment
 
-Not yet defined. No implementation exists yet.
+Not yet defined. No implementation exists yet. When an add-on version exists, record `version_string` and `version_id`. Apply MAG-Ecosystem / MAG_ADDON_DEVELOPMENT_LIFECYCLE.md **XenForo add-on version identity**. Use the clean GLOBAL scheme unless a documented **Legacy Version Baseline** applies. Unresolved version identity is a stop before Phase 8 final packaging.
 
 ## Approved First Release Scope
 

@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-23T09:30:00+03:00`
+- MAG-Content-Updated: `2026-09-23T12:20:00+03:00`
 
 This document is the navigation and governance foundation for MAG software development across approved development classes.
 
@@ -181,7 +181,7 @@ The current Global documentation set comprises **seven** authoritative files in 
 | `AI_GUIDELINES.md` | Global MAG development workflow and operational rules; §24 owns Cursor prompt presentation, post-execution review, and Cursor model-selection / model-routing policy. §26 owns Process Overlay command text. |
 | `AI_AGENTS_RULES.md` | Mandatory execution rules and boundaries for AI coding agents and related development tools, including Cursor procedure pre-flight and Plain text output requirements. |
 | `CURSOR_USAGE_ANALYTICS.md` | Authoritative Cursor usage measurement and telemetry methodology only: chat routing for measurement context, Cursor Models Before/After tracking (including automatic After telemetry consumption and failure handling), reporting, forecasting, and analytics. Does **not** own model-selection policy. |
-| `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Canonical ordered lifecycle for `#N` XenForo add-ons: stage gates, transitions, and documentation timing. References detailed operational rules in their owning Global documents. |
+| `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Canonical ordered lifecycle for `#N` XenForo add-ons: stage gates, transitions, documentation timing, and XenForo add-on `version_id` / `version_string` policy. References detailed operational rules in their owning Global documents. |
 | `MAG_IMPLEMENTATION_PATTERNS.md` | Global reusable technical knowledge base: verified, source-backed implementation patterns (predominantly XenForo/XFRM for `#N` products), compatibility lessons, failure modes, and related evidence-backed findings. Subordinate to Global process documents and active-development TZ, Roadmap, and Architecture. Does not define product requirements. |
 | `MAG_DOCUMENTATION_OPERATIONS.md` | Authoritative documentation synchronization protocol across managed Local Git repositories, Google Drive, ChatGPT, and Cursor. |
 
@@ -349,7 +349,7 @@ Each Global file has one primary authority. Do not duplicate its detailed rules 
 | Source | Authority |
 | --- | --- |
 | `MAG_ECOSYSTEM.md` | Ecosystem identity, development-class taxonomy, namespace registry, documentation map, authority navigation, and GLOBAL + active development identity context isolation. |
-| `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Canonical ordered lifecycle for `#N` XenForo add-ons: stage gates, phase transitions, and documentation timing. Does not redefine detailed rules owned by other Global documents. |
+| `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Canonical ordered lifecycle for `#N` XenForo add-ons: stage gates, phase transitions, documentation timing, and XenForo add-on version identity. Does not redefine detailed rules owned by other Global documents. |
 | `AI_GUIDELINES.md` | Detailed development standards, principles, stage/phase closure mechanics, operational workflow, Cursor prompt presentation, and Cursor model-selection / model-routing policy. |
 | `AI_AGENTS_RULES.md` | Coding-agent execution boundaries, mandatory Cursor pre-flight, checkpoints, and applicable report requirements. |
 | `CURSOR_USAGE_ANALYTICS.md` | Cursor usage measurement and telemetry methodology only (chat routing for measurement context, Before/After tracking, reporting, forecasting). Does **not** own model-selection policy. |

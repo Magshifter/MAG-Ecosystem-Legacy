@@ -1,7 +1,7 @@
 # MAG XenForo Add-on Blueprint
 
 - MAG-Document-ID: `MAG_XENFORO_ADDON_BLUEPRINT.md`
-- MAG-Content-Updated: `2026-09-13T14:15:00+00:00`
+- MAG-Content-Updated: `2026-09-23T12:20:00+03:00`
 
 ## Purpose, scope, and authority
 
@@ -67,6 +67,8 @@ The root README is public/product-facing source for GitHub, forum publication, r
 Recommended root README structure: H1 `[MAG] <Product Name>`, a short verified value statement, then Overview; Features; Requirements / Compatibility; Installation; Usage; Screenshots / Examples; Current Version; Support; License; Releases. Omit unavailable claims or identify their pending state. Do not invent screenshots, support URLs, licensing decisions, installation commands, or released versions. Apply lifecycle Release Presentation rules when producing release-facing copy.
 
 The add-on skeleton is the verified native structure needed by the approved bootstrap scope, not prebuilt product behavior. Use only resolved identity and applicable native mechanisms. Create no speculative classes, integrations, or tests. If skeleton work requires a new product/architecture decision or separately gated implementation, report it and leave that part pending.
+
+Add-on `version_string` / `version_id` follow `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` **XenForo add-on version identity**. New projects use the clean GLOBAL scheme. Record a **Legacy Version Baseline** in the project Roadmap only when established history conflicts with that scheme. Unresolved version identity is a stop before Phase 8 final packaging. Do not invent `version_id`.
 
 ## Full Bootstrap
 

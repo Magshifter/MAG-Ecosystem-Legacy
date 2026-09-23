@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Coding Agent Rules
 
 - MAG-Document-ID: `AI_AGENTS_RULES.md`
-- MAG-Content-Updated: `2026-09-13T14:15:00+00:00`
+- MAG-Content-Updated: `2026-09-23T12:20:00+03:00`
 
 These rules define **how coding agents may execute** work in MAG repositories.
 
@@ -200,7 +200,7 @@ Apply the material-change filter and evidence-reuse rules in [`AI_GUIDELINES.md`
 
 Prefer the **minimum sufficient safe path**: when the objective is approved, evidence remains valid, and no authority/risk/scope boundary changed, execute the smallest safe procedure. Do not re-analyze merely to re-create ceremony.
 
-Release-artifact rules, Release Finalization scope, and Release Presentation gating are defined in `AI_GUIDELINES.md` and `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 8. Agents must not overwrite canonical `_releases` ZIP filenames. Test builds must be renamed immediately. Do not build the final release ZIP before required Release Presentation data is approved and applied.
+Release-artifact rules, Release Finalization scope, and Release Presentation gating are defined in `AI_GUIDELINES.md` and `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 8. XenForo `version_id` / `version_string` follow `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` **XenForo add-on version identity**. Agents must not invent `version_id`. Unresolved version identity is a stop before version bump and before the final release ZIP. Agents must not overwrite canonical `_releases` ZIP filenames. Test builds must be renamed immediately. Do not build the final release ZIP before required Release Presentation data is approved and applied.
 
 Distinguish:
 

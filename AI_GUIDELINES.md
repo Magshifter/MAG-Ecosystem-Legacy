@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Development Guidelines
 
 - MAG-Document-ID: `AI_GUIDELINES.md`
-- MAG-Content-Updated: `2026-09-15T08:50:00+00:00`
+- MAG-Content-Updated: `2026-09-23T12:20:00+03:00`
 
 This document is the **Global MAG development standard**. It defines **how** MAG software is developed with AI assistance.
 
@@ -648,6 +648,7 @@ Finalized XenForo release ZIP archives in `_releases` are immutable historical a
 
 Before `xf-addon:build-release`:
 
+- Confirm version identity is already resolved under [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) **XenForo add-on version identity** (clean GLOBAL scheme or a documented Legacy Version Baseline). Do not invent `version_id`. If identity is `Unknown`, STOP before bump or ZIP.
 - Verify source `addon.json` `version_string` and `version_id` match the intended release.
 - Verify the installed XenForo add-on DB version is aligned with that intended release.
 - When they differ, run the established native XenForo alignment procedure first (on the current stack: `xf-addon:bump-version --from-json`).

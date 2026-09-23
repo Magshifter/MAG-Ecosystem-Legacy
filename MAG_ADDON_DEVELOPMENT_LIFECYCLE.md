@@ -1,7 +1,7 @@
 # MAG Add-on Development Lifecycle
 
 - MAG-Document-ID: `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
-- MAG-Content-Updated: `2026-09-13T14:15:00+00:00`
+- MAG-Content-Updated: `2026-09-23T12:20:00+03:00`
 
 This document defines the Global MAG lifecycle for developing and maintaining **MAG XenForo add-ons (`#N`)**.
 
@@ -739,10 +739,84 @@ The release may proceed to finalization only when:
 - Critical issues are resolved;
 - known limitations are accurately documented;
 - release documentation is synchronized;
+- intended public semantic version is known;
+- applicable versioning mode is known: clean GLOBAL scheme **or** a documented project **Legacy Version Baseline**;
 - the Product Owner approves release finalization.
 
-Passing this gate does not itself publish the release.
+Passing this gate does not itself publish the release. Exact `version_id` / `version_string` for the Phase 8 artifact may still be finalized under the version-identity rules below, but Phase 8 must not invent the scheme.
 
+## XenForo add-on version identity
+
+This section is the canonical MAG HOW for XenForo `addon.json` `version_id` and `version_string` on `#N` add-ons. It does not add a lifecycle gate. Product Owner release authorization remains unchanged.
+
+### Clean GLOBAL formula
+
+Use this formula for **new** MAG `#N` XenForo add-ons that do **not** already have a conflicting established history:
+
+```text
+version_id = MAJOR * 1,000,000 + MINOR * 10,000 + PATCH * 100 + STAGE
+```
+
+`STAGE` is the numeric release-stage slot for that exact semantic `MAJOR.MINOR.PATCH`.
+
+Approved stage ranges:
+
+| Stage | STAGE values |
+| --- | --- |
+| Alpha | `01`–`19` |
+| Beta | `20`–`39` |
+| RC | `40`–`59` |
+| Stable | `90` |
+| Reserved | `60`–`89`, `91`–`99` |
+
+Canonical examples:
+
+| `version_string` | `version_id` |
+| --- | --- |
+| `1.0.0 Alpha 1` | `1000001` |
+| `1.0.0 Alpha 2` | `1000002` |
+| `1.0.0 Beta 1` | `1000020` |
+| `1.0.0 RC 1` | `1000040` |
+| `1.0.0` | `1000090` |
+| `1.0.1 Alpha 1` | `1000101` |
+| `1.0.1` | `1000190` |
+| `1.1.0 Alpha 1` | `1010001` |
+| `1.1.0` | `1010090` |
+| `2.0.0` | `2000090` |
+
+The user-facing prerelease ordinal and the numeric `STAGE` slot need not be numerically identical beyond this mapping and these ranges. Do not create automatic mappings for Alpha 20+, Beta 20+, or other ordinals that would leave the allocated range. If a release line would exhaust its allocated stage range, Product Owner decision is required before further prereleases.
+
+### Mandatory invariants
+
+1. `version_id` MUST be strictly increasing within one XenForo add-on history.
+2. A later Stable release MUST have a `version_id` greater than every Alpha, Beta, RC, or other installed or released predecessor in that project history.
+3. Historical `version_id` values MUST NOT be rewritten merely to conform to a later MAG formula.
+4. `version_string` and `version_id` are separate: `version_string` communicates public semantic and release-stage identity; `version_id` provides XenForo monotonic upgrade ordering.
+5. Before Phase 8 final package generation, the intended public version string and a valid increasing `version_id` MUST already be resolved.
+6. Phase 8 MUST NOT discover or improvise the versioning scheme for the first time. The release line’s mapping must be determinable from the clean GLOBAL scheme **or** a documented **Legacy Version Baseline**.
+7. If no valid successor can be proven: status = `Unknown`; STOP before version bump or package build; Product Owner decision is required.
+8. Never choose a “standard-looking” XenForo `version_id` if it is lower than an already installed or released MAG version.
+
+### Legacy Version Baseline
+
+A project is **legacy for versioning** only when its established history **conflicts** with the clean GLOBAL formula. Do not label every existing project legacy without that evidence.
+
+A legacy project must record a **Legacy Version Baseline** in its own project documentation, containing at minimum:
+
+- last authoritative current `version_id`;
+- corresponding `version_string`;
+- evidence or source;
+- next approved compatibility mapping or sequence.
+
+Rules:
+
+- preserve all historical IDs;
+- the next ID must be greater than every authoritative predecessor;
+- do not force the project backwards into the clean formula;
+- project-specific compatibility mapping belongs in the active project’s documentation;
+- GLOBAL owns only this transition algorithm, not each project’s numbers.
+
+Existing projects transition only when their own release or version work requires it, and only after their actual history is inspected. Do not invent mappings for other projects.
 
 ## 13. Phase 8 — Release Finalization
 
@@ -763,6 +837,14 @@ Release Readiness
 ### Entry conditions
 
 Gate 3 passed and the finalization scope is authorized.
+
+Before any **final** release ZIP:
+
+- exact `version_string` must be known;
+- exact `version_id` must be known;
+- monotonicity against the current installed and released baseline must be verified under **XenForo add-on version identity** above.
+
+If version identity is unresolved (`Unknown`), Phase 8 MUST STOP before version bump and before the final ZIP. Do not invent `version_id`. Release Presentation may proceed only as far as it does not require packaging that unresolved identity.
 
 ### Release Presentation (mandatory)
 
@@ -961,7 +1043,7 @@ AI and coding agents must not infer publication from a successful build or final
 
 ### Result
 
-After confirmed publication, the release becomes the current stable baseline.
+After confirmed publication, the release becomes the current stable baseline. The released `version_id` + `version_string` pair becomes part of the project’s historical version baseline.
 
 Project documentation and ChatGPT Project context should be refreshed according to applicable Global documentation synchronization rules.
 
@@ -1068,6 +1150,8 @@ A stable release or an existing maintained project provides a known baseline. Po
 - identify the problem or requested change against the current baseline;
 - classify it as a defect, requirement change, compatibility change, or other bounded maintenance work;
 - establish the affected release scope;
+- determine the next semantic release line before consuming `version_id` values arbitrarily;
+- confirm the next `version_id` under **XenForo add-on version identity** (clean GLOBAL scheme, or a documented Legacy Version Baseline when history conflicts);
 - identify which approved requirements, architecture decisions, and validation evidence remain applicable;
 - obtain authorization for the next bounded action;
 - route the change to the earliest phase whose decisions must change.
