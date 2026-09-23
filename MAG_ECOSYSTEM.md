@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-23T12:50:00+03:00`
+- MAG-Content-Updated: `2026-09-23T13:08:00+03:00`
 
 This document is the navigation and governance foundation for MAG software development across approved development classes.
 
@@ -93,7 +93,7 @@ Each `#N` XenForo project also has a **short, stable project code** used in docu
 | #4 | `P04__DG` | [MAG] Doc&Guide | Active / Phase 2 Requirements | `DocGuide` | `C:\laragon\repos\DocGuide` |
 | #5 | `P05__3DR` | [MAG] Beyond 3D Viewer | Active / Development 1.0.4 (`1000195`) | `Beyond3DViewer` | `C:\laragon\repos\Beyond3DViewer` |
 | #6 | `P06__DT` | [MAG] Design Toolkit | Active / Initial requirements discovery | `DesignToolkit` | `C:\laragon\repos\DesignToolkit` |
-| #8 | `P08__AE` | [MAG] ACP Enhancements | Active / Phase 4 Architecture Planning; Phase 3 complete; Gate 1 passed | `ACP-Enhancements` | `C:\laragon\repos\ACP-Enhancements` |
+| #8 | `P08__AE` | [MAG] ACP Enhancements | Active / Phase 4 complete; Gate 2 passed; Architecture approved | `ACP-Enhancements` | `C:\laragon\repos\ACP-Enhancements` |
 
 The `#N` registry table is the canonical current-fact source for identity, current lifecycle/status label, current stable version where shown, Git repository, and local path. Narrative below may explain classification, history, and meaning; it must not independently restate volatile current status, version, or path.
 
