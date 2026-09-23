@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-23T21:05:00+03:00`
+- MAG-Content-Updated: `2026-09-23T21:40:00+03:00`
 
 This document is the navigation and governance foundation for MAG software development across approved development classes.
 
@@ -88,12 +88,12 @@ Each `#N` XenForo project also has a **short, stable project code** used in docu
 | ID | Code | Product | Status | Git repository | Local path |
 | --- | --- | --- | --- | --- | --- |
 | #1 | `P01__GLF` | [MAG] Global Links Favicons | Active / Stable 1.4.3 | `GlobalLinksFavicons` | `C:\laragon\repos\GlobalLinksFavicons` |
-| #2 | `P02__TS` | [MAG] Tag Synchronizer | Active / Stable 1.0.0 | `TagSynchronizer` | `C:\laragon\repos\TagSynchronizer` |
-| #3 | `P03__SL` | [MAG] Simple Landing | Active / Targeted Research | `SimpleLanding` | `C:\laragon\repos\SimpleLanding` |
-| #4 | `P04__DG` | [MAG] Doc&Guide | Active / Phase 3 Targeted Research; preparatory baseline recorded / Gate 1 passed | `DocGuide` | `C:\laragon\repos\DocGuide` |
-| #5 | `P05__3DR` | [MAG] Beyond 3D Viewer | Active / Development 1.0.4 (`1000195`) | `Beyond3DViewer` | `C:\laragon\repos\Beyond3DViewer` |
+| #2 | `P02__TS` | [MAG] Tag Synchronizer | Active / Stable 1.1.0 APPROVED; PRV PASS; external publication not recorded | `TagSynchronizer` | `C:\laragon\repos\TagSynchronizer` |
+| #3 | `P03__SL` | [MAG] Simple Landing | Active / Gate 1 complete; Targeted Research / Installed-Source Verification NEXT | `SimpleLanding` | `C:\laragon\repos\SimpleLanding` |
+| #4 | `P04__DG` | [MAG] Doc&Guide | Active / Phase 6 Incremental Implementation; 1.0.0 Alpha 10 (`1000109`); Slice 20 CLOSED; Slice 21 technical PASS / PO acceptance PENDING; Slice 22 not started | `DocGuide` | `C:\laragon\repos\DocGuide` |
+| #5 | `P05__3DR` | [MAG] Beyond 3D Viewer | Active / Released 1.1.0 (`1001100`); 1.2 not started | `Beyond3DViewer` | `C:\laragon\repos\Beyond3DViewer` |
 | #6 | `P06__DT` | [MAG] Design Toolkit | Active / Initial requirements discovery | `DesignToolkit` | `C:\laragon\repos\DesignToolkit` |
-| #8 | `P08__AE` | [MAG] ACP Enhancements | Active / Phase 8 COMPLETE; Gate 3 PASSED; release identity 1.0.0 (1000090); validated artifact ready; Stable publication NOT YET CONFIRMED; Phase 9 — Post-Release Verification NEXT | `ACP-Enhancements` | `C:\laragon\repos\ACP-Enhancements` |
+| #8 | `P08__AE` | [MAG] ACP Enhancements | Active / Stable 1.0.0 (1000090); Gate 3 PASSED; Phase 8 PASSED; Stable Release confirmed (Resource mag-acp-enhancements.12); Phase 9 — Post-Release Verification ACTIVE | `ACP-Enhancements` | `C:\laragon\repos\ACP-Enhancements` |
 
 The `#N` registry table is the canonical current-fact source for identity, current lifecycle/status label, current stable version where shown, Git repository, and local path. Narrative below may explain classification, history, and meaning; it must not independently restate volatile current status, version, or path.
 
