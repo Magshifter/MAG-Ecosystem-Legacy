@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-23T21:40:00+03:00`
+- MAG-Content-Updated: `2026-09-24T18:15:00+03:00`
 
 This document is the navigation and governance foundation for MAG software development across approved development classes.
 
@@ -90,7 +90,7 @@ Each `#N` XenForo project also has a **short, stable project code** used in docu
 | #1 | `P01__GLF` | [MAG] Global Links Favicons | Active / Stable 1.4.3 | `GlobalLinksFavicons` | `C:\laragon\repos\GlobalLinksFavicons` |
 | #2 | `P02__TS` | [MAG] Tag Synchronizer | Active / Stable 1.1.0 APPROVED; PRV PASS; external publication not recorded | `TagSynchronizer` | `C:\laragon\repos\TagSynchronizer` |
 | #3 | `P03__SL` | [MAG] Simple Landing | Active / Gate 1 complete; Targeted Research / Installed-Source Verification NEXT | `SimpleLanding` | `C:\laragon\repos\SimpleLanding` |
-| #4 | `P04__DG` | [MAG] Doc&Guide | Active / Phase 6 Incremental Implementation; 1.0.0 Alpha 10 (`1000109`); Slice 20 CLOSED; Slice 21 technical PASS / PO acceptance PENDING; Slice 22 not started | `DocGuide` | `C:\laragon\repos\DocGuide` |
+| #4 | `P04__DG` | [MAG] Doc&Guide | Active / Stable 1.0.1 (`1000190`); 1.1.0 planning not started | `DocGuide` | `C:\laragon\repos\DocGuide` |
 | #5 | `P05__3DR` | [MAG] Beyond 3D Viewer | Active / Released 1.1.0 (`1001100`); 1.2 not started | `Beyond3DViewer` | `C:\laragon\repos\Beyond3DViewer` |
 | #6 | `P06__DT` | [MAG] Design Toolkit | Active / Initial requirements discovery | `DesignToolkit` | `C:\laragon\repos\DesignToolkit` |
 | #8 | `P08__AE` | [MAG] ACP Enhancements | Active / Stable 1.0.0 (1000090); Gate 3 PASSED; Phase 8 PASSED; Stable Release confirmed (Resource mag-acp-enhancements.12); Phase 9 — Post-Release Verification ACTIVE | `ACP-Enhancements` | `C:\laragon\repos\ACP-Enhancements` |
@@ -480,9 +480,9 @@ When a new MAG development is approved in a given identity class:
 
 For `#N`, Drive-First, Local/Git-First, Full, and Resume are normal documentation-surface paths owned by `MAG_DOCUMENTATION_OPERATIONS.md` §5. Drive-First follows Project Approval and permits substantive documentation work on Drive under **Bootstrap Incomplete — Local/Git Pending**. Local/Git-First may complete Local/Git Bootstrap Complete while Drive is deferred. Resume Bootstrap reuses the permanent identity, current Drive documents when they exist, and completed work; establishes the Local repository structure including `/docs/`; and completes the separately authorized Git baseline required for **Local/Git Bootstrap Complete** and stable registration. Reconcile an existing Drive package into Local when those counterparts exist. Deferred Drive counterparts remain **Drive Reconciliation Pending** and do not invalidate Phase 1 completion or revert registration to provisional. Do not restart requirements or architecture merely because the device changed. Lifecycle states and two-level bootstrap authority belong to `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 1. Bootstrap completion does not authorize commit, push, tag, or release.
 
-`#2` [MAG] Tag Synchronizer is registered. Current identity, status, version, repository, and local path are in the `#N` registry table above. After the released Stable 1.0.0, Post-Release Verification is the next lifecycle stage and has not started. It inherits Global rules by reference. It must not contain local copies of Global documentation files from `MAG-Ecosystem`.
+`#2` [MAG] Tag Synchronizer is registered. Current identity, status, version, repository, and local path are in the `#N` registry table above. It inherits Global rules by reference. It must not contain local copies of Global documentation files from `MAG-Ecosystem`.
 
-`#4` [MAG] Doc&Guide is an approved XenForo identity. Current identity, status, repository, and local path are in the `#N` registry table above. Phase 1 reached **Local/Git Bootstrap Complete** through Drive-First → Resume Bootstrap. Drive state: **Drive Reconciled**. Local and Drive documentation reconciled after the 2026-09-22 Drive-first Phase 3 preparation update; Git finalization remains separate. Implementation is not authorized. It inherits Global rules by reference and must not contain local copies of Global documentation files from `MAG-Ecosystem`.
+`#4` [MAG] Doc&Guide is an approved XenForo identity. Current identity, status, repository, and local path are in the `#N` registry table above. Phase 1 reached **Local/Git Bootstrap Complete** through Drive-First → Resume Bootstrap. Drive state: **Drive Reconciled**. Local and Drive documentation reconciled after the 2026-09-22 Drive-first Phase 3 preparation update. It inherits Global rules by reference and must not contain local copies of Global documentation files from `MAG-Ecosystem`.
 
 ## Current MAG-Ecosystem repository contents
 
