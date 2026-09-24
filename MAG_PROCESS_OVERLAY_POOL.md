@@ -5,7 +5,7 @@
 
 This file is the ecosystem-level **MAG Process Overlay Pool**. It is a single registered Global process asset containing multiple internal process records (MPO entries).
 
-It is **not** an eighth canonical Global authority document. Durable normalized HOW remains in the seven canonical Global owners defined in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). This Pool holds temporary or ACTIVE process deltas so Product Owner-approved HOW corrections can take effect immediately, be validated in real work, and later be promoted, rejected, or withdrawn.
+It is **not** a seventh canonical Global authority document. Durable normalized HOW remains in the six canonical Global owners defined in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). This Pool holds temporary or ACTIVE process deltas so Product Owner-approved HOW corrections can take effect immediately, be validated in real work, and later be promoted, rejected, or withdrawn.
 
 Individual MPO entries are **not** standalone documents. They do not receive a separate MAG-Document-ID, separate registration, separate Drive identity, or project ownership.
 

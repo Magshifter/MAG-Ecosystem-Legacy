@@ -1,7 +1,7 @@
 # MAG XenForo Add-on Blueprint
 
 - MAG-Document-ID: `MAG_XENFORO_ADDON_BLUEPRINT.md`
-- MAG-Content-Updated: `2026-09-23T12:20:00+03:00`
+- MAG-Content-Updated: `2026-09-24T21:30:00+03:00`
 
 ## Purpose, scope, and authority
 
@@ -9,7 +9,7 @@ A supporting operational asset for new MAG XenForo `#N` projects: GLOBAL → Blu
 
 Consume currently ACTIVE Process Overlay Pool entries for HOW. This Blueprint does not own those overlays and cannot create overlay rules. Apply two-level bootstrap authority and Phase 1 completion states from `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 1. Apply Drive-First, Local/Git-First, Full, and Resume surface paths from `MAG_DOCUMENTATION_OPERATIONS.md` §5. Drive-First is a normal Level 1 pause with Local/Git pending, not an exception.
 
-Use current authorities from `MAG-Ecosystem`: MAG_ECOSYSTEM.md (identity and document ownership); MAG_PROCESS_OVERLAY_POOL.md (ACTIVE HOW overlays only; PROMOTED records have no overlay effect); AI_GUIDELINES.md (development, localization, closure, operating modes, and ChatGPT coordination); AI_AGENTS_RULES.md (execution and Git boundaries); CURSOR_USAGE_ANALYTICS.md (telemetry); MAG_ADDON_DEVELOPMENT_LIFECYCLE.md (phases and gates); MAG_IMPLEMENTATION_PATTERNS.md (applicable verified knowledge); MAG_DOCUMENTATION_OPERATIONS.md (onboarding and transport). Read these owners instead of treating this asset as a replacement for their detailed rules. Report a conflict and stop the affected work.
+Use current authorities from `MAG-Ecosystem`: MAG_ECOSYSTEM.md (identity and document ownership); MAG_PROCESS_OVERLAY_POOL.md (ACTIVE HOW overlays only; PROMOTED records have no overlay effect); AI_GUIDELINES.md (development, localization, closure, operating modes, and ChatGPT coordination); AI_AGENTS_RULES.md (execution and Git boundaries); MAG_ADDON_DEVELOPMENT_LIFECYCLE.md (phases and gates); MAG_IMPLEMENTATION_PATTERNS.md (applicable verified knowledge); MAG_DOCUMENTATION_OPERATIONS.md (onboarding and transport). Read these owners instead of treating this asset as a replacement for their detailed rules. Report a conflict and stop the affected work.
 
 ## Operating principles
 
@@ -29,7 +29,7 @@ The templates are supporting template assets under MAG_DOCUMENTATION_OPERATIONS.
 
 ## Canonical package and ownership
 
-The conceptual nine-document package is owned by `MAG_ECOSYSTEM.md`. At bootstrap, instantiate the eight bootstrap-created assets from `templates/xenforo-addon/` into `docs/`, preserving the approved suffix casing. Do not instantiate `CURSOR_USAGE_HISTORY` until the first qualifying telemetry event under `CURSOR_USAGE_ANALYTICS.md`. The HISTORY template remains available for that later instantiation. Absence of HISTORY before that event is valid and is not a package failure.
+The conceptual eight-document package is owned by `MAG_ECOSYSTEM.md`. At bootstrap, instantiate the eight bootstrap-created assets from `templates/xenforo-addon/` into `docs/`, preserving the approved suffix casing.
 
 | Asset suffix | Canonical project filename | Owner |
 | --- | --- | --- |
@@ -40,10 +40,9 @@ The conceptual nine-document package is owned by `MAG_ECOSYSTEM.md`. At bootstra
 | CLASS_MAP | `P<NN>__<CODE>__CLASS_MAP.md` | Mandatory container; honest `No implementation exists yet.` until real code exists. |
 | Changelog | `P<NN>__<CODE>__Changelog.md` | Historical staged/released product changes, not plans. |
 | IDEA | `P<NN>__<CODE>__IDEA.md` | Non-authoritative product exploration, Phase 0 reasoning/evaluation, alternatives, historical/superseded concepts, and future concepts. |
-| CURSOR_USAGE_HISTORY | `P<NN>__<CODE>__CURSOR_USAGE_HISTORY.md` | Canonical; lazy-created on first qualifying telemetry. Not a bootstrap file. |
 | AUDIT | `P<NN>__<CODE>__AUDIT.md` | Mandatory research/evidence parent. |
 
-Maintain each fact in its owner; use references elsewhere. An explicitly required bootstrap-pending notice may appear in internal README with a link to the detailed Roadmap record. A mandatory container is not mandatory substantive work. Empty substantive domains receive honest current-state text, not fabricated entries. Creation does not imply approval, implementation, a performed audit, or telemetry. No OVERVIEW or automatic child-audit templates are included.
+Maintain each fact in its owner; use references elsewhere. An explicitly required bootstrap-pending notice may appear in internal README with a link to the detailed Roadmap record. A mandatory container is not mandatory substantive work. Empty substantive domains receive honest current-state text, not fabricated entries. Creation does not imply approval, implementation, or a performed audit. No OVERVIEW or automatic child-audit templates are included.
 
 CLASS_MAP is created at bootstrap with honest pre-implementation content. Do not invent classes, namespaces, handlers, listeners, or file maps.
 
@@ -57,7 +56,7 @@ Default layout, created only as each part becomes justified:
 <repository>/
   README.md
   docs/
-    <eight bootstrap-created canonical documents; CURSOR_USAGE_HISTORY when triggered>
+    <eight bootstrap-created canonical documents>
   src/addons/MAG/<AddOnName>/
   tests/                         (only when justified)
 ```
@@ -104,9 +103,9 @@ Preserve existing Local work and stop affected overwrites on conflict. Do not re
 
 The Product Owner controls repository publication, commit, push, tag, and release. Provide exact commands using verified repository paths, branch/remotes, and an explicit file list at the appropriate checkpoint. Do not run them automatically. Check the index and diff first; exclude unrelated work. A template or finished bootstrap does not grant Git or implementation authorization.
 
-For Drive, resolve the approved project folder and the eight bootstrap-created counterparts before writes. Include `CURSOR_USAGE_HISTORY` only when that file already exists. Use the controlled batch workflow in MAG_DOCUMENTATION_OPERATIONS.md §5, including safe transport and complete readback; preserve existing IDs and create only proven missing files. Report partial execution honestly and resume only unresolved actions. Do not redefine normal SYNC classifications or safeguards here.
+For Drive, resolve the approved project folder and the eight bootstrap-created counterparts before writes. Use the controlled batch workflow in MAG_DOCUMENTATION_OPERATIONS.md §5, including safe transport and complete readback; preserve existing IDs and create only proven missing files. Report partial execution honestly and resume only unresolved actions. Do not redefine normal SYNC classifications or safeguards here.
 
-This supporting package lives locally at the repository root plus templates/xenforo-addon and on Drive under MAG Projects / Operations with the same relative layout. Transfer templates as supporting template assets under MAG_DOCUMENTATION_OPERATIONS.md §4, not as instantiated project metadata. Package transfer is a separately approved operation and does not change the seven-file Global authority set.
+This supporting package lives locally at the repository root plus templates/xenforo-addon and on Drive under MAG Projects / Operations with the same relative layout. Transfer templates as supporting template assets under MAG_DOCUMENTATION_OPERATIONS.md §4, not as instantiated project metadata. Package transfer is a separately approved operation and does not change the six-file Global authority set.
 
 ## Architecture blocks and implementation increments
 
@@ -199,7 +198,7 @@ Use within the owning project documents, with Roadmap linking the evidence and a
 
 ## ChatGPT coordination and exception reporting
 
-Reuse known context; ask only for missing critical information. Coordinate the approved package as one operation, not a file-by-file interview. Do not reconfirm decisions, silently reduce missing work, or delegate product/architecture decisions to Cursor/Codex. Follow AI_GUIDELINES.md for prompts and review and CURSOR_USAGE_ANALYTICS.md for measurements; never invent telemetry.
+Reuse known context; ask only for missing critical information. Coordinate the approved package as one operation, not a file-by-file interview. Do not reconfirm decisions, silently reduce missing work, or delegate product/architecture decisions to Cursor/Codex. Follow AI_GUIDELINES.md for prompts and review.
 
 Report a real exception promptly in this form:
 
@@ -216,7 +215,7 @@ Use a compact report, not a new permanent Bootstrap Completion file:
 - GitHub: <verified repository / pending>
 - Local repository: <verified path / pending>
 - Google Drive: <folder, counterpart verification / Drive Reconciled / Drive Reconciliation Pending>
-- Core documentation: <eight bootstrap-created files; HISTORY present only if already triggered; metadata and content verification>
+- Core documentation: <eight bootstrap-created files; metadata and content verification>
 - Add-on skeleton: <verified authorized state / pending>
 - Registration: <actual provisional or stable state>
 - Local/Git bootstrap: <Local/Git Bootstrap Complete / Bootstrap Incomplete — Local/Git Pending>
@@ -228,4 +227,4 @@ Report Drive-First Local/Git incompleteness explicitly. Report Drive Reconciliat
 
 ## Blueprint boundary
 
-The package contains this document and nine templates only. Bootstrap instantiates eight project documents; the HISTORY template is used later when telemetry is first recorded. Operational frames stay here and are instantiated in their existing project owners when needed. No automatic child audits, OVERVIEW, separate increment/decision/matrix/acceptance/release/checklist files, speculative directories, or real project are created by publishing this asset. It does not change Global authority, bypass approval, grant implementation scope, or authorize Git/release actions.
+The package contains this document and eight templates only. Bootstrap instantiates eight project documents. Operational frames stay here and are instantiated in their existing project owners when needed. No automatic child audits, OVERVIEW, separate increment/decision/matrix/acceptance/release/checklist files, speculative directories, or real project are created by publishing this asset. It does not change Global authority, bypass approval, grant implementation scope, or authorize Git/release actions.

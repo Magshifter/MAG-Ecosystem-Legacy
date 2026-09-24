@@ -13,7 +13,7 @@ Disposition: **PROMOTED** — validated findings injected into MAG Global docume
 
 These are project-scoped working documents for `#2` ([MAG] Tag Synchronizer), not Global authority. Registration and metadata establish identity/version tracking and synchronization eligibility only; they grant no substantive authority. They cannot override approved TZ, Architecture, Roadmap, or Global rules.
 
-After Product Owner-approved Global promotion on `2026-09-12`, active HOW rules live only in the seven-file Global documentation set. Preserve this experiment body as historical evidence. Do not treat experimental sections below as continuing operational policy.
+After Product Owner-approved Global promotion on `2026-09-12`, active HOW rules live only in the six-file Global documentation set. Preserve this experiment body as historical evidence. Do not treat experimental sections below as continuing operational policy.
 
 ### Post-promotion ownership map
 
@@ -25,7 +25,6 @@ After Product Owner-approved Global promotion on `2026-09-12`, active HOW rules 
 | `+` continuation, Cursor minimization, model routing | `AI_GUIDELINES.md` §24 |
 | Executor-failure recovery, anti-patterns | `AI_AGENTS_RULES.md` §11 |
 | Documentation Fast Sync / sync evidence reuse | `MAG_DOCUMENTATION_OPERATIONS.md` §10 |
-| Cursor usage telemetry only | `CURSOR_USAGE_ANALYTICS.md` |
 | Artifact immutability | `AI_GUIDELINES.md` §21 (unchanged, already Global) |
 
 ## 1. Purpose
@@ -373,7 +372,7 @@ This is a `#2` / `1.1.0` experimental routing principle, not a new Global tool p
 
 ### 7.1 Optimized prompt and context workflow (experimental)
 
-**Classification:** experimental Pipeline v2 practice only. Authoritative prompt presentation and post-execution review remain in `MAG-Ecosystem` / `AI_GUIDELINES.md` §24. Authoritative Cursor usage metrics remain in `MAG-Ecosystem` / `CURSOR_USAGE_ANALYTICS.md`.
+**Classification:** experimental Pipeline v2 practice only. Authoritative prompt presentation and post-execution review remain in `MAG-Ecosystem` / `AI_GUIDELINES.md` §24.
 
 Pipeline v2 evaluates an optimized ChatGPT → Product Owner → Cursor workflow intended to reduce duplicated context and unnecessary round trips:
 
@@ -382,8 +381,6 @@ Pipeline v2 evaluates an optimized ChatGPT → Product Owner → Cursor workflow
 - reference applicable authoritative MAG rules instead of duplicating them in the prompt;
 - provide a concise Ukrainian **Ціль/задача** after the prompt;
 - route through the correct **Cursor chat** and **Cursor model** without inventing unknown chats;
-- avoid requiring **Cursor Models Before** in the user-facing presentation block;
-- display applicable Cursor usage values after execution without commentary;
 - provide immediate post-execution review and a progressive Ukrainian learning note per `AI_GUIDELINES.md` §24.3.
 
 This experiment measures whether reduced context duplication and clearer presentation improve AI/Cursor workflow efficiency without weakening engineering rigor or Product Owner control.
@@ -392,7 +389,7 @@ This experiment measures whether reduced context duplication and clearer present
 
 **Classification:** experimental Pipeline v2 practice for the approved `#2` / `1.1.0` pilot only. **Not** Global authority. Does not change Global lifecycle semantics, Product Owner control, or which actions require Product Owner authorization.
 
-`MAG-Ecosystem` / `CURSOR_USAGE_ANALYTICS.md` owns Cursor usage and telemetry methodology only. It does **not** define model-selection policy.
+Cursor model-selection / model-routing policy belongs in `MAG-Ecosystem` / `AI_GUIDELINES.md` §24.4. This experiment does not own that policy.
 
 Model selection is based on the **complexity of technical decisions still unresolved**, not file type, number of files, or whether code is being edited. Use the **minimum sufficient** model reliably strong enough for the remaining decisions.
 
@@ -673,33 +670,21 @@ For long-running product functionality:
 
 This is an engineering rule, not a reason to add process overhead where no such risk exists.
 
-## 13. Cursor telemetry experiment
+## 13. Historical Cursor-observation notes
 
-**Classification:** experimental proposal/evaluation only. This section is **not** Global Cursor methodology authority.
+**Classification:** historical experiment notes only. Not Global MAG process.
 
-Authoritative Cursor measurement, Before/After handling, automatic After consumption, telemetry-failure rules, visible-delta calculation, and metric finalization are owned by `MAG-Ecosystem` / `CURSOR_USAGE_ANALYTICS.md` in the current Global working tree.
+Pipeline v2 historically considered whether Cursor work should be observed without creating extra procedures. MAG does not collect Cursor Models usage.
 
-Pipeline v2 retains these experimental operational goals (aligned with current Global direction where noted):
+**Historical observation from `#2` pilot baseline:** prior workflow sometimes required additional Product Owner-facing metric handling. That observation motivated Pipeline v2 friction reduction.
 
-- Cursor telemetry must observe work, not create standalone work;
-- never start a Cursor procedure solely to finalize a Cursor Models After value;
-- prefer automatic `Cursor Models After: NN%` from MAG GPT|Cursor|Sync report telemetry when valid — ChatGPT consumes it in the background without routine Product Owner After reporting (current Global §8);
-- when automatic After is missing/invalid, preserve unavailable/pending metrics and surface a tooling failure to the Product Owner; do not invent or silently substitute values (current Global §8.0.1);
-- finalize pending history from the automatic report line when it arrives, without a standalone metric-finalization procedure (current Global §8.1);
-- an unchanged displayed percentage means visible delta 0 pp only, not proven zero actual consumption;
-- do not invent telemetry.
-
-**Historical experimental note (superseded for current Global workflow):** an earlier Pipeline v2 draft proposed stage-local “last known displayed value” substitution when After was pending. Current Global methodology **does not** authorize silent last-known substitution for failed/missing automatic After. That earlier proposal remains a historical experiment idea only.
-
-**Historical observation from `#2` pilot baseline:** prior workflow sometimes required additional Product Owner-facing metric handling. That observation motivated Pipeline v2 friction reduction but is not proof that manual After reporting remains the normal current workflow.
-
-**Experimental documentation-work observation only (not an official `CURSOR_USAGE_ANALYTICS.md` metric):** during early Pipeline v2 documentation-work evaluation, **Other Models** usage was observed as `0% → 32%` (**Δ +32 p.p.**). This observation is experimental context for evaluating AI/Cursor allocation during documentation procedures. It is **not** part of the tracked **Cursor Models** pool, must not be recorded as a Global analytics field, and must not be promoted into authoritative Cursor methodology without separate Product Owner approval.
+**Experimental documentation-work observation:** during early Pipeline v2 documentation-work evaluation, **Other Models** usage was observed as `0% → 32%` (**Δ +32 p.p.**). This remains historical experiment context for AI/Cursor allocation during documentation procedures. It is not MAG process and must not be promoted into Global HOW.
 
 ### 13.1 Evidence capture boundary
 
 Capture metrics, friction observations, over-batching incidents, rework, and finding-specific evidence opportunistically at existing logical stage, closure, or checkpoint boundaries when reliable contemporaneous evidence is available.
 
-Do not create standalone Cursor or Work procedures merely to record routine experiment telemetry when the same evidence can be captured safely during an existing closure. Do not defer all evidence reconstruction until pilot completion when contemporaneous capture is reasonably available. Preserve `pending` or `unavailable` rather than inventing missing evidence.
+Do not create standalone Cursor or Work procedures merely to record routine experiment notes when the same evidence can be captured safely during an existing closure. Do not defer all evidence reconstruction until pilot completion when contemporaneous capture is reasonably available. Preserve `pending` or `unavailable` rather than inventing missing evidence.
 
 ## 14. Round-trip reduction rule
 

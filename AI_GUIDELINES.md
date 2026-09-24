@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Development Guidelines
 
 - MAG-Document-ID: `AI_GUIDELINES.md`
-- MAG-Content-Updated: `2026-09-23T12:20:00+03:00`
+- MAG-Content-Updated: `2026-09-24T21:30:00+03:00`
 
 This document is the **Global MAG development standard**. It defines **how** MAG software is developed with AI assistance.
 
@@ -15,7 +15,7 @@ Detailed coding-agent execution boundaries, mandatory Cursor pre-flight, Plain t
 
 ChatGPT → Product Owner → Cursor prompt presentation, **operating-mode selection (Coordinator Mode / Direct Agent Mode)**, post-execution review, and **Cursor model-selection / model-routing policy** belong in §24 of this document.
 
-Cursor usage metrics, Cursor Models Before/After methodology (including automatic After telemetry consumption and failure handling), post-execution usage-value display, history recording, and forecasting methodology belong in `CURSOR_USAGE_ANALYTICS.md`. That document is **telemetry only** and does **not** own model-selection policy. Project measurement history belongs in the project repository. Do not duplicate telemetry methodology here.
+Do not collect, display, or maintain Cursor Models usage measurements.
 
 ---
 
@@ -58,9 +58,9 @@ Use the authority model in `MAG_ECOSYSTEM.md`. For implementation work, apply it
 | README / overview | Descriptive only. |
 | Idea | Non-authoritative research. |
 
-`AI_AGENTS_RULES.md` (when present) additionally constrains repository-task execution and states mandatory Cursor pre-flight and Plain text execution requirements. Cursor prompt presentation, post-execution review, and model-selection policy remain in §24 of this document. Cursor usage metrics remain in `CURSOR_USAGE_ANALYTICS.md`.
+`AI_AGENTS_RULES.md` (when present) additionally constrains repository-task execution and states mandatory Cursor pre-flight and Plain text execution requirements. Cursor prompt presentation, post-execution review, and model-selection policy remain in §24 of this document.
 
-Process execution must consider canonical Global rules and currently ACTIVE entries in [`MAG_PROCESS_OVERLAY_POOL.md`](MAG_PROCESS_OVERLAY_POOL.md). If an ACTIVE overlay conflicts with canonical process wording inside its explicit scope, follow the overlay until promotion, rejection, or withdrawal. DRAFT and historical statuses have no execution effect. The Pool is not an eighth canonical Global authority owner; governance is defined in `MAG_ECOSYSTEM.md`. Commands are in §26.
+Process execution must consider canonical Global rules and currently ACTIVE entries in [`MAG_PROCESS_OVERLAY_POOL.md`](MAG_PROCESS_OVERLAY_POOL.md). If an ACTIVE overlay conflicts with canonical process wording inside its explicit scope, follow the overlay until promotion, rejection, or withdrawal. DRAFT and historical statuses have no execution effect. The Pool is not a seventh canonical Global authority owner; governance is defined in `MAG_ECOSYSTEM.md`. Commands are in §26.
 
 If Global documents conflict, or two ACTIVE overlays conflict, **stop and report** rather than silently choosing one.
 
@@ -596,13 +596,12 @@ If a stage reveals unresolved **Critical** issues, the stage is not closed and p
 2. Review and explicitly approve the result where product-owner approval is required.
 3. Synchronize authoritative project documentation with the actual approved state.
 4. When relevant work may have produced reusable technical knowledge, evaluate it for `MAG_IMPLEMENTATION_PATTERNS.md` per §22.
-5. Synchronize Cursor usage history when the completed stage/phase included Cursor procedures. Follow [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md) §8. Prefer finalizing **Cursor Models After** from valid automatic MAG GPT|Cursor|Sync report telemetry without a Product Owner measurement step. If automatic After is missing/invalid, notify the Product Owner per that document’s telemetry-failure rule and preserve unavailable/pending metrics; do not invent or silently substitute values. Do not launch a standalone metric-finalization procedure.
-6. Review the resulting documentation/code diff and repository status.
-7. Resolve Critical issues before closure.
-8. Create a logical Git commit representing the completed stage/phase when the user requests or authorizes it.
-9. Push the approved commit when the user authorizes/executes the push.
-10. Verify the working tree is clean.
-11. Only then proceed to the next logical stage/phase.
+5. Review the resulting documentation/code diff and repository status.
+6. Resolve Critical issues before closure.
+7. Create a logical Git commit representing the completed stage/phase when the user requests or authorizes it.
+8. Push the approved commit when the user authorizes/executes the push.
+9. Verify the working tree is clean.
+10. Only then proceed to the next logical stage/phase.
 
 Before publishing:
 
@@ -620,7 +619,7 @@ Do not claim Git state was verified unless it was actually inspected.
 
 Preserve unrelated user changes.
 
-Canonical `#N` package identity and filenames are defined in `MAG_ECOSYSTEM.md`. Operational instantiation (eight bootstrap-created documents under `docs/`, lazy `CURSOR_USAGE_HISTORY`, public root `README.md`, `IDEA.md` casing) is defined in `MAG_XENFORO_ADDON_BLUEPRINT.md`. Do not maintain a second package tree here.
+Canonical `#N` package identity and filenames are defined in `MAG_ECOSYSTEM.md`. Operational instantiation (eight bootstrap-created documents under `docs/`, public root `README.md`, `IDEA.md` casing) is defined in `MAG_XENFORO_ADDON_BLUEPRINT.md`. Do not maintain a second package tree here.
 
 New `#N` projects use that Blueprint/`docs/` layout. `#1` and `#2` historical root/`docs/` mixes and `Idea.md` casing are grandfathered. Do not migrate, rename, or retrofit them, and do not treat those historical layouts as new-project templates.
 
@@ -732,7 +731,6 @@ The list must:
 - Be grouped by source context using `GLOBAL [MAG] Ecosystem`, `#1 [MAG] Global Links Favicons`, `#2 [MAG] Tag Synchronizer`, `A1 [MAG] GPT|Cursor|Sync`, and other approved development-identity markers defined in `MAG_ECOSYSTEM.md`.
 - Include only files that actually changed or that genuinely need Project-context refresh.
 - Use real project-relative paths where useful, for example `docs/P01__GLF__Architecture.md`.
-- Include that project's `docs/P<NN>__<CODE>__CURSOR_USAGE_HISTORY.md` when that file actually changed.
 
 Do not produce this list for release candidates, test builds, blocked releases, or failed finalization.
 
@@ -756,7 +754,7 @@ When a production observation conflicts with documentation, inspect code and con
 
 Do not optimize development merely to reduce Cursor quota usage. Correctness, XenForo compatibility, security, maintainability, testing, and documentation remain higher priorities.
 
-When Cursor analytics or Cursor procedure presentation apply, follow §24 of this document for presentation, post-execution review, and model selection; follow `CURSOR_USAGE_ANALYTICS.md` for usage metrics and telemetry only; and follow `AI_AGENTS_RULES.md` for mandatory execution and Plain text requirements. Do not invent usage percentages.
+When Cursor procedure presentation applies, follow §24 of this document for presentation, post-execution review, and model selection; and follow `AI_AGENTS_RULES.md` for mandatory execution and Plain text requirements. Do not collect, display, or maintain Cursor Models usage measurements.
 
 ---
 
@@ -764,7 +762,7 @@ When Cursor analytics or Cursor procedure presentation apply, follow §24 of thi
 
 This section is the Global authority for **MAG operating modes**, ChatGPT → Product Owner → Cursor presentation (Coordinator Mode), Direct Agent Mode execution surface, post-execution review, and **Cursor model-selection / model-routing policy**.
 
-Cursor usage metrics, measurement procedure, and post-execution usage-value display belong in [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). That document does **not** own model-selection policy or operating-mode selection. Coding-agent Plain text execution requirements remain in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md). Progressive Product Owner technical-lead learning as a permanent MAG development principle is recorded in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md).
+Coding-agent Plain text execution requirements remain in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md). Progressive Product Owner technical-lead learning as a permanent MAG development principle is recorded in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md).
 
 ### 24.0 Operating modes
 
@@ -811,12 +809,10 @@ Do **not**:
 
 1. **Cursor prompt** — first. A dedicated plain-text code block containing only the exact text intended for paste into Cursor. Do not place explanations or execution metadata before it. Keep the prompt concise and task-specific; reference applicable authoritative MAG rules instead of duplicating them unnecessarily.
 2. **Ціль/задача** — maximally concise, informative Ukrainian description of the procedure's purpose and expected result.
-3. **Cursor chat** — exact target chat. Never invent an unknown Cursor chat; resolve ambiguity with the Product Owner first.
+3. **Cursor chat** — exact target chat. Never invent an unknown Cursor chat; resolve ambiguity with the Product Owner first. Do not route work for one approved development identity through another identity's Cursor Agent chat.
 4. **Cursor model** — recommended model/mode per §24.4.
 
-Do not place explanations, Cursor usage values, or other execution metadata before the copyable prompt block.
-
-Do not require **Cursor Models Before** in the user-facing prompt presentation block. Before remains part of analytics methodology in `CURSOR_USAGE_ANALYTICS.md` when applicable.
+Do not place explanations, usage values, or other execution metadata before the copyable prompt block.
 
 Prefer the lowest-friction safe executor that preserves Product Owner control, approved scope, required verification, and auditability. Do not create a Cursor or Work procedure merely to avoid a simpler safe path. A Cursor task should normally execute a complete coherent task rather than split without a risk-based reason.
 
@@ -831,8 +827,6 @@ After a meaningful Cursor procedure in **Coordinator Mode**, ChatGPT must immedi
 5. **Learning note** — a short Ukrainian note explaining what the Product Owner should understand from this stage as the person leading the development process.
 
 Learning notes must be practical, stage-specific, concise, non-repetitive, and progressively deeper as Product Owner experience grows.
-
-Present applicable Cursor usage values separately, per `CURSOR_USAGE_ANALYTICS.md`, without commentary or interpretation in the usage-values block.
 
 In **Direct Agent Mode**, report in the same session under [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md). Optional later ChatGPT review is not a required extra gate and does not authorize Git, implementation, or the next lifecycle stage.
 
@@ -891,8 +885,6 @@ Decision tree:
    → YES: Grok 4.6 High (Extra High only when High is insufficient or failure cost is extreme)
    → NO: re-evaluate from step 2 with a concrete reason
 ```
-
-Record the selected model for telemetry in `CURSOR_USAGE_ANALYTICS.md`. Do not maintain a second normative matrix there.
 
 ---
 

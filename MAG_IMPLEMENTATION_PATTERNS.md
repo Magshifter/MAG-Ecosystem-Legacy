@@ -1,7 +1,7 @@
 # MAG Implementation Patterns
 
 - MAG-Document-ID: `MAG_IMPLEMENTATION_PATTERNS.md`
-- MAG-Content-Updated: `2026-09-21T18:00:00+03:00`
+- MAG-Content-Updated: `2026-09-24T21:30:00+03:00`
 
 Reusable, source-backed implementation knowledge for MAG development.
 
@@ -10,7 +10,6 @@ This document is a Global knowledge base. It does not define product requirement
 - `MAG_ECOSYSTEM.md`
 - `AI_GUIDELINES.md`
 - `AI_AGENTS_RULES.md`
-- `CURSOR_USAGE_ANALYTICS.md`
 - `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
 - any active project `TZ`, `Roadmap`, `Architecture`, `CLASS_MAP`, `Changelog`, or `README`
 
@@ -340,7 +339,6 @@ Verified scope: **#1 GLF 1.2.1+; XenForo 2.2.19 and 2.3.12**
 Source context:
 - `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
 - `GlobalLinksFavicons / docs/P01__GLF__Changelog.md`
-- `GlobalLinksFavicons / docs/P01__GLF__CURSOR_USAGE_HISTORY.md`
 
 Verified GLF pattern:
 
@@ -402,7 +400,7 @@ Status: **Verified Fact / Needs Revalidation**
 Verified scope: **#1 GLF XenForo source investigation during image-upload work**
 
 Source context:
-- `GlobalLinksFavicons / docs/P01__GLF__CURSOR_USAGE_HISTORY.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Roadmap.md`
 
 Recorded finding:
 
@@ -426,7 +424,7 @@ Verified scope: **#1 GLF; XenForo 2.2.19 and 2.3.12**
 
 Source context:
 - `GlobalLinksFavicons / P01__GLF__TZ.md`
-- `GlobalLinksFavicons / docs/P01__GLF__CURSOR_USAGE_HISTORY.md`
+- `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
 
 Recorded optimization lesson:
 
@@ -807,8 +805,8 @@ Revalidate each discrepancy rather than broadly accepting multiple values.
 Status: **Verified Fact / Reusable Pattern**
 
 Source context:
-- `GlobalLinksFavicons / docs/P01__GLF__CURSOR_USAGE_HISTORY.md`
-- Global authority remains `AI_AGENTS_RULES.md`, `AI_GUIDELINES.md` §24 for model routing, and `CURSOR_USAGE_ANALYTICS.md` for usage telemetry.
+- `GlobalLinksFavicons / docs/P01__GLF__Roadmap.md`
+- Global authority remains `AI_AGENTS_RULES.md` and `AI_GUIDELINES.md` §24 for model routing.
 
 Recorded #1 lesson:
 
@@ -826,7 +824,7 @@ For a task with uncertain XenForo behavior:
 
 This improves context targeting and makes repeated audits less likely.
 
-Do not split procedures mechanically when separation would increase cost without improving clarity or verification. Global Cursor workflow remains authoritative in `AI_GUIDELINES.md` §24; usage telemetry remains in `CURSOR_USAGE_ANALYTICS.md`.
+Do not split procedures mechanically when separation would increase cost without improving clarity or verification. Global Cursor workflow remains authoritative in `AI_GUIDELINES.md` §24.
 
 ---
 
@@ -1948,7 +1946,6 @@ Global authority reviewed:
 - `MAG_ECOSYSTEM.md`
 - `AI_GUIDELINES.md`
 - `AI_AGENTS_RULES.md`
-- `CURSOR_USAGE_ANALYTICS.md`
 
 Project evidence reviewed:
 
@@ -1959,7 +1956,6 @@ Project evidence reviewed:
 - `GlobalLinksFavicons / docs/P01__GLF__Changelog.md`
 - `GlobalLinksFavicons / docs/P01__GLF__Overview.md`
 - `GlobalLinksFavicons / P01__GLF__README.md`
-- `GlobalLinksFavicons / docs/P01__GLF__CURSOR_USAGE_HISTORY.md`
 - `XFRM3DModel / research/core-3d-pipeline-benchmark/` (pattern evidence only; not product requirements)
 - `XFRM3DModel / docs/P05__3DR__AUDIT.md`
 - `XFRM3DModel / docs/P05__3DR__TZ.md` (accepted Increments 1–11)

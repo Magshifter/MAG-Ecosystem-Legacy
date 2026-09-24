@@ -1,7 +1,7 @@
 # MAG Documentation Operations
 
 - MAG-Document-ID: `MAG_DOCUMENTATION_OPERATIONS.md`
-- MAG-Content-Updated: `2026-09-13T14:15:00+00:00`
+- MAG-Content-Updated: `2026-09-24T21:30:00+03:00`
 
 ## 1. Purpose and authority
 
@@ -86,7 +86,7 @@ When a template is instantiated for a real project, replace its filename and all
 
 Ordinary SYNC operates only on stable registered logical documents. Controlled bootstrap batches use the explicit provisional scope defined below. The existence of a Markdown file alone does not establish registration or place it in SYNC scope.
 
-Document registration is a distinct authority action. Registration, adoption, canonical rename, and retirement require Product Owner approval. Do not fabricate substantive content merely to complete a nominal set. The approved `#N` bootstrap package owned by `MAG_ECOSYSTEM.md` establishes canonical ownership using eight bootstrap-created containers and honest current-state content. `CURSOR_USAGE_HISTORY` is canonical but lazy-created.
+Document registration is a distinct authority action. Registration, adoption, canonical rename, and retirement require Product Owner approval. Do not fabricate substantive content merely to complete a nominal set. The approved `#N` bootstrap package owned by `MAG_ECOSYSTEM.md` establishes canonical ownership using eight bootstrap-created containers and honest current-state content.
 
 ### MAG Process Overlay Pool
 
@@ -105,7 +105,7 @@ These states are distinct:
 | State | Meaning |
 | --- | --- |
 | Supporting template asset | Reusable source asset. Not an instantiated project logical document. |
-| Global operational asset | Ecosystem-level execution asset such as `MAG_XENFORO_ADDON_BLUEPRINT.md`. Implements Global HOW plus ACTIVE overlays. Not a project document and not an eighth canonical authority owner. |
+| Global operational asset | Ecosystem-level execution asset such as `MAG_XENFORO_ADDON_BLUEPRINT.md`. Implements Global HOW plus ACTIVE overlays. Not a project document and not a seventh canonical authority owner. |
 | Unregistered document | Audit/registration anomaly. Excluded from writable SYNC. |
 | Provisional project document | Instantiated project document inside an approved Level 1 / controlled bootstrap, adoption, or registration procedure. Normal controlled state, not an error. |
 | Stable registered document | All stable-registration prerequisites satisfied, including applicable Local authoritative state and approved Git baseline. Drive reconciliation is independent; **Drive Reconciliation Pending** does not make a locally registered document provisional. |
@@ -195,7 +195,7 @@ Preserve the existing `MAG-Document-ID` and `MAG-Content-Updated` exactly. Copy 
 
 Do not create a separate documentation registry file.
 
-Global registration is represented by the `MAG_ECOSYSTEM.md` Global documentation map, valid metadata, and the applicable Local authoritative state. The seven canonical Global authority files remain the durable authority set. `MAG_PROCESS_OVERLAY_POOL.md` is a separately registered ecosystem-level process asset, not an eighth equivalent authority owner.
+Global registration is represented by the `MAG_ECOSYSTEM.md` Global documentation map, valid metadata, and the applicable Local authoritative state. The six canonical Global authority files remain the durable authority set. `MAG_PROCESS_OVERLAY_POOL.md` is a separately registered ecosystem-level process asset, not a seventh equivalent authority owner.
 
 Stable project registration requires the approved development identity, canonical Local repository, applicable development documentation model and authority, valid metadata, and approved Git baseline. Nonstandard development documents require an explicit Product Owner-approved authoritative or non-authoritative experimental role; metadata cannot grant authority by itself. Process overlays are not registered as project documents.
 
@@ -227,7 +227,7 @@ Project retirement remains under `MAG_ECOSYSTEM.md` and lifecycle authority. Its
 
 Documentation Operations consumes an already approved development identity. It does not approve developments, assign identities, or provide a development-creation command.
 
-A newly approved development identity does not by itself claim stable registration. For a newly approved XenForo `#N` bootstrap, instantiate the eight bootstrap-created documents owned by `MAG_ECOSYSTEM.md` with valid identity and honest current-state content. Do not instantiate `CURSOR_USAGE_HISTORY` until its lazy-creation trigger. Do not blindly clone #1, #2, another project's WHAT, or speculative implementation. The approved package is permitted; it does not apply to `A<N>` or `B<N>`, whose documents remain selected from actual approved needs. Development approval and bootstrap sequencing remain governed by `MAG_ECOSYSTEM.md` and, for `#N` XenForo add-ons, `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`.
+A newly approved development identity does not by itself claim stable registration. For a newly approved XenForo `#N` bootstrap, instantiate the eight bootstrap-created documents owned by `MAG_ECOSYSTEM.md` with valid identity and honest current-state content. Do not blindly clone #1, #2, another project's WHAT, or speculative implementation. The approved package is permitted; it does not apply to `A<N>` or `B<N>`, whose documents remain selected from actual approved needs. Development approval and bootstrap sequencing remain governed by `MAG_ECOSYSTEM.md` and, for `#N` XenForo add-ons, `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`.
 
 ### Controlled XenForo bootstrap batch
 
@@ -239,7 +239,7 @@ Use the existing two-field metadata block. An honest initial-state body is subst
 
 Create only proven missing counterparts; update existing raw files safely in place while preserving their IDs, names, parents, MIME types, and substantive content except for approved body edits. Apply the existing comparison, conflict, safe-transport, and readback requirements. Scope changes, identity ambiguity, unexpected divergence, or unsafe transport stop the affected actions and require resolution before continuation. Never claim a partly executed package is complete.
 
-After execution, verify each intended counterpart and the bootstrap package: the eight bootstrap-created files, identity, metadata, location, content, and absence of unintended duplicates. `CURSOR_USAGE_HISTORY` is required in this verification only after its lazy-creation trigger. Absence before that event is valid. Use byte-level comparison where possible; accept FORMAT_ONLY only when the representation-only difference is proven. Report per-file results and any remaining prerequisites. Normal SYNC outside this controlled bootstrap scope is unchanged.
+After execution, verify each intended counterpart and the bootstrap package: the eight bootstrap-created files, identity, metadata, location, content, and absence of unintended duplicates. Use byte-level comparison where possible; accept FORMAT_ONLY only when the representation-only difference is proven. Report per-file results and any remaining prerequisites. Normal SYNC outside this controlled bootstrap scope is unchanged.
 
 ### Documentation surface availability
 

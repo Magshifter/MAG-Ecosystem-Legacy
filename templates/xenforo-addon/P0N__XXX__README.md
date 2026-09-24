@@ -34,7 +34,7 @@ No implementation exists yet. Replace only with a verified description linked to
 
 ## Canonical Documentation
 
-Conceptual nine-document package. Bootstrap-created files live alongside this README:
+Conceptual eight-document package. Bootstrap-created files live alongside this README:
 
 - `P<NN>__<CODE>__README.md`
 - `P<NN>__<CODE>__TZ.md`
@@ -44,8 +44,6 @@ Conceptual nine-document package. Bootstrap-created files live alongside this RE
 - `P<NN>__<CODE>__Changelog.md`
 - `P<NN>__<CODE>__IDEA.md`
 - `P<NN>__<CODE>__AUDIT.md`
-
-`P<NN>__<CODE>__CURSOR_USAGE_HISTORY.md` is canonical and lazy-created on the first qualifying agent telemetry event. Absence before that event is valid.
 
 ## Public Product README
 

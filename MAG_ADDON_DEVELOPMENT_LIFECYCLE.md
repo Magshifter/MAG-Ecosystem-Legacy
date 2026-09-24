@@ -1,7 +1,7 @@
 # MAG Add-on Development Lifecycle
 
 - MAG-Document-ID: `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
-- MAG-Content-Updated: `2026-09-23T12:20:00+03:00`
+- MAG-Content-Updated: `2026-09-24T21:30:00+03:00`
 
 This document defines the Global MAG lifecycle for developing and maintaining **MAG XenForo add-ons (`#N`)**.
 
@@ -17,7 +17,6 @@ It does not replace:
 - [MAG_ECOSYSTEM.md](MAG_ECOSYSTEM.md)
 - [AI_GUIDELINES.md](AI_GUIDELINES.md)
 - [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md)
-- [CURSOR_USAGE_ANALYTICS.md](CURSOR_USAGE_ANALYTICS.md)
 - [MAG_IMPLEMENTATION_PATTERNS.md](MAG_IMPLEMENTATION_PATTERNS.md)
 - any active project TZ, Roadmap, Architecture, CLASS_MAP, Changelog, README, or approved research/audit documentation.
 
@@ -27,7 +26,6 @@ Active development defines WHAT.
 Detailed development rules remain in AI_GUIDELINES.md.
 Coding-agent execution rules remain in AI_AGENTS_RULES.md.
 Cursor model-selection / model-routing policy remains in AI_GUIDELINES.md §24.4.
-Cursor usage telemetry remains in CURSOR_USAGE_ANALYTICS.md.
 Reusable technical knowledge remains in MAG_IMPLEMENTATION_PATTERNS.md.
 Project identity and documentation authority remain in MAG_ECOSYSTEM.md.
 
@@ -36,7 +34,7 @@ Project identity and documentation authority remain in MAG_ECOSYSTEM.md.
 
 The lifecycle applies to GLOBAL + the active `#N` XenForo project. Project document authority, identity, naming, and context isolation remain defined in [MAG_ECOSYSTEM.md](MAG_ECOSYSTEM.md).
 
-Lifecycle transitions do not enlarge an agent's authorized scope. Apply [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) to execution in every phase, including research, documentation, and release work. Apply [AI_GUIDELINES.md](AI_GUIDELINES.md) §24 whenever a phase uses Cursor: operating modes, Coordinator Mode presentation, Direct Agent Mode execution surface, post-execution review, or model routing. Apply [CURSOR_USAGE_ANALYTICS.md](CURSOR_USAGE_ANALYTICS.md) whenever a phase uses Cursor for usage metrics and measurement; this document does not define telemetry fields, automatic After consumption, or usage-value display formats.
+Lifecycle transitions do not enlarge an agent's authorized scope. Apply [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) to execution in every phase, including research, documentation, and release work. Apply [AI_GUIDELINES.md](AI_GUIDELINES.md) §24 whenever a phase uses Cursor: operating modes, Coordinator Mode presentation, Direct Agent Mode execution surface, post-execution review, or model routing.
 
 The Global documentation map in MAG_ECOSYSTEM.md includes this lifecycle and MAG_IMPLEMENTATION_PATTERNS.md. Keep that map synchronized when an approved Global document or authority boundary changes.
 
@@ -246,7 +244,7 @@ Follow the approved-project bootstrap procedure in [MAG_ECOSYSTEM.md](MAG_ECOSYS
 
 ### Documentation actions
 
-Instantiate the eight bootstrap-created canonical project documents defined in MAG_ECOSYSTEM.md as one coherent Product Owner-approved bootstrap package. Do not create `CURSOR_USAGE_HISTORY` until the first qualifying telemetry event. A mandatory container is not mandatory substantive work. Use honest initial-state content where requirements, architecture, implementation, or audit findings do not yet exist. CLASS_MAP may be `No implementation exists yet.` Document creation grants neither substantive approval nor implementation authorization.
+Instantiate the eight bootstrap-created canonical project documents defined in MAG_ECOSYSTEM.md as one coherent Product Owner-approved bootstrap package. A mandatory container is not mandatory substantive work. Use honest initial-state content where requirements, architecture, implementation, or audit findings do not yet exist. CLASS_MAP may be `No implementation exists yet.` Document creation grants neither substantive approval nor implementation authorization.
 
 AUDIT is the standard parent/core evidence document. Use it directly or add only justified child audits; do not create a mandatory child-audit set.
 
@@ -303,7 +301,7 @@ Record Local/Git and Drive states explicitly in README and Roadmap. Do not treat
 Phase 1 completion requires **Local/Git Bootstrap Complete**:
 
 - verified permanent identity and canonical naming;
-- the conceptual nine-document package in its actual current state (eight bootstrap-created files; `CURSOR_USAGE_HISTORY` only if already triggered);
+- the conceptual eight-document package in its actual current state;
 - Local repository structure;
 - the Product Owner-authorized Git baseline and stable registration;
 - successful local package verification.
@@ -631,7 +629,6 @@ Potentially affected:
 - `P<NN>__<CODE>__Changelog.md`
 - `P<NN>__<CODE>__README.md`
 - `P<NN>__<CODE>__Overview.md`
-- `P<NN>__<CODE>__CURSOR_USAGE_HISTORY.md` (create on first qualifying telemetry if absent)
 
 TZ changes only when approved product requirements change.
 
@@ -1166,8 +1163,6 @@ For a new version, define its requirements delta and sequencing without reopenin
 
 Update the affected TZ, Architecture, and Roadmap for approved changes. Keep released Changelog entries and completed stage history intact. Update CLASS_MAP and descriptive documents when implementation changes them.
 
-Record Cursor procedure history according to CURSOR_USAGE_ANALYTICS.md when applicable.
-
 ### Validation
 
 Confirm that the chosen entry phase covers the actual uncertainty and risk. Validate each implemented change and its release through the applicable later phases.
@@ -1207,7 +1202,6 @@ This matrix defines timing. Approval details, execution mechanics, evidence stan
 | Overview | Only when a separate descriptive overview is useful | When the verified product description changes | Review with affected documentation; not a separate product gate | Descriptive; preserve relevant history without duplicating TZ |
 | AUDIT | Phase 1 parent/core document with honest evidence status | Record evidence directly or index justified child audits | Evidence supports dependent decisions; it does not approve requirements or architecture | Preserve source/version context, earlier findings, and corrections |
 | Child research / audit evidence | Phase 3 or another phase with a real need beyond the parent AUDIT | During investigation; append or clearly identify revalidation and corrected conclusions | Evidence review before a dependent decision; findings do not approve architecture | Retain source/version context and distinguish earlier findings from later corrections |
-| Cursor usage history | Lazy-created on the first qualifying procedure under CURSOR_USAGE_ANALYTICS.md; not a Phase 1 physical file | At required procedure checkpoints and after a release or coherent body of work once the file exists | Follow the authoritative reporting and synchronization sequence in CURSOR_USAGE_ANALYTICS.md (prefer automatic After telemetry; do not invent values) | Preserve measurements and historical forecasts; do not invent telemetry or rewrite forecasts to match actuals |
 | MAG_IMPLEMENTATION_PATTERNS.md | Global knowledge base; never bootstrap a project-local copy | When verified work yields qualified reusable knowledge; review candidates by Phase 10 | Authorized Global documentation scope; apply its own entry rules | Preserve traceable evidence and correct superseded conclusions using its maintenance rules |
 | MAG_ECOSYSTEM.md | Existing Global registry and authority map | On approved project bootstrap, relevant status/identity changes, closure, or approved Global documentation-map changes | Authorized Global documentation scope | Retain permanent project identity; do not reuse closed project identifiers |
 | MAG_ADDON_DEVELOPMENT_LIFECYCLE.md | Global lifecycle adoption | When an approved lifecycle, gate, or documentation-timing decision changes | Product Owner approval of Global process changes | Do not retroactively claim that earlier projects followed later procedures |
@@ -1219,9 +1213,9 @@ This matrix defines timing. Approval details, execution mechanics, evidence stan
 3. After an increment: synchronize documents affected by verified changes; explicitly record pending validation.
 4. Before release readiness: reconcile release scope, actual implementation, evidence, and product documentation; confirm required Product Owner Practical Acceptance has **PASS**.
 5. During finalization: complete Release Presentation; verify documentation against the actual shipping artifact and version.
-6. After release: record relevant real-environment findings, complete applicable history synchronization, and review reusable-knowledge candidates.
+6. After release: record relevant real-environment findings and review reusable-knowledge candidates.
 
-The conceptual nine-document package remains canonical. Phase 1 physically creates eight bootstrap containers with honest current-state records. `CURSOR_USAGE_HISTORY` is created later under CURSOR_USAGE_ANALYTICS.md. AUDIT exists ≠ an audit was performed. CLASS_MAP exists ≠ implementation exists. Architecture exists ≠ architecture is approved. Do not fabricate audit findings, telemetry, requirements, or code maps to populate them. Create optional child audits and other additional documents only when they have real information to own. Mandatory history synchronization follows its owning Global rules even when no product documentation changed and even when HISTORY does not yet exist.
+The conceptual eight-document package remains canonical. Phase 1 physically creates eight bootstrap containers with honest current-state records. AUDIT exists ≠ an audit was performed. CLASS_MAP exists ≠ implementation exists. Architecture exists ≠ architecture is approved. Do not fabricate audit findings, requirements, or code maps to populate them. Create optional child audits and other additional documents only when they have real information to own.
 
 
 ## 19. Lifecycle Scaling Rules
@@ -1318,7 +1312,7 @@ This summary makes phase outputs and next transitions explicit. Each transition 
 | --- | --- | --- |
 | Phase 0 — Idea and Evaluation | Sufficient product evaluation for a decision | Gate 0, further evaluation, deferral, or rejection |
 | Gate 0 — Project Approval | Product Owner approval of project creation | Phase 1 |
-| Phase 1 — Project Bootstrap | Verified identity and eight bootstrap-created package files; HISTORY absent until first qualifying telemetry. Full / Local/Git-First / Resume Local/Git completion requires Local structure, approved Git baseline, and stable registration. Drive Reconciliation Pending does not block Phase 1 completion | Phase 2 documentation work may begin in Drive-First with Bootstrap Incomplete — Local/Git Pending; other gates remain applicable |
+| Phase 1 — Project Bootstrap | Verified identity and eight bootstrap-created package files. Full / Local/Git-First / Resume Local/Git completion requires Local structure, approved Git baseline, and stable registration. Drive Reconciliation Pending does not block Phase 1 completion | Phase 2 documentation work may begin in Drive-First with Bootstrap Incomplete — Local/Git Pending; other gates remain applicable |
 | Phase 2 — Requirements Definition | Coherent complete TZ; explicit Approved First Release Scope on Roadmap; resolved blocking product decisions | Gate 1 |
 | Gate 1 — Requirements Approval | Approved complete WHAT and approved implementation-bound first-release slice. Does not require the full TZ to ship in 1.0.0 | Phase 3, or Phase 4 when existing evidence is sufficient and that conclusion is recorded |
 | Phase 3 — Targeted Research and Verification | Traceable evidence sufficient for the next decision; unresolved blockers identified | Phase 4 when dependencies are resolved; Phase 2 if requirements need revision |
@@ -1345,7 +1339,6 @@ Phase 8 PASS confirms readiness of the final artifact, not publication. Stable s
 - **[MAG_ECOSYSTEM.md](MAG_ECOSYSTEM.md)** owns ecosystem identity, development-class taxonomy, namespace registry, documentation map, naming, context isolation, and the documentation authority model.
 - **[AI_GUIDELINES.md](AI_GUIDELINES.md)** owns detailed development workflow and operational standards.
 - **[AI_AGENTS_RULES.md](AI_AGENTS_RULES.md)** owns coding-agent execution boundaries, stop/report mechanics, and applicable checkpoint rules.
-- **[CURSOR_USAGE_ANALYTICS.md](CURSOR_USAGE_ANALYTICS.md)** owns Cursor usage measurement and telemetry methodology only.
 - **[AI_GUIDELINES.md](AI_GUIDELINES.md) §24.4** owns Cursor model-selection / model-routing policy.
 - **[MAG_IMPLEMENTATION_PATTERNS.md](MAG_IMPLEMENTATION_PATTERNS.md)** owns source-backed reusable technical knowledge and its qualification and maintenance rules.
 - **Active project documentation** owns the approved product requirements, architecture, sequencing, verified structure, and project history under MAG_ECOSYSTEM.md.

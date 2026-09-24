@@ -9,7 +9,7 @@ Status: **CLOSED / ARCHIVED EVALUATION RECORD — NOT GLOBAL AUTHORITY**
 
 These are project-scoped working documents for `#2` ([MAG] Tag Synchronizer), not Global authority. Registration and metadata establish identity/version tracking and synchronization eligibility only; they grant no substantive authority. They cannot override approved TZ, Architecture, Roadmap, or Global rules.
 
-After Product Owner-approved Global promotion on `2026-09-12`, this file remains **historical evaluation evidence only**. It is **not** parallel process authority. Active HOW rules live only in the seven-file Global documentation set. Preserve evidence and decision history for every finding.
+After Product Owner-approved Global promotion on `2026-09-12`, this file remains **historical evaluation evidence only**. It is **not** parallel process authority. Active HOW rules live only in the six-file Global documentation set. Preserve evidence and decision history for every finding.
 
 ## 1. Purpose
 
@@ -39,7 +39,6 @@ Evaluated pilot (Product Owner approved activation; now closed):
 - Baseline strategy: qualitative validated-process baseline for Global promotion; quantitative ≥30% claim remains `unavailable`
 - Date started: during `#2` / `1.1.0` preparatory and release cycle
 - Product Owner approval: YES — Pipeline v2 activated for `#2` / `1.1.0` only; later approved Global promotion of validated findings
-- Initial Cursor Models value, if available: `unavailable`
 
 Evaluation target: the MAG Pipeline v2 experiment for the pilot above, governed historically by `MAG_PIPELINE_V2_EXPERIMENT.md`.
 
@@ -180,7 +179,7 @@ Classify each routing decision as exactly one of:
 
 Do **not** treat model price, token usage, or procedure count alone as proof of routing quality.
 
-`CURSOR_USAGE_ANALYTICS.md` owns Cursor usage and telemetry methodology only. It does **not** define model-selection policy.
+Model-selection policy belongs in `AI_GUIDELINES.md` §24.4.
 
 ## 5. Quality metrics
 
@@ -229,35 +228,9 @@ A 30% faster process with a material regression in these areas does not PASS.
 
 Technical validation, Product Owner Practical Acceptance, Release Readiness, and Release Finalization must be evidenced as distinct lifecycle boundaries. Pipeline v2 may reduce overhead around them but must not collapse, silently merge, remove, or redefine them. Product Owner Practical Acceptance remains a separate required gate wherever `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` requires it.
 
-## 7. Cursor usage metrics
+## 7. Historical experiment observations
 
-**Classification:** experimental evaluation fields only. Detailed Cursor Before/After methodology, automatic After consumption, telemetry-failure handling, and metric finalization are owned by `MAG-Ecosystem` / `CURSOR_USAGE_ANALYTICS.md`. This section does not redefine that methodology.
-
-For pilots run under current Global methodology, prefer automatic `Cursor Models After: NN%` from MAG GPT|Cursor|Sync when valid. Successful automatic telemetry requires no routine Product Owner After interaction. Missing/invalid automatic After must be recorded as unavailable/pending and surfaced as a tooling issue; never guess or substitute.
-
-Record Cursor Models values only when actually available.
-
-Suggested fields:
-
-- stage/release starting displayed percentage;
-- final displayed percentage;
-- approximate visible percentage-point delta;
-- number of substantive Cursor procedures;
-- high-cost procedures;
-- documentation-only procedures;
-- procedures avoided through verified native XenForo tooling;
-- procedures avoided through manual Product Owner action;
-- procedures avoided through ChatGPT reasoning;
-- procedures avoided through ChatGPT Work or another explicitly approved executor;
-- repeated audits avoided through valid evidence reuse.
-
-For the native-tooling metric, record the approved operation, installed XenForo version, exact verified command, verification evidence, and the Cursor procedure it replaced. Count an avoided procedure only after the native operation and its required validation complete; a proposed route is not a measured saving. Record native-tooling cases once in this category even when the Product Owner runs the command, avoiding duplicate totals with manual-action savings. Use `unavailable` when evidence is insufficient; do not infer time, request, or quota savings from the procedure count.
-
-An unchanged displayed percentage means visible delta 0 pp only.
-
-Never interpret it as proven zero actual consumption.
-
-Do not invent request counts or unavailable telemetry.
+This Pipeline v2 evaluation historically considered optional procedure-count and friction observations during the `#2` / `1.1.0` pilot. Those notes were experimental only. They are not Global MAG process.
 
 ## 8. Procedure-density metrics
 
@@ -292,7 +265,7 @@ Keep entries brief and factual.
 
 For each Over-batching incident, record the affected finding ID, task/stage boundary, observed control loss, quality impact, corrective action, and whether the incident caused rework or changed the finding evidence. Fewer procedures are not an efficiency objective by themselves.
 
-Capture routine metrics, friction observations, Over-batching incidents, rework, and finding-specific evidence opportunistically at existing logical stage, closure, or checkpoint boundaries. Do not create standalone Cursor or Work procedures solely for routine telemetry when safe capture fits an existing closure. Do not postpone all reconstruction until pilot completion when contemporaneous evidence is reasonably available.
+Capture routine metrics, friction observations, Over-batching incidents, rework, and finding-specific evidence opportunistically at existing logical stage, closure, or checkpoint boundaries. Do not create standalone Cursor or Work procedures solely for routine experiment notes when safe capture fits an existing closure. Do not postpone all reconstruction until pilot completion when contemporaneous evidence is reasonably available.
 
 ## 10. Pilot result table
 
@@ -310,7 +283,6 @@ At completion, fill:
 | Critical issues | | | | |
 | Non-critical issues | | | | |
 | Over-batching incidents | | | | |
-| Visible Cursor Models delta | | | | |
 
 Use `unavailable` where evidence does not exist.
 
@@ -361,7 +333,7 @@ These finding IDs are fixed for the pilot. Evidence, friction, quality impact, O
 | `V2-F06` | Prompt and context optimization | Test concise task-specific prompts and reduced duplicated context under current Global presentation rules | **PROMOTED** → `AI_GUIDELINES.md` §24 (already largely Global; reinforced) |
 | `V2-F07` | Git checkpoint consolidation | Test fewer logical checkpoints while preserving reviewability, rollback safety, and Product Owner Git control | **PROMOTED** → `AI_GUIDELINES.md` §20; `AI_AGENTS_RULES.md` §10 |
 | `V2-F08` | Release-flow consolidation | Test coherent release-input/execution handling while preserving all distinct Global gates and release authority | **PROMOTED** → `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` §3 coherent-block + Phase 8 gate preservation |
-| `V2-F09` | Cursor model routing | Test whether selecting the minimum sufficient Cursor model according to remaining decision complexity reduces over-selection without increasing under-selection, defects, rework, validation failures, or Product Owner burden | **PROMOTED** → `AI_GUIDELINES.md` §24.4; `CURSOR_USAGE_ANALYTICS.md` telemetry-only |
+| `V2-F09` | Cursor model routing | Test whether selecting the minimum sufficient Cursor model according to remaining decision complexity reduces over-selection without increasing under-selection, defects, rework, validation failures, or Product Owner burden | **PROMOTED** → `AI_GUIDELINES.md` §24.4 |
 | `V2-F10` | Coherent-block execution discipline | Test coherent lifecycle blocks, material-change and checkpoint-protection filters, `+` continuation, minimum sufficient safe path, and anti-pattern avoidance | **PROMOTED** → `AI_GUIDELINES.md` §§18/20/24; `AI_AGENTS_RULES.md` §§9–11; lifecycle §3 |
 
 Final disposition date: `2026-09-12`. Product Owner approved Global promotion of validated findings. Prior `CONTINUE_EXPERIMENT` states are historical and superseded by the **PROMOTED** dispositions above. Do not overwrite the historical evidence blocks below; append only.
@@ -474,7 +446,7 @@ Do not invent a numerical time saving. Do not mark Drive synchronization complet
 
 ### 12.7 `V2-F09` — Cursor model routing evidence
 
-**Classification:** historical evidence framework. Not Global authority. After promotion, `AI_GUIDELINES.md` §24.4 owns model-selection policy; `CURSOR_USAGE_ANALYTICS.md` owns Cursor usage and telemetry methodology only.
+**Classification:** historical evidence framework. Not Global authority. After promotion, `AI_GUIDELINES.md` §24.4 owns model-selection policy.
 
 | Field | Value |
 | --- | --- |
@@ -510,10 +482,10 @@ Do not invent measured routing outcomes retroactively. Record evidence opportuni
 The completed `[MAG] Tag Synchronizer` workflow provides concrete process lessons to test:
 
 - architecture decisions were often followed by separate documentation-only procedures;
-- documentation synchronization occurred frequently across Roadmap, Architecture, CLASS_MAP, Changelog, and Cursor history;
+- documentation synchronization occurred frequently across Roadmap, Architecture, CLASS_MAP, and Changelog;
 - release finalization was fragmented into multiple small procedures;
 - release-cycle stages (Gate → Release Finalization → Stable Release → PRV → documentation) were sometimes treated as separate checkpoint/validation/confirmation cycles without material invalidation (recorded in §12.6);
-- Cursor telemetry completion sometimes created additional handling under the methodology then in effect (including manual/deferred After finalization patterns later reduced by automatic MAG GPT|Cursor|Sync After telemetry in current Global `CURSOR_USAGE_ANALYTICS.md`);
+- Cursor metric-completion steps sometimes created additional handling under the methodology then in effect;
 - repeated ChatGPT ↔ Product Owner ↔ Cursor handoffs added elapsed-time overhead;
 - simple deterministic Git actions were more efficiently handled manually;
 - strong technical validation was valuable and must be preserved.

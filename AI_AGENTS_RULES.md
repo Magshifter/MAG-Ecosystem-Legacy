@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Coding Agent Rules
 
 - MAG-Document-ID: `AI_AGENTS_RULES.md`
-- MAG-Content-Updated: `2026-09-23T12:20:00+03:00`
+- MAG-Content-Updated: `2026-09-24T21:30:00+03:00`
 
 These rules define **how coding agents may execute** work in MAG repositories.
 
@@ -19,7 +19,7 @@ Reusable-knowledge capture mechanics belong in [`MAG_IMPLEMENTATION_PATTERNS.md`
 
 Which agent is used is a user/tooling choice. These rules do not change when a more capable agent is introduced. Tool capability does not grant permission to exceed the approved task.
 
-Cursor model-selection / model-routing policy and operating modes (Coordinator Mode / Direct Agent Mode) belong in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24. Cursor usage accounting, Before/After telemetry, and MAG Cursor report-field methodology belong in [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). Do not invent usage percentages here. Do not duplicate the model matrix in this file.
+Cursor model-selection / model-routing policy and operating modes (Coordinator Mode / Direct Agent Mode) belong in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24. Do not collect, display, or maintain Cursor Models usage measurements. Do not duplicate the model matrix in this file.
 
 ---
 
@@ -35,9 +35,7 @@ For every Cursor procedure, follow [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24. 
 
 **Direct Agent Mode:** execute the already authorized procedure in this session under Global HOW. Do not require a ChatGPT paste prompt, a “ready to receive?” handshake, or restatement of already-approved instructions. Model routing in §24.4 still applies. Git, gates, implementation authorization, and release remain Product Owner-controlled.
 
-Mandatory execution and Plain text requirements remain in this document. Respect **GLOBAL + active development identity** isolation and the approved repository/tool context. Resolve an unknown or ambiguous Cursor chat with the Product Owner; do not invent it.
-
-Chat routing for measurement context, usage tracking, automatic After telemetry and failure handling, and separate usage-value display remain in [`CURSOR_USAGE_ANALYTICS.md`](CURSOR_USAGE_ANALYTICS.md). Before remains an analytics field, not a required item in the user-facing prompt presentation block. Do not routinely request manual After reporting.
+Mandatory execution and Plain text requirements remain in this document. Respect **GLOBAL + active development identity** isolation and the approved repository/tool context. Resolve an unknown or ambiguous Cursor chat with the Product Owner; do not invent it. Do not route work for one approved development identity through another identity's Cursor Agent chat.
 
 ### 1.2 Plain text output — mandatory
 
@@ -414,7 +412,7 @@ Classify discovered issues as:
 
 Do not `git commit` or `git push` unless explicitly requested.
 
-When Cursor procedures apply, follow `AI_GUIDELINES.md` §24 for presentation, post-execution review, and model selection. Follow `CURSOR_USAGE_ANALYTICS.md` for Before/After tracking, telemetry handling, and separate usage-value display only.
+When Cursor procedures apply, follow `AI_GUIDELINES.md` §24 for presentation, post-execution review, and model selection.
 
 ---
 
