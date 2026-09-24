@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "intents": {
+    "GOVERN": [
+      "global_authority_section",
+      "global_process_section",
+      "global_operational_section"
+    ],
+    "PLAN": [
+      "global_authority_section",
+      "global_operational_section",
+      "development_tz",
+      "development_roadmap",
+      "development_architecture",
+      "development_idea",
+      "development_readme"
+    ],
+    "IMPLEMENT": [
+      "reusable_pattern_unit",
+      "reusable_knowledge_procedure",
+      "global_authority_section",
+      "development_architecture",
+      "development_class_map"
+    ],
+    "DEBUG": [
+      "global_operational_section",
+      "reusable_pattern_unit",
+      "reusable_knowledge_procedure",
+      "global_authority_section",
+      "development_audit",
+      "development_architecture",
+      "development_class_map"
+    ],
+    "VERIFY": [
+      "global_authority_section",
+      "reusable_knowledge_procedure",
+      "reusable_pattern_unit",
+      "development_audit",
+      "development_changelog",
+      "development_roadmap"
+    ],
+    "LEARN": [
+      "reusable_knowledge_procedure",
+      "reusable_pattern_unit",
+      "global_operational_section",
+      "global_authority_section"
+    ]
+  }
+}

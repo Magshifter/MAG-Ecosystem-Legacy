@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-24T21:30:00+03:00`
+- MAG-Content-Updated: `2026-09-25T00:45:00+03:00`
 
 This document is the navigation and governance foundation for MAG software development across approved development classes.
 
@@ -186,6 +186,26 @@ The current Global documentation set comprises **six** authoritative files in th
 
 These six files are not joined by a seventh equivalent authority owner.
 
+### MAG Knowledge Control
+
+MAG Knowledge Control is the MAG control/discovery architecture that routes MAG work to existing authority. It does not create a seventh Global authority owner.
+
+Invariant:
+
+```text
+CONTROL → ROUTING → AUTHORITY
+```
+
+Control mechanisms, session/working state, routing, generated discovery artifacts, and Global operational assets do not create substantive MAG authority.
+
+Identity scope is established before development-specific retrieval. Retrieval remains **GLOBAL + active development identity** unless the Product Owner explicitly authorizes a real cross-development task.
+
+The Entry Gate and derived discovery mechanisms (including Locator and generated indexes) are non-authoritative routing/discovery mechanisms. Successful routing or discovery is a **pointer to authority**, not authority.
+
+- AI routing behavior (Entry Gate, intents, Locator states, same-scope fallback) belongs to `AI_GUIDELINES.md`.
+- Agent action enforcement (Mechanical Action Gate and related execution controls) belongs to `AI_AGENTS_RULES.md`.
+- Generated discovery artifact mechanics (classification, publication, SYNC exclusion, pointer/revision validation) belong to `MAG_DOCUMENTATION_OPERATIONS.md`.
+
 ### MAG Process Overlay Pool
 
 `MAG_PROCESS_OVERLAY_POOL.md` is the ecosystem-level process overlay asset for Product Owner-approved HOW corrections, optimizations, and temporary ACTIVE deltas.
@@ -208,11 +228,14 @@ Operational assets implement and reify current Global rules plus applicable ACTI
 | Asset | Kind | Sync / registration |
 | --- | --- | --- |
 | `MAG_XENFORO_ADDON_BLUEPRINT.md` | Registered Global operational asset | Ordinary two-bullet metadata. Eligible for `SYNC GLOBAL` as an operational asset, not as a project document or seventh authority owner. |
+| `MAG_DEBUGGING.md` | Registered Global operational debugging asset | Eligible for `SYNC GLOBAL` as an operational asset. It applies canonical debugging/evidence/verification/reusable-knowledge boundaries and does not define product WHAT, reusable technical truth, or independent process policy. |
 | `templates/xenforo-addon/*` | Supporting template assets | Not instantiated project documents. Transfer only through the approved package path in `MAG_DOCUMENTATION_OPERATIONS.md` §4. Outside ordinary SYNC discovery. |
 
 The Blueprint consumes ACTIVE overlay rules. It is not the owner of those rules. Detailed identity and transport rules remain in `MAG_DOCUMENTATION_OPERATIONS.md`.
 
-These Global files and assets exist only in `MAG-Ecosystem`. Individual product repositories must **not** create copies, companions, or pointer files named `MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `MAG_IMPLEMENTATION_PATTERNS.md`, `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`, `MAG_DOCUMENTATION_OPERATIONS.md`, `MAG_PROCESS_OVERLAY_POOL.md`, or `MAG_XENFORO_ADDON_BLUEPRINT.md`.
+`MAG_DEBUGGING.md` operationalizes debugging workflow. Reusable source-backed technical knowledge remains owned by `MAG_IMPLEMENTATION_PATTERNS.md`. Development-specific debugging evidence remains development-scoped unless separately classified, validated, and approved for reusable capture.
+
+These Global files and assets exist only in `MAG-Ecosystem`. Individual product repositories must **not** create copies, companions, or pointer files named `MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `MAG_IMPLEMENTATION_PATTERNS.md`, `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`, `MAG_DOCUMENTATION_OPERATIONS.md`, `MAG_PROCESS_OVERLAY_POOL.md`, `MAG_XENFORO_ADDON_BLUEPRINT.md`, or `MAG_DEBUGGING.md`.
 
 Developments inherit Global rules by reading this repository. Product-specific requirements belong in that development's authoritative WHAT documentation, using the filename conventions defined below.
 
@@ -283,7 +306,7 @@ Both retain the existing Drive folder `<DRIVE-FOLDER:MAG_PIPELINE_V2>`. Physical
 
 This is the authoritative MAG convention for development-specific documentation filenames at the ecosystem level.
 
-1. Global-only files keep their existing unique filenames (`MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `MAG_IMPLEMENTATION_PATTERNS.md`, `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`, `MAG_DOCUMENTATION_OPERATIONS.md`, `MAG_PROCESS_OVERLAY_POOL.md`, `MAG_XENFORO_ADDON_BLUEPRINT.md`). Do **not** add a `GLOBAL__` prefix to them.
+1. Global-only files keep their existing unique filenames (`MAG_ECOSYSTEM.md`, `AI_GUIDELINES.md`, `AI_AGENTS_RULES.md`, `MAG_IMPLEMENTATION_PATTERNS.md`, `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`, `MAG_DOCUMENTATION_OPERATIONS.md`, `MAG_PROCESS_OVERLAY_POOL.md`, `MAG_XENFORO_ADDON_BLUEPRINT.md`, `MAG_DEBUGGING.md`). Do **not** add a `GLOBAL__` prefix to them.
 2. `#N` XenForo project documentation uses `P<NN>__<CODE>__<Document>.md`.
 3. `A<N>` desktop/application product documentation uses `A<NN>__<CODE>__<Document>.md` when adopted through an approved procedure.
 4. `B<N>` mobile product documentation uses `B<NN>__<CODE>__<Document>.md` when adopted through an approved procedure.
@@ -351,7 +374,7 @@ Each Global file has one primary authority. Do not duplicate its detailed rules 
 | `MAG_IMPLEMENTATION_PATTERNS.md` | Reusable, source-backed technical knowledge base and its capture/maintenance procedure. Subordinate to Global process documents and active-development TZ, Roadmap, and Architecture. Not a source of product requirements or process rules. |
 | `MAG_DOCUMENTATION_OPERATIONS.md` | Documentation identity validation, synchronization scope and commands, comparison, conflict handling, approval, execution, verification, cleanup, reporting, and Git handoff boundaries. |
 | `MAG_PROCESS_OVERLAY_POOL.md` | Ecosystem-level ACTIVE process/HOW overlays only. Not a seventh canonical authority owner. Individual MPO records are not standalone documents. |
-| Global operational assets | Blueprint and XenForo templates implement Global rules and ACTIVE overlays. They do not independently define policy. |
+| Global operational assets | Blueprint, XenForo templates, and `MAG_DEBUGGING.md` implement Global rules and ACTIVE overlays. They do not independently define policy. |
 | Project TZ | **What** that `#N` product must do. Complete functional requirements. Canonical file: `P<NN>__<CODE>__TZ.md`. Does not require every requirement to ship in 1.0.0. |
 | Project Architecture | Approved implementation architecture for that product. Describes intended and verified structure; it does not override TZ. |
 | Project Roadmap | Approved sequencing, verified progress, and the approved first-release implementation slice. Controls what may be implemented **now**. Gate 1 semantics are in `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`. |
@@ -491,4 +514,5 @@ This Global documentation repository currently contains:
 - `MAG_DOCUMENTATION_OPERATIONS.md`
 - `MAG_PROCESS_OVERLAY_POOL.md`
 - `MAG_XENFORO_ADDON_BLUEPRINT.md`
+- `MAG_DEBUGGING.md`
 - `templates/xenforo-addon/*`

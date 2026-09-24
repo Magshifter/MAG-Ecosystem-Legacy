@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mag-knowledge-index.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generator_version",
+    "config_version",
+    "generated_at",
+    "scope",
+    "manifest",
+    "sources",
+    "units"
+  ],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "generator_version": { "type": "string", "minLength": 1 },
+    "config_version": { "type": "integer", "const": 1 },
+    "generated_at": { "type": "string", "minLength": 1 },
+    "scope": { "type": "string", "pattern": "^GLOBAL(\\+#[0-9A-Za-z]+)?$" },
+    "manifest": { "type": "string", "minLength": 1 },
+    "sources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "units": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/unit" }
+    }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "owner",
+        "path",
+        "identity_scope",
+        "mag_content_updated",
+        "content_sha256",
+        "git_blob",
+        "tree_state"
+      ],
+      "properties": {
+        "source_id": { "type": "string", "pattern": "^src[0-9]{2,}$" },
+        "owner": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "identity_scope": { "type": "string", "minLength": 1 },
+        "mag_content_updated": { "type": ["string", "null"] },
+        "content_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "git_blob": { "type": ["string", "null"] },
+        "tree_state": { "type": "string", "enum": ["committed", "modified", "untracked"] }
+      }
+    },
+    "unit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "unit_id",
+        "source_id",
+        "owner",
+        "section",
+        "heading_path",
+        "heading_level",
+        "identity_scope",
+        "knowledge_class",
+        "title",
+        "aliases"
+      ],
+      "properties": {
+        "unit_id": { "type": "string", "minLength": 1 },
+        "source_id": { "type": "string", "minLength": 1 },
+        "owner": { "type": "string", "minLength": 1 },
+        "section": { "type": "string", "minLength": 1 },
+        "heading_path": { "type": "string", "minLength": 1 },
+        "heading_level": { "type": "integer", "const": 2 },
+        "identity_scope": { "type": "string", "minLength": 1 },
+        "knowledge_class": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "aliases": {
+          "type": "array",
+          "items": { "type": "string" },
+          "maxItems": 0
+        }
+      }
+    }
+  }
+}

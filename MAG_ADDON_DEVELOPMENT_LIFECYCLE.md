@@ -692,6 +692,24 @@ Do not mechanically repeat expensive validation already performed when preceding
 
 Do not reduce required validation merely to reduce Cursor usage.
 
+#### Normal-path vs isolated-fallback call-site audit
+
+When optimization introduces a batched or prewarmed **normal path** (render loop, thread expansion, grouped query), validate both:
+
+1. the optimized path used in production hot spots; and
+2. any **isolated fallback** call sites that still invoke per-item lookups when prewarm did not run.
+
+The audit must show the normal path is bounded and fallbacks remain correct — not that every call site uses the optimized path. See [Batch-prewarm sidecar TO_ONE relations with authoritative hydrated null](MAG_IMPLEMENTATION_PATTERNS.md#batch-prewarm-sidecar-to_one-relations-with-authoritative-hydrated-null).
+
+#### Real click-path and invariant-based regression validation
+
+Where risk includes XenForo overlays, AJAX multi-step flows, or browser-only behavior, include validation that:
+
+1. exercises the **real click-path** (browser or equivalent UI driver), not only PHP/CLI assertions; and
+2. asserts **architecture invariants** (overlay count, ACL equivalence, enqueue behavior, teardown, error containment) rather than source substrings or incidental implementation details.
+
+Prefer semantic outcomes over literal framework return shapes when versions differ; see [Cross-version tests may need semantic rather than literal assertions](MAG_IMPLEMENTATION_PATTERNS.md#cross-version-tests-may-need-semantic-rather-than-literal-assertions). Do not weaken security or permission invariants to make tests pass.
+
 #### Product Owner Practical Acceptance (mandatory)
 
 After required technical integration and final validation for the release scope has completed, the Product Owner must personally exercise the completed release scope in an appropriate local or otherwise relevant XenForo environment.
@@ -977,6 +995,24 @@ Final release-package validation must verify, where applicable:
 
 Detailed release-artifact mechanics and Git rules remain in the appropriate Global documents.
 
+#### Final clean-package uninstall acceptance
+
+For a distributed XenForo add-on ZIP, final release-package validation must include this clean-package acceptance. A source-synchronized development tree is **not** a substitute: generated release metadata such as `hashes.json` may differ from the normal development tree.
+
+```text
+final release ZIP
+→ clean/archive installation
+→ verify the installed release tree has hashes.json
+→ verify development-only _output is not shipped
+→ uninstall through XenForo ACP
+→ verify the expected post-uninstall Installable add-on state
+→ verify native Delete files eligibility where applicable
+```
+
+If **Delete files** is absent during a development-tree test, do not classify a release defect until the current XenForo eligibility gates and a clean installation of the final ZIP have been checked.
+
+The verified gate and the rule against committing a generated `hashes.json` into normal development source are in [MAG_IMPLEMENTATION_PATTERNS.md](MAG_IMPLEMENTATION_PATTERNS.md) (“XenForo Delete-files eligibility requires release hashes”). Do not copy that technical finding here. Revalidate the installed XenForo implementation when the XenForo version changes.
+
 #### Historical integrity
 
 Do not rewrite historical project procedures or completed release records to pretend this Global rule existed earlier.
@@ -1076,6 +1112,8 @@ A production observation is evidence, not automatically a formal benchmark or ne
 
 Unexpected behavior must be investigated before documentation or architecture is rewritten.
 
+A missing ACP **Delete files** action observed on a source-synchronized development tree is not, by itself, a release defect. Apply Phase 8 final clean-package uninstall acceptance and the XenForo eligibility finding in [MAG_IMPLEMENTATION_PATTERNS.md](MAG_IMPLEMENTATION_PATTERNS.md) before classifying one.
+
 ### Documentation actions
 
 Update the project document that owns the verified result.
@@ -1100,6 +1138,8 @@ Relevant implementation, debugging, validation, compatibility, upgrade, or relea
 Review potentially reusable findings from the completed work. Determine whether each finding belongs in project documentation only or qualifies for Global knowledge capture.
 
 Use the status model, evidence requirements, verified-scope rules, and maintenance rules in [MAG_IMPLEMENTATION_PATTERNS.md](MAG_IMPLEMENTATION_PATTERNS.md). Do not restate them here or promote a project-specific requirement into a Global default.
+
+Validation discipline for call-site audits and click-path/invariant regression is defined in Phase 7 — Integration and Final Validation (subsections above). Implementation patterns promoted from completed project work belong in `MAG_IMPLEMENTATION_PATTERNS.md`; process validation rules belong here.
 
 ### Conditional work
 

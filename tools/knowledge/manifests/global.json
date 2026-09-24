@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "config_version": 1,
+  "scope": "GLOBAL",
+  "global_sources": [
+    "MAG_ECOSYSTEM.md",
+    "AI_GUIDELINES.md",
+    "AI_AGENTS_RULES.md",
+    "MAG_ADDON_DEVELOPMENT_LIFECYCLE.md",
+    "MAG_IMPLEMENTATION_PATTERNS.md",
+    "MAG_DOCUMENTATION_OPERATIONS.md",
+    "MAG_PROCESS_OVERLAY_POOL.md",
+    "MAG_XENFORO_ADDON_BLUEPRINT.md",
+    "MAG_DEBUGGING.md"
+  ],
+  "source_rules": "config/source_rules.json",
+  "intent_owner_map": "config/intent_owner_map.json",
+  "output": "generated/knowledge/index-global.json"
+}

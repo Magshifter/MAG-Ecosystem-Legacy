@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "forbidden_global_basenames": [
+    "MAG_KNOWLEDGE_CONTROL_ROADMAP.md",
+    "MAG_PIPELINE_V2_EXPERIMENT.md",
+    "MAG_PIPELINE_V2_EVALUATION.md"
+  ],
+  "forbidden_path_segments": [
+    "templates",
+    "generated",
+    "tools"
+  ],
+  "global_files": {
+    "MAG_ECOSYSTEM.md": {
+      "source_type": "canonical_owner",
+      "knowledge_class": "global_authority_section"
+    },
+    "AI_GUIDELINES.md": {
+      "source_type": "canonical_owner",
+      "knowledge_class": "global_authority_section"
+    },
+    "AI_AGENTS_RULES.md": {
+      "source_type": "canonical_owner",
+      "knowledge_class": "global_authority_section"
+    },
+    "MAG_ADDON_DEVELOPMENT_LIFECYCLE.md": {
+      "source_type": "canonical_owner",
+      "knowledge_class": "global_authority_section"
+    },
+    "MAG_DOCUMENTATION_OPERATIONS.md": {
+      "source_type": "canonical_owner",
+      "knowledge_class": "global_authority_section"
+    },
+    "MAG_IMPLEMENTATION_PATTERNS.md": {
+      "source_type": "mip"
+    },
+    "MAG_PROCESS_OVERLAY_POOL.md": {
+      "source_type": "process_pool",
+      "knowledge_class": "global_process_section"
+    },
+    "MAG_XENFORO_ADDON_BLUEPRINT.md": {
+      "source_type": "operational",
+      "knowledge_class": "global_operational_section"
+    },
+    "MAG_DEBUGGING.md": {
+      "source_type": "operational",
+      "knowledge_class": "global_operational_section"
+    }
+  },
+  "mip": {
+    "exclude_h2": [
+      "Index",
+      "Source map"
+    ],
+    "procedure_h2": [
+      "Usage rule",
+      "Capture procedure",
+      "Status model",
+      "Maintenance rule"
+    ]
+  },
+  "development_suffixes": {
+    "__TZ.md": "development_tz",
+    "__Roadmap.md": "development_roadmap",
+    "__Architecture.md": "development_architecture",
+    "__CLASS_MAP.md": "development_class_map",
+    "__Changelog.md": "development_changelog",
+    "__README.md": "development_readme",
+    "__IDEA.md": "development_idea",
+    "__AUDIT.md": "development_audit"
+  }
+}

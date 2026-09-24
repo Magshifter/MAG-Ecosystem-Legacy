@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Coding Agent Rules
 
 - MAG-Document-ID: `AI_AGENTS_RULES.md`
-- MAG-Content-Updated: `2026-09-24T21:30:00+03:00`
+- MAG-Content-Updated: `2026-09-24T23:06:00+03:00`
 
 These rules define **how coding agents may execute** work in MAG repositories.
 
@@ -30,6 +30,8 @@ These rules are **mandatory prerequisites** for every Cursor-assisted procedure.
 ### 1.1 Mandatory Cursor pre-flight
 
 For every Cursor procedure, follow [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24. That section owns operating modes, Coordinator Mode presentation, Direct Agent Mode execution surface, post-execution review, and model-selection policy; do not recreate them here.
+
+Mandatory Cursor pre-flight is not the MAG Entry Gate and does not replace semantic identity/intent resolution under AI_GUIDELINES.md.
 
 **Coordinator Mode:** follow §24.1–24.3 prompt approval/continuation, presentation order, and ChatGPT review, including the Ukrainian learning note.
 
@@ -157,6 +159,80 @@ Do not add speculative features, prepare unused future infrastructure, rename wi
 Discovery of an unrelated problem does not expand the approved task. Report it separately.
 
 If a requested change creates a significant risk to a known stable state, identify that risk **before** making the potentially destructive change. Where practical, preserve a clear path back to the previously verified state.
+
+---
+
+## Mechanical Action Gate
+
+The MAG Mechanical Action Gate applies to agent-initiated actions that may materially change authoritative, shared, persistent, destructive, published, or otherwise high-risk state.
+
+It is an execution-control mechanism. It does not create MAG authority and does not replace the MAG Entry Gate defined by AI_GUIDELINES.md.
+
+The Entry Gate resolves semantic task context and retrieval routing before substantive MAG work. §1.1 Mandatory Cursor pre-flight governs Cursor procedure prerequisites. The Mechanical Action Gate governs high-risk state changes before execution. These are separate controls.
+
+### Action classification
+
+Classify a planned agent action as ORDINARY or HIGH-RISK before execution when its side effects may cross an execution boundary.
+
+ORDINARY actions include read/analysis operations and implementation edits already inside an explicitly approved procedure when they do not create a high-risk side effect.
+
+HIGH-RISK includes an agent-initiated action when any of the following is true:
+
+- it changes canonical authority, registration, or shared authoritative state;
+- it is destructive or difficult to reverse;
+- it exceeds the explicitly approved implementation/procedure scope;
+- it creates persistent behavior or an external side effect;
+- it publishes, releases, tags, commits, pushes, or otherwise changes externally shared repository state;
+- it performs a broad or recursive automated mutation whose exact affected scope is not already safely bounded.
+
+If the classification cannot be determined safely, treat the action as HIGH-RISK with unresolved prerequisites. Do not fail open.
+
+The Product Owner's own manual actions are not subject to the agent Mechanical Action Gate.
+
+### High-risk prerequisites
+
+Before an agent executes a HIGH-RISK action, confirm:
+
+1. Identity — the affected MAG identity is resolved.
+2. Authority — the governing canonical rule/owner is resolved.
+3. Authorization — the Product Owner has authorized that specific high-risk operation or an existing explicit authorization clearly covers it.
+4. Target — the exact repository, branch, file, document, remote, release target, shared object, or other mutation target is confirmed.
+5. Safety Evidence — when required by the operation, sufficient validation, recovery, or rollback evidence exists.
+
+A general implementation authorization does not automatically authorize commit, push, tag, release, canonical registration, destructive recovery, canonical Drive replacement, or another distinct high-risk operation.
+
+Do not request duplicate approval when the Product Owner has already explicitly authorized the exact operation and all other prerequisites remain valid.
+
+### Gate result
+
+The Mechanical Action Gate has only three outcomes:
+
+ALLOW — all required prerequisites for the specific high-risk action are confirmed.
+BLOCK — a known rule, scope, authorization, or safety condition prohibits the action.
+UNKNOWN — a required prerequisite cannot currently be established.
+
+Execute the HIGH-RISK action only on ALLOW.
+
+BLOCK or UNKNOWN blocks that mutation. It does not prohibit safe read, analysis, reporting, or other already-authorized ordinary work that does not depend on performing the blocked mutation.
+
+### Scope escalation
+
+If an ORDINARY approved action reveals that execution must exceed the approved scope or introduces a new high-risk side effect:
+
+STOP the mutation
+→ reclassify the planned action
+→ apply the Mechanical Action Gate
+→ continue only on ALLOW
+
+Do not automatically undo already-safe approved edits merely because a later action requires escalation.
+
+### Persistent-state verification
+
+For an allowed high-risk operation that changes persistent or shared state, use:
+
+Gate → Execute → Verify → Report
+
+Do not report synchronization, publication, registration, deletion, repository-state change, or another persistent mutation as complete until the resulting state has actually been verified.
 
 ---
 
@@ -289,7 +365,7 @@ Standard checkpoint:
 ```text
 Approved stage/phase work complete
         ↓
-Synchronize authoritative documentation and Cursor usage history where required
+Synchronize affected authoritative documentation where required
         ↓
 Review resulting diff and repository status
         ↓
@@ -328,6 +404,7 @@ Stop **before** continuing when:
 - A required manual or user action is incomplete.
 - An unexpected **Critical** issue is discovered.
 - The task would require an exception to these rules.
+- A HIGH-RISK action reaches BLOCK or UNKNOWN at the Mechanical Action Gate.
 
 Then tell the user:
 

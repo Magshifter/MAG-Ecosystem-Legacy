@@ -1,19 +1,21 @@
 # MAG Ecosystem — AI Development Guidelines
 
 - MAG-Document-ID: `AI_GUIDELINES.md`
-- MAG-Content-Updated: `2026-09-24T21:30:00+03:00`
+- MAG-Content-Updated: `2026-09-25T00:45:00+03:00`
 
 This document is the **Global MAG development standard**. It defines **how** MAG software is developed with AI assistance.
 
 It applies to ChatGPT, Cursor IDE, Cursor Agent, Codex, and any other AI-assisted tool used on MAG work.
 
-Ecosystem identity, development-class taxonomy, namespace registry, Global vs active-development documentation levels, AI context isolation, high-level documentation authority, development bootstrap, and the License Manager concept are defined in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). This file does not restate those definitions. Load **GLOBAL + the active development identity** as specified there.
+Ecosystem identity, development-class taxonomy, namespace registry, Global vs active-development documentation levels, AI context isolation, high-level documentation authority, MAG Knowledge Control classification, development bootstrap, and the License Manager concept are defined in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). This file does not restate those definitions. Load **GLOBAL + the active development identity** as specified there.
 
 Identity classes (`#N`, `A<N>`, `B<N>`), registry, and context isolation are owned by `MAG_ECOSYSTEM.md`. Unless a section explicitly scopes otherwise, XenForo add-on engineering rules in this document apply only when the active development identity is a `#N` XenForo add-on project.
 
 Detailed coding-agent execution boundaries, mandatory Cursor pre-flight, Plain text output requirements, checkpoint mechanics, and report formats belong in `AI_AGENTS_RULES.md`.
 
 ChatGPT → Product Owner → Cursor prompt presentation, **operating-mode selection (Coordinator Mode / Direct Agent Mode)**, post-execution review, and **Cursor model-selection / model-routing policy** belong in §24 of this document.
+
+MAG Knowledge Control routing (Entry Gate, intents, Identity Scope × Intent-Allowed Owner Classes, Locator states, and same-scope fallback) belongs in §27 of this document. It is routing, not a seventh authority owner.
 
 Do not collect, display, or maintain Cursor Models usage measurements.
 
@@ -956,3 +958,102 @@ read validated entry
 ```
 
 After promotion, canonical Global documents must be self-contained. Do not leave permanent “see MPO-XXX for current rule” dependencies in normalized Global wording. The Pool stores history and delta trace, not permanent policy indirection. Do not create a Git checkpoint solely because a Pool status changed.
+
+---
+
+## 27. MAG Knowledge Control routing
+
+This section is the Global owner of MAG Knowledge Control **AI routing behavior**: Entry Gate, intents, Identity Scope × Intent-Allowed Owner Classes, Locator states, and same-scope canonical fallback.
+
+It does **not** create MAG authority. Ecosystem isolation and Knowledge Control classification remain in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). Mechanical Action Gate remains in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md). Generated discovery artifact mechanics remain in [`MAG_DOCUMENTATION_OPERATIONS.md`](MAG_DOCUMENTATION_OPERATIONS.md).
+
+Invariant: **CONTROL → ROUTING → AUTHORITY**. Successful routing is a pointer to a canonical owner section, not evidence and not authority.
+
+### Entry Gate
+
+Before substantive MAG coordination, classify the turn as **CONTINUE** or **RESOLVE**.
+
+**CONTINUE** only when all of the following hold:
+
+- the immediately preceding assistant turn stated an explicit next action;
+- current Product Owner input is pure continuation/approval;
+- same valid `working_identity`;
+- no topic/identity transition, correction, contradiction, or authority uncertainty.
+
+Otherwise **RESOLVE**.
+
+Do not infer identity from an arbitrary opened file or distant conversation history.
+
+### Working state (ephemeral, not authority)
+
+Session cache only:
+
+- `working_identity`
+- `working_task`
+- `working_intent`
+- `working_owners_opened`
+- `working_block`
+
+This state is cache, not authority. A Product Owner correction invalidates dependent `working_*` state.
+
+### Intents
+
+Only these intents are approved:
+
+- `GOVERN`
+- `PLAN`
+- `IMPLEMENT`
+- `DEBUG`
+- `VERIFY`
+- `LEARN`
+
+Unknown intent is out of scope. Do not invent additional intents.
+
+### Retrieval model — Identity Scope × Intent-Allowed Owner Classes
+
+Establish **identity scope** before semantic retrieval.
+
+- **GLOBAL** permits Global owners and Global operational assets only.
+- **GLOBAL + active development identity** (`GLOBAL+#N`, `GLOBAL+A<N>`, or `GLOBAL+B<N>` as applicable) permits Global plus **that** development only.
+- Never retrieve another development's WHAT unless the Product Owner explicitly authorizes a real cross-development task.
+
+`MAG_IMPLEMENTATION_PATTERNS.md` applicability requires verified Scope compatibility. Keyword similarity alone is insufficient.
+
+Intent-allowed owner classes (routing filter, not authority):
+
+| Intent | Allowed owner classes |
+| --- | --- |
+| `GOVERN` | `global_authority_section`, `global_process_section`, `global_operational_section` |
+| `PLAN` | `global_authority_section`, `global_operational_section`, `development_tz`, `development_roadmap`, `development_architecture`, `development_idea`, `development_readme` |
+| `IMPLEMENT` | `reusable_pattern_unit`, `reusable_knowledge_procedure`, `global_authority_section`, `development_architecture`, `development_class_map` |
+| `DEBUG` | `global_operational_section`, `reusable_pattern_unit`, `reusable_knowledge_procedure`, `global_authority_section`, `development_audit`, `development_architecture`, `development_class_map` |
+| `VERIFY` | `global_authority_section`, `reusable_knowledge_procedure`, `reusable_pattern_unit`, `development_audit`, `development_changelog`, `development_roadmap` |
+| `LEARN` | `reusable_knowledge_procedure`, `reusable_pattern_unit`, `global_operational_section`, `global_authority_section` |
+
+### Locator
+
+When an appropriate current generated index is available, Locator may be used as **routing only**. Locator does not regenerate the index as part of retrieval. Generated indexes are not canonical MAG documents.
+
+Locator states:
+
+- `FOUND`
+- `NOT_FOUND`
+- `AMBIGUOUS`
+- `STALE/CONFLICT`
+- `OUT_OF_SCOPE`
+
+Semantics:
+
+- `FOUND` is a pointer, not evidence. Open the canonical owner section named by the pointer before using the rule.
+- `NOT_FOUND` does not mean knowledge is absent.
+- `AMBIGUOUS` must not be silently resolved.
+- `STALE/CONFLICT` results must be discarded. Do not use stale “last-good” routing as authority.
+- `OUT_OF_SCOPE` must not broaden identity scope.
+
+The current canonical owner body always wins over working state, Locator, generated index, and conversation.
+
+### Fallback
+
+If Locator is missing, unavailable, failed, stale, conflicting, or otherwise unusable, fall back to **same-scope, section-oriented canonical retrieval**. Fallback must not broaden identity scope.
+
+If required authority remains unresolved after fallback, the result is **Unknown**. Do not invent.

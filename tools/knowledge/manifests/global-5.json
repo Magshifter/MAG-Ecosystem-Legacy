@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "config_version": 1,
+  "scope": "GLOBAL+#5",
+  "global_sources": [
+    "MAG_ECOSYSTEM.md",
+    "AI_GUIDELINES.md",
+    "AI_AGENTS_RULES.md",
+    "MAG_ADDON_DEVELOPMENT_LIFECYCLE.md",
+    "MAG_IMPLEMENTATION_PATTERNS.md",
+    "MAG_DOCUMENTATION_OPERATIONS.md",
+    "MAG_PROCESS_OVERLAY_POOL.md",
+    "MAG_XENFORO_ADDON_BLUEPRINT.md",
+    "MAG_DEBUGGING.md"
+  ],
+  "development": {
+    "identity": "#5",
+    "repo_root": "../Beyond3DViewer",
+    "doc_files": [
+      "docs/P05__3DR__TZ.md",
+      "docs/P05__3DR__Roadmap.md",
+      "docs/P05__3DR__Architecture.md",
+      "docs/P05__3DR__CLASS_MAP.md",
+      "docs/P05__3DR__Changelog.md",
+      "docs/P05__3DR__README.md",
+      "docs/P05__3DR__IDEA.md",
+      "docs/P05__3DR__AUDIT.md"
+    ]
+  },
+  "source_rules": "config/source_rules.json",
+  "intent_owner_map": "config/intent_owner_map.json",
+  "output": "generated/knowledge/index-global-5.json"
+}

@@ -1,7 +1,7 @@
 # MAG Documentation Operations
 
 - MAG-Document-ID: `MAG_DOCUMENTATION_OPERATIONS.md`
-- MAG-Content-Updated: `2026-09-24T21:30:00+03:00`
+- MAG-Content-Updated: `2026-09-25T01:52:02+03:00`
 
 ## 1. Purpose and authority
 
@@ -105,7 +105,7 @@ These states are distinct:
 | State | Meaning |
 | --- | --- |
 | Supporting template asset | Reusable source asset. Not an instantiated project logical document. |
-| Global operational asset | Ecosystem-level execution asset such as `MAG_XENFORO_ADDON_BLUEPRINT.md`. Implements Global HOW plus ACTIVE overlays. Not a project document and not a seventh canonical authority owner. |
+| Global operational asset | Ecosystem-level execution asset such as `MAG_XENFORO_ADDON_BLUEPRINT.md` or `MAG_DEBUGGING.md`. Implements Global HOW plus ACTIVE overlays. Not a project document and not a seventh or eighth canonical authority owner. `SYNC GLOBAL` eligibility is recorded per asset in `MAG_ECOSYSTEM.md`; membership in this class does not by itself confer eligibility. |
 | Unregistered document | Audit/registration anomaly. Excluded from writable SYNC. |
 | Provisional project document | Instantiated project document inside an approved Level 1 / controlled bootstrap, adoption, or registration procedure. Normal controlled state, not an error. |
 | Stable registered document | All stable-registration prerequisites satisfied, including applicable Local authoritative state and approved Git baseline. Drive reconciliation is independent; **Drive Reconciliation Pending** does not make a locally registered document provisional. |
@@ -113,7 +113,7 @@ These states are distinct:
 
 Provisional is the expected Level 1 project-document state. Ordinary stable SYNC discovery must not silently include provisional documents. Controlled Level 1 bootstrap operations may work with their explicitly identified provisional package. No additional metadata field is required to represent provisional state.
 
-`MAG_XENFORO_ADDON_BLUEPRINT.md` uses ordinary two-bullet metadata and may be included in `SYNC GLOBAL` as a registered Global operational asset. Supporting template assets remain outside ordinary SYNC discovery and use the approved package-transfer path above.
+`MAG_XENFORO_ADDON_BLUEPRINT.md` and `MAG_DEBUGGING.md` use ordinary two-bullet metadata and are the currently registered Global operational assets that `MAG_ECOSYSTEM.md` records as eligible for `SYNC GLOBAL`. Supporting template assets remain outside ordinary SYNC discovery and use the approved package-transfer path above. Other Global files, unregistered files, and generated discovery artifacts are not `SYNC GLOBAL` eligible merely because they exist in `MAG-Ecosystem`.
 
 ### Registration types and experimental documents
 
@@ -198,6 +198,26 @@ Do not create a separate documentation registry file.
 Global registration is represented by the `MAG_ECOSYSTEM.md` Global documentation map, valid metadata, and the applicable Local authoritative state. The six canonical Global authority files remain the durable authority set. `MAG_PROCESS_OVERLAY_POOL.md` is a separately registered ecosystem-level process asset, not a seventh equivalent authority owner.
 
 Stable project registration requires the approved development identity, canonical Local repository, applicable development documentation model and authority, valid metadata, and approved Git baseline. Nonstandard development documents require an explicit Product Owner-approved authoritative or non-authoritative experimental role; metadata cannot grant authority by itself. Process overlays are not registered as project documents.
+
+### Derived generated discovery artifacts (Knowledge Control)
+
+Knowledge Control may use generated indexes, Locator data, scoped discovery views, and equivalent generated routing artifacts to locate candidate canonical sections.
+
+These artifacts are derived, non-authoritative, and non-registered. They are not canonical MAG documents, do not create substantive MAG authority, are excluded from ordinary `SYNC` and `DOC REGISTER`, and must not create a seventh Global authority owner or an equivalent canonical `MAG_KNOWLEDGE_INDEX.md`.
+
+Generated discovery artifacts must be reproducible from current canonical sources. Generated output must not be hand-maintained as independent MAG truth.
+
+Canonical authority always wins over generated routing data. A generated pointer, match, ranking, cached result, or previous generated state cannot override the current canonical owner.
+
+Generated discovery data must not be treated as valid routing knowledge when it is missing, stale, invalid, conflicting, or unvalidated. A previous generated artifact must not be used as "last good" knowledge merely because current generation or validation failed.
+
+When generated discovery is unavailable or invalid, disable that generated routing path and fall back to the allowed section-oriented canonical retrieval defined by `AI_GUIDELINES.md` and the identity boundaries defined by `MAG_ECOSYSTEM.md`. Failure of generated discovery must not silently broaden identity or retrieval scope.
+
+Generated discovery views must preserve MAG identity isolation. They may expose `GLOBAL` or `GLOBAL + active development identity` only as permitted by the current retrieval scope. They must not expose unrelated development WHAT unless the Product Owner explicitly authorizes a real cross-development task.
+
+Before generated discovery output is published or used as a routing aid, validate that its canonical source pointers and source revisions still correspond to the current allowed canonical sources. Output that fails this validation must not be published or used as current routing data.
+
+This subsection governs generated-artifact classification, generation, validation, publication, and documentation/SYNC mechanics only. Semantic Entry Gate and intent/retrieval routing behavior belong to `AI_GUIDELINES.md`. Mechanical Action Gate behavior belongs to `AI_AGENTS_RULES.md`.
 
 ### Provisional registration
 
@@ -340,7 +360,13 @@ Resolve the clearly established active context, compare it, and produce a synchr
 
 ### `SYNC GLOBAL`
 
-Cover synchronization-managed Global authority documents, the registered ecosystem-level process asset `MAG_PROCESS_OVERLAY_POOL.md`, and the registered Global operational asset `MAG_XENFORO_ADDON_BLUEPRINT.md`. Supporting template assets under `templates/xenforo-addon/` remain outside ordinary registered-document SYNC discovery.
+Cover:
+
+- the six canonical Global authority documents;
+- the registered ecosystem-level process asset `MAG_PROCESS_OVERLAY_POOL.md`;
+- the registered Global operational assets that `MAG_ECOSYSTEM.md` currently records as `SYNC GLOBAL` eligible: `MAG_XENFORO_ADDON_BLUEPRINT.md` and `MAG_DEBUGGING.md`.
+
+Do not include unregistered files, generated discovery artifacts, or supporting template assets under `templates/xenforo-addon/`. Template assets remain outside ordinary registered-document SYNC discovery and use the approved package-transfer path above. The operational-asset class does not automatically expand `SYNC GLOBAL` beyond those currently registered eligible assets. `MAG_PROCESS_OVERLAY_POOL.md` remains a registered ecosystem-level process asset, not an operational asset.
 
 ### `SYNC #1`, `SYNC #2`, `SYNC #N`, `SYNC A<N>`, and `SYNC B<N>`
 
