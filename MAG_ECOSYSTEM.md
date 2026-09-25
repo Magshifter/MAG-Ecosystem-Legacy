@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-25T23:55:00+03:00`
+- MAG-Content-Updated: `2026-09-26T00:20:00+03:00`
 
 This document is the navigation and governance foundation for MAG software development across approved Product Classes and identity namespaces.
 
@@ -113,10 +113,10 @@ Each `#N` XenForo Product also has a **short, stable project code** used in docu
 | #1 | `P01__GLF` | [MAG] Global Links Favicons | Active / Stable 1.4.3 | `GlobalLinksFavicons` | `C:\laragon\repos\GlobalLinksFavicons` |
 | #2 | `P02__TS` | [MAG] Tag Synchronizer | Active / Stable 1.1.0 APPROVED; PRV PASS; external publication not recorded | `TagSynchronizer` | `C:\laragon\repos\TagSynchronizer` |
 | #3 | `P03__SL` | [MAG] Simple Landing | Active / Gate 1 complete; Targeted Research / Installed-Source Verification NEXT | `SimpleLanding` | `C:\laragon\repos\SimpleLanding` |
-| #4 | `P04__DG` | [MAG] Doc&Guide | Active / Stable 1.0.1 (`1000190`); 1.1.0 planning not started | `DocGuide` | `C:\laragon\repos\DocGuide` |
+| #4 | `P04__DG` | [MAG] Doc&Guide | Active / Stable 1.0.1 (`1000190`); 1.1.0 Requirements COMPLETED / Gate 1 PASSED 2026-09-25; implementation not started | `DocGuide` | `C:\laragon\repos\DocGuide` |
 | #5 | `P05__3DR` | [MAG] Beyond 3D Viewer | Active / Released 1.1.0 (`1001100`); 1.2 not started | `Beyond3DViewer` | `C:\laragon\repos\Beyond3DViewer` |
 | #6 | `P06__DT` | [MAG] Design Toolkit | Active / Initial requirements discovery | `DesignToolkit` | `C:\laragon\repos\DesignToolkit` |
-| #8 | `P08__AE` | [MAG] ACP Enhancements | Active / Stable 1.0.0 (1000090); Gate 3 PASSED; Phase 8 PASSED; Stable Release confirmed (Resource mag-acp-enhancements.12); Phase 9 — Post-Release Verification ACTIVE | `ACP-Enhancements` | `C:\laragon\repos\ACP-Enhancements` |
+| #8 | `P08__AE` | [MAG] ACP Enhancements | Active / Published Stable 1.0.0 (`1000090`, Resource mag-acp-enhancements.12); Local/Git `1.0.2` / `1000290`; Phase 9 finalized into 1.0.1; external publication of 1.0.1/1.0.2 pending Product Owner | `ACP-Enhancements` | `C:\laragon\repos\ACP-Enhancements` |
 
 The `#N` registry table is the canonical current-fact source for identity, current lifecycle/status label, current stable version where shown, Git repository, and local path as currently recorded. Additional repositories or paths do not by themselves create another `#N` identity. Narrative below may explain classification, history, and meaning; it must not independently restate volatile current status, version, or path.
 
