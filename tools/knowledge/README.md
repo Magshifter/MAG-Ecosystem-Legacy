@@ -15,6 +15,7 @@ Generated JSON under `generated/knowledge/` is derived, non-authoritative, non-r
 | Path | Role |
 |------|------|
 | `Generate-MagKnowledgeIndex.ps1` | Build index from a manifest |
+| `Update-MagKnowledge.ps1` | PC-side refresh of affected generated indexes after Local documentation reconciliation |
 | `Validate-MagKnowledgeIndex.ps1` | Schema + semantic + SHA-256 checks |
 | `Locate-MagKnowledge.ps1` | Deterministic routing; pointer only |
 | `lib/` | Shared parse/hash/match helpers |
@@ -71,6 +72,31 @@ Exact normalized title, or (query with ≥2 tokens) all tokens in title/heading_
 ## unit_id
 
 `{owner_stem}#{slug(heading_path)}`. Slug is NFKC, lowercase, `[a-z0-9-]+`. If that slug is empty or collides, fallback is `{owner_stem}#u-{sha256utf8(heading_path)[0..12]}`.
+
+## Local refresh (`Update-MagKnowledge.ps1`)
+
+Operational orchestrator. Not MAG authority. Run on the PC **after** Local documentation is reconciled (including Drive → Local). Does **not** write Google Drive, SYNC, commit, or install Git hooks. Locator never calls this script.
+
+Discover supported indexes by enumerating `tools/knowledge/manifests/*.json` only (currently GLOBAL and GLOBAL+#5). Do not invent A<N> or B<N> index names.
+
+Changed sources are detected by SHA-256 of current approved source bytes vs `sources[].content_sha256` in each existing index. Optional `-ChangedFiles` is unioned with that, matching only manifest-resolved source paths. A missing index makes its manifest affected. `tools/`, the Knowledge Control roadmap, `#8`, and other non-indexed files select nothing.
+
+```text
+pwsh ./tools/knowledge/Update-MagKnowledge.ps1
+pwsh ./tools/knowledge/Update-MagKnowledge.ps1 -DryRun
+pwsh ./tools/knowledge/Update-MagKnowledge.ps1 -ChangedFiles MAG_ECOSYSTEM.md
+```
+
+| Result | Meaning |
+|--------|---------|
+| `NO_INDEXED_SOURCE_CHANGE` | NOOP: no regenerate; does not re-certify existing indexes |
+| `DRY_RUN` | Reports affected scopes; **no** generated writes |
+| `UPDATED` | Each affected manifest generated (existing atomic publish) then validated |
+| `FAILED` | Stop further generation; named scopes; generated discovery for those scopes is unusable; leftover files are not last-good knowledge; same-scope canonical fallback remains |
+
+Generated JSON stays derived, non-authoritative, non-registered, gitignored, and excluded from ordinary `SYNC` / `DOC REGISTER`.
+
+The existing test suite (cases 1–2) regenerates both **production** indexes. Orchestrator regression uses isolated manifests under `.mag-kn-test`.
 
 ## Git
 

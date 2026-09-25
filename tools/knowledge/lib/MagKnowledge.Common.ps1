@@ -688,7 +688,8 @@ function Test-MagIndexSemantics {
             }
         }
         elseif ($Manifest -and $Manifest.scope -ne 'GLOBAL') {
-            $devRoot = Get-MagFullPath (Join-Path $Roots.Ecosystem $Manifest.development.repo_root)
+            $ecoRoot = Get-MagEffectiveGlobalRoot -Manifest $Manifest -Roots $Roots
+            $devRoot = Get-MagFullPath (Join-Path $ecoRoot $Manifest.development.repo_root)
             $full = Get-MagFullPath (Join-Path $devRoot $s.path)
             if (-not (Test-MagPathUnderRoot -Path $full -Root $devRoot)) {
                 $errors.Add("path_outside_development:$($s.path)") | Out-Null
@@ -1024,4 +1025,184 @@ function Write-MagLocatorOutput {
         $extra = " $($o.pointer.owner)#$($o.pointer.section)"
     }
     [Console]::Error.WriteLine("$($o.state) $($o.reason)$extra")
+}
+
+function Get-MagKnowledgeManifestFiles {
+    param(
+        [Parameter(Mandatory)]$Roots,
+        [string]$ManifestDirectory
+    )
+    $dir = if ([string]::IsNullOrWhiteSpace($ManifestDirectory)) {
+        Join-Path $Roots.Knowledge 'manifests'
+    }
+    else {
+        Get-MagFullPath $ManifestDirectory
+    }
+    if (-not (Test-MagPathUnderRoot -Path $dir -Root $Roots.Ecosystem)) {
+        throw 'path_outside_ecosystem'
+    }
+    if (-not (Test-Path -LiteralPath $dir -PathType Container)) {
+        throw "missing_manifest_directory:$dir"
+    }
+    return @(Get-ChildItem -LiteralPath $dir -Filter '*.json' -File | Sort-Object Name)
+}
+
+function Test-MagPathEquals {
+    param([string]$A, [string]$B)
+    if ([string]::IsNullOrWhiteSpace($A) -or [string]::IsNullOrWhiteSpace($B)) {
+        return $false
+    }
+    $fa = (Get-MagFullPath $A).TrimEnd('\', '/')
+    $fb = (Get-MagFullPath $B).TrimEnd('\', '/')
+    return $fa.Equals($fb, [StringComparison]::OrdinalIgnoreCase)
+}
+
+function Test-MagChangedFileHitsSource {
+    param(
+        [Parameter(Mandatory)]$SourceItem,
+        [AllowEmptyCollection()][string[]]$ChangedFullPaths
+    )
+    foreach ($c in @($ChangedFullPaths)) {
+        if ([string]::IsNullOrWhiteSpace($c)) { continue }
+        if (Test-MagPathEquals $c $SourceItem.FullPath) { return $true }
+        $cn = $c.Trim().Replace('/', '\')
+        if (-not [IO.Path]::IsPathRooted($cn)) {
+            if ([IO.Path]::GetFileName($cn).Equals($SourceItem.Owner, [StringComparison]::OrdinalIgnoreCase)) {
+                return $true
+            }
+            $rel = ([string]$SourceItem.RelPath).Replace('/', '\')
+            if ($cn.Equals($rel, [StringComparison]::OrdinalIgnoreCase)) { return $true }
+        }
+    }
+    return $false
+}
+
+function Get-MagRefreshDecisions {
+    param(
+        [Parameter(Mandatory)]$Roots,
+        [string]$ManifestDirectory,
+        [AllowEmptyCollection()][string[]]$ChangedFiles,
+        [bool]$CompareIndexHashes = $true
+    )
+    $rules = Read-MagJsonFile (Join-Path $Roots.Knowledge 'config\source_rules.json')
+    $changedFull = [System.Collections.Generic.List[string]]::new()
+    foreach ($c in @($ChangedFiles)) {
+        if ([string]::IsNullOrWhiteSpace($c)) { continue }
+        $t = $c.Trim()
+        if (Test-Path -LiteralPath $t) {
+            $changedFull.Add((Get-MagFullPath $t)) | Out-Null
+        }
+        elseif (Test-Path -LiteralPath (Join-Path $Roots.Ecosystem $t)) {
+            $changedFull.Add((Get-MagFullPath (Join-Path $Roots.Ecosystem $t))) | Out-Null
+        }
+        else {
+            $changedFull.Add($t) | Out-Null
+        }
+    }
+    $decisions = [System.Collections.Generic.List[object]]::new()
+    foreach ($mf in @(Get-MagKnowledgeManifestFiles -Roots $Roots -ManifestDirectory $ManifestDirectory)) {
+        $manifest = Import-MagManifest -ManifestPath $mf.FullName -Roots $Roots
+        $outRel = [string]$manifest.output
+        $outFull = if ([IO.Path]::IsPathRooted($outRel)) { Get-MagFullPath $outRel } else { Get-MagFullPath (Join-Path $Roots.Ecosystem $outRel) }
+        $reasons = [System.Collections.Generic.List[string]]::new()
+        $sources = $null
+        try {
+            $sources = @(Get-MagApprovedSources -Manifest $manifest -Rules $rules -Roots $Roots)
+        }
+        catch {
+            $reasons.Add([string]$_.Exception.Message)
+        }
+        if (-not (Test-Path -LiteralPath $outFull)) {
+            $reasons.Add('missing_index')
+        }
+        elseif ($CompareIndexHashes -and $sources) {
+            $idx = $null
+            try { $idx = Read-MagJsonFile $outFull } catch { $reasons.Add('unreadable_index') }
+            if ($idx) {
+                foreach ($item in $sources) {
+                    $entry = @($idx.sources | Where-Object { [string]$_.owner -eq [string]$item.Owner })
+                    if ($entry.Count -eq 0) {
+                        $reasons.Add("missing_index_source:$($item.Owner)")
+                        continue
+                    }
+                    $bytes = [IO.File]::ReadAllBytes($item.FullPath)
+                    $sha = Get-MagSha256Hex $bytes
+                    if ($sha -ne [string]$entry[0].content_sha256) {
+                        $reasons.Add("sha_mismatch:$($item.Owner)")
+                    }
+                }
+            }
+        }
+        if ($sources -and $changedFull.Count -gt 0) {
+            foreach ($item in $sources) {
+                if (Test-MagChangedFileHitsSource -SourceItem $item -ChangedFullPaths @($changedFull)) {
+                    $reasons.Add("changed_file:$($item.Owner)")
+                }
+            }
+        }
+        $uniq = @($reasons | Select-Object -Unique)
+        $decisions.Add([pscustomobject]@{
+            ManifestPath = $mf.FullName
+            Scope        = [string]$manifest.scope
+            Output       = $outFull
+            Affected     = ($uniq.Count -gt 0)
+            Reasons      = $uniq
+        }) | Out-Null
+    }
+    return @($decisions)
+}
+
+function Invoke-MagKnowledgeRefresh {
+    param(
+        [Parameter(Mandatory)]$Roots,
+        [string]$ManifestDirectory,
+        [AllowEmptyCollection()][string[]]$ChangedFiles = @(),
+        [bool]$DryRun = $false
+    )
+    $decisions = @(Get-MagRefreshDecisions -Roots $Roots -ManifestDirectory $ManifestDirectory -ChangedFiles $ChangedFiles -CompareIndexHashes $true)
+    $affected = @($decisions | Where-Object { $_.Affected })
+    if ($affected.Count -eq 0) {
+        return [pscustomobject]@{
+            ExitCode = 0
+            State    = 'NO_INDEXED_SOURCE_CHANGE'
+            Affected = @()
+            Detail   = 'NOOP: no supported manifest selected; indexes were not regenerated or re-certified'
+        }
+    }
+    if ($DryRun) {
+        return [pscustomobject]@{
+            ExitCode = 0
+            State    = 'DRY_RUN'
+            Affected = $affected
+            Detail   = 'no generated writes'
+        }
+    }
+    $generated = [System.Collections.Generic.List[string]]::new()
+    foreach ($item in $affected) {
+        try {
+            $null = Invoke-MagKnowledgeGenerate -ManifestPath $item.ManifestPath
+            $val = Invoke-MagKnowledgeValidate -IndexPath $item.Output -ManifestPath $item.ManifestPath
+            if ($val.ExitCode -ne 0) {
+                throw ('validate_failed:' + ($val.Errors -join '; '))
+            }
+            $generated.Add([string]$item.Scope) | Out-Null
+        }
+        catch {
+            $msg = [string]$_.Exception.Message
+            $code = 3
+            if ($msg -match '^(usage|path_outside)') { $code = 5 }
+            return [pscustomobject]@{
+                ExitCode = $code
+                State    = 'FAILED'
+                Affected = $affected
+                Detail   = "generate_failed:$($item.Scope):$msg"
+            }
+        }
+    }
+    return [pscustomobject]@{
+        ExitCode = 0
+        State    = 'UPDATED'
+        Affected = $affected
+        Detail   = ('regenerated:' + ($generated -join ','))
+    }
 }

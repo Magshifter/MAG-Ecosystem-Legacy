@@ -58,6 +58,11 @@ function Invoke-Loc {
     return [pscustomobject]@{ Code = $code; Json = $json; Raw = $out }
 }
 
+function Invoke-Update {
+    param($ManifestDirectory, [string[]]$ChangedFiles, [switch]$DryRun)
+    return Invoke-MagKnowledgeRefresh -Roots $roots -ManifestDirectory $ManifestDirectory -ChangedFiles $ChangedFiles -DryRun:([bool]$DryRun)
+}
+
 $manG = Join-Path $roots.Knowledge 'manifests\global.json'
 $man5 = Join-Path $roots.Knowledge 'manifests\global-5.json'
 $idxG = Join-Path $roots.Ecosystem 'generated\knowledge\index-global.json'
@@ -87,10 +92,19 @@ $good.global_sources = @('MAG_KNOWLEDGE_CONTROL_ROADMAP.md')
 $c4 = Invoke-Gen $badMan
 Assert-True ($c4 -eq 3) '4-roadmap-rejected' "exit=$c4"
 
-# 5 Untracked MAG_DEBUGGING
+# 5 MAG_DEBUGGING is indexed with a SHA-256 (git tree_state may be untracked, committed, or modified)
 $idxGobj = Read-MagJsonFile $idxG
 $dbgSrc = @($idxGobj.sources | Where-Object { $_.owner -eq 'MAG_DEBUGGING.md' })
-Assert-True ($dbgSrc.Count -eq 1 -and $dbgSrc[0].tree_state -eq 'untracked' -and ($null -eq $dbgSrc[0].git_blob -or "$($dbgSrc[0].git_blob)" -eq '') -and $dbgSrc[0].content_sha256.Length -eq 64) '5-untracked-debugging'
+if ($dbgSrc.Count -ne 1) {
+    Assert-True $false '5-debugging-indexed-revision' "count=$($dbgSrc.Count)"
+}
+else {
+    $dbgTreeOk = $dbgSrc[0].tree_state -in @('untracked', 'committed', 'modified') -and $dbgSrc[0].content_sha256.Length -eq 64
+    if ($dbgSrc[0].tree_state -eq 'untracked') {
+        $dbgTreeOk = $dbgTreeOk -and ($null -eq $dbgSrc[0].git_blob -or "$($dbgSrc[0].git_blob)" -eq '')
+    }
+    Assert-True $dbgTreeOk '5-debugging-indexed-revision' "tree=$($dbgSrc[0].tree_state)"
+}
 
 # 6 Unstaged edit stale via fixture
 $fx = Join-Path $badDir 'fx'
@@ -309,6 +323,168 @@ Assert-True ($c25a -eq 0 -and $c25b -eq 0 -and $h1 -ne $h2) '25-atomic-regen' "t
 $vg = Invoke-Val $idxG $manG
 $v5 = Invoke-Val $idx5 $man5
 Assert-True ($vg -eq 0 -and $v5 -eq 0) 'validate-production-indexes' "g=$vg 5=$v5"
+
+# Orchestrator fixtures (isolated manifests; not production indexes)
+$orchRoot = Join-Path $badDir 'orch'
+$orchEco = Join-Path $orchRoot 'eco'
+$orchDev = Join-Path $orchRoot 'dev\docs'
+$orchManDir = Join-Path $orchRoot 'manifests'
+New-Item -ItemType Directory -Path $orchEco, $orchDev, $orchManDir -Force | Out-Null
+@"
+# Fixture Eco
+
+- MAG-Document-ID: ``MAG_ECOSYSTEM.md``
+- MAG-Content-Updated: ``2026-01-01T00:00:00+00:00``
+
+## Orch Alpha
+text
+"@ | Set-Content -LiteralPath (Join-Path $orchEco 'MAG_ECOSYSTEM.md') -Encoding utf8
+@"
+# Fixture Debug
+
+- MAG-Document-ID: ``MAG_DEBUGGING.md``
+- MAG-Content-Updated: ``2026-01-01T00:00:00+00:00``
+
+## Orch Debug
+text
+"@ | Set-Content -LiteralPath (Join-Path $orchEco 'MAG_DEBUGGING.md') -Encoding utf8
+@"
+# Fixture TZ
+
+- MAG-Document-ID: ``P05__3DR__TZ.md``
+- MAG-Content-Updated: ``2026-01-01T00:00:00+00:00``
+
+## Orch Purpose
+text
+"@ | Set-Content -LiteralPath (Join-Path $orchDev 'P05__3DR__TZ.md') -Encoding utf8
+
+$orchGMan = [pscustomobject]@{
+    schema_version = 1; config_version = 1; scope = 'GLOBAL'
+    ecosystem_root = '.mag-kn-test/orch/eco'
+    global_sources = @('MAG_ECOSYSTEM.md', 'MAG_DEBUGGING.md')
+    source_rules = 'config/source_rules.json'
+    intent_owner_map = 'config/intent_owner_map.json'
+    output = 'generated/knowledge/index-orch-g.json'
+}
+$orch5Man = [pscustomobject]@{
+    schema_version = 1; config_version = 1; scope = 'GLOBAL+#5'
+    ecosystem_root = '.mag-kn-test/orch/eco'
+    global_sources = @('MAG_ECOSYSTEM.md', 'MAG_DEBUGGING.md')
+    development = @{ identity = '#5'; repo_root = '../dev'; doc_files = @('docs/P05__3DR__TZ.md') }
+    source_rules = 'config/source_rules.json'
+    intent_owner_map = 'config/intent_owner_map.json'
+    output = 'generated/knowledge/index-orch-5.json'
+}
+$orchGManPath = Join-Path $orchManDir 'orch-global.json'
+$orch5ManPath = Join-Path $orchManDir 'orch-global-5.json'
+($orchGMan | ConvertTo-Json -Depth 8) | Set-Content $orchGManPath -Encoding utf8
+($orch5Man | ConvertTo-Json -Depth 8) | Set-Content $orch5ManPath -Encoding utf8
+$idxOrchG = Join-Path $roots.Ecosystem 'generated\knowledge\index-orch-g.json'
+$idxOrch5 = Join-Path $roots.Ecosystem 'generated\knowledge\index-orch-5.json'
+$cOg = Invoke-Gen $orchGManPath
+$cO5 = Invoke-Gen $orch5ManPath
+Assert-True ($cOg -eq 0 -and $cO5 -eq 0) 'orch-fixture-gen' "g=$cOg 5=$cO5"
+
+function Get-OrchAffectedScopes {
+    param([string[]]$ChangedFiles = @())
+    $d = @(Get-MagRefreshDecisions -Roots $roots -ManifestDirectory $orchManDir -ChangedFiles $ChangedFiles -CompareIndexHashes $true)
+    return @($d | Where-Object { $_.Affected } | ForEach-Object { [string]$_.Scope })
+}
+
+$noopScopes = @(Get-OrchAffectedScopes)
+$noopCli = Invoke-Update $orchManDir
+Assert-True ($noopScopes.Count -eq 0 -and $noopCli.ExitCode -eq 0 -and $noopCli.State -eq 'NO_INDEXED_SOURCE_CHANGE') 'orch-noop' "scopes=$($noopScopes.Count) code=$($noopCli.ExitCode)"
+
+$hG0 = (Get-FileHash -LiteralPath $idxOrchG -Algorithm SHA256).Hash
+$h50 = (Get-FileHash -LiteralPath $idxOrch5 -Algorithm SHA256).Hash
+Add-Content -LiteralPath (Join-Path $orchEco 'MAG_ECOSYSTEM.md') -Value "`nchanged-global`n" -Encoding utf8
+$both = @(Get-OrchAffectedScopes)
+$dryG = Invoke-Update $orchManDir -DryRun
+$hG1 = (Get-FileHash -LiteralPath $idxOrchG -Algorithm SHA256).Hash
+$h51 = (Get-FileHash -LiteralPath $idxOrch5 -Algorithm SHA256).Hash
+Assert-True ($dryG.ExitCode -eq 0 -and $dryG.State -eq 'DRY_RUN' -and $hG0 -eq $hG1 -and $h50 -eq $h51 -and $both -contains 'GLOBAL' -and $both -contains 'GLOBAL+#5') 'orch-global-selects-both-dryrun' "scopes=$($both -join ',')"
+
+@"
+# Fixture Eco
+
+- MAG-Document-ID: ``MAG_ECOSYSTEM.md``
+- MAG-Content-Updated: ``2026-01-01T00:00:00+00:00``
+
+## Orch Alpha
+text
+"@ | Set-Content -LiteralPath (Join-Path $orchEco 'MAG_ECOSYSTEM.md') -Encoding utf8
+$cOg2 = Invoke-Gen $orchGManPath
+$cO52 = Invoke-Gen $orch5ManPath
+$hG2 = (Get-FileHash -LiteralPath $idxOrchG -Algorithm SHA256).Hash
+Add-Content -LiteralPath (Join-Path $orchDev 'P05__3DR__TZ.md') -Value "`nchanged-tz`n" -Encoding utf8
+$s5 = @(Get-OrchAffectedScopes)
+$sel5 = Invoke-Update $orchManDir -DryRun
+$hG3 = (Get-FileHash -LiteralPath $idxOrchG -Algorithm SHA256).Hash
+Assert-True ($sel5.ExitCode -eq 0 -and $s5.Count -eq 1 -and $s5[0] -eq 'GLOBAL+#5' -and $hG2 -eq $hG3) 'orch-5-only-selects-5' "scopes=$($s5 -join ',')"
+
+$run5 = Invoke-Update $orchManDir
+$hG4 = (Get-FileHash -LiteralPath $idxOrchG -Algorithm SHA256).Hash
+Assert-True ($run5.ExitCode -eq 0 -and $run5.State -eq 'UPDATED' -and $hG2 -eq $hG4) 'orch-5-only-does-not-write-global' "code=$($run5.ExitCode) gChanged=$($hG2 -ne $hG4)"
+
+$locWrong = Invoke-Loc $idxOrch5 'GLOBAL' 'GOVERN' 'Orch Alpha'
+Assert-True ($locWrong.Code -eq 4) 'orch-global-never-uses-global5' "code=$($locWrong.Code)"
+
+$noneScopes = @(Get-OrchAffectedScopes -ChangedFiles @('tools/knowledge/README.md', 'MAG_KNOWLEDGE_CONTROL_ROADMAP.md', 'docs/P08__AE__TZ.md'))
+$noneCli = Invoke-Update $orchManDir @('tools/knowledge/README.md', 'MAG_KNOWLEDGE_CONTROL_ROADMAP.md', 'docs/P08__AE__TZ.md')
+Assert-True ($noneCli.ExitCode -eq 0 -and $noneScopes.Count -eq 0) 'orch-nonindexed-selects-nothing' "scopes=$($noneScopes.Count) code=$($noneCli.ExitCode)"
+
+# Missing fixture index selects only that manifest (DryRun; no generated write)
+$orch5ManObj = Import-MagManifest -ManifestPath $orch5ManPath -Roots $roots
+$null = Invoke-Gen $orchGManPath
+$null = Invoke-Gen $orch5ManPath
+Remove-Item -LiteralPath $idxOrch5 -Force
+$miAbsentBefore = -not (Test-Path -LiteralPath $idxOrch5)
+$miDecisions = @(Get-MagRefreshDecisions -Roots $roots -ManifestDirectory $orchManDir -ChangedFiles @() -CompareIndexHashes $true)
+$miAffected = @($miDecisions | Where-Object { $_.Affected })
+$miG5 = @($miAffected | Where-Object { $_.Scope -eq 'GLOBAL+#5' })
+$miG = @($miAffected | Where-Object { $_.Scope -eq 'GLOBAL' })
+$miDry = Invoke-Update $orchManDir -DryRun
+$miReasonOk = ($miG5.Count -eq 1) -and (@($miG5[0].Reasons) -contains 'missing_index')
+$miSelectOk = ($orch5ManObj.scope -eq 'GLOBAL+#5') -and ($miAffected.Count -eq 1) -and $miReasonOk -and ($miG.Count -eq 0)
+$dryAff = @($miDry.Affected | Where-Object { $_.Scope -eq 'GLOBAL+#5' })
+$miDryReasonOk = ($dryAff.Count -eq 1) -and (@($dryAff[0].Reasons) -contains 'missing_index')
+$miDryOk = ($miDry.ExitCode -eq 0) -and ($miDry.State -eq 'DRY_RUN') -and (-not (Test-Path -LiteralPath $idxOrch5))
+$cMiRestore = Invoke-Gen $orch5ManPath
+$miRestoreOk = ($cMiRestore -eq 0) -and (Test-Path -LiteralPath $idxOrch5)
+Assert-True ($miAbsentBefore -and $miSelectOk -and $miDryOk -and $miDryReasonOk -and (Test-Path -LiteralPath $idxOrchG) -and $miRestoreOk) 'orch-missing-index-selects-dryrun' "aff=$($miAffected.Count) dry=$($miDry.State)"
+
+@"
+# Fixture TZ
+
+- MAG-Document-ID: ``P05__3DR__TZ.md``
+- MAG-Content-Updated: ``2026-01-01T00:00:00+00:00``
+
+## Orch Purpose
+text
+"@ | Set-Content -LiteralPath (Join-Path $orchDev 'P05__3DR__TZ.md') -Encoding utf8
+$null = Invoke-Gen $orchGManPath
+$null = Invoke-Gen $orch5ManPath
+Add-Content -LiteralPath (Join-Path $orchEco 'MAG_DEBUGGING.md') -Value "`nsha-untracked`n" -Encoding utf8
+$sd = @(Get-OrchAffectedScopes)
+Assert-True ($sd -contains 'GLOBAL' -and $sd -contains 'GLOBAL+#5') 'orch-untracked-global-via-sha' "scopes=$($sd -join ',')"
+
+@"
+# Fixture Debug
+
+- MAG-Document-ID: ``MAG_DEBUGGING.md``
+- MAG-Content-Updated: ``2026-01-01T00:00:00+00:00``
+
+## Orch Debug
+text
+"@ | Set-Content -LiteralPath (Join-Path $orchEco 'MAG_DEBUGGING.md') -Encoding utf8
+$null = Invoke-Gen $orchGManPath
+$keepFail = Get-Content -LiteralPath $idxOrchG -Raw
+Add-Content -LiteralPath (Join-Path $orchEco 'MAG_ECOSYSTEM.md') -Value "`n## Orch Alpha`n" -Encoding utf8
+$failU = Invoke-Update $orchManDir
+$afterFail = Get-Content -LiteralPath $idxOrchG -Raw
+Assert-True ($failU.ExitCode -eq 3 -and $keepFail -eq $afterFail) 'orch-fail-no-replace' "code=$($failU.ExitCode)"
+
+Get-ChildItem (Join-Path $roots.Ecosystem 'generated\knowledge') -Filter 'index-orch*.json' -ErrorAction SilentlyContinue | Remove-Item -Force
 
 Remove-Item -LiteralPath $badDir -Recurse -Force -ErrorAction SilentlyContinue
 Get-ChildItem (Join-Path $roots.Ecosystem 'generated\knowledge') -Filter 'index-fx*.json' -ErrorAction SilentlyContinue | Remove-Item -Force
