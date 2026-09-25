@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Coding Agent Rules
 
 - MAG-Document-ID: `AI_AGENTS_RULES.md`
-- MAG-Content-Updated: `2026-09-24T23:06:00+03:00`
+- MAG-Content-Updated: `2026-09-25T16:15:00+03:00`
 
 These rules define **how coding agents may execute** work in MAG repositories.
 
@@ -183,7 +183,8 @@ HIGH-RISK includes an agent-initiated action when any of the following is true:
 - it exceeds the explicitly approved implementation/procedure scope;
 - it creates persistent behavior or an external side effect;
 - it publishes, releases, tags, commits, pushes, or otherwise changes externally shared repository state;
-- it performs a broad or recursive automated mutation whose exact affected scope is not already safely bounded.
+- it performs a broad or recursive automated mutation whose exact affected scope is not already safely bounded;
+- it writes Mirror transport files into canonical Local paths, or performs a destructive reset/delete of the Documentation Mirror workspace.
 
 If the classification cannot be determined safely, treat the action as HIGH-RISK with unresolved prerequisites. Do not fail open.
 
@@ -233,6 +234,18 @@ For an allowed high-risk operation that changes persistent or shared state, use:
 Gate → Execute → Verify → Report
 
 Do not report synchronization, publication, registration, deletion, repository-state change, or another persistent mutation as complete until the resulting state has actually been verified.
+
+### Documentation Mirror execution boundary
+
+`C:\laragon\repos\Mirror` is a documentation/tool transport workspace only. Operational protocol is in `MAG_DOCUMENTATION_OPERATIONS.md` §19. Do not restate that protocol here.
+
+Agents must not use Mirror as a normal working source or as canonical authority. Knowledge Control must not treat Mirror as a source. Ordinary implementation, debugging, and documentation edits use canonical Local repositories.
+
+Access Mirror for mutation only under an explicitly authorized documentation-transport procedure. CHECK is read-only. CHECK-bound RECONCILE is implemented per `MAG_DOCUMENTATION_OPERATIONS.md` §19 but is **not** self-authorizing: a receipt or receipt SHA-256 is cryptographic binding of checked state, not Product Owner authorization. Generic `SYNC`/`RECONCILE` is not standing authorization. Production mutation requires current identity, governing owner (`MAG_DOCUMENTATION_OPERATIONS.md`), specific Product Owner authorization of that checked state, exact targets, and safety evidence, with Mechanical Action Gate ALLOW.
+
+Mirror → canonical Local writes are HIGH-RISK. Local → Mirror transport writes also require current documentation-transport authorization. Destructive Mirror reset or bulk delete under MirrorRoot is HIGH-RISK and requires **specific** authorization for that operation. The completed one-time `BootstrapClean` authorization is **not** reusable and is not standing delete/reset authority.
+
+Do not infer external Google Drive upload, download, or publication completion from Mirror filesystem state.
 
 ---
 

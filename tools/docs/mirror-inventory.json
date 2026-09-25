@@ -1,0 +1,630 @@
+﻿{
+    "schema_version":  1,
+    "mirror_root":  "C:\\laragon\\repos\\Mirror",
+    "repos_root":  "C:\\laragon\\repos",
+    "repositories":  {
+                         "MAG-Ecosystem":  "C:\\laragon\\repos\\MAG-Ecosystem",
+                         "GlobalLinksFavicons":  "C:\\laragon\\repos\\GlobalLinksFavicons",
+                         "TagSynchronizer":  "C:\\laragon\\repos\\TagSynchronizer",
+                         "SimpleLanding":  "C:\\laragon\\repos\\SimpleLanding",
+                         "DocGuide":  "C:\\laragon\\repos\\DocGuide",
+                         "Beyond3DViewer":  "C:\\laragon\\repos\\Beyond3DViewer",
+                         "DesignToolkit":  "C:\\laragon\\repos\\DesignToolkit",
+                         "ACP-Enhancements":  "C:\\laragon\\repos\\ACP-Enhancements",
+                         "MAG-Workflow-Bridge":  "C:\\laragon\\repos\\MAG-Workflow-Bridge"
+                     },
+    "entries":  [
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "AI_AGENTS_RULES.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "AI_GUIDELINES.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "MAG_ADDON_DEVELOPMENT_LIFECYCLE.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "MAG_DEBUGGING.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "MAG_DOCUMENTATION_OPERATIONS.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "MAG_ECOSYSTEM.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "MAG_IMPLEMENTATION_PATTERNS.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "MAG_PROCESS_OVERLAY_POOL.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "MAG_XENFORO_ADDON_BLUEPRINT.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "MAG_PIPELINE_V2_EVALUATION.md",
+                        "category":  "experimental",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "MAG_PIPELINE_V2_EXPERIMENT.md",
+                        "category":  "experimental",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "templates/xenforo-addon/P0N__XXX__Architecture.md",
+                        "category":  "template",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "templates/xenforo-addon/P0N__XXX__AUDIT.md",
+                        "category":  "template",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "templates/xenforo-addon/P0N__XXX__Changelog.md",
+                        "category":  "template",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "templates/xenforo-addon/P0N__XXX__CLASS_MAP.md",
+                        "category":  "template",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "templates/xenforo-addon/P0N__XXX__IDEA.md",
+                        "category":  "template",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "templates/xenforo-addon/P0N__XXX__README.md",
+                        "category":  "template",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "templates/xenforo-addon/P0N__XXX__Roadmap.md",
+                        "category":  "template",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "templates/xenforo-addon/P0N__XXX__TZ.md",
+                        "category":  "template",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "tools/knowledge/README.md",
+                        "category":  "supporting",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "tools/docs/Update-MagDocumentationMirror.ps1",
+                        "category":  "tool",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "tools/docs/lib/MagDocumentationMirror.Common.ps1",
+                        "category":  "tool",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "tools/docs/mirror-inventory.json",
+                        "category":  "tool",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "tools/knowledge/Generate-MagKnowledgeIndex.ps1",
+                        "category":  "tool",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "tools/knowledge/Locate-MagKnowledge.ps1",
+                        "category":  "tool",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "tools/knowledge/Validate-MagKnowledgeIndex.ps1",
+                        "category":  "tool",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "tools/knowledge/Update-MagKnowledge.ps1",
+                        "category":  "tool",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "tools/knowledge/lib/MagKnowledge.Common.ps1",
+                        "category":  "tool",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "tools/knowledge/lib/MarkdownHeadings.ps1",
+                        "category":  "tool",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "tools/knowledge/config/source_rules.json",
+                        "category":  "tool",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "tools/knowledge/config/intent_owner_map.json",
+                        "category":  "tool",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "tools/knowledge/manifests/global.json",
+                        "category":  "tool",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "tools/knowledge/manifests/global-5.json",
+                        "category":  "tool",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Ecosystem",
+                        "path":  "tools/knowledge/schema/index.v1.schema.json",
+                        "category":  "tool",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "GlobalLinksFavicons",
+                        "path":  "P01__GLF__Idea.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "GlobalLinksFavicons",
+                        "path":  "P01__GLF__README.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "GlobalLinksFavicons",
+                        "path":  "P01__GLF__TZ.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "GlobalLinksFavicons",
+                        "path":  "docs/P01__GLF__Architecture.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "GlobalLinksFavicons",
+                        "path":  "docs/P01__GLF__Changelog.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "GlobalLinksFavicons",
+                        "path":  "docs/P01__GLF__CLASS_MAP.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "GlobalLinksFavicons",
+                        "path":  "docs/P01__GLF__Overview.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "GlobalLinksFavicons",
+                        "path":  "docs/P01__GLF__Roadmap.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "GlobalLinksFavicons",
+                        "path":  "README.md",
+                        "category":  "supporting",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "TagSynchronizer",
+                        "path":  "P02__TS__Architecture.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "TagSynchronizer",
+                        "path":  "P02__TS__Changelog.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "TagSynchronizer",
+                        "path":  "P02__TS__CLASS_MAP.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "TagSynchronizer",
+                        "path":  "P02__TS__Roadmap.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "TagSynchronizer",
+                        "path":  "P02__TS__TZ.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "TagSynchronizer",
+                        "path":  "docs/P02__TS__DONOR_AUDIT.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "TagSynchronizer",
+                        "path":  "docs/P02__TS__IDEA.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "TagSynchronizer",
+                        "path":  "docs/P02__TS__NATIVE_SOURCE_AUDIT.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "SimpleLanding",
+                        "path":  "README.md",
+                        "category":  "supporting",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "SimpleLanding",
+                        "path":  "docs/P03__SL__Architecture.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "SimpleLanding",
+                        "path":  "docs/P03__SL__AUDIT.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "SimpleLanding",
+                        "path":  "docs/P03__SL__Changelog.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "SimpleLanding",
+                        "path":  "docs/P03__SL__CLASS_MAP.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "SimpleLanding",
+                        "path":  "docs/P03__SL__IDEA.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "SimpleLanding",
+                        "path":  "docs/P03__SL__README.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "SimpleLanding",
+                        "path":  "docs/P03__SL__Roadmap.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "SimpleLanding",
+                        "path":  "docs/P03__SL__TZ.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "DocGuide",
+                        "path":  "README.md",
+                        "category":  "supporting",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "DocGuide",
+                        "path":  "docs/P04__DG__Architecture.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "DocGuide",
+                        "path":  "docs/P04__DG__AUDIT.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "DocGuide",
+                        "path":  "docs/P04__DG__Changelog.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "DocGuide",
+                        "path":  "docs/P04__DG__CLASS_MAP.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "DocGuide",
+                        "path":  "docs/P04__DG__DONOR_AUDIT.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "DocGuide",
+                        "path":  "docs/P04__DG__IDEA.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "DocGuide",
+                        "path":  "docs/P04__DG__NATIVE_SOURCE_AUDIT.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "DocGuide",
+                        "path":  "docs/P04__DG__README.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "DocGuide",
+                        "path":  "docs/P04__DG__Roadmap.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "DocGuide",
+                        "path":  "docs/P04__DG__TZ.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "Beyond3DViewer",
+                        "path":  "README.md",
+                        "category":  "supporting",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "Beyond3DViewer",
+                        "path":  "docs/P05__3DR__Architecture.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "Beyond3DViewer",
+                        "path":  "docs/P05__3DR__AUDIT.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "Beyond3DViewer",
+                        "path":  "docs/P05__3DR__Changelog.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "Beyond3DViewer",
+                        "path":  "docs/P05__3DR__CLASS_MAP.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "Beyond3DViewer",
+                        "path":  "docs/P05__3DR__DEMO_INJECTION.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "Beyond3DViewer",
+                        "path":  "docs/P05__3DR__IDEA.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "Beyond3DViewer",
+                        "path":  "docs/P05__3DR__README.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "Beyond3DViewer",
+                        "path":  "docs/P05__3DR__Roadmap.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "Beyond3DViewer",
+                        "path":  "docs/P05__3DR__TZ.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "DesignToolkit",
+                        "path":  "README.md",
+                        "category":  "supporting",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "DesignToolkit",
+                        "path":  "docs/P06__DT__Architecture.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "DesignToolkit",
+                        "path":  "docs/P06__DT__AUDIT.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "DesignToolkit",
+                        "path":  "docs/P06__DT__Changelog.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "DesignToolkit",
+                        "path":  "docs/P06__DT__CLASS_MAP.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "DesignToolkit",
+                        "path":  "docs/P06__DT__IDEA.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "DesignToolkit",
+                        "path":  "docs/P06__DT__README.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "DesignToolkit",
+                        "path":  "docs/P06__DT__Roadmap.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "DesignToolkit",
+                        "path":  "docs/P06__DT__TZ.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "ACP-Enhancements",
+                        "path":  "README.md",
+                        "category":  "supporting",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "ACP-Enhancements",
+                        "path":  "docs/P08__AE__Architecture.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "ACP-Enhancements",
+                        "path":  "docs/P08__AE__AUDIT.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "ACP-Enhancements",
+                        "path":  "docs/P08__AE__Changelog.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "ACP-Enhancements",
+                        "path":  "docs/P08__AE__CLASS_MAP.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "ACP-Enhancements",
+                        "path":  "docs/P08__AE__IDEA.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "ACP-Enhancements",
+                        "path":  "docs/P08__AE__NATIVE_SOURCE_AUDIT.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "ACP-Enhancements",
+                        "path":  "docs/P08__AE__README.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "ACP-Enhancements",
+                        "path":  "docs/P08__AE__Roadmap.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "ACP-Enhancements",
+                        "path":  "docs/P08__AE__TZ.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "MAG-Workflow-Bridge",
+                        "path":  "README.md",
+                        "category":  "supporting",
+                        "require_metadata":  false
+                    },
+                    {
+                        "repo":  "MAG-Workflow-Bridge",
+                        "path":  "docs/MAG_GPT_CURSOR_SYNC_PLAN.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    }
+                ]
+}

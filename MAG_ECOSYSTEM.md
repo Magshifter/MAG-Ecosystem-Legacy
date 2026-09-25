@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-25T00:45:00+03:00`
+- MAG-Content-Updated: `2026-09-25T15:50:00+03:00`
 
 This document is the navigation and governance foundation for MAG software development across approved development classes.
 
@@ -137,6 +137,8 @@ C:\laragon\repos\<folder>
 ```
 
 Registered development local paths are in the identity tables above. This Global documentation repository is `MAG-Ecosystem` at `C:\laragon\repos\MAG-Ecosystem`. It is not a numbered product identity in any development class.
+
+`C:\laragon\repos\Mirror` is the MAG documentation/tool **transport workspace** used with an external Google Drive sync client for phone/remote access. It is **not** a repository identity, **not** a canonical authority location, **not** a registration surface, **not** a Knowledge Control source, and **not** an additional Global owner. Operational rules are in `MAG_DOCUMENTATION_OPERATIONS.md` §19.
 
 ## Documentation levels
 

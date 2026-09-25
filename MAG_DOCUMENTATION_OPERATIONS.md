@@ -1,7 +1,7 @@
 # MAG Documentation Operations
 
 - MAG-Document-ID: `MAG_DOCUMENTATION_OPERATIONS.md`
-- MAG-Content-Updated: `2026-09-25T01:52:02+03:00`
+- MAG-Content-Updated: `2026-09-25T16:15:00+03:00`
 
 ## 1. Purpose and authority
 
@@ -34,6 +34,8 @@ This protocol applies to synchronization-managed MAG Markdown documents in:
 - Google Drive;
 - ChatGPT documentation context;
 - Cursor documentation context.
+
+`C:\laragon\repos\Mirror` is a local filesystem **transport workspace** for an external Google Drive client (phone/remote access). It is not a fourth canonical location. Operational rules for that workspace are in §19.
 
 An operation may use only systems and locations resolved within its approved scope. Active development context follows `GLOBAL + active development identity` per `MAG_ECOSYSTEM.md`; synchronizing one registered development must not import another development's documentation.
 
@@ -728,3 +730,91 @@ An approved SYNC may modify only what its approved synchronization plan authoriz
 After Local writes, report Git diff and status and return control under existing Global development rules. Do not duplicate general Git policy here.
 
 Synchronization-only completion of an already committed source does not require a new Git commit when Local content is unchanged. If Drive synchronization later succeeds without Local modifications, verify Local remains clean, report synchronization completion, and do not create an artificial Git commit.
+
+## 19. Filesystem Mirror transport
+
+This section is the Global operational contract for the MAG Documentation Mirror. It does not create a seventh Global authority owner, a repository identity, a registration surface, or a Knowledge Control source.
+
+### Purpose and boundary
+
+`C:\laragon\repos\Mirror` (**MirrorRoot**) exists only so MAG documentation and explicitly allowlisted tools/scripts can be made available through an **external** Google Drive sync client for phone/remote work.
+
+Mirror is:
+
+- a non-authoritative, non-registered **transport/cache** workspace;
+- not a canonical document location;
+- not a normal MAG, Cursor, or Knowledge Control working surface;
+- not a Knowledge Control source.
+
+Canonical Local repository files remain the Local authority. Agents and MAG processes work in those repositories. They must not treat Mirror paths as working-document authority.
+
+Presence of a file in Mirror does not register it, change its authority class, or place it in ordinary `SYNC` discovery.
+
+### Mapping and membership
+
+Deterministic mapping (no filename guessing):
+
+```text
+canonical Local: C:\laragon\repos\<RepoFolder>\<RelPath>
+Mirror:          C:\laragon\repos\Mirror\<RepoFolder>\<RelPath>
+```
+
+`<RepoFolder>` is the actual Local clone folder recorded in `MAG_ECOSYSTEM.md` (for example `MAG-Workflow-Bridge`, not a remote repository title).
+
+Managed membership is the explicit inventory currently at `MAG-Ecosystem` / `tools/docs/mirror-inventory.json`. Mirror contents never determine membership. Inventory may include canonical documents, supporting/experimental/template documentation, and explicitly allowlisted tools/scripts. Inclusion does not change an item's registration or authority class.
+
+Outside transport scope unless an inventory entry names them: `generated/**`, secrets/credentials, dependencies/vendor/`node_modules`, runtime/cache/output, release artifacts, product/source code, tests excluded by inventory, and unmanaged extras.
+
+### CHECK, receipt, and baseline
+
+Implemented CHECK is read-only (`tools/docs/Update-MagDocumentationMirror.ps1 -Check`). It compares managed Local↔Mirror pairs using exact-file SHA-256 and, where present, the last-confirmed common baseline. CHECK must not copy, delete, rename, normalize, modify baseline, modify `MAG-Content-Updated`, run Git lifecycle, invoke Knowledge Control, or claim Google Drive publication/download completion.
+
+CHECK produces a derived, non-authoritative **CHECK receipt** at `MAG-Ecosystem` / `generated/docs-mirror/check-receipt.json` (gitignored with other `/generated/` artifacts). Receipt kind `mag-docs-mirror-check-receipt`, schema version 1. The receipt records the exact checked state: MirrorRoot, inventory path and content SHA-256, baseline file SHA-256 or explicit no-baseline state, the managed pair set, per-pair paths/hashes/classifications/proposed directions/blocking state, extras, and aggregate counts. Receipt `generated_at` is audit information only; it is **not** authority and **not** freshness proof. CHECK receipt generation must not mutate canonical Local, Mirror, or baseline.
+
+Baseline path: `MAG-Ecosystem` / `generated/docs-mirror/baseline.json`. Baseline is derived, non-authoritative, gitignored, and may record only pairs whose Local and Mirror bytes were verified equal. Filesystem mtime is not authority. Missing, stale, or corrupt baseline is treated as no baseline (fail closed on divergence).
+
+For synchronization-managed Markdown documents, preserve this document's identity, metadata, layered comparison (§9), and the eight classifications in §10. Do not invent `NEWER_MIRROR`. In Mirror transport comparison, **`NEWER_DRIVE` means the Mirror/Drive-side transport copy is proven newer than canonical Local**. Mirror never wins by path, location, filesystem timestamp, or the fact that the operator is on a PC.
+
+Tools/scripts without MAG document metadata use a transport subset of those classifications and must be reported with an explicit category. `FORMAT_ONLY` never silently creates a write direction. `INVALID_METADATA` stops the affected canonical document pair for write purposes. Conflict or first-run ambiguity without a proven common baseline is `CONFLICT` / fail closed.
+
+Absence of a Mirror file, or a rename on either side, never authorizes automatic Local deletion or rename. Unmanaged extras are reported; they are not adopted or copied into Local.
+
+### CHECK-bound RECONCILE
+
+**RECONCILE is an implemented MAG documentation-transport operation. It is not self-authorizing.** A generic `SYNC` or `RECONCILE` invocation is not standing authorization. CHECK is not a write path.
+
+RECONCILE may write only after:
+
+1. a specific CHECK receipt bound to the exact checked state;
+2. cryptographic binding of that receipt: `-ReceiptPath` plus `-AuthorizationSha256` equal to the SHA-256 of the **exact receipt file bytes**;
+3. explicit Product Owner authorization of **that** checked state / batch (receipt SHA-256 binding proves which receipt was named; it is **not** Product Owner authorization);
+4. Mechanical Action Gate ALLOW for any production mutation, especially Mirror → canonical Local (HIGH-RISK). Local → Mirror also requires current documentation-transport authorization.
+
+Missing, malformed, or mismatched authorization/receipt binding fails **before any write**.
+
+Allowed automatic content writes, when the bound receipt and live revalidation both prove them:
+
+- `NEWER_LOCAL` → canonical Local to Mirror;
+- `NEWER_DRIVE` → Mirror to canonical Local.
+
+Do not invent `NEWER_MIRROR`. `IDENTICAL`, `FORMAT_ONLY`, `CONFLICT`, `INVALID_METADATA`, `MISSING_SOURCE`, `MISSING_TARGET`, and any unresolved or unsupported state do **not** authorize automatic content writes. `FORMAT_ONLY` does not create a silent normalization write.
+
+Before each pair mutation, re-resolve mapping and containment, re-read Local, Mirror, and relevant baseline, recompute hashes, and confirm the receipt classification and direction are still valid. If pair state changed: mark **STALE/BLOCKED**; do not silently reclassify into a new direction. If inventory identity/hash or baseline-file identity/hash changed since CHECK: fail the **whole batch** before writes. Receipt timestamp alone is never freshness proof. After a successful pair write and baseline advance, that prior receipt is obsolete for another write of the same state.
+
+Pair-local `CONFLICT` / `STALE` / `BLOCKED` / `FAILED` must not by itself prevent independent proven-safe pairs in the same bound batch, unless a global prerequisite is invalid. Global failures (malformed receipt, authorization mismatch, inventory/baseline mismatch, unsafe MirrorRoot or path mapping, inability to establish safety) fail the batch before writes.
+
+Each authorized write uses a bounded destination, a temporary file, SHA-256 verification of intended source bytes, safe replacement, and final readback/hash verification. Do not delete or rename unrelated files. Do not follow reparse/junction paths outside allowed roots. A failed pair is never reported successful.
+
+Baseline advances **only** after that pair’s final Local and Mirror bytes are verified equal. No baseline advance for FAILED, STALE, BLOCKED, conflict, or unverified pairs. Baseline replacement must be safe/atomic.
+
+After RECONCILE, successful pairs should CHECK as `IDENTICAL` with proposed direction `NONE`. Blocked pairs remain truthfully reported. `drive_sync_claimed` remains false. External Google Drive completion is never inferred from Local↔Mirror equality.
+
+Knowledge Control remains separate. Mirror is never a Knowledge Control source. A later successful Mirror → canonical Local write may make that **canonical** path KC-relevant only under currently supported production manifests. RECONCILE must not add manifests or scopes or invoke Knowledge Control automatically.
+
+### BootstrapClean
+
+`BootstrapClean` was a one-time Product Owner-authorized destructive reset of existing files **under MirrorRoot only**, followed by population from the approved inventory and verified baseline seeding. That authorization is **not standing** and **not reusable** for future deletions, resets, or overwrites.
+
+### External Google Drive trust boundary
+
+Local tooling may prove Local↔Mirror filesystem state. It must **not** claim that the external Google Drive client has finished uploading, downloading, or publishing merely because Local and Mirror match. Drive object identity, MIME type, and remote completion remain outside MAG proof unless a separate executor proves them under §8.
