@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Development Guidelines
 
 - MAG-Document-ID: `AI_GUIDELINES.md`
-- MAG-Content-Updated: `2026-09-25T23:50:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:55:00+03:00`
 
 This document is the **Global MAG development standard**. It defines **how** MAG software is developed with AI assistance.
 
@@ -131,6 +131,8 @@ ChatGPT must not assume undocumented host, runtime, or framework behavior. When 
 
 ChatGPT must not silently replace Cursor Agent implementation or the user's Git control.
 
+When ChatGPT has an available Google Drive connector and needs MAG documentation or a factual Google Drive document state, retrieve from Google Drive directly. Do not require Mirror, duplicate Project uploads, manual file copies, or Cursor merely to obtain documentation already directly accessible. Mirror is not a mandatory intermediary or proxy proof of Drive state for ChatGPT when Drive is directly accessible. If Drive retrieval is unavailable or insufficient, use same-scope canonical fallback in §27. If required authority remains unresolved, the result is Unknown. Do not invent. Documentation-surface mechanics are owned by [`MAG_DOCUMENTATION_OPERATIONS.md`](MAG_DOCUMENTATION_OPERATIONS.md).
+
 ### Cursor IDE
 
 Cursor IDE is the **primary environment** for:
@@ -141,6 +143,8 @@ Cursor IDE is the **primary environment** for:
 - Testing the active product.
 - Reviewing changes.
 - Inspecting installed XenForo source when the active development identity is `#N`.
+
+Cursor uses Local as its primary MAG documentation surface. When documentation freshness, reconciliation, or possible externally-authored changes matter, Cursor checks the corresponding Mirror state second. Cursor must not access Google Drive by default. Direct Google Drive access occurs only when the Product Owner explicitly requests it for the current task. Local is not an automatic winner over newer or conflicting Mirror evidence; apply [`MAG_DOCUMENTATION_OPERATIONS.md`](MAG_DOCUMENTATION_OPERATIONS.md) comparison and conflict rules.
 
 ### Cursor Agent
 
@@ -190,6 +194,12 @@ Codex must not independently expand implementation beyond the approved stage or 
 The user is product owner: requirements, sequencing, reviews, Git, and releases. Final repository control remains with the user.
 
 No assistant may treat another assistant's draft as approved product or process unless the user has accepted it.
+
+### Goal-bound completion
+
+Determine the current lifecycle or procedure goal and the evidence actually required to complete it. Once its canonical completion conditions are satisfied, close that goal.
+
+An adjacent transport, Mirror, baseline, or tooling imperfection must not become a new blocker unless an applicable canonical completion condition actually depends on it. Record or report a relevant non-blocking tooling issue separately when useful. Do not silently expand the lifecycle procedure into tooling redesign, audits, new capabilities, extra approvals, or repeated Cursor work.
 
 ---
 
@@ -1124,8 +1134,20 @@ The current canonical owner body always wins over working state, Locator, genera
 
 Generated indexes are optional routing. They may lag taxonomy. Do not invent an index filename recipe for a missing identity scope. Do not change generated-index schema from this section.
 
+### Retrieval surfaces
+
+Executor-specific documentation surfaces are owned by [`MAG_DOCUMENTATION_OPERATIONS.md`](MAG_DOCUMENTATION_OPERATIONS.md). This subsection states the Knowledge Control routing consequence.
+
+**ChatGPT:** identity/scope resolution → direct Google Drive retrieval when relevant and available → same-scope fallback only when direct retrieval is unavailable or insufficient → Mirror only when the task actually concerns Mirror transport/reconciliation or another applicable rule requires it.
+
+**Cursor:** identity/scope resolution → Local → Mirror when freshness, reconciliation, or possible externally-authored changes are relevant → apply existing comparison/conflict rules → no direct Google Drive access unless the Product Owner explicitly requests it for the current task.
+
+Do not create one universal Drive-first or Mirror-first retrieval rule. Mirror is not a Knowledge Control source.
+
 ### Fallback
 
 If Locator is missing, unavailable, failed, stale, conflicting, unsupported, or otherwise unusable, fall back to **same-scope, section-oriented canonical retrieval**. Fallback must not broaden identity scope. Missing generated discovery is not knowledge absence.
 
 If required authority remains unresolved after fallback, the result is **Unknown**. Do not invent.
+
+Goal-bound completion in §4 applies to Knowledge Control sessions: close the current goal when its canonical completion conditions are satisfied. An adjacent Mirror/baseline/tooling defect is not a retrieval or registration blocker unless that completion condition actually depends on it.

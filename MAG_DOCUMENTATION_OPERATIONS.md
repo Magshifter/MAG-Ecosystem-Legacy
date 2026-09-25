@@ -1,7 +1,7 @@
 # MAG Documentation Operations
 
 - MAG-Document-ID: `MAG_DOCUMENTATION_OPERATIONS.md`
-- MAG-Content-Updated: `2026-09-25T23:50:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:55:00+03:00`
 
 ## 1. Purpose and authority
 
@@ -40,6 +40,35 @@ This protocol applies to synchronization-managed MAG Markdown documents in:
 `C:\laragon\repos\Mirror` is a local filesystem **transport workspace** for an external Google Drive client (phone/remote access). It is not a fourth canonical location. Operational rules for that workspace are in §19.
 
 An operation may use only systems and locations resolved within its approved scope. Active development context follows `GLOBAL + active development identity` per `MAG_ECOSYSTEM.md`. Assignable working identities are `GLOBAL`, `#N`, and `A<N>`. `B<N>` is reserved and is not currently assignable. Surface or platform does not create identity. Synchronizing one registered development must not import another development's documentation.
+
+### Executor documentation surfaces
+
+Do **not** create one universal Drive-first or Mirror-first rule across all executors. Executor-specific retrieval does not change canonical identity, comparison, conflict, Fast Sync, or registration rules.
+
+**ChatGPT.** When ChatGPT has an available Google Drive connector and needs MAG canonical/project documentation or a factual Google Drive document state, retrieve from Google Drive directly.
+
+```text
+identity/scope resolution
+→ direct Google Drive retrieval when relevant and available
+→ same-scope fallback only when direct retrieval is unavailable or insufficient
+→ Mirror only when the task actually concerns Mirror transport/reconciliation or another applicable rule requires it
+```
+
+Do not require Mirror, duplicate Project uploads, manual file copies, or Cursor merely to obtain documentation already directly accessible to ChatGPT. Mirror is not a mandatory intermediary and is not proxy proof of Google Drive state for ChatGPT when Drive is directly accessible. If Drive is unavailable or insufficient, use same-scope canonical fallback. If required authority remains unresolved, the result is Unknown. Do not invent.
+
+**Cursor.** Cursor uses Local as its primary MAG documentation surface. Cursor must not access Google Drive by default. Direct Google Drive access by Cursor occurs only when the Product Owner explicitly requests it for the current task.
+
+```text
+identity/scope resolution
+→ Local
+→ Mirror when freshness, reconciliation, or possible externally-authored changes are relevant
+→ apply existing comparison/conflict rules
+→ no direct Google Drive access unless explicitly requested by the Product Owner
+```
+
+Local is the Cursor working surface. It is **not** an automatic winner over newer or conflicting Mirror evidence. Existing comparison, conflict, and synchronization rules in this document still govern. Mirror may contain newer documentation synchronized externally, including documentation authored outside Local. Agents must not treat Mirror paths as the working-edit surface.
+
+**Registration / bootstrap.** Mirror CHECK, Mirror baseline, and adjacent transport-tooling state are **not** registration or bootstrap completion predicates unless the applicable lifecycle owner actually names that dependency. An adjacent Mirror/baseline/tooling imperfection is reported separately when useful. It must not reopen, delay, or expand a lifecycle goal whose canonical completion conditions are already satisfied.
 
 ## 3. Managed locations and canonical identity
 
@@ -834,9 +863,11 @@ Mirror is:
 - not a normal MAG, Cursor, or Knowledge Control working surface;
 - not a Knowledge Control source.
 
-Canonical Local repository files remain the Local authority. Agents and MAG processes work in those repositories. They must not treat Mirror paths as working-document authority.
+Canonical Local repository files are the Cursor **working** surface. Agents and MAG processes edit in those repositories. They must not treat Mirror paths as the working-edit surface.
 
-Presence of a file in Mirror does not register it, change its authority class, or place it in ordinary `SYNC` discovery.
+Local is not an automatic winner over proven newer or conflicting Mirror evidence. Apply this document's comparison, conflict, and synchronization rules. Presence of a file in Mirror does not register it, change its authority class, or place it in ordinary `SYNC` discovery.
+
+ChatGPT with an available Google Drive connector must retrieve factual Drive state from Google Drive directly. Mirror is not proxy proof of Google Drive state for that executor. Cursor must not access Google Drive by default; the Product Owner must explicitly request Drive for the current Cursor task.
 
 ### Mapping and membership
 

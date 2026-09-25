@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-25T23:50:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:55:00+03:00`
 
 This document is the navigation and governance foundation for MAG software development across approved Product Classes and identity namespaces.
 
@@ -207,7 +207,7 @@ This metadata supports identity, comparison, and conflict detection. It does not
 
 Synchronization-managed status is explicit. The existence of a Markdown file alone does not register it or place it in SYNC scope, and metadata alone does not grant substantive authority.
 
-Global registration is represented by the authoritative Global documentation set below together with valid metadata and the applicable Local authoritative state. Stable development registration follows the approved development identity, the currently recorded canonical Local/Git baseline, applicable development documentation model and authority, valid metadata, and approved Git baseline. Additional repositories of the same identity do not by themselves create another identity.
+Global registration is represented by the authoritative Global documentation set below together with valid metadata and the applicable Local authoritative state. Stable development registration follows the approved development identity, the currently recorded canonical Local/Git baseline, applicable development documentation model and authority, valid metadata, and approved Git baseline. Additional repositories of the same identity do not by themselves create another identity. Mirror CHECK, Mirror baseline, and adjacent transport-tooling state are not registration predicates.
 
 Before Git handoff, provisional registration may exist inside an explicit Product Owner-approved controlled registration, adoption, or `#N` bootstrap procedure. Drive-First Bootstrap permits continued documentation work within that approved scope under **Bootstrap Incomplete — Local/Git Pending**. These documents are not part of default SYNC discovery or the stable registered documentation set. Resume Bootstrap completes Local/Git prerequisites under `MAG_DOCUMENTATION_OPERATIONS.md` §5. Drive reconciliation is a separate documentation-operations obligation and is not required for Phase 1 completion or stable registration; see `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 1.
 
@@ -220,11 +220,11 @@ The current Global documentation set comprises **six** authoritative files in th
 | File | Role |
 | --- | --- |
 | `MAG_ECOSYSTEM.md` | This file. MAG Ecosystem identity, Product Class, Surface, Technology, and Applicability taxonomy; namespace registry; documentation map; context isolation; and high-level governance. |
-| `AI_GUIDELINES.md` | Global MAG development workflow and operational rules; Evidence Inheritance and Validation Delta; §24 owns Cursor prompt presentation, post-execution review, and Cursor model-selection / model-routing policy. §26 owns Process Overlay command text. |
+| `AI_GUIDELINES.md` | Global MAG development workflow and operational rules; Evidence Inheritance and Validation Delta; goal-bound completion; ChatGPT/Cursor retrieval-surface routing; §24 owns Cursor prompt presentation, post-execution review, and Cursor model-selection / model-routing policy. §26 owns Process Overlay command text. |
 | `AI_AGENTS_RULES.md` | Mandatory execution rules and boundaries for AI coding agents and related development tools, including Cursor procedure pre-flight and Plain text output requirements. |
 | `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Canonical Global Core Lifecycle and the `#N` XenForo Product specialization/profile: numbered Gates, Phase transitions, process hierarchy, Phase Authorization, Phase 7 product correctness, Phase 8 shipping correctness, Normal Release Fast Path, documentation timing, and XenForo add-on `version_id` / `version_string` policy. Not `#N`-only. References detailed operational rules in their owning Global documents. |
 | `MAG_IMPLEMENTATION_PATTERNS.md` | Global reusable technical knowledge base: verified, source-backed implementation patterns (predominantly XenForo/XFRM for `#N` products), compatibility lessons, failure modes, and related evidence-backed findings. Subordinate to Global process documents and active-development TZ, Roadmap, and Architecture. Does not define product requirements. |
-| `MAG_DOCUMENTATION_OPERATIONS.md` | Authoritative documentation synchronization protocol across managed Local Git repositories, Google Drive, ChatGPT, and Cursor. Fast Sync is the normal proven-state path; executor capability is a separate prerequisite from authorization. |
+| `MAG_DOCUMENTATION_OPERATIONS.md` | Authoritative documentation synchronization protocol across managed Local Git repositories, Google Drive, ChatGPT, and Cursor. Executor documentation surfaces; Fast Sync is the normal proven-state path; executor capability is a separate prerequisite from authorization. |
 
 These six files are not joined by a seventh equivalent authority owner.
 
@@ -398,7 +398,7 @@ Examples:
 
 Do not modify one MAG repository while the approved procedure is scoped to another.
 
-Current canonical authority is the current retrieved body of the logical document identified by MAG-Document-ID, together with an explicit current Product Owner decision where the HOW hierarchy requires it. Resolve that body from the managed documentation surface appropriate to the current working environment. This section does not assign ChatGPT to Local, and it does not make any one managed location the universal MAG authority.
+Current canonical authority is the current retrieved body of the logical document identified by MAG-Document-ID, together with an explicit current Product Owner decision where the HOW hierarchy requires it. Resolve that body from the executor-specific documentation surface owned by [`MAG_DOCUMENTATION_OPERATIONS.md`](MAG_DOCUMENTATION_OPERATIONS.md): ChatGPT with available Google Drive access retrieves Drive directly; Cursor uses Local first and may compare Mirror for freshness; Cursor does not access Google Drive by default. No managed location is the universal MAG authority. Existing comparison, conflict, and synchronization rules still govern. Mirror CHECK/baseline is not a registration predicate.
 
 Conversation history, conversation summaries, ChatGPT Project copies, agent reports, and prior assistant statements are continuity or evidence claims. They do not become MAG authority merely because they are already in the session. If they conflict with a current canonical owner, report the conflict; do not silently prefer the conversation.
 
@@ -414,10 +414,10 @@ Each Global file has one primary authority. Do not duplicate its detailed rules 
 | --- | --- |
 | `MAG_ECOSYSTEM.md` | Ecosystem identity; Product Class, Surface, Technology, and Applicability taxonomy; namespace registry; documentation map; authority navigation; and GLOBAL + active development identity context isolation. |
 | `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Canonical Global Core Lifecycle and the `#N` XenForo Product specialization/profile: numbered Gates, Phase transitions, process hierarchy (`Lifecycle → Phase → Increment → Step`), Phase Authorization, Phase 7 product correctness, Phase 8 shipping correctness, Normal Release Fast Path, documentation timing, and XenForo add-on version identity. Not `#N`-only. Does not redefine detailed rules owned by other Global documents. |
-| `AI_GUIDELINES.md` | Detailed development standards, principles, Evidence Inheritance, Validation Delta, Phase closure mechanics, coherent closure, consolidated state recording, operational workflow, Cursor prompt presentation, and Cursor model-selection / model-routing policy. |
+| `AI_GUIDELINES.md` | Detailed development standards, principles, Evidence Inheritance, Validation Delta, Phase closure mechanics, coherent closure, consolidated state recording, goal-bound completion, ChatGPT/Cursor retrieval-surface routing, operational workflow, Cursor prompt presentation, and Cursor model-selection / model-routing policy. |
 | `AI_AGENTS_RULES.md` | Coding-agent execution boundaries, mandatory Cursor pre-flight, checkpoints, and applicable report requirements. |
 | `MAG_IMPLEMENTATION_PATTERNS.md` | Reusable, source-backed technical knowledge base and its capture/maintenance procedure. Subordinate to Global process documents and active-development TZ, Roadmap, and Architecture. Not a source of product requirements or process rules. |
-| `MAG_DOCUMENTATION_OPERATIONS.md` | Documentation identity validation, synchronization scope and commands, Fast Sync as the normal proven-state path, executor capability, comparison, conflict handling, approval, execution, verification, cleanup, reporting, and Git handoff boundaries. |
+| `MAG_DOCUMENTATION_OPERATIONS.md` | Documentation identity validation, synchronization scope and commands, executor documentation surfaces, Fast Sync as the normal proven-state path, executor capability, comparison, conflict handling, approval, execution, verification, cleanup, reporting, and Git handoff boundaries. |
 | `MAG_PROCESS_OVERLAY_POOL.md` | Ecosystem-level ACTIVE process/HOW overlays only. Not a seventh canonical authority owner. Individual MPO records are not standalone documents. |
 | Global operational assets | Blueprint, XenForo templates, and `MAG_DEBUGGING.md` implement Global rules and ACTIVE overlays. They do not independently define policy. |
 | Project TZ | **What** that `#N` XenForo Product must do. Complete functional requirements. Canonical file: `P<NN>__<CODE>__TZ.md`. Does not require every requirement to ship in 1.0.0. `A<N>` Product WHAT remains in that identity's approved documentation; this row does not invent an `A<N>` eight-document package. |
@@ -471,7 +471,7 @@ Project Roadmaps apply the Global lifecycle to approved `#N` project increments;
 | Role | Responsibility |
 | --- | --- |
 | **User** | Product owner. Approves requirements, sequencing, reviews, Git, and releases. Final repository control. |
-| **ChatGPT** | Architecture, requirements, sequencing, and review partner. Does not silently replace Cursor Agent implementation or user Git. |
+| **ChatGPT** | Architecture, requirements, sequencing, and review partner. Retrieves MAG documentation from Google Drive directly when that connector is available. Does not silently replace Cursor Agent implementation or user Git. |
 | **Cursor IDE** | Editing and inspection environment. |
 | **Cursor Agent** | Implements approved, scoped work in the designated repository. Follows Global + active development identity. Does not expand scope. |
 | **Codex** | Used only when the user explicitly assigns it. Same Global + active development identity isolation and Existing Code First constraints. |

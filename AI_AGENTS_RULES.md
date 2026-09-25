@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Coding Agent Rules
 
 - MAG-Document-ID: `AI_AGENTS_RULES.md`
-- MAG-Content-Updated: `2026-09-25T23:50:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:55:00+03:00`
 
 These rules define **how coding agents may execute** work in MAG repositories.
 
@@ -243,7 +243,13 @@ Do not report synchronization, publication, registration, deletion, repository-s
 
 `C:\laragon\repos\Mirror` is a documentation/tool transport workspace only. Operational protocol is in `MAG_DOCUMENTATION_OPERATIONS.md` §19. Do not restate that protocol here.
 
-Agents must not use Mirror as a normal working source or as canonical authority. Knowledge Control must not treat Mirror as a source. Ordinary implementation, debugging, and documentation edits use canonical Local repositories.
+Agents must not use Mirror as a normal working-edit source or as canonical authority. Knowledge Control must not treat Mirror as a source. Ordinary implementation, debugging, and documentation edits use canonical Local repositories first.
+
+When documentation freshness, reconciliation, or possible externally-authored changes matter, inspect the corresponding Mirror state second and apply [`MAG_DOCUMENTATION_OPERATIONS.md`](MAG_DOCUMENTATION_OPERATIONS.md) comparison and conflict rules. Do not treat Local as an automatic winner over newer or conflicting Mirror evidence.
+
+Agents must not access Google Drive by default. Direct Google Drive access occurs only when the Product Owner explicitly requests it for the current task.
+
+Do not expand a lifecycle or registration goal into Mirror CHECK, baseline-seed analysis, Mirror tooling redesign, or extra procedures merely because an adjacent transport imperfection exists. If the goal's canonical completion conditions are already satisfied, close it and report the tooling issue separately when useful.
 
 Access Mirror for mutation only under an explicitly authorized documentation-transport procedure. CHECK is read-only. CHECK-bound RECONCILE is implemented per `MAG_DOCUMENTATION_OPERATIONS.md` §19 but is **not** self-authorizing: a receipt or receipt SHA-256 is cryptographic binding of checked state, not Product Owner authorization. Generic `SYNC`/`RECONCILE` is not standing authorization. Production mutation requires current identity, governing owner (`MAG_DOCUMENTATION_OPERATIONS.md`), specific Product Owner authorization of that checked state, exact targets, and safety evidence, with Mechanical Action Gate ALLOW.
 
