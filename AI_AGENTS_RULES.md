@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Coding Agent Rules
 
 - MAG-Document-ID: `AI_AGENTS_RULES.md`
-- MAG-Content-Updated: `2026-09-25T19:10:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:20:00+03:00`
 
 These rules define **how coding agents may execute** work in MAG repositories.
 
@@ -97,14 +97,14 @@ An AI coding agent must not:
 - Explore or choose new solutions as a research exercise.
 - Expand task scope without approval.
 - Add speculative functionality or implement unspecified future work.
-- Implement future stages prematurely.
+- Implement future Phases or Increments prematurely.
 - Modify unrelated files.
 - Fix unrelated issues without authorization.
 - Rewrite or reorganize documentation unless explicitly requested.
 - Perform unnecessary repository-wide analysis.
 - Replace stable working code merely because another implementation looks cleaner, more modern, more elegant, more abstract, or more reusable.
 - Introduce abstractions without a current verified need.
-- Perform Git lifecycle operations that the user can reasonably handle, unless explicitly requested.
+- Perform Git lifecycle operations that the user can reasonably handle, unless explicitly requested or covered by a live Phase Authorization for the exact normal Git verb.
 - Restore, reset, discard, delete, or otherwise alter unrelated user work unless explicitly authorized.
 
 Before using an agent **outside** these permitted cases, explain the reason and obtain **explicit approval**.
@@ -186,6 +186,10 @@ HIGH-RISK includes an agent-initiated action when any of the following is true:
 - it performs a broad or recursive automated mutation whose exact affected scope is not already safely bounded;
 - it writes Mirror transport files into canonical Local paths, or performs a destructive reset/delete of the Documentation Mirror workspace.
 
+Normal `git add`, `git commit`, and `git push` remain protected. They are HIGH-RISK when no live authorization covers them. They are **not** a new Product Owner request when a live Phase Authorization in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) explicitly includes those verbs and live identity, repository, expected branch, and remote/tracking still match, with scope still bounded and no exception below. The Mechanical Action Gate still evaluates the action: ALLOW when those prerequisites hold; BLOCK on an exception. Do not invent a second authorization gate.
+
+Force-push, rebase, history rewrite, tag, GitHub/public release, Resource publication, production deployment, identity/repository retargeting, destructive reset, Mirror RECONCILE, and canonical Drive writes not named in the Phase Authorization remain HIGH-RISK and are never inherited from ordinary Phase Authorization.
+
 If the classification cannot be determined safely, treat the action as HIGH-RISK with unresolved prerequisites. Do not fail open.
 
 The Product Owner's own manual actions are not subject to the agent Mechanical Action Gate.
@@ -200,9 +204,9 @@ Before an agent executes a HIGH-RISK action, confirm:
 4. Target — the exact repository, branch, file, document, remote, release target, shared object, or other mutation target is confirmed.
 5. Safety Evidence — when required by the operation, sufficient validation, recovery, or rollback evidence exists.
 
-A general implementation authorization does not automatically authorize commit, push, tag, release, canonical registration, destructive recovery, canonical Drive replacement, or another distinct high-risk operation.
+A general implementation authorization does not automatically authorize commit, push, tag, release, canonical registration, destructive recovery, canonical Drive replacement, or another distinct high-risk operation. A live Phase Authorization may satisfy the authorization prerequisite only for the verbs and targets it explicitly includes.
 
-Do not request duplicate approval when the Product Owner has already explicitly authorized the exact operation and all other prerequisites remain valid.
+Do not request duplicate approval when the Product Owner has already explicitly authorized the exact operation, including through a live Phase Authorization that still covers it, and all other prerequisites remain valid.
 
 ### Gate result
 
@@ -253,7 +257,7 @@ Do not infer external Google Drive upload, download, or publication completion f
 
 An agent may read documentation required to implement the current task.
 
-An agent must not independently reinterpret requirements, rewrite or restructure documentation, “improve” documentation outside the task, change stage status, or resolve documentation conflicts by assumption.
+An agent must not independently reinterpret requirements, rewrite or restructure documentation, “improve” documentation outside the task, change Phase status, or resolve documentation conflicts by assumption.
 
 Documentation modification must be an explicit part of the approved task.
 
@@ -334,21 +338,25 @@ This optimization must not weaken required validation. Detailed proportional-val
 
 Agents may inspect Git status and diffs when needed to understand or validate their own changes.
 
-They must **not**, unless explicitly requested:
+They must **not**, unless explicitly requested **or** covered by a live Phase Authorization that includes the exact verb and matching live Git target:
 
-- `git add`
-- `git commit`
-- `git push`
+- `git add` of in-scope task files
+- `git commit` (normal commit on the expected branch)
+- `git push` (normal push to the already-configured expected tracking branch)
+
+They must **not**, unless explicitly requested for that exact operation (Phase Authorization never inherits these):
+
 - `git push --force` / force-push
 - branch creation or management
 - merge
 - release tagging
 - repository publishing
 - `git reset`, restore, or discard of user work
+- rebase or history rewrite
 
-The user reviews, stages, commits, and publishes.
+The user reviews, stages, commits, and publishes unless a live Phase Authorization covers the corresponding normal-path Git verbs.
 
-Never force-push `main` unless the Product Owner explicitly authorizes that exact force-push operation. The force-push rule is owned by [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §20. Normal commit, push, release, Direct Agent Mode, Full Bootstrap, and checkpoint authorization do not inherit it.
+Never force-push `main` unless the Product Owner explicitly authorizes that exact force-push operation. The force-push rule is owned by [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §20. Normal commit, push, release, Direct Agent Mode, Full Bootstrap, checkpoint authorization, and Phase Authorization do not inherit it.
 
 ### Git recovery
 
@@ -375,12 +383,12 @@ For `#N` Drive-First or Local/Git-First Bootstrap, follow MAG_ADDON_DEVELOPMENT_
 
 ### Checkpoint-protection filter
 
-Apply the canonical checkpoint-protection filter in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §20. Do not propose an intermediate Git checkpoint unless it protects a material state or recovery boundary defined there. Where the lifecycle explicitly mandates a checkpoint, that remains authoritative.
+Apply the canonical checkpoint-protection filter in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §20 and Git checkpoint granularity in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md). Do not propose an intermediate Git checkpoint unless it protects a material state or recovery boundary defined there. A Phase, Increment, Gate, Slice, Block, Wave, or status label change is not by itself a checkpoint reason.
 
 Standard checkpoint:
 
 ```text
-Approved stage/phase work complete
+Approved Phase work complete (Increment-level only when that Increment is the justified checkpoint unit)
         ↓
 Synchronize affected authoritative documentation where required
         ↓
@@ -390,22 +398,20 @@ Resolve Critical issues before closure
         ↓
 Agent reports result
         ↓
-User reviews changes
-        ↓
-User performs Git operations when authorized
+git add / commit / push: user performs them, or the agent performs covered normal-path verbs under a live Phase Authorization
         ↓
 Verify clean working tree
         ↓
 Stable Git checkpoint
         ↓
-Proceed to next approved stage/phase only after closure
+Proceed to next approved Phase only after closure
 ```
 
-Authoritative stage/phase closure discipline is defined in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §20.
+Authoritative Phase closure discipline is defined in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §20.
 
-When the approved task is a completed stage checkpoint, synchronize that identity's applicable changelog as part of the same increment if the identity has one. Do not require a `#N` `P<NN>__` Changelog filename for `A<N>`. A stage is not complete until required applicable changelog synchronization is finished.
+When the approved task is a completed Phase checkpoint, synchronize that identity's applicable changelog as part of the same closure if the identity has one. Do not require a `#N` `P<NN>__` Changelog filename for `A<N>`. A Phase is not complete until required applicable changelog synchronization is finished.
 
-Within a coherent block, prefer one justified checkpoint at the material boundary rather than status-only intermediate commits.
+Within a coherent block or live Phase Authorization, prefer one justified checkpoint at the material Phase boundary rather than status-only intermediate commits.
 
 ---
 
@@ -422,6 +428,7 @@ Stop **before** continuing when:
 - An unexpected **Critical** issue is discovered.
 - The task would require an exception to these rules.
 - A HIGH-RISK action reaches BLOCK or UNKNOWN at the Mechanical Action Gate.
+- A live Phase Authorization is missing, expired, or invalidated by an exception in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md), and the next action would require that authorization.
 
 Then tell the user:
 
@@ -504,7 +511,7 @@ Classify discovered issues as:
 - **Non-critical**
 - **Informational**
 
-Do not `git commit` or `git push` unless explicitly requested.
+Do not `git commit` or `git push` unless explicitly requested or covered by a live Phase Authorization for those exact verbs with matching live Git target.
 
 When Cursor procedures apply, follow `AI_GUIDELINES.md` §24 for presentation, post-execution review, and model selection.
 

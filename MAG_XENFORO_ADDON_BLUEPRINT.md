@@ -1,7 +1,7 @@
 # MAG XenForo Add-on Blueprint
 
 - MAG-Document-ID: `MAG_XENFORO_ADDON_BLUEPRINT.md`
-- MAG-Content-Updated: `2026-09-25T20:45:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:20:00+03:00`
 
 ## Purpose, scope, and authority
 
@@ -9,7 +9,7 @@ A supporting operational asset for new MAG XenForo `#N` projects: GLOBAL → Blu
 
 Consume currently ACTIVE Process Overlay Pool entries for HOW. This Blueprint does not own those overlays and cannot create overlay rules. Apply two-level bootstrap authority and Phase 1 completion states from `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 1. Apply Drive-First, Local/Git-First, Full, and Resume surface paths from `MAG_DOCUMENTATION_OPERATIONS.md` §5. Drive-First is a normal Level 1 pause with Local/Git pending, not an exception.
 
-Use current authorities from `MAG-Ecosystem`: MAG_ECOSYSTEM.md (identity and document ownership); MAG_PROCESS_OVERLAY_POOL.md (ACTIVE HOW overlays only; PROMOTED records have no overlay effect); AI_GUIDELINES.md (development, localization, closure, operating modes, and ChatGPT coordination); AI_AGENTS_RULES.md (execution and Git boundaries); MAG_ADDON_DEVELOPMENT_LIFECYCLE.md (phases and gates); MAG_IMPLEMENTATION_PATTERNS.md (applicable verified knowledge); MAG_DOCUMENTATION_OPERATIONS.md (onboarding and transport). Read these owners instead of treating this asset as a replacement for their detailed rules. Report a conflict and stop the affected work.
+Use current authorities from `MAG-Ecosystem`: MAG_ECOSYSTEM.md (identity and document ownership); MAG_PROCESS_OVERLAY_POOL.md (ACTIVE HOW overlays only; PROMOTED records have no overlay effect); AI_GUIDELINES.md (development, localization, closure, operating modes, and ChatGPT coordination); AI_AGENTS_RULES.md (execution and Git boundaries); MAG_ADDON_DEVELOPMENT_LIFECYCLE.md (Phases, numbered Gates, process hierarchy, and Phase Authorization); MAG_IMPLEMENTATION_PATTERNS.md (applicable verified knowledge); MAG_DOCUMENTATION_OPERATIONS.md (onboarding and transport). Read these owners instead of treating this asset as a replacement for their detailed rules. Report a conflict and stop the affected work.
 
 ## Operating principles
 
@@ -101,7 +101,7 @@ Preserve existing Local work and stop affected overwrites on conflict. Do not re
 
 ## Git/GitHub and Drive execution
 
-The Product Owner controls repository publication, commit, push, tag, and release. Provide exact commands using verified repository paths, branch/remotes, and an explicit file list at the appropriate checkpoint. Do not run them automatically. Check the index and diff first; exclude unrelated work. A template or finished bootstrap does not grant Git or implementation authorization.
+The Product Owner controls repository publication, commit, push, tag, and release. Provide exact commands using verified repository paths, branch/remotes, and an explicit file list at the appropriate checkpoint. Do not run Git automatically unless a live Phase Authorization in `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` explicitly covers the exact normal `git add` / `commit` / `push` verbs and live repository/branch/tracking match. Do not run force-push, tag, or publication automatically. Check the index and diff first; exclude unrelated work. A template or finished bootstrap does not grant Git or implementation authorization.
 
 For Drive, resolve the approved project folder and the eight bootstrap-created counterparts before writes. Use the controlled batch workflow in MAG_DOCUMENTATION_OPERATIONS.md §5, including safe transport and complete readback; preserve existing IDs and create only proven missing files. Report partial execution honestly and resume only unresolved actions. Do not redefine normal SYNC classifications or safeguards here.
 
@@ -109,7 +109,7 @@ This supporting package lives locally at the repository root plus templates/xenf
 
 ## Architecture blocks and implementation increments
 
-Within a project, recommend AD1, AD2, AD3 for Architecture Decisions and I1, I2, I3 for executable Implementation Increments. Do not use A1, A2, A3 for architecture decisions: `A<N>` is the platform-neutral Software Product identity namespace, not a Desktop or Windows class. A specific `A<N>` product may still have Desktop as instance classification or surface metadata. Qualify AD/I references with the project and document. Do not rename historical project identifiers or fragment a simple decision into artificial blocks.
+Within a project, recommend AD1, AD2, AD3 for Architecture Decisions and I1, I2, I3 for executable Implementation Increments. Do not use A1, A2, A3 for architecture decisions: `A<N>` is the platform-neutral Software Product identity namespace, not a Desktop or Windows class. A specific `A<N>` product may still have Desktop as instance classification or surface metadata. Qualify AD/I references with the project and document. Do not rename historical project identifiers or fragment a simple decision into artificial blocks. AD and I identifiers, and historical Slice/Block/Wave/Stage/U labels, are project identifiers — not extra lifecycle, approval, or Git checkpoint boundaries. Process hierarchy is `Lifecycle → Phase → Increment → Step` in `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`.
 
 Architecture owns each decision; Roadmap references its approval and sequencing. Roadmap owns executable increment scope/progress. Approval of an architecture block does not itself authorize an implementation increment.
 

@@ -1,7 +1,7 @@
 # MAG Add-on Development Lifecycle
 
 - MAG-Document-ID: `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
-- MAG-Content-Updated: `2026-09-25T19:00:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:20:00+03:00`
 
 This document is the canonical MAG Global lifecycle owner. It contains one lifecycle, not two systems:
 
@@ -12,7 +12,7 @@ This document is the canonical MAG Global lifecycle owner. It contains one lifec
 
 It defines the ordered development path from an initial idea through product approval, bootstrap, requirements, technical verification, architecture, implementation, validation, release, post-release verification, reusable-knowledge capture, and subsequent maintenance.
 
-This document is the canonical Global authority for the Global Core Lifecycle, the ordered `#N` add-on lifecycle, stage gates, and `#N` documentation timing: when `#N` documents are created, updated, reviewed, and finalized.
+This document is the canonical Global authority for the Global Core Lifecycle, the ordered `#N` add-on lifecycle, numbered lifecycle Gates, the normative process hierarchy, Phase Authorization, and `#N` documentation timing: when `#N` documents are created, updated, reviewed, and finalized.
 
 Detailed rules remain in their owning Global documents. This lifecycle references those rules; it does not replace or independently redefine them.
 
@@ -86,14 +86,71 @@ Idea / Evaluation
 - Uncertain host/runtime/framework behavior is verified before architecture relies on it.
 - Targeted technical verification is conditional: research only unresolved questions required for the next architecture decision. It is not a mandatory broad audit. Skip it only when remaining uncertainty is recorded as none.
 - Architecture, and Architecture Approval, apply when architecture decisions are required. They may be skipped only when no architecture decision is required.
-- Implementation of an increment requires explicit applicable Product Owner authorization. Architecture approval is not implementation authorization.
+- Implementation of an Increment requires explicit applicable Product Owner authorization. Architecture approval is not implementation authorization. An Increment does not automatically create another approval or Git checkpoint.
 - Validation depth is proportional to actual risk.
 - Technical validation and Product Owner Practical Acceptance are distinct. Practical Acceptance uses an environment appropriate to the product's in-scope surfaces for that release.
 - Defects return to the earliest affected lifecycle point. Preserve still-valid evidence and approvals; repeat validation when the change makes earlier evidence insufficient.
-- One primary Core stage at a time. Planned work is not implemented work.
-- Before advancing from a completed logical stage, complete the mandatory closure procedure in [AI_GUIDELINES.md](AI_GUIDELINES.md) §20 and applicable [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) §10 rules. An output ready for review is not a closed stage.
-- Coherent-block and immediate-gate-evaluation rules in §3 apply to Core as well as to the `#N` profile. Distinct gates retain separate evidence. Gate PASS does not authorize a later Product Owner-controlled stage when this document or the project Roadmap defines that authorization separately.
-- The Product Owner controls approval gates, implementation authorization, Git checkpoints, and releases.
+- One primary Core Phase at a time. Planned work is not implemented work.
+- Before advancing from a completed Phase, complete the mandatory closure procedure in [AI_GUIDELINES.md](AI_GUIDELINES.md) §20 and applicable [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) §10 rules. An output ready for review is not a closed Phase.
+- Coherent-block and immediate-gate-evaluation rules in §3 apply to Core as well as to the `#N` profile. Distinct Gates retain separate evidence. Gate PASS does not authorize a later Product Owner-controlled Phase when this document or the project Roadmap defines that authorization separately.
+- The Product Owner controls numbered lifecycle Gates, Phase Authorization, implementation authorization, Git checkpoints, and releases.
+
+### Process hierarchy
+
+Forward MAG process work uses one hierarchy:
+
+```text
+Lifecycle
+→ Phase
+→ Increment
+→ Step
+```
+
+- **Lifecycle** is the complete applicable product lifecycle (Global Core plus any selected specialization).
+- **Phase** is a major controlled unit of the Lifecycle and the normal high-level Product Owner authorization boundary. Core sequence names above are Phases. `#N` Phase 0–11 remain the numbered profile locations; they do not create a second hierarchy.
+- **Increment** is a bounded executable portion inside a Phase. An Increment may have its own authorization when required. Its existence does not automatically create another approval, validation cycle, documentation procedure, or Git checkpoint.
+- **Step** is a mechanical or technical action inside an Increment. A Step is not an independent approval, lifecycle, or checkpoint boundary.
+
+**Gate** is a decision point, not a work-hierarchy level. Keep named gate systems distinguishable: numbered lifecycle Gates (Gate 0–3), the Mechanical Action Gate in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md), and the Entry Gate in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §27.
+
+Historical or project identifiers such as Stage N, Slice, Block, Wave, U1/U2, I01/I02, and AD1 may remain valid in existing records. For new process semantics they must not silently create additional lifecycle, approval, authorization, validation, documentation, or Git checkpoint boundaries. Where older Global wording used **Stage** as a synonym for Phase, treat **Phase** as the forward rule. Do not rewrite historical project Roadmaps merely to rename those identifiers.
+
+`A<N>` uses this Core hierarchy. Do not import `#N` Phase numbers, eight-document package, Blueprint frames, or XenForo release mechanics into `A<N>` because this hierarchy exists.
+
+### Phase Authorization
+
+**Phase Authorization** is explicit Product Owner authorization for a bounded Phase scope through that Phase's closure. It is not a new document, receipt, registry, ledger, generated artifact, or seventh owner. A normal Product Owner statement in the existing workflow is sufficient when its scope is unambiguous.
+
+A valid Phase Authorization must make these known:
+
+- working identity;
+- authorized Phase and bounded scope;
+- applicable repository or other mutation target where relevant;
+- actions included by the authorization;
+- authorization lifetime;
+- invalidation or expiry conditions.
+
+When those included actions remain in scope and live prerequisites remain valid, do **not** request repeated approval for expected in-scope work such as: implementation within the approved scope; proportional validation; affected authoritative documentation updates; Fast Sync or ordinary deterministic synchronization of the specifically named affected registered documents; `git status`/`diff` inspection; `git add` of in-scope task files; normal commit on the expected branch of the expected registered repository; normal push to the already-configured expected tracking branch; one justified material Git checkpoint, or additional checkpoints only when a real rollback/risk boundary or explicit Product Owner granularity requires them; clean-state verification after closure.
+
+Phase Authorization does **not** authorize unrelated files or unrelated state.
+
+**Lifetime.** A Phase Authorization remains usable until Phase closure, explicit Product Owner revocation or correction, or an invalidation below.
+
+**Invalidation / stop.** Treat the authorization as expired, insufficient, or requiring Product Owner intervention when any of the following applies: scope expansion beyond the authorized work; a new Increment not covered by the authorization; a new product or architecture decision outside approved scope; a Critical failure that materially changes the approved plan; authority conflict or unresolved canonical contradiction; unexpected Git divergence; wrong repository, branch, or remote/tracking target; unrelated user work that would be affected; destructive reset; rebase or history rewrite; force-push; tag; GitHub or public release; Resource publication; production deployment; identity, registry, or repository retargeting; Mirror RECONCILE; canonical Drive or other documentation writes not explicitly included; or another materially different HIGH-RISK action not included in the authorization. Stronger existing safety rules remain in force.
+
+Mechanical Action Gate treatment of covered normal Git is in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md). Documentation Fast Sync interaction is in [`MAG_DOCUMENTATION_OPERATIONS.md`](MAG_DOCUMENTATION_OPERATIONS.md) §10.1. Git checkpoint mechanics used at closure are in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §20. This subsection owns lifecycle meaning; those documents must not redefine Phase Authorization.
+
+### Git checkpoint granularity
+
+Lifecycle labels, Gate results, reports, validation-only outcomes, and status-marker changes do not require a Git commit.
+
+Default:
+
+- one justified material checkpoint at meaningful Phase closure;
+- an Increment checkpoint only when that Increment is itself a material rollback, recovery, or risk boundary, or the Product Owner explicitly chose Increment granularity;
+- Steps never create checkpoints by themselves.
+
+Checkpoint-protection details remain in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §20. Do not duplicate them here.
 
 ### Bootstrap Core intent
 
@@ -111,7 +168,7 @@ Exact artifact form, host metadata, store packaging, and version-identity mechan
 
 This mapping is routing. It does not rewrite, renumber, or replace the numbered `#N` sections. `#N` work follows the numbered profile in full. Core names do not replace Phase/Gate numbers in `#N` Roadmaps, Blueprint, or existing citations.
 
-| Core stage | `#N` profile location |
+| Core Phase | `#N` profile location |
 | --- | --- |
 | Idea / Evaluation | Phase 0 |
 | Product Approval | Gate 0 |
@@ -187,7 +244,7 @@ The lifecycle follows these principles:
 10. Reusable technical knowledge is captured only when justified.
 11. Stable releases become the baseline for subsequent development.
 12. The Product Owner controls approval gates, implementation authorization, Git checkpoints, and releases.
-13. Product Owner technical-lead learning develops progressively through practical, stage-specific learning after meaningful Cursor procedures. ChatGPT provides concise Ukrainian learning notes as part of post-execution review per [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24.3. Learning notes deepen progressively as Product Owner experience grows. They do not authorize execution and do not replace requirements, architecture, or validation authority.
+13. Product Owner technical-lead learning develops progressively through practical, Phase-specific learning after meaningful Cursor procedures. ChatGPT provides concise Ukrainian learning notes as part of post-execution review per [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24.3. Learning notes deepen progressively as Product Owner experience grows. They do not authorize execution and do not replace requirements, architecture, or validation authority.
 
 A smaller project may pass through some phases quickly.
 
@@ -220,9 +277,9 @@ Planned work must not be represented as implemented work.
 
 ### Closure prerequisite for phase transitions
 
-Before advancing from a completed logical stage or phase, complete the mandatory closure procedure in [AI_GUIDELINES.md](AI_GUIDELINES.md) §20 and the applicable execution/checkpoint rules in [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) §10. An output ready for review is not a closed phase. Local/Git closure applies to Full Bootstrap, Local/Git-First, and Resume Bootstrap completion of Local/Git predicates. Documentation-only Drive-First progression in Phase 1 does not require Local/Git closure while Local/Git remains pending. Drive-First is a normal Phase 1 pause (Level 1) with Local/Git pending.
+Before advancing from a completed Phase, complete the mandatory closure procedure in [AI_GUIDELINES.md](AI_GUIDELINES.md) §20 and the applicable execution/checkpoint rules in [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) §10. An output ready for review is not a closed Phase. Local/Git closure applies to Full Bootstrap, Local/Git-First, and Resume Bootstrap completion of Local/Git predicates. Documentation-only Drive-First progression in Phase 1 does not require Local/Git closure while Local/Git remains pending. Drive-First is a normal Phase 1 pause (Level 1) with Local/Git pending.
 
-Research/architecture iterations and intermediate actions within the same approved logical phase do not create artificial Git checkpoints. Existing project phase/stage identifiers remain historical identifiers; record their mapping to this lifecycle without renumbering completed history.
+Research/architecture iterations, Increments, and Steps inside the same approved Phase do not create Git checkpoints unless Core Git checkpoint granularity requires one. Existing project Phase/Stage/Slice/Block/Wave/U/I/AD identifiers remain historical identifiers; record their mapping to this lifecycle without renumbering completed history. Those identifiers do not create extra governance boundaries for new work.
 
 ### Coherent lifecycle blocks
 
@@ -243,7 +300,7 @@ These actions must **not** automatically become separate Git checkpoints, valida
 
 Coherent blocks may remove artificial checkpoints, repeated validation, repeated confirmations, and micro-procedures. They **MUST NOT** remove mandatory Global checkpoints or genuine Product Owner-controlled authorization boundaries. Distinct gates retain separate evidence and formal results even when executed within one coherent block.
 
-Apply the material-change and checkpoint-protection filters in [AI_GUIDELINES.md](AI_GUIDELINES.md) §§18–20 and [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) §10. Lifecycle label change alone is not a checkpoint reason.
+Apply the material-change filter in [AI_GUIDELINES.md](AI_GUIDELINES.md) §18 and the checkpoint-protection filter in [AI_GUIDELINES.md](AI_GUIDELINES.md) §20. Coherent block is an execution grouping, not a hierarchy level. Lifecycle label change alone is not a checkpoint reason. Git checkpoint granularity is owned in Core above.
 
 ### Immediate gate evaluation
 
@@ -263,8 +320,8 @@ Clarifications:
 - Required Product Owner authorization is still mandatory.
 - Missing, contradictory, or stale evidence is a stop condition, not a satisfied prerequisite.
 - Gate `PASS` is only the gate result.
-- Gate `PASS` does **not** authorize a later Product Owner-controlled lifecycle stage when Global rules or the project Roadmap define that authorization separately.
-- Implementation authorization, Gate 3 approval of release finalization, Stable Release authorization, Git/tag/publication authorization, and similar remain separate where this lifecycle defines them.
+- Gate `PASS` does **not** authorize a later Product Owner-controlled Phase when Global rules or the project Roadmap define that authorization separately.
+- Implementation authorization, Gate 3 approval of release finalization, Stable Release authorization, Git/tag/publication authorization, and similar remain separate where this lifecycle defines them. A live Phase Authorization may cover only the actions it explicitly includes.
 
 ## 4. Phase 0 — Idea and Evaluation
 
@@ -668,13 +725,13 @@ TZ remains authoritative for requirements.
 
 ### Implementation authorization
 
-After planning, the Product Owner must authorize the defined increment before Phase 6 starts. Gate 2 alone is not implementation authorization. An existing explicit authorization remains valid within its stated scope; routine steps inside that scope do not require repeated approval. Approval of one increment does not authorize later increments.
+After planning, the Product Owner must authorize the defined Increment before Phase 6 starts. Gate 2 alone is not implementation authorization. An existing explicit authorization, including a live Phase Authorization that includes that Increment, remains valid within its stated scope; routine Steps inside that scope do not require repeated approval. Approval of one Increment does not authorize later Increments. An Increment does not automatically create a Git checkpoint.
 
 ### Completion conditions
 
 At least the next implementation increment is sufficiently defined to execute safely.
 
-The entire future release does not need to be decomposed into artificial micro-stages before useful implementation can begin.
+The entire future release does not need to be decomposed into artificial micro-Increments before useful implementation can begin.
 
 
 ## 10. Phase 6 — Incremental Implementation
@@ -696,23 +753,23 @@ Apply the detailed development and validation rules in [AI_GUIDELINES.md](AI_GUI
 For each increment:
 
 ```text
-Approved increment
+Approved Increment
 → inspect existing implementation
 → inspect only relevant dependencies
 → make the smallest sufficient change
 → perform relevant validation
 → inspect resulting changes
 → synchronize affected documentation
-→ user review
-→ mandatory closure for a completed logical stage/phase under AI_GUIDELINES.md §20
-→ stop or proceed only to the next approved increment
+→ user review where a new Product Owner decision is required
+→ apply Core Git checkpoint granularity (Phase-end default; Increment checkpoint only when that Increment is a material rollback/risk boundary or the Product Owner chose that granularity)
+→ stop or proceed only to the next approved Increment
 ```
 
 Follow Existing Code First.
 
 Prefer XenForo-native mechanisms.
 
-Do not implement future stages merely because they are convenient to add now.
+Do not implement future Phases or Increments merely because they are convenient to add now.
 
 ### Documentation actions
 
@@ -743,11 +800,12 @@ Changelog remains historical.
 - relevant validation passed; if required manual validation remains, label the result pending validation rather than fully complete;
 - Critical issues are resolved;
 - affected documentation is synchronized;
-- required user review and logical-stage closure under AI_GUIDELINES.md §20 are complete;
-- no unrelated next-stage work was performed.
+- required user review is complete where a new Product Owner decision was required;
+- Git closure follows Core Git checkpoint granularity, not a commit per Increment by default;
+- no unrelated next-Increment or next-Phase work was performed.
 
 
-An increment awaiting required review, manual validation, or closure remains pending; it must not be marked complete or used to authorize the next logical stage.
+An Increment awaiting required review, manual validation, or authorized Phase closure remains pending; it must not be marked complete or used to authorize the next Phase. Completion of an Increment is not by itself a Git checkpoint.
 
 ## 11. Phase 7 — Integration and Final Validation
 

@@ -1,7 +1,7 @@
 # MAG Documentation Operations
 
 - MAG-Document-ID: `MAG_DOCUMENTATION_OPERATIONS.md`
-- MAG-Content-Updated: `2026-09-25T20:05:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:20:00+03:00`
 
 ## 1. Purpose and authority
 
@@ -565,6 +565,15 @@ Use the Fast Sync Path only when **all** of the following are already establishe
 - target counterpart identity is resolved;
 - Product Owner authorization already covers the synchronization.
 
+A live Phase Authorization defined in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) may satisfy **only** that last authorization component, and only when its scope explicitly includes synchronization of those exact affected registered documents. It does not create a second Fast Sync path. It does not waive the other Fast Sync prerequisites.
+
+Phase Authorization does **not** authorize:
+
+- Mirror RECONCILE or any Mirror write;
+- first-time counterpart creation, adoption, or unregistered targets;
+- unrelated Global or project documents;
+- conflict, `INVALID_METADATA`, missing target, uncertain direction, or any other existing Fast Sync blocker.
+
 When these conditions hold, do **not** repeat:
 
 - registration or adoption analysis;
@@ -771,17 +780,17 @@ Completion means every approved write was executed and verified, required cleanu
 
 ## 18. Git handoff
 
-SYNC authorization and Git finalization are separate authority gates.
+SYNC authorization and Git finalization are separate authority gates unless a live Phase Authorization explicitly includes both the named documentation synchronization and the named normal Git verbs.
 
 An approved SYNC may modify only what its approved synchronization plan authorizes. It does not authorize:
 
-- stage;
-- commit;
-- push;
 - tag;
 - release;
 - rebase;
-- history rewrite.
+- history rewrite;
+- force-push.
+
+Normal `git add` / `commit` / `push` remain separately governed by [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md) and [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §20. A live Phase Authorization may cover those verbs only when it names them. SYNC never inherits Mirror RECONCILE.
 
 After Local writes, report Git diff and status and return control under existing Global development rules. Do not duplicate general Git policy here.
 

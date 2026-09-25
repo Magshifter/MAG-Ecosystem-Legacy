@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-25T23:04:09+03:00`
+- MAG-Content-Updated: `2026-09-25T23:20:00+03:00`
 
 This document is the navigation and governance foundation for MAG software development across approved Product Classes and identity namespaces.
 
@@ -222,7 +222,7 @@ The current Global documentation set comprises **six** authoritative files in th
 | `MAG_ECOSYSTEM.md` | This file. MAG Ecosystem identity, Product Class, Surface, Technology, and Applicability taxonomy; namespace registry; documentation map; context isolation; and high-level governance. |
 | `AI_GUIDELINES.md` | Global MAG development workflow and operational rules; §24 owns Cursor prompt presentation, post-execution review, and Cursor model-selection / model-routing policy. §26 owns Process Overlay command text. |
 | `AI_AGENTS_RULES.md` | Mandatory execution rules and boundaries for AI coding agents and related development tools, including Cursor procedure pre-flight and Plain text output requirements. |
-| `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Canonical Global Core Lifecycle and the `#N` XenForo Product specialization/profile: stage gates, transitions, documentation timing, and XenForo add-on `version_id` / `version_string` policy. Not `#N`-only. References detailed operational rules in their owning Global documents. |
+| `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Canonical Global Core Lifecycle and the `#N` XenForo Product specialization/profile: numbered Gates, Phase transitions, process hierarchy, Phase Authorization, documentation timing, and XenForo add-on `version_id` / `version_string` policy. Not `#N`-only. References detailed operational rules in their owning Global documents. |
 | `MAG_IMPLEMENTATION_PATTERNS.md` | Global reusable technical knowledge base: verified, source-backed implementation patterns (predominantly XenForo/XFRM for `#N` products), compatibility lessons, failure modes, and related evidence-backed findings. Subordinate to Global process documents and active-development TZ, Roadmap, and Architecture. Does not define product requirements. |
 | `MAG_DOCUMENTATION_OPERATIONS.md` | Authoritative documentation synchronization protocol across managed Local Git repositories, Google Drive, ChatGPT, and Cursor. |
 
@@ -413,8 +413,8 @@ Each Global file has one primary authority. Do not duplicate its detailed rules 
 | Source | Authority |
 | --- | --- |
 | `MAG_ECOSYSTEM.md` | Ecosystem identity; Product Class, Surface, Technology, and Applicability taxonomy; namespace registry; documentation map; authority navigation; and GLOBAL + active development identity context isolation. |
-| `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Canonical Global Core Lifecycle and the `#N` XenForo Product specialization/profile: stage gates, phase transitions, documentation timing, and XenForo add-on version identity. Not `#N`-only. Does not redefine detailed rules owned by other Global documents. |
-| `AI_GUIDELINES.md` | Detailed development standards, principles, stage/phase closure mechanics, operational workflow, Cursor prompt presentation, and Cursor model-selection / model-routing policy. |
+| `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Canonical Global Core Lifecycle and the `#N` XenForo Product specialization/profile: numbered Gates, Phase transitions, process hierarchy (`Lifecycle → Phase → Increment → Step`), Phase Authorization, documentation timing, and XenForo add-on version identity. Not `#N`-only. Does not redefine detailed rules owned by other Global documents. |
+| `AI_GUIDELINES.md` | Detailed development standards, principles, Phase closure mechanics, operational workflow, Cursor prompt presentation, and Cursor model-selection / model-routing policy. |
 | `AI_AGENTS_RULES.md` | Coding-agent execution boundaries, mandatory Cursor pre-flight, checkpoints, and applicable report requirements. |
 | `MAG_IMPLEMENTATION_PATTERNS.md` | Reusable, source-backed technical knowledge base and its capture/maintenance procedure. Subordinate to Global process documents and active-development TZ, Roadmap, and Architecture. Not a source of product requirements or process rules. |
 | `MAG_DOCUMENTATION_OPERATIONS.md` | Documentation identity validation, synchronization scope and commands, comparison, conflict handling, approval, execution, verification, cleanup, reporting, and Git handoff boundaries. |

@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Development Guidelines
 
 - MAG-Document-ID: `AI_GUIDELINES.md`
-- MAG-Content-Updated: `2026-09-25T19:10:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:20:00+03:00`
 
 This document is the **Global MAG development standard**. It defines **how** MAG software is developed with AI assistance.
 
@@ -25,7 +25,7 @@ Do not collect, display, or maintain Cursor Models usage measurements.
 
 ---
 
-Lifecycle order, gates, and documentation timing are canonical in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md): Global Core plus the applicable specialization. `#N` uses Core plus the numbered `#N` XenForo Product profile. `A<N>` uses Core unless a separately proven recurring specialization exists. This document owns detailed development and closure mechanics applied at those lifecycle checkpoints.
+Lifecycle order, numbered Gates, process hierarchy (`Lifecycle → Phase → Increment → Step`), Phase Authorization, and documentation timing are canonical in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md): Global Core plus the applicable specialization. `#N` uses Core plus the numbered `#N` XenForo Product profile. `A<N>` uses Core unless a separately proven recurring specialization exists. This document owns detailed development and closure mechanics applied at those lifecycle checkpoints. Gate is a decision point, not a work-hierarchy level.
 
 ## 1. Purpose and philosophy
 
@@ -41,7 +41,7 @@ MAG development must remain:
 - Accurately documented.
 - Incrementally developed under **manual user control**.
 
-AI must not treat MAG work as an open-ended rewrite, a research project, or a license to implement later stages because they seem useful.
+AI must not treat MAG work as an open-ended rewrite, a research project, or a license to implement later Phases or Increments because they seem useful.
 
 ---
 
@@ -52,7 +52,7 @@ Use the authority model in `MAG_ECOSYSTEM.md`. For implementation work, apply it
 | Source | Use |
 | --- | --- |
 | `MAG_ECOSYSTEM.md` | Ecosystem identity; Product Class, Surface, Technology, and Verified Applicability taxonomy; registry; documentation map; authority navigation; and GLOBAL + active development identity context isolation. |
-| `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Global Core Lifecycle plus the numbered `#N` XenForo Product profile: stage gates, transitions, and `#N` documentation timing. Stage/phase closure mechanics in this document apply at those checkpoints. `#N` Phase/Gate numbers remain valid. |
+| `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Global Core Lifecycle plus the numbered `#N` XenForo Product profile: numbered Gates, Phase transitions, process hierarchy, Phase Authorization, and `#N` documentation timing. Closure mechanics in this document apply at those checkpoints. `#N` Phase/Gate numbers remain valid. |
 | Global documentation (other) | Process, tools, Git, and class-neutral security/performance/testing standards. XenForo add-on engineering rules apply only when the active identity is `#N`. |
 | `MAG_IMPLEMENTATION_PATTERNS.md` | Reusable, evidence-backed technical knowledge. Subordinate to Global process documents and active-development TZ, Roadmap, and Architecture. Not a source of product requirements. |
 | Project requirements (WHAT) | What the active identity's product must do. For `#N`: XenForo Product requirements in `P<NN>__<CODE>__TZ.md`. `A<N>` WHAT remains in that identity's approved documentation. Do not invent an `A<N>` eight-document package. |
@@ -195,9 +195,11 @@ No assistant may treat another assistant's draft as approved product or process 
 
 ## 5. Stage discipline
 
-Follow the stages (or equivalent approved increments) defined in the **active project's** approved sequencing documentation (canonical filenames for `#N` in `MAG_ECOSYSTEM.md`). Apply the Global Core Lifecycle. When the active identity is `#N`, also follow the numbered `#N` phases and gates.
+**Stage** is not a work-hierarchy level. Forward work uses `Lifecycle → Phase → Increment → Step` in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md). Historical Stage N, Slice, Block, Wave, U, I, and AD identifiers remain valid in existing project records; they must not silently create extra approval, validation, documentation, or Git checkpoint boundaries.
 
-Before implementing a stage:
+Follow the Phases and authorized Increments defined in the **active project's** approved sequencing documentation (canonical filenames for `#N` in `MAG_ECOSYSTEM.md`). Apply the Global Core Lifecycle. When the active identity is `#N`, also follow the numbered `#N` Phases and Gates.
+
+Before implementing an authorized Increment or Phase:
 
 1. Read the relevant requirements.
 2. Read the relevant roadmap section.
@@ -205,31 +207,31 @@ Before implementing a stage:
 4. Inspect related existing code.
 5. Identify dependencies.
 6. Explain the proposed implementation.
-7. Implement **only** the requested stage.
+7. Implement **only** the requested Increment or Phase scope.
 8. Test the result.
 9. Review compatibility with the active identity's declared host, runtime, and surfaces. When the active identity is `#N`, review XenForo compatibility for the versions in that project's scope.
 10. Review security implications as appropriate.
 11. Review performance implications as appropriate.
 12. Update affected documentation.
-13. Prepare the Git checkpoint (user owns commit unless they explicitly request otherwise).
+13. Apply Git checkpoint granularity from the lifecycle owner. The user owns `git add` / `commit` / `push` unless they explicitly request them **or** a live Phase Authorization covers those exact verbs.
 
-Never automatically implement future stages.
+Never automatically implement future Phases or Increments.
 
-A **minimal** prerequisite from a later stage may be introduced only when:
+A **minimal** prerequisite from a later Phase or Increment may be introduced only when:
 
-- The current stage cannot be completed correctly without it.
+- The current authorized scope cannot be completed correctly without it.
 - The dependency is explicitly identified.
 - The scope remains minimal.
 - The reason is documented.
 - No unrelated future functionality is added.
 
-Existing code from later or earlier stages must not be deleted merely because those stages are incomplete.
+Existing code from later or earlier Phases must not be deleted merely because those Phases are incomplete.
 
-A stage may be marked complete only when the project's Roadmap conditions are satisfied. Completion generally requires: required implementation exists; relevant declared host, runtime, and surface behavior is verified (when `#N`, relevant XenForo behavior is verified); tests appropriate to the stage pass; security and performance implications are reviewed; development diagnostics are handled; documentation is synchronized (including the changelog entry the project requires, when that identity has an applicable changelog); Cursor usage history is synchronized when applicable; the result is ready for a Git checkpoint; and the approved stage/phase closure sequence in §20 has been completed.
+A Phase or Increment may be marked complete only when the project's Roadmap conditions are satisfied. Completion generally requires: required implementation exists; relevant declared host, runtime, and surface behavior is verified (when `#N`, relevant XenForo behavior is verified); tests appropriate to the change pass; security and performance implications are reviewed; development diagnostics are handled; documentation is synchronized (including the changelog entry the project requires, when that identity has an applicable changelog); Cursor usage history is synchronized when applicable; and the approved closure sequence in §20 has been completed at the granularity required by the lifecycle owner.
 
-Architecture approval alone does not complete a stage. The presence of placeholder or Alpha code alone does not complete a stage.
+Architecture approval alone does not complete a Phase or Increment. The presence of placeholder or Alpha code alone does not complete it.
 
-Do not interpret stage closure as requiring a Git commit after every tiny action, command, inspection, audit step, or intermediate Cursor procedure. Git checkpoints correspond to completed and approved logical stages/phases or other explicitly approved meaningful checkpoints under §20.
+Do not interpret closure as requiring a Git commit after every tiny action, command, inspection, audit Step, Increment label, Gate result, or intermediate Cursor procedure.
 
 ---
 
@@ -556,9 +558,9 @@ The verified local working copy is authoritative for pending local changes.
 
 The configured remote records the last published repository state.
 
-Each completed and approved logical stage or project phase must be closed with documentation synchronization and a Git checkpoint before work proceeds to the next stage or phase, unless a coherent block's next justified checkpoint already covers that material boundary under the checkpoint-protection rules in this section. [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md) §10 requires compliance with this filter; it does not own a second copy.
+Each completed and approved Phase must be closed with affected-documentation synchronization and a Git checkpoint at the granularity owned by [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) (Phase-end default; Increment checkpoint only when that Increment is a material rollback/risk boundary or the Product Owner chose that granularity). [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md) §10 requires compliance with this filter; it does not own a second copy.
 
-This does **not** require a commit after every tiny action, command, inspection, audit step, intermediate Cursor procedure, lifecycle label change, status-marker change, or mechanical sub-step. Git checkpoints correspond to completed and approved logical stages/phases or other explicitly approved meaningful checkpoints that protect material audit or recovery state.
+This does **not** require a commit after every tiny action, command, inspection, audit Step, Increment, Gate result, intermediate Cursor procedure, lifecycle label change, status-marker change, or mechanical sub-step. Git checkpoints correspond to justified material Phase (or explicitly justified Increment) closure, or other explicitly approved meaningful checkpoints that protect material audit or recovery state.
 
 ### Checkpoint-protection filter
 
@@ -569,9 +571,9 @@ Before proposing an intermediate Git checkpoint, ask:
 Do **not** create a separate checkpoint merely because:
 
 - a lifecycle label changed;
-- a gate or documentation status marker changed;
+- a Gate, Increment, Slice, Block, Wave, or documentation status marker changed;
 - a validation report exists;
-- a mechanical next step completed.
+- a mechanical Step completed.
 
 Create or retain a checkpoint when it protects meaningful state such as:
 
@@ -592,26 +594,26 @@ Documentation must describe the approved actual state, not planned or assumed co
 
 Historical documentation and Git history remain historical records and must not be rewritten to make later decisions appear earlier.
 
-The **user** owns `git add`, `git commit`, and `git push` unless they explicitly request the agent to perform them.
+The **user** owns `git add`, `git commit`, and `git push` unless they explicitly request the agent to perform them **or** a live Phase Authorization in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) explicitly covers those exact verbs and live Git identity/repository/branch/tracking still match. Force-push, rebase, history rewrite, tag, and publication are never inherited from Phase Authorization.
 
-Never force-push `main` unless the Product Owner explicitly authorizes that exact force-push operation. No inferred authorization. Normal commit approval, normal push approval, release approval, Direct Agent Mode, Full Bootstrap, and checkpoint authorization do not grant force-push permission. If force-push appears necessary: inspect, report, and wait for Product Owner decision. Do not provide destructive auto-recovery. Compact Git recovery behavior is in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md) §10.
+Never force-push `main` unless the Product Owner explicitly authorizes that exact force-push operation. No inferred authorization. Normal commit approval, normal push approval, release approval, Direct Agent Mode, Full Bootstrap, checkpoint authorization, and Phase Authorization do not grant force-push permission. If force-push appears necessary: inspect, report, and wait for Product Owner decision. Do not provide destructive auto-recovery. Compact Git recovery behavior is in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md) §10.
 
-If a stage reveals unresolved **Critical** issues, the stage is not closed and progression is blocked.
+If a Phase reveals unresolved **Critical** issues, the Phase is not closed and progression is blocked.
 
 **Drive-First / Local/Git-First Bootstrap:** approved documentation work may progress under MAG_ADDON_DEVELOPMENT_LIFECYCLE.md Phase 1 and MAG_DOCUMENTATION_OPERATIONS.md §5. Drive-First is a normal `#N` bootstrap state: documentation may proceed while Local/Git closure remains pending. Local/Git-First may complete Local/Git Bootstrap Complete while Drive remains **Drive Reconciliation Pending**. Neither path claims implementation, commit, push, tag, or release authorization. Drive reconciliation is not required for Phase 1 completion or stable registration. A Pool status change alone is not a Git checkpoint.
 
-### Stage and phase closure sequence
+### Phase closure sequence
 
-1. Complete the approved work for the current logical stage/phase.
-2. Review and explicitly approve the result where product-owner approval is required.
-3. Synchronize authoritative project documentation with the actual approved state.
+1. Complete the approved work for the current Phase (and any Increments inside it that required completion).
+2. Review and explicitly approve the result where a new Product Owner decision is required. Do not re-ask for actions already covered by a live Phase Authorization.
+3. Synchronize authoritative project documentation with the actual approved state (Fast Sync of specifically affected registered documents when [`MAG_DOCUMENTATION_OPERATIONS.md`](MAG_DOCUMENTATION_OPERATIONS.md) §10.1 applies).
 4. When relevant work may have produced reusable technical knowledge, evaluate it for `MAG_IMPLEMENTATION_PATTERNS.md` per §22.
 5. Review the resulting documentation/code diff and repository status.
 6. Resolve Critical issues before closure.
-7. Create a logical Git commit representing the completed stage/phase when the user requests or authorizes it.
-8. Push the approved commit when the user authorizes/executes the push.
+7. Create the justified material Git commit at Phase-end granularity, or at Increment granularity only when required by the lifecycle owner. The agent may perform `git add` / `commit` when a live Phase Authorization covers those verbs; otherwise the user performs them.
+8. Push the approved commit when the user authorizes it **or** the same live Phase Authorization covers normal push and tracking still matches.
 9. Verify the working tree is clean.
-10. Only then proceed to the next logical stage/phase.
+10. Only then proceed to the next Phase.
 
 Before publishing:
 
@@ -620,10 +622,10 @@ Before publishing:
 3. Review all changes.
 4. Confirm no temporary restore directories are tracked.
 5. Confirm no host, SDK, or environment-specific files that must not ship are included. When `#N`, confirm no XenForo core or environment-specific files are included.
-6. Test the applicable stage.
+6. Test the applicable authorized scope.
 7. Synchronize documentation.
-8. Commit with an English message when the user requests it.
-9. Push only the verified local commit when the user requests it.
+8. Commit with an English message when the user requests it or a live Phase Authorization covers normal commit.
+9. Push only the verified local commit when the user requests it or a live Phase Authorization covers normal push.
 
 Do not claim Git state was verified unless it was actually inspected.
 
@@ -778,7 +780,7 @@ Coding-agent Plain text execution requirements remain in [`AI_AGENTS_RULES.md`](
 
 ### 24.0 Operating modes
 
-Mode selection affects coordination surface only. Both modes consume the same Global HOW. Mode selection does **not** change Product Owner authority, Git ownership, lifecycle gates, implementation authorization, release authorization, context isolation, scope boundaries, stop-on-conflict, or strategically required approvals. Direct Agent Mode does **not** create a parallel governance system.
+Mode selection affects coordination surface only. Both modes consume the same Global HOW. Mode selection does **not** change Product Owner authority, Git ownership, numbered lifecycle Gates, implementation authorization, release authorization, context isolation, scope boundaries, stop-on-conflict, or strategically required approvals. Direct Agent Mode does **not** create a parallel governance system.
 
 **Coordinator Mode**
 
@@ -790,11 +792,11 @@ In Coordinator Mode, use the established presentation: model recommendation → 
 
 Cursor, Codex, or another approved agent session works directly under Global MAG HOW for the active development identity. ChatGPT is optional between individual operations.
 
-The execution agent may inspect, plan, perform an already authorized procedure, report results, and continue an already approved coherent block.
+The execution agent may inspect, plan, perform an already authorized procedure, report results, and continue an already approved coherent block or live Phase Authorization.
 
 Direct Agent Mode must **not** require artificial prompt-copy theater when the agent already holds the active context and authority. Do not require “ready to receive?” handshakes, repeated restatement of already-approved instructions, or copy/paste through ChatGPT when no coordination value exists.
 
-Explicit Product Owner decisions and authorization boundaries remain mandatory where Global HOW requires them. Direct Agent Mode does **not** authorize Git, gates, implementation, or release by default.
+Explicit Product Owner decisions and authorization boundaries remain mandatory where Global HOW requires them. Direct Agent Mode does **not** authorize Git, Gates, implementation, or release by default. A live Phase Authorization may cover only the verbs it explicitly includes.
 
 If the Product Owner does not name a mode, infer the surface actually in use (ChatGPT preparing a paste prompt = Coordinator Mode; an in-repository agent session with Global HOW loaded = Direct Agent Mode) and do not force a mode switch.
 
@@ -813,7 +815,7 @@ Do **not**:
 - reopen prior analysis without evidence invalidation;
 - re-explain the same decision.
 
-`+` does **not** authorize a new Product Owner decision, a new gate, scope expansion, Git/release publication, or the next lifecycle stage when Global rules require separate authorization.
+`+` does **not** authorize a new Product Owner decision, a new Gate, scope expansion, Git/release publication, or the next Phase when Global rules require separate authorization. Continuation inside a live Phase Authorization may proceed through already-included Steps without a new prompt.
 
 ### 24.2 Cursor prompt presentation order
 
