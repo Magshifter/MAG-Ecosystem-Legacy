@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-26T00:20:00+03:00`
+- MAG-Content-Updated: `2026-09-26T01:20:00+03:00`
 
 This document is the navigation and governance foundation for MAG software development across approved Product Classes and identity namespaces.
 
@@ -157,7 +157,7 @@ Some internal technical identifiers retain the historical `MAG Workflow Bridge` 
   - `docs/A02__AE__ARCHITECTURE.md`
   - `docs/A02__AE__ROADMAP.md`
   - `docs/A02__AE__CHANGELOG.md`
-- Drive counterparts: none recorded. Drive Reconciliation Pending. No Drive object identity is assigned here.
+- Drive transport: no Drive object identity recorded. **Drive Reconciliation Pending** here is documentation-transport debt only. It is **not** a registration, Product Approval, or Local/Git bootstrap-incompleteness predicate. Current product/lifecycle status remains the `A<N>` registry table above.
 - Current status, repository, and local path: the `A<N>` registry table above.
 
 Global documentation contains only this concise product-level identity, classification, purpose, WHAT-authority, and approved-set metadata. Detailed requirements, architecture, sequencing, and history remain owned by the A2 product repository. Architecture in that set is not approved architecture.
@@ -386,7 +386,7 @@ When working on a MAG development:
 
 1. Load **Global** MAG documentation from `MAG-Ecosystem`, including currently ACTIVE Process Overlay Pool entries and applicable operational assets.
 2. Load **that development's** product documentation and code.
-3. Do **not** load other developments' TZ, Roadmap, Architecture, CLASS_MAP, Changelog, or research notes unless the task explicitly requires them.
+3. Do **not** load other developments' TZ, REQUIREMENTS, PLAN, Roadmap, Architecture, CLASS_MAP, Changelog, or research notes unless the task explicitly requires them.
 
 Examples:
 
@@ -551,7 +551,9 @@ For `#N`, Drive-First, Local/Git-First, Full, and Resume are normal documentatio
 
 ## Current MAG-Ecosystem repository contents
 
-This Global documentation repository currently contains:
+This heading names the **canonical Global authority documents and the XenForo operational template tree**. It is **not** an exhaustive inventory of the MAG-Ecosystem Git repository. Historical Experimental/Evaluation documents, `tools/`, `generated/` artifacts, and other non-authority paths may exist; they are not additional Global owners. Those paths are discovered from their owning sections (for example Experimental / Evaluation documents above) and [`MAG_DOCUMENTATION_OPERATIONS.md`](MAG_DOCUMENTATION_OPERATIONS.md).
+
+The Global owners / operational assets currently recorded here are:
 
 - `MAG_ECOSYSTEM.md`
 - `AI_GUIDELINES.md`

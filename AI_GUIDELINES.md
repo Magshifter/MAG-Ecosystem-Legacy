@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Development Guidelines
 
 - MAG-Document-ID: `AI_GUIDELINES.md`
-- MAG-Content-Updated: `2026-09-25T23:55:00+03:00`
+- MAG-Content-Updated: `2026-09-26T01:20:00+03:00`
 
 This document is the **Global MAG development standard**. It defines **how** MAG software is developed with AI assistance.
 
@@ -237,7 +237,7 @@ A **minimal** prerequisite from a later Phase or Increment may be introduced onl
 
 Existing code from later or earlier Phases must not be deleted merely because those Phases are incomplete.
 
-A Phase or Increment may be marked complete only when the project's Roadmap conditions are satisfied. Completion generally requires: required implementation exists; relevant declared host, runtime, and surface behavior is verified (when `#N`, relevant XenForo behavior is verified); tests appropriate to the change pass; security and performance implications are reviewed; development diagnostics are handled; **authoritative documents actually affected by the work** are synchronized (including a changelog entry only when that identity has an applicable changelog **and** the change materially requires one); Cursor usage history is synchronized when applicable; and the approved closure sequence in §20 has been completed at the granularity required by the lifecycle owner.
+A Phase or Increment may be marked complete only when the project's Roadmap conditions are satisfied. Completion generally requires: required implementation exists; relevant declared host, runtime, and surface behavior is verified (when `#N`, relevant XenForo behavior is verified); tests appropriate to the change pass; security and performance implications are reviewed; development diagnostics are handled; **authoritative documents actually affected by the work** are synchronized (including a changelog entry only when that identity has an applicable changelog **and** the change materially requires one); Cursor usage history is synchronized **only when applicable** as an affected registered document under Fast Sync / Evidence Inheritance — it is not mandatory closure evidence and does not require a full re-audit; and the approved closure sequence in §20 has been completed at the granularity required by the lifecycle owner.
 
 Architecture approval alone does not complete a Phase or Increment. The presence of placeholder or Alpha code alone does not complete it.
 
