@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-25T23:35:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:50:00+03:00`
 
 This document is the navigation and governance foundation for MAG software development across approved Product Classes and identity namespaces.
 
@@ -224,7 +224,7 @@ The current Global documentation set comprises **six** authoritative files in th
 | `AI_AGENTS_RULES.md` | Mandatory execution rules and boundaries for AI coding agents and related development tools, including Cursor procedure pre-flight and Plain text output requirements. |
 | `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Canonical Global Core Lifecycle and the `#N` XenForo Product specialization/profile: numbered Gates, Phase transitions, process hierarchy, Phase Authorization, Phase 7 product correctness, Phase 8 shipping correctness, Normal Release Fast Path, documentation timing, and XenForo add-on `version_id` / `version_string` policy. Not `#N`-only. References detailed operational rules in their owning Global documents. |
 | `MAG_IMPLEMENTATION_PATTERNS.md` | Global reusable technical knowledge base: verified, source-backed implementation patterns (predominantly XenForo/XFRM for `#N` products), compatibility lessons, failure modes, and related evidence-backed findings. Subordinate to Global process documents and active-development TZ, Roadmap, and Architecture. Does not define product requirements. |
-| `MAG_DOCUMENTATION_OPERATIONS.md` | Authoritative documentation synchronization protocol across managed Local Git repositories, Google Drive, ChatGPT, and Cursor. |
+| `MAG_DOCUMENTATION_OPERATIONS.md` | Authoritative documentation synchronization protocol across managed Local Git repositories, Google Drive, ChatGPT, and Cursor. Fast Sync is the normal proven-state path; executor capability is a separate prerequisite from authorization. |
 
 These six files are not joined by a seventh equivalent authority owner.
 
@@ -414,10 +414,10 @@ Each Global file has one primary authority. Do not duplicate its detailed rules 
 | --- | --- |
 | `MAG_ECOSYSTEM.md` | Ecosystem identity; Product Class, Surface, Technology, and Applicability taxonomy; namespace registry; documentation map; authority navigation; and GLOBAL + active development identity context isolation. |
 | `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Canonical Global Core Lifecycle and the `#N` XenForo Product specialization/profile: numbered Gates, Phase transitions, process hierarchy (`Lifecycle → Phase → Increment → Step`), Phase Authorization, Phase 7 product correctness, Phase 8 shipping correctness, Normal Release Fast Path, documentation timing, and XenForo add-on version identity. Not `#N`-only. Does not redefine detailed rules owned by other Global documents. |
-| `AI_GUIDELINES.md` | Detailed development standards, principles, Evidence Inheritance, Validation Delta, Phase closure mechanics, operational workflow, Cursor prompt presentation, and Cursor model-selection / model-routing policy. |
+| `AI_GUIDELINES.md` | Detailed development standards, principles, Evidence Inheritance, Validation Delta, Phase closure mechanics, coherent closure, consolidated state recording, operational workflow, Cursor prompt presentation, and Cursor model-selection / model-routing policy. |
 | `AI_AGENTS_RULES.md` | Coding-agent execution boundaries, mandatory Cursor pre-flight, checkpoints, and applicable report requirements. |
 | `MAG_IMPLEMENTATION_PATTERNS.md` | Reusable, source-backed technical knowledge base and its capture/maintenance procedure. Subordinate to Global process documents and active-development TZ, Roadmap, and Architecture. Not a source of product requirements or process rules. |
-| `MAG_DOCUMENTATION_OPERATIONS.md` | Documentation identity validation, synchronization scope and commands, comparison, conflict handling, approval, execution, verification, cleanup, reporting, and Git handoff boundaries. |
+| `MAG_DOCUMENTATION_OPERATIONS.md` | Documentation identity validation, synchronization scope and commands, Fast Sync as the normal proven-state path, executor capability, comparison, conflict handling, approval, execution, verification, cleanup, reporting, and Git handoff boundaries. |
 | `MAG_PROCESS_OVERLAY_POOL.md` | Ecosystem-level ACTIVE process/HOW overlays only. Not a seventh canonical authority owner. Individual MPO records are not standalone documents. |
 | Global operational assets | Blueprint, XenForo templates, and `MAG_DEBUGGING.md` implement Global rules and ACTIVE overlays. They do not independently define policy. |
 | Project TZ | **What** that `#N` XenForo Product must do. Complete functional requirements. Canonical file: `P<NN>__<CODE>__TZ.md`. Does not require every requirement to ship in 1.0.0. `A<N>` Product WHAT remains in that identity's approved documentation; this row does not invent an `A<N>` eight-document package. |

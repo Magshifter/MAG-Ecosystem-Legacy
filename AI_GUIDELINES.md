@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Development Guidelines
 
 - MAG-Document-ID: `AI_GUIDELINES.md`
-- MAG-Content-Updated: `2026-09-25T23:35:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:50:00+03:00`
 
 This document is the **Global MAG development standard**. It defines **how** MAG software is developed with AI assistance.
 
@@ -227,7 +227,7 @@ A **minimal** prerequisite from a later Phase or Increment may be introduced onl
 
 Existing code from later or earlier Phases must not be deleted merely because those Phases are incomplete.
 
-A Phase or Increment may be marked complete only when the project's Roadmap conditions are satisfied. Completion generally requires: required implementation exists; relevant declared host, runtime, and surface behavior is verified (when `#N`, relevant XenForo behavior is verified); tests appropriate to the change pass; security and performance implications are reviewed; development diagnostics are handled; documentation is synchronized (including the changelog entry the project requires, when that identity has an applicable changelog); Cursor usage history is synchronized when applicable; and the approved closure sequence in §20 has been completed at the granularity required by the lifecycle owner.
+A Phase or Increment may be marked complete only when the project's Roadmap conditions are satisfied. Completion generally requires: required implementation exists; relevant declared host, runtime, and surface behavior is verified (when `#N`, relevant XenForo behavior is verified); tests appropriate to the change pass; security and performance implications are reviewed; development diagnostics are handled; **authoritative documents actually affected by the work** are synchronized (including a changelog entry only when that identity has an applicable changelog **and** the change materially requires one); Cursor usage history is synchronized when applicable; and the approved closure sequence in §20 has been completed at the granularity required by the lifecycle owner.
 
 Architecture approval alone does not complete a Phase or Increment. The presence of placeholder or Alpha code alone does not complete it.
 
@@ -579,9 +579,25 @@ The verified local working copy is authoritative for pending local changes.
 
 The configured remote records the last published repository state.
 
-Each completed and approved Phase must be closed with affected-documentation synchronization and a Git checkpoint at the granularity owned by [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) (Phase-end default; Increment checkpoint only when that Increment is a material rollback/risk boundary or the Product Owner chose that granularity). [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md) §10 requires compliance with this filter; it does not own a second copy.
+Each completed and approved Phase must be closed with **affected-documentation delta** and a Git checkpoint at the granularity owned by [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) (Phase-end default; Increment checkpoint only when that Increment is a material rollback/risk boundary or the Product Owner chose that granularity). [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md) §10 requires compliance with this filter; it does not own a second copy.
 
-This does **not** require a commit after every tiny action, command, inspection, audit Step, Increment, Gate result, intermediate Cursor procedure, lifecycle label change, status-marker change, or mechanical sub-step. Git checkpoints correspond to justified material Phase (or explicitly justified Increment) closure, or other explicitly approved meaningful checkpoints that protect material audit or recovery state.
+Normal closure path:
+
+```text
+validated Phase state
+→ affected documentation delta
+→ Fast Sync when [`MAG_DOCUMENTATION_OPERATIONS.md`](MAG_DOCUMENTATION_OPERATIONS.md) §10.1 applies
+→ one justified material Git checkpoint
+→ normal push when Phase-authorized
+→ clean-state verification
+→ DONE
+```
+
+Fast Sync is the normal proven-state synchronization path. Do not repeat registration, authority, metadata onboarding, historical timestamp reconstruction, full document audit, unchanged source validation, or another planning cycle solely because synchronization is occurring. **Authorization does not create executor capability.** If Fast Sync cannot proceed, report it pending and continue other authorized closure work only when safe.
+
+This does **not** require a commit after every tiny action, command, inspection, audit Step, Increment, Gate result, intermediate Cursor procedure, lifecycle label change, status-marker change, documentation synchronization, Practical Acceptance recording, or mechanical sub-step. Git checkpoints correspond to justified material Phase (or explicitly justified Increment) closure, or other explicitly approved meaningful checkpoints that protect material audit or recovery state.
+
+Default: one coherent material change set → one justified material checkpoint.
 
 ### Checkpoint-protection filter
 
@@ -594,6 +610,8 @@ Do **not** create a separate checkpoint merely because:
 - a lifecycle label changed;
 - a Gate, Increment, Slice, Block, Wave, or documentation status marker changed;
 - a validation report exists;
+- Practical Acceptance was recorded;
+- documentation synchronization completed;
 - a mechanical Step completed.
 
 Create or retain a checkpoint when it protects meaningful state such as:
@@ -615,7 +633,7 @@ Documentation must describe the approved actual state, not planned or assumed co
 
 Historical documentation and Git history remain historical records and must not be rewritten to make later decisions appear earlier.
 
-The **user** owns `git add`, `git commit`, and `git push` unless they explicitly request the agent to perform them **or** a live Phase Authorization in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) explicitly covers those exact verbs and live Git identity/repository/branch/tracking still match. Force-push, rebase, history rewrite, tag, and publication are never inherited from Phase Authorization.
+The **user** owns `git add`, `git commit`, and `git push` unless they explicitly request the agent to perform them **or** a live Phase Authorization in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) explicitly covers those exact verbs and live Git identity/repository/branch/tracking still match. When that live Phase Authorization still matches, do **not** request another Product Owner approval for those covered normal Git verbs. Force-push, rebase, history rewrite, tag, and publication are never inherited from Phase Authorization.
 
 Never force-push `main` unless the Product Owner explicitly authorizes that exact force-push operation. No inferred authorization. Normal commit approval, normal push approval, release approval, Direct Agent Mode, Full Bootstrap, checkpoint authorization, and Phase Authorization do not grant force-push permission. If force-push appears necessary: inspect, report, and wait for Product Owner decision. Do not provide destructive auto-recovery. Compact Git recovery behavior is in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md) §10.
 
@@ -627,14 +645,23 @@ If a Phase reveals unresolved **Critical** issues, the Phase is not closed and p
 
 1. Complete the approved work for the current Phase (and any Increments inside it that required completion).
 2. Review and explicitly approve the result where a new Product Owner decision is required. Do not re-ask for actions already covered by a live Phase Authorization.
-3. Synchronize authoritative project documentation with the actual approved state (Fast Sync of specifically affected registered documents when [`MAG_DOCUMENTATION_OPERATIONS.md`](MAG_DOCUMENTATION_OPERATIONS.md) §10.1 applies).
-4. When relevant work may have produced reusable technical knowledge, evaluate it for `MAG_IMPLEMENTATION_PATTERNS.md` per §22.
-5. Review the resulting documentation/code diff and repository status.
-6. Resolve Critical issues before closure.
-7. Create the justified material Git commit at Phase-end granularity, or at Increment granularity only when required by the lifecycle owner. The agent may perform `git add` / `commit` when a live Phase Authorization covers those verbs; otherwise the user performs them.
-8. Push the approved commit when the user authorizes it **or** the same live Phase Authorization covers normal push and tracking still matches.
-9. Verify the working tree is clean.
-10. Only then proceed to the next Phase.
+3. Update only the authoritative documents materially affected by the actual work. Fast Sync those registered documents when [`MAG_DOCUMENTATION_OPERATIONS.md`](MAG_DOCUMENTATION_OPERATIONS.md) §10.1 applies. Do not mechanically touch Roadmap, Changelog, Architecture, README, audit, or status documents merely because they exist.
+4. When several consecutive lifecycle transitions occur inside one uninterrupted authorized successful coherent block, record them together in one meaningful authoritative update at this closure boundary unless an intermediate state required independent durable preservation.
+5. When relevant work may have produced reusable technical knowledge, evaluate it for `MAG_IMPLEMENTATION_PATTERNS.md` per §22.
+6. Review the resulting documentation/code diff and repository status.
+7. Resolve Critical issues before closure.
+8. Create the justified material Git commit at Phase-end granularity, or at Increment granularity only when required by the lifecycle owner. The agent may perform `git add` / `commit` when a live Phase Authorization covers those verbs; otherwise the user performs them. Do not request duplicate approval for those covered verbs.
+9. Push the approved commit when the user authorizes it **or** the same live Phase Authorization covers normal push and tracking still matches. Do not request duplicate approval for that covered push.
+10. Verify the working tree is clean.
+11. Only then proceed to the next Phase.
+
+### Consolidated state recording
+
+If several consecutive lifecycle transitions occur inside one uninterrupted, authorized, successful coherent block, they may be recorded together in one meaningful authoritative documentation update at the next material closure boundary.
+
+Example: Phase validation PASS → Gate PASS → finalization PASS does not automatically require three Roadmap edits, three sync operations, and three commits. One final authoritative update may record the sequence and evidence references when no intermediate state needed independent durable preservation.
+
+Require an earlier independent durable update when there is a concrete reason, such as BLOCKED, FAIL, work stopping for a meaningful period, authority or scope changing, a Product Owner decision changing the path, a recovery boundary being required, or the intermediate state itself having durable long-term value. Do not hide material failures or decisions merely to reduce documentation.
 
 Before publishing:
 
@@ -699,7 +726,9 @@ When source phrases changed, also validate any official extra-language file the 
 
 ## 22. Documentation synchronization
 
-After verified implementation changes, update **only** the documents the change actually affects.
+After verified implementation changes, ask: **which authoritative documents were materially affected by the actual work?** Update those documents only.
+
+Do not mechanically touch Roadmap, Changelog, Architecture, README, audit documents, or status documents merely because they exist in a documentation package. Use existing owner responsibilities and the current documentation matrix to determine actual affected documents. A status-only edit must not become a completion predicate unless the status itself has durable authoritative value. Do not weaken mandatory documentation where the underlying state genuinely changed.
 
 Typical project documents (logical): README, TZ, Architecture, CLASS_MAP, Changelog, Roadmap, and optional overview/research files. For `#N`, use the canonical `P<NN>__<CODE>__` filenames recorded in `MAG_ECOSYSTEM.md`. `A<N>` documentation follows approved needs from `MAG_ECOSYSTEM.md`. Do not design a new non-`#N` logical-document model here.
 

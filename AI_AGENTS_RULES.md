@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Coding Agent Rules
 
 - MAG-Document-ID: `AI_AGENTS_RULES.md`
-- MAG-Content-Updated: `2026-09-25T23:35:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:50:00+03:00`
 
 These rules define **how coding agents may execute** work in MAG repositories.
 
@@ -206,7 +206,7 @@ Before an agent executes a HIGH-RISK action, confirm:
 
 A general implementation authorization does not automatically authorize commit, push, tag, release, canonical registration, destructive recovery, canonical Drive replacement, or another distinct high-risk operation. A live Phase Authorization may satisfy the authorization prerequisite only for the verbs and targets it explicitly includes.
 
-Do not request duplicate approval when the Product Owner has already explicitly authorized the exact operation, including through a live Phase Authorization that still covers it, and all other prerequisites remain valid.
+Do not request duplicate approval when the Product Owner has already explicitly authorized the exact operation, including through a live Phase Authorization that still covers it, and all other prerequisites remain valid. Do not reintroduce a rule that every commit or push always requires a fresh message-level request.
 
 ### Gate result
 
@@ -383,7 +383,7 @@ For `#N` Drive-First or Local/Git-First Bootstrap, follow MAG_ADDON_DEVELOPMENT_
 
 ### Checkpoint-protection filter
 
-Apply the canonical checkpoint-protection filter in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §20 and Git checkpoint granularity in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md). Do not propose an intermediate Git checkpoint unless it protects a material state or recovery boundary defined there. A Phase, Increment, Gate, Slice, Block, Wave, or status label change is not by itself a checkpoint reason.
+Apply the canonical checkpoint-protection filter in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §20 and Git checkpoint granularity in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md). Do not propose an intermediate Git checkpoint unless it protects a material state or recovery boundary defined there. A Phase, Increment, Gate, Slice, Block, Wave, status label, validation-only result, Practical Acceptance record, report, or documentation-synchronization completion is not by itself a checkpoint reason.
 
 Standard checkpoint:
 
@@ -409,7 +409,7 @@ Proceed to next approved Phase only after closure
 
 Authoritative Phase closure discipline is defined in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §20.
 
-When the approved task is a completed Phase checkpoint, synchronize that identity's applicable changelog as part of the same closure if the identity has one. Do not require a `#N` `P<NN>__` Changelog filename for `A<N>`. A Phase is not complete until required applicable changelog synchronization is finished.
+When the approved task is a completed Phase checkpoint, synchronize that identity's applicable changelog as part of the same closure **only if** the identity has one **and** the change materially requires a changelog entry. Do not require a `#N` `P<NN>__` Changelog filename for `A<N>`. Do not treat a status-only changelog or Roadmap edit as a completion predicate unless that status has durable authoritative value.
 
 Within a coherent block or live Phase Authorization, prefer one justified checkpoint at the material Phase boundary rather than status-only intermediate commits.
 

@@ -1,7 +1,7 @@
 # MAG Add-on Development Lifecycle
 
 - MAG-Document-ID: `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
-- MAG-Content-Updated: `2026-09-25T23:35:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:50:00+03:00`
 
 This document is the canonical MAG Global lifecycle owner. It contains one lifecycle, not two systems:
 
@@ -91,7 +91,7 @@ Idea / Evaluation
 - Technical validation and Product Owner Practical Acceptance are distinct. Practical Acceptance uses an environment appropriate to the product's in-scope surfaces for that release. A prior explicit Product Owner Practical Acceptance **PASS** may be inherited for unchanged product state.
 - Defects return to the earliest affected lifecycle point. Preserve still-valid evidence and approvals; repeat only the Validation Delta when the change makes earlier evidence insufficient. Do not restart the entire lifecycle automatically.
 - One primary Core Phase at a time. Planned work is not implemented work.
-- Before advancing from a completed Phase, complete the mandatory closure procedure in [AI_GUIDELINES.md](AI_GUIDELINES.md) §20 and applicable [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) §10 rules. An output ready for review is not a closed Phase.
+- Before advancing from a completed Phase, complete the mandatory closure procedure in [AI_GUIDELINES.md](AI_GUIDELINES.md) §20 and applicable [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) §10 rules. An output ready for review is not a closed Phase. Updates to authoritative documents directly affected by the approved change are part of that same Phase closure. They are not automatically a new Phase, Increment, authorization boundary, audit, or planning cycle.
 - Coherent-block and immediate-gate-evaluation rules in §3 apply to Core as well as to the `#N` profile. Distinct Gates retain separate evidence. Gate PASS does not authorize a later Product Owner-controlled Phase when this document or the project Roadmap defines that authorization separately.
 - The Product Owner controls numbered lifecycle Gates, Phase Authorization, implementation authorization, Git checkpoints, and releases.
 
@@ -142,15 +142,39 @@ Mechanical Action Gate treatment of covered normal Git is in [`AI_AGENTS_RULES.m
 
 ### Git checkpoint granularity
 
-Lifecycle labels, Gate results, reports, validation-only outcomes, and status-marker changes do not require a Git commit.
+Lifecycle labels, Gate results, reports, validation-only outcomes, Practical Acceptance records, documentation synchronization, and status-marker changes do not require a Git commit.
 
 Default:
 
-- one justified material checkpoint at meaningful Phase closure;
-- an Increment checkpoint only when that Increment is itself a material rollback, recovery, or risk boundary, or the Product Owner explicitly chose Increment granularity;
+- one coherent material change set → one justified material checkpoint at meaningful Phase closure;
+- an Increment checkpoint only when that Increment is itself a material rollback, recovery, or risk boundary, the Product Owner explicitly chose Increment granularity, or another concrete technical reason exists;
 - Steps never create checkpoints by themselves.
 
-Checkpoint-protection details remain in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §20. Do not duplicate them here.
+Preserve the ability to create additional justified checkpoints where real risk or recovery value exists. Checkpoint-protection details remain in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §20. Do not duplicate them here.
+
+### Affected documentation within Phase closure
+
+When an authorized Phase materially changes product or process state, updates to the authoritative documents directly affected by that approved change are part of the same Phase closure.
+
+They are not automatically:
+
+- a new Phase;
+- a new Increment;
+- a new authorization boundary;
+- a separate audit;
+- a separate planning cycle.
+
+When current Phase Authorization explicitly covers affected documentation and all other authority and safety prerequisites remain valid, do not ask the Product Owner again merely because implementation must now be reflected in its authoritative documentation.
+
+This does **not** authorize unrelated documents, a new authority owner, registry changes, first-time document adoption, authority reassignment, unrelated Global HOW changes during a product Phase, or conflict resolution outside the approved scope. Preserve identity isolation.
+
+At closure ask: which authoritative documents were materially affected by the actual work? Update those documents only. Do not mechanically touch Roadmap, Changelog, Architecture, README, audit, or status documents merely because they exist.
+
+### Consolidated state recording
+
+If several consecutive lifecycle transitions occur inside one uninterrupted, authorized, successful coherent block, they may be recorded together in one meaningful authoritative documentation update at the next material closure boundary.
+
+Do not automatically require a Roadmap edit, sync, and commit for each label in a successful sequence. Require an earlier independent durable update for BLOCKED, FAIL, a meaningful stop, authority or scope change, a Product Owner path change, a recovery boundary, or an intermediate state with durable long-term value. Do not hide material failures or decisions merely to reduce documentation.
 
 ### Bootstrap Core intent
 
@@ -1466,7 +1490,7 @@ This matrix defines timing. Approval details, execution mechanics, evidence stan
 | IDEA | Phase 1 canonical package container; useful Phase 0 notes may precede identity assignment and are preserved when adopted | During exploration; preserve useful rejected, superseded, or deferred alternatives as history | Supports Gate 0; does not approve requirements | Non-authoritative product exploration; do not convert old ideas into retroactively approved decisions; historical reasoning need not remain current truth |
 | TZ | Phase 1 with honest initial status; define substantive requirements in Phase 2 | On approved requirement changes; verify release scope in Phase 7 | Gate 1 (complete WHAT); Product Owner approval for changed requirements | Preserve traceability of approved changes; do not rewrite requirements to match accidental behavior; first-release slice belongs to Roadmap |
 | Architecture | Phase 1 with honest initial status; develop design in Phase 4 from sufficient verified evidence | On approved design changes; synchronize verified implementation details during Phase 6 and before release | Gate 2 for the relevant design; reapproval when an affected decision changes | Preserve decision history; distinguish approved design from implemented state |
-| Roadmap | Phase 1 with real initial status and sequencing | At phase transitions, increment completion, scope changes, and release closure; record Approved First Release Scope before Gate 1 | Product Owner approves executable scope, sequencing, and the first-release slice required for Gate 1 | Preserve completed stages; distinguish completed, current, pending validation, and planned work |
+| Roadmap | Phase 1 with real initial status and sequencing | At material closure boundaries, scope changes, and release closure; consecutive successful transitions inside one coherent block may be recorded together; record Approved First Release Scope before Gate 1 | Product Owner approves executable scope, sequencing, and the first-release slice required for Gate 1 | Preserve completed stages; distinguish completed, current, pending validation, and planned work |
 | CLASS_MAP | Phase 1 stating that no implementation exists yet where applicable; populate from real code in Phase 6 | After changes to actual classes and responsibilities; verify before release when affected | Review with the affected increment under agent/development rules | Describe current code; do not list planned classes as implemented |
 | Changelog | Phase 1 stating the actual initial state; record staged/released changes only when they exist | During development and Phase 8 release finalization | Review as part of the release/checkpoint process | Preserve released and staged historical facts; distinguish unreleased work from shipped releases |
 | README | Phase 1 with verified identity and bootstrap status | When verified product state, dependencies, installation, or usage changes; finalize for release | Review for accuracy before release | Descriptive; must not introduce requirements |
@@ -1481,9 +1505,9 @@ This matrix defines timing. Approval details, execution mechanics, evidence stan
 
 1. Before a decision gate: the owning document must state the decision being approved.
 2. Before implementation: the relevant requirements, architecture, and next increment must be clear enough to execute.
-3. After an increment: synchronize documents affected by verified changes; explicitly record pending validation.
+3. After an increment: synchronize documents actually affected by verified changes; explicitly record pending validation. An Increment completion does not automatically create a documentation procedure or Git checkpoint.
 4. Before release readiness: reconcile release scope, actual implementation, inherited valid evidence, Validation Delta, and product documentation; confirm required Product Owner Practical Acceptance has a valid **PASS** (including an inherited explicit PASS for unchanged product state).
-5. During finalization: complete applicable Release Presentation; verify documentation against the actual shipping artifact and version. Do not rerun product-correctness validation unless packaging or another Phase 8 change invalidated it.
+5. During finalization: complete applicable Release Presentation; verify documentation against the actual shipping artifact and version. Do not rerun product-correctness validation unless packaging or another Phase 8 change invalidated it. Consecutive successful validation / Gate / finalization results inside one coherent block may be recorded together.
 6. After release: record relevant real-environment findings and review reusable-knowledge candidates.
 
 The conceptual eight-document package remains canonical. Phase 1 physically creates eight bootstrap containers with honest current-state records. AUDIT exists ≠ an audit was performed. CLASS_MAP exists ≠ implementation exists. Architecture exists ≠ architecture is approved. Do not fabricate audit findings, requirements, or code maps to populate them. Create optional child audits and other additional documents only when they have real information to own.

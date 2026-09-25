@@ -1,7 +1,7 @@
 # MAG Documentation Operations
 
 - MAG-Document-ID: `MAG_DOCUMENTATION_OPERATIONS.md`
-- MAG-Content-Updated: `2026-09-25T23:20:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:50:00+03:00`
 
 ## 1. Purpose and authority
 
@@ -25,6 +25,8 @@ Resolve
 ```
 
 A writable `SYNC` command starts this workflow. It does **not** itself authorize writes.
+
+When all Fast Sync prerequisites in §10.1 are already proven, **do not restart this full workflow**. The existing Fast Sync Path is the normal proven-state synchronization path. Expand back to this full workflow only when a Fast Sync prerequisite is Unknown, conflicting, invalid, stale, or unsafe.
 
 ## 2. Scope and supported systems
 
@@ -485,6 +487,16 @@ When the active executor lacks the required safe capability:
 
 Use `FAILED / NO SAFE WRITE` for the current executor when appropriate, but record the capability blocker precisely. Do not use unsafe workarounds such as duplicate Drive objects, delete-and-recreate replacement, or lossy Google Docs conversion/export round-trips.
 
+**Authorization does not create executor capability.** Product Owner approval and live Phase Authorization do not make an incapable executor safe. If the available executor cannot perform a lossless in-place update of the existing canonical target:
+
+- do not create a duplicate;
+- do not replace the target through an unsafe workaround;
+- do not use Mirror RECONCILE as a substitute;
+- report synchronization as pending;
+- continue other authorized closure work only when safe.
+
+A failed or unavailable executor does not invalidate already-proven source evidence and does not require restarting the documentation audit.
+
 Capability proven in another environment is insufficient for the active executor to write, but established evidence from a prior executor remains reusable while its relevant source state is unchanged.
 
 ## 9. Layered content comparison
@@ -553,28 +565,36 @@ Git history is corroborating evidence, not an automatic authority override. If G
 
 ### 10.1 Fast Sync Path
 
-Use the Fast Sync Path only when **all** of the following are already established:
+The Fast Sync Path is the **normal proven-state synchronization path**. It is not a second Fast Sync mechanism.
+
+Use it when **all** of the following are already established:
 
 - canonical document identity is resolved;
 - registration state is valid;
 - source metadata is valid;
+- relevant source state is proven;
 - source content passed validation in the immediately preceding approved procedure or checkpoint;
 - source is committed or otherwise at the approved stable source state required by the procedure;
 - no relevant source change occurred after that validation;
 - synchronization direction is deterministically established;
-- target counterpart identity is resolved;
-- Product Owner authorization already covers the synchronization.
+- exact target counterpart identity is resolved;
+- applicable authorization already covers the synchronization;
+- the current executor can perform a lossless in-place update of that existing canonical target.
 
-A live Phase Authorization defined in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) may satisfy **only** that last authorization component, and only when its scope explicitly includes synchronization of those exact affected registered documents. It does not create a second Fast Sync path. It does not waive the other Fast Sync prerequisites.
+If any prerequisite is Unknown, conflicting, invalid, stale, or unsafe, **do not force Fast Sync**. Return to the full workflow. Preserve every existing Fast Sync blocker.
+
+A live Phase Authorization defined in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) may satisfy **only** the authorization prerequisite, and only when its scope explicitly includes synchronization of those exact affected registered documents. It does not create a second Fast Sync path. It does not waive the other Fast Sync prerequisites. It is not blanket permission for Google Drive, Mirror, every document in the identity, Global documents during unrelated product work, first-time counterparts, or conflict resolution.
 
 Phase Authorization does **not** authorize:
 
 - Mirror RECONCILE or any Mirror write;
 - first-time counterpart creation, adoption, or unregistered targets;
 - unrelated Global or project documents;
-- conflict, `INVALID_METADATA`, missing target, uncertain direction, or any other existing Fast Sync blocker.
+- conflict, `INVALID_METADATA`, missing target, uncertain direction, missing executor capability, or any other existing Fast Sync blocker.
 
-When these conditions hold, do **not** repeat:
+**Authorization does not create executor capability.** If the current executor cannot perform the lossless in-place write, report synchronization pending. Do not create a duplicate. Do not use Mirror RECONCILE as a substitute. Continue other authorized closure work only when safe. Proven source evidence remains valid.
+
+When these conditions hold, do **not** repeat, solely because synchronization is occurring:
 
 - registration or adoption analysis;
 - authority analysis;
@@ -582,13 +602,14 @@ When these conditions hold, do **not** repeat:
 - historical timestamp reconstruction;
 - full document audit;
 - unchanged source validation;
-- another planning cycle for the already-approved synchronization.
+- another planning cycle;
+- another broad validation pass.
 
 The Fast Sync Path is:
 
 ```text
 Confirm proven source state
-→ Confirm target identity/state
+→ Confirm exact target identity/current state
 → Confirm safe executor capability
 → Write
 → Read back
@@ -596,21 +617,21 @@ Confirm proven source state
 → Report
 ```
 
-Expand back to the full synchronization workflow only when new evidence invalidates a previously proven condition. Do not repeat documentation operations when no relevant source, metadata, identity, classification, authority, or approval state changed.
+Expand back to the full synchronization workflow only when new evidence invalidates a previously proven condition. Do not repeat documentation operations when no relevant source, metadata, identity, classification, authority, approval, or executor-capability state changed.
 
-Fast Sync does not bypass conflict detection, metadata validation, identity resolution, registration checks, Product Owner approval boundaries, or required verification. It reduces repeated analysis; it does not reduce safety.
+Fast Sync does not bypass conflict detection, metadata validation, identity resolution, registration checks, Product Owner approval boundaries, executor-capability proof, or required verification. It reduces repeated analysis; it does not reduce safety.
 
 Intended Local documentation change sequence remains:
 
 ```text
 edit Local
 → validate
-→ synchronize Local ↔ Drive
-→ verify IDENTICAL / valid FORMAT_ONLY
-→ Git checkpoint
+→ Fast Sync when §10.1 proven, otherwise full workflow
+→ verify IDENTICAL / valid FORMAT_ONLY, or report pending
+→ Git checkpoint only when Core Git checkpoint granularity requires one
 ```
 
-Do not weaken safe Drive update requirements.
+Do not weaken safe Drive update requirements. Synchronization completion of an already committed source does not by itself create a Git checkpoint.
 
 ### 10.2 Proven evidence reuse
 
@@ -677,7 +698,9 @@ Do not merge, choose authority, rewrite timestamps, or overwrite either side by 
 
 ## 12. Synchronization plan and Product Owner approval
 
-Before a writable execution, report for every resolved document:
+When §10.1 Fast Sync prerequisites are already proven and applicable authorization already covers the exact documents, do **not** restart this plan-approval cycle. Execute the Fast Sync Path. Use this section when Fast Sync does not apply.
+
+Before a writable execution under the full workflow, report for every resolved document:
 
 - canonical identity and locations;
 - metadata validity;
