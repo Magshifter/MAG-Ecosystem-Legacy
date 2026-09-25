@@ -879,6 +879,76 @@ function Invoke-MagKnowledgeGenerate {
     return [pscustomobject]@{ ExitCode = 0; Output = $outFull; UnitCount = $unitObjs.Count; SourceCount = $srcObjs.Count }
 }
 
+function Get-MagWorkingIdentity {
+    param([AllowNull()][AllowEmptyString()][string]$Identity)
+    $raw = if ($null -eq $Identity) { '' } else { $Identity.Trim() }
+    $invalid = {
+        param([string]$Reason)
+        [pscustomobject]@{
+            Input      = $raw
+            Kind       = 'INVALID'
+            Assignable = $false
+            Status     = 'invalid'
+            Namespace  = $null
+            Number     = $null
+            Reason     = $Reason
+        }
+    }
+    if ([string]::IsNullOrWhiteSpace($raw)) {
+        return & $invalid 'invalid_identity'
+    }
+    if ($raw -eq 'GLOBAL') {
+        return [pscustomobject]@{
+            Input      = $raw
+            Kind       = 'GLOBAL'
+            Assignable = $true
+            Status     = 'assignable'
+            Namespace  = $null
+            Number     = $null
+            Reason     = 'ok'
+        }
+    }
+    if ($raw -match '^B(\d+)$' -or $raw -match '^GLOBAL\+B(\d+)$') {
+        return [pscustomobject]@{
+            Input      = $raw
+            Kind       = 'RESERVED'
+            Assignable = $false
+            Status     = 'reserved'
+            Namespace  = 'B'
+            Number     = $Matches[1]
+            Reason     = 'reserved_identity'
+        }
+    }
+    if ($raw -match '^GLOBAL\+#(\d+)$') {
+        return [pscustomobject]@{
+            Input      = $raw
+            Kind       = 'HASH_N'
+            Assignable = $true
+            Status     = 'assignable'
+            Namespace  = '#'
+            Number     = $Matches[1]
+            Reason     = 'ok'
+        }
+    }
+    if ($raw -match '^GLOBAL\+A(\d+)$') {
+        return [pscustomobject]@{
+            Input      = $raw
+            Kind       = 'A_N'
+            Assignable = $true
+            Status     = 'assignable'
+            Namespace  = 'A'
+            Number     = $Matches[1]
+            Reason     = 'ok'
+        }
+    }
+    return & $invalid 'invalid_identity'
+}
+
+function Test-MagAssignableWorkingIdentity {
+    param([AllowNull()][AllowEmptyString()][string]$Identity)
+    return [bool]((Get-MagWorkingIdentity -Identity $Identity).Assignable)
+}
+
 function Test-MagIdentityMatchesScope {
     param([string]$Identity, [string]$Scope)
     $id = $Identity.Trim()
@@ -896,20 +966,29 @@ function Invoke-MagKnowledgeLocate {
         [string]$Owner
     )
     $roots = Get-MagKnowledgeRoot
+    $wid = Get-MagWorkingIdentity -Identity $Identity
     $emit = {
         param($State, $Reason, $Pointer, $Candidates, $IndexMiss, $Exit)
         $obj = [ordered]@{
-            state      = $State
-            reason     = $Reason
-            scope      = $null
-            identity   = $Identity
-            intent     = $Intent
-            query      = $Query
-            pointer    = $Pointer
-            candidates = @($Candidates)
-            index_miss = [bool]$IndexMiss
+            state                    = $State
+            reason                   = $Reason
+            scope                    = $null
+            identity                 = $Identity
+            working_identity_status  = [string]$wid.Status
+            intent                   = $Intent
+            query                    = $Query
+            pointer                  = $Pointer
+            candidates               = @($Candidates)
+            index_miss               = [bool]$IndexMiss
         }
         return [pscustomobject]@{ ExitCode = $Exit; Object = [pscustomobject]$obj }
+    }
+
+    if ($wid.Status -eq 'reserved') {
+        return & $emit 'OUT_OF_SCOPE' 'reserved_identity' $null @() $false 4
+    }
+    if ($wid.Status -eq 'invalid') {
+        return & $emit 'OUT_OF_SCOPE' 'invalid_identity' $null @() $false 4
     }
 
     if (-not (Test-Path -LiteralPath $IndexPath)) {

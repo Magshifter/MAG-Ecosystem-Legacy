@@ -2,7 +2,30 @@
 
 Operational tooling. Not MAG canonical authority. Not a seventh Global owner.
 
-Generated JSON under `generated/knowledge/` is derived, non-authoritative, non-registered, disposable, and reproducible from explicit manifests. Ordinary `SYNC` / `DOC REGISTER` must not treat it as a MAG document. A previous generated file is not “last good knowledge”; Locator re-hashes sources and fails closed when stale.
+Generated JSON under `generated/knowledge/` is derived, optional, non-authoritative, non-registered, disposable, and reproducible from explicit manifests. Ordinary `SYNC` / `DOC REGISTER` must not treat it as a MAG document. A previous generated file is not “last good knowledge”; Locator re-hashes sources and fails closed when stale.
+
+## Working identity vs generated discovery
+
+These are different grammars. Do not collapse them.
+
+**Assignable working identities** (Locator `-Identity`, agent `working_identity`):
+
+- `GLOBAL`
+- `GLOBAL+#N` (numeric `#N` XenForo Product)
+- `GLOBAL+A<N>` (numeric `A<N>` Software Product)
+
+`B<N>` and `GLOBAL+B<N>` are **reserved**. They are not assignable working identities. Locator rejects them (`OUT_OF_SCOPE` / `reserved_identity`) and does not invent documents.
+
+Namespaces are independent: `GLOBAL+#5` is not `GLOBAL+A5`. Platform or surface is not identity.
+
+**Supported generated index recipes** (explicit manifests only; not the identity model):
+
+- `manifests/global.json` → `generated/knowledge/index-global.json` (`-Identity GLOBAL`)
+- `manifests/global-5.json` → `generated/knowledge/index-global-5.json` (`-Identity GLOBAL+#5`)
+
+A valid `GLOBAL+A<N>` identity **does not** imply an A generated index. Do not invent `index-global-a1.json`, `global-a1.json`, or any A/B filename recipe. Missing exact generated discovery for a valid identity (including `GLOBAL+A1`) leaves the identity valid and requires same-scope section-oriented canonical fallback. The GLOBAL index is not a substitute for `GLOBAL+A<N>`. A `GLOBAL+#N` index is not a substitute for `GLOBAL+A<N>`.
+
+Locator does not implement Verified Applicability or Pattern selection. `FOUND` is a pointer/candidate only. Existing Implementation Patterns remain `applicability_class` N in canonical HOW; `A<N>` must not select them as applicable HOW. Intent `knowledge_class` filters apply only to units that actually exist; missing TZ/CLASS_MAP/AUDIT for `A<N>` is not a tooling error.
 
 ## Requirements
 
@@ -77,7 +100,7 @@ Exact normalized title, or (query with ≥2 tokens) all tokens in title/heading_
 
 Operational orchestrator. Not MAG authority. Run on the PC **after** Local documentation is reconciled (including Drive → Local). Does **not** write Google Drive, SYNC, commit, or install Git hooks. Locator never calls this script.
 
-Discover supported indexes by enumerating `tools/knowledge/manifests/*.json` only (currently GLOBAL and GLOBAL+#5). Do not invent A<N> or B<N> index names.
+Discover supported indexes by enumerating `tools/knowledge/manifests/*.json` only (currently GLOBAL and GLOBAL+#5). Do not invent A<N> or B<N> index names. Absence of an A manifest is required in this Stage; it does not make `GLOBAL+A<N>` an invalid working identity.
 
 Changed sources are detected by SHA-256 of current approved source bytes vs `sources[].content_sha256` in each existing index. Optional `-ChangedFiles` is unioned with that, matching only manifest-resolved source paths. A missing index makes its manifest affected. `tools/`, the Knowledge Control roadmap, `#8`, and other non-indexed files select nothing.
 

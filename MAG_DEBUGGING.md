@@ -1,7 +1,7 @@
 # MAG Debugging
 
 - MAG-Document-ID: `MAG_DEBUGGING.md`
-- MAG-Content-Updated: `2026-09-25T00:45:00+03:00`
+- MAG-Content-Updated: `2026-09-25T19:50:00+03:00`
 
 ## 1. Purpose and scope
 
@@ -18,7 +18,8 @@ Operational rules in this document:
 - Debugging **observations** are evidence. They are **not** automatically root cause.
 - A successful validator or test run is evidence. It is **not** automatically complete runtime truth.
 - An agent validation or fix report is **not** Product Owner acceptance.
-- Debugging must preserve **identity** and **product-WHAT** boundaries defined by the active development identity and its authoritative project documentation.
+- Debugging must preserve **identity** and **product-WHAT** boundaries defined by the active development identity and its authoritative project documentation. Working identities are `GLOBAL`, `GLOBAL+#N`, and `GLOBAL+A<N>`. `B<N>` is reserved and is not a current working identity. Platform or surface is not identity.
+- Absence of a matching Pattern, and absence of a platform-specific profile, does **not** block debugging. Use this Global methodology and targeted verification.
 - This document tells agents and coordinators **how** to run a debugging case. Canonical owners remain the source of **what** is true, **what** is allowed, and **what** may be promoted.
 
 ## 2. Authority and ownership boundaries
@@ -32,8 +33,8 @@ If this document conflicts with a canonical owner, **the canonical owner wins**.
 | Coding-agent execution boundaries, stop/report mechanics, checkpoints, **Mechanical Action Gate** | [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md) |
 | Reusable source-backed technical knowledge, capture procedure, status model, promotion mechanics | [`MAG_IMPLEMENTATION_PATTERNS.md`](MAG_IMPLEMENTATION_PATTERNS.md) |
 | Documentation identity, registration, SYNC, derived generated discovery artifacts | [`MAG_DOCUMENTATION_OPERATIONS.md`](MAG_DOCUMENTATION_OPERATIONS.md) |
-| Ordered `#N` lifecycle, validation stages, release acceptance, post-release verification, knowledge-capture timing | [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) |
-| Development-specific WHAT, architecture, requirements, and debugging evidence | Active development documents (for example project TZ, Architecture, Roadmap, and **AUDIT** where applicable) |
+| Ordered lifecycle (Global Core plus the applicable `#N` XenForo Product profile), validation stages, release acceptance, post-release verification, knowledge-capture timing | [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) |
+| Development-specific WHAT, architecture, requirements, and debugging evidence | Active development documents (for example project TZ, Architecture, Roadmap, and **AUDIT** where that identity actually has an applicable AUDIT artifact). Do not invent an `A<N>` eight-document package. |
 
 `MAG_DEBUGGING.md` is **not** a seventh canonical Global authority owner. It is **not** a second [`MAG_IMPLEMENTATION_PATTERNS.md`](MAG_IMPLEMENTATION_PATTERNS.md). It is **not** the Entry Gate owner and **not** the Mechanical Action Gate owner.
 
@@ -76,7 +77,7 @@ DEBUG, VERIFY, and LEARN may **iterate** when evidence invalidates a hypothesis,
 - Classify what was learned (see §9).
 - Do **not** automatically promote findings to Global reusable knowledge.
 - Development-specific findings remain **development-scoped** unless separately classified, validated, and approved for reusable capture.
-- Reusable technical candidates follow [`MAG_IMPLEMENTATION_PATTERNS.md`](MAG_IMPLEMENTATION_PATTERNS.md) capture, verification, scope, status, and Product Owner approval rules.
+- Reusable technical candidates follow [`MAG_IMPLEMENTATION_PATTERNS.md`](MAG_IMPLEMENTATION_PATTERNS.md) capture, verification, scope, **Verified Applicability** metadata, status, fail-closed reuse, and Product Owner approval rules.
 - **No reusable lesson** is a valid and complete outcome.
 
 ## 4. Debugging case structure
@@ -87,7 +88,7 @@ Do **not** allocate `DBG-*` identifiers or other Knowledge Control IDs in this o
 
 | Field | Purpose |
 | --- | --- |
-| **Identity** | Active GLOBAL / `#N` / `A<N>` / `B<N>` context and allowed scope. |
+| **Identity** | Active `GLOBAL` / `GLOBAL+#N` / `GLOBAL+A<N>` context and allowed scope. `B<N>` is reserved. Platform or surface is not identity. |
 | **Task / symptom** | What failed or is under investigation. |
 | **Expected behavior** | Behavior required by the owning requirement or boundary. |
 | **Observed behavior** | What actually happened. |
@@ -209,7 +210,7 @@ Use this **operational** classification set at the end of LEARN (or when closing
 
 Project-specific evidence remains project-scoped unless separately classified, validated, and approved for reusable capture per [`MAG_IMPLEMENTATION_PATTERNS.md`](MAG_IMPLEMENTATION_PATTERNS.md).
 
-**Candidate reusable Global pattern** must go through the Patterns capture procedure (Detect → Verify → Search → Classify → Determine scope → Decide → Record), including Product Owner approval where required, before becoming reusable Global knowledge.
+**Candidate reusable Global pattern** must go through the Patterns capture procedure (Detect → Verify → Search → Classify Status → determine Verified scope + applicability → Decide → Record), including Product Owner approval where required and explicit Verified Applicability metadata, before becoming reusable Global knowledge. Classification is not promotion. Fail-closed Pattern reuse: if applicability cannot be established, do not reuse the Pattern; perform targeted verification.
 
 If an existing Global Pattern is contradicted, report and handle through [`MAG_IMPLEMENTATION_PATTERNS.md`](MAG_IMPLEMENTATION_PATTERNS.md) revalidation or correction mechanics. `MAG_DEBUGGING.md` does not amend Patterns.
 
@@ -219,7 +220,7 @@ Do **not** create `DBG-*` identifiers.
 
 Development-specific debugging evidence belongs to the **active development identity**.
 
-Project **AUDIT** (and justified child audits) may hold product-specific debugging and validation evidence where appropriate per project documentation conventions.
+Project **AUDIT** (and justified child audits) may hold product-specific debugging and validation evidence where that identity actually has an applicable AUDIT artifact. Do not invent an `A<N>` eight-document package.
 
 Do **not** copy into this document as Global truth:
 

@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Development Guidelines
 
 - MAG-Document-ID: `AI_GUIDELINES.md`
-- MAG-Content-Updated: `2026-09-25T00:45:00+03:00`
+- MAG-Content-Updated: `2026-09-25T19:10:00+03:00`
 
 This document is the **Global MAG development standard**. It defines **how** MAG software is developed with AI assistance.
 
@@ -9,19 +9,23 @@ It applies to ChatGPT, Cursor IDE, Cursor Agent, Codex, and any other AI-assiste
 
 Ecosystem identity, development-class taxonomy, namespace registry, Global vs active-development documentation levels, AI context isolation, high-level documentation authority, MAG Knowledge Control classification, development bootstrap, and the License Manager concept are defined in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). This file does not restate those definitions. Load **GLOBAL + the active development identity** as specified there.
 
-Identity classes (`#N`, `A<N>`, `B<N>`), registry, and context isolation are owned by `MAG_ECOSYSTEM.md`. Unless a section explicitly scopes otherwise, XenForo add-on engineering rules in this document apply only when the active development identity is a `#N` XenForo add-on project.
+`#N` and `A<N>` are assignable identity families. `B<N>` is reserved and is not a current working identity. Do not use `GLOBAL+B<N>` while `B<N>` remains reserved. Platform or surface does not determine identity.
+
+Identity classes (`#N`, `A<N>`, `B<N>`), registry, and context isolation are owned by `MAG_ECOSYSTEM.md`. After identity scope, **Verified Applicability** filters which Global HOW applies to the current Product Class, surface, and technology. Applicability is routing, not authority. Keyword similarity is not proof of applicability. The current canonical owner body wins.
+
+Unless a section explicitly scopes otherwise, XenForo add-on engineering rules in this document apply only when the active development identity is a `#N` XenForo Product. Do not import `#N` requirements into `A<N>`. Absence of a specialized profile means use the Global Core Lifecycle; it must not block a valid `A<N>` development.
 
 Detailed coding-agent execution boundaries, mandatory Cursor pre-flight, Plain text output requirements, checkpoint mechanics, and report formats belong in `AI_AGENTS_RULES.md`.
 
 ChatGPT → Product Owner → Cursor prompt presentation, **operating-mode selection (Coordinator Mode / Direct Agent Mode)**, post-execution review, and **Cursor model-selection / model-routing policy** belong in §24 of this document.
 
-MAG Knowledge Control routing (Entry Gate, intents, Identity Scope × Intent-Allowed Owner Classes, Locator states, and same-scope fallback) belongs in §27 of this document. It is routing, not a seventh authority owner.
+MAG Knowledge Control routing (Entry Gate, intents, Identity Scope × Intent × Verified Applicability, Locator states, and same-scope fallback) belongs in §27 of this document. It is routing, not a seventh authority owner.
 
 Do not collect, display, or maintain Cursor Models usage measurements.
 
 ---
 
-Lifecycle order, gates, and documentation timing are canonical in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md). This document owns detailed development and closure mechanics applied at those lifecycle checkpoints.
+Lifecycle order, gates, and documentation timing are canonical in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md): Global Core plus the applicable specialization. `#N` uses Core plus the numbered `#N` XenForo Product profile. `A<N>` uses Core unless a separately proven recurring specialization exists. This document owns detailed development and closure mechanics applied at those lifecycle checkpoints.
 
 ## 1. Purpose and philosophy
 
@@ -30,6 +34,7 @@ MAG development must remain:
 - Correct.
 - Stable.
 - Maintainable.
+- Compatible with the declared host, runtime, and surfaces of the active development identity.
 - Compatible with the XenForo versions declared by the active `#N` project when the active development identity is `#N`.
 - Secure.
 - Performant.
@@ -46,14 +51,14 @@ Use the authority model in `MAG_ECOSYSTEM.md`. For implementation work, apply it
 
 | Source | Use |
 | --- | --- |
-| `MAG_ECOSYSTEM.md` | Ecosystem identity, registry, documentation map, authority navigation, and GLOBAL + active development identity context isolation. |
-| `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Lifecycle order, stage gates, and documentation timing for `#N` XenForo add-ons. Stage/phase closure mechanics in this document apply at those checkpoints. |
-| Global documentation (other) | Process, tools, Git, security/performance/testing standards, and XenForo development rules for `#N` projects. |
+| `MAG_ECOSYSTEM.md` | Ecosystem identity; Product Class, Surface, Technology, and Verified Applicability taxonomy; registry; documentation map; authority navigation; and GLOBAL + active development identity context isolation. |
+| `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` | Global Core Lifecycle plus the numbered `#N` XenForo Product profile: stage gates, transitions, and `#N` documentation timing. Stage/phase closure mechanics in this document apply at those checkpoints. `#N` Phase/Gate numbers remain valid. |
+| Global documentation (other) | Process, tools, Git, and class-neutral security/performance/testing standards. XenForo add-on engineering rules apply only when the active identity is `#N`. |
 | `MAG_IMPLEMENTATION_PATTERNS.md` | Reusable, evidence-backed technical knowledge. Subordinate to Global process documents and active-development TZ, Roadmap, and Architecture. Not a source of product requirements. |
-| Project TZ | What the product must do. For `#N`: the XenForo add-on requirements. Canonical filename: `P<NN>__<CODE>__TZ.md` (`MAG_ECOSYSTEM.md`). |
+| Project requirements (WHAT) | What the active identity's product must do. For `#N`: XenForo Product requirements in `P<NN>__<CODE>__TZ.md`. `A<N>` WHAT remains in that identity's approved documentation. Do not invent an `A<N>` eight-document package. |
 | Project Roadmap | What increment is approved **now**, and verified progress. |
-| Project Architecture | Approved implementation architecture. Does not override TZ. |
-| Project CLASS_MAP | Current classes and responsibilities as they exist. |
+| Project Architecture | Approved implementation architecture. Does not override approved product WHAT. |
+| Project CLASS_MAP | Current classes and responsibilities as they exist. For `#N`, canonical filename `P<NN>__<CODE>__CLASS_MAP.md`. |
 | Actual project code | What is currently implemented. Documentation must not claim code that does not exist. |
 | Installed XenForo source | Undocumented or uncertain XenForo framework behavior when the active development identity is `#N`. |
 | Changelog / Git history | History. Do not rewrite the past. |
@@ -122,7 +127,7 @@ ChatGPT is responsible for:
 - Explaining implementation approaches.
 - Reviewing completed stages.
 
-ChatGPT must not assume undocumented XenForo behavior.
+ChatGPT must not assume undocumented host, runtime, or framework behavior. When the active identity is `#N`, that includes undocumented XenForo behavior.
 
 ChatGPT must not silently replace Cursor Agent implementation or the user's Git control.
 
@@ -133,9 +138,9 @@ Cursor IDE is the **primary environment** for:
 - Inspecting the local repository.
 - Editing files.
 - Running local development tasks.
-- Testing the add-on.
+- Testing the active product.
 - Reviewing changes.
-- Inspecting installed XenForo source.
+- Inspecting installed XenForo source when the active development identity is `#N`.
 
 ### Cursor Agent
 
@@ -147,7 +152,7 @@ Cursor Agent must **not** be used for:
 
 - Internet searches.
 - External documentation research.
-- Learning XenForo APIs.
+- Learning XenForo APIs when the active identity is `#N`, or independently learning other host/framework APIs outside the approved task.
 - Architectural decisions.
 - Requirements analysis.
 - Exploring new implementation approaches.
@@ -171,7 +176,7 @@ Codex may be used for code-related assistance when the user assigns it.
 Codex must follow the same MAG:
 
 - Project and stage discipline.
-- XenForo standards.
+- XenForo standards when the active development identity is `#N`.
 - Existing Code First principle.
 - Security requirements.
 - Performance requirements.
@@ -190,7 +195,7 @@ No assistant may treat another assistant's draft as approved product or process 
 
 ## 5. Stage discipline
 
-Follow the stages (or equivalent approved increments) defined in the **active project's** TZ and Roadmap (canonical filenames in `MAG_ECOSYSTEM.md`).
+Follow the stages (or equivalent approved increments) defined in the **active project's** approved sequencing documentation (canonical filenames for `#N` in `MAG_ECOSYSTEM.md`). Apply the Global Core Lifecycle. When the active identity is `#N`, also follow the numbered `#N` phases and gates.
 
 Before implementing a stage:
 
@@ -202,7 +207,7 @@ Before implementing a stage:
 6. Explain the proposed implementation.
 7. Implement **only** the requested stage.
 8. Test the result.
-9. Review XenForo compatibility.
+9. Review compatibility with the active identity's declared host, runtime, and surfaces. When the active identity is `#N`, review XenForo compatibility for the versions in that project's scope.
 10. Review security implications as appropriate.
 11. Review performance implications as appropriate.
 12. Update affected documentation.
@@ -220,7 +225,7 @@ A **minimal** prerequisite from a later stage may be introduced only when:
 
 Existing code from later or earlier stages must not be deleted merely because those stages are incomplete.
 
-A stage may be marked complete only when the project's Roadmap conditions are satisfied. Completion generally requires: required implementation exists; relevant XenForo behavior is verified; tests appropriate to the stage pass; security and performance implications are reviewed; development diagnostics are handled; documentation is synchronized (including the changelog entry the project requires); Cursor usage history is synchronized when applicable; the result is ready for a Git checkpoint; and the approved stage/phase closure sequence in §20 has been completed.
+A stage may be marked complete only when the project's Roadmap conditions are satisfied. Completion generally requires: required implementation exists; relevant declared host, runtime, and surface behavior is verified (when `#N`, relevant XenForo behavior is verified); tests appropriate to the stage pass; security and performance implications are reviewed; development diagnostics are handled; documentation is synchronized (including the changelog entry the project requires, when that identity has an applicable changelog); Cursor usage history is synchronized when applicable; the result is ready for a Git checkpoint; and the approved stage/phase closure sequence in §20 has been completed.
 
 Architecture approval alone does not complete a stage. The presence of placeholder or Alpha code alone does not complete a stage.
 
@@ -236,7 +241,7 @@ This includes identifiers, filenames, directory names, comments, PHPDoc, JavaScr
 
 Project documentation is maintained in English unless a separate translated document is explicitly required.
 
-All user-facing XenForo text must use the XenForo Phrase system. User-facing strings must not be hardcoded into PHP or JavaScript.
+When the active development identity is `#N`, all user-facing XenForo text must use the XenForo Phrase system. User-facing strings must not be hardcoded into PHP or JavaScript.
 
 ---
 
@@ -251,7 +256,7 @@ Before changing code:
 5. Identify dependencies on completed or partially implemented work.
 6. Preserve verified working functionality.
 7. Avoid unnecessary rewrites.
-8. Reuse existing XenForo mechanisms.
+8. Reuse existing host/runtime mechanisms when they meet the requirement. When the active identity is `#N`, prefer XenForo-native mechanisms (see §8).
 9. Make the smallest reasonably focused change.
 
 Do not recreate an existing class unless there is a verified technical reason.
@@ -310,6 +315,8 @@ Every adopted mechanism must be independently verified against installed XenForo
 
 ## 10. PHP standards
 
+These standards apply when the active product uses PHP. They do not create a language or platform profile. When `#N`, follow XenForo-compatible style for the project; otherwise follow the active development's established PHP style.
+
 Use:
 
 ```php
@@ -318,7 +325,6 @@ declare(strict_types=1);
 
 PHP must:
 
-- When `#N`, follow XenForo-compatible style for the project; otherwise follow the active development's established style.
 - Use meaningful types.
 - Use focused classes and methods.
 - Avoid unnecessary static state.
@@ -369,25 +375,25 @@ A complete-page DOM scan must not be the primary integration architecture unless
 
 Untrusted input, untrusted URLs, and untrusted remote responses remain untrusted.
 
-Where a MAG add-on performs external HTTP or stores untrusted files, the **controlled server path** (not normal page rendering) must provide appropriate protection against SSRF, unsafe addresses and schemes, unsafe or excessive redirects, oversized responses, invalid status or type, and malicious payload content. Every redirect destination must be validated.
+Where a MAG product performs external HTTP or stores untrusted files, the **controlled server path** (not normal page rendering) must provide appropriate protection against SSRF, unsafe addresses and schemes, unsafe or excessive redirects, oversized responses, invalid status or type, and malicious payload content. Every redirect destination must be validated.
 
-Prefer XenForo's native untrusted HTTP reader and related facilities when they meet the requirement.
+When the active identity is `#N`, prefer XenForo's native untrusted HTTP reader and related facilities when they meet the requirement.
 
-Security failures must not produce fatal XenForo errors during normal forum use.
+Security failures must not expose the product's normal user-facing path to fatal errors. When `#N`, security failures must not produce fatal XenForo errors during normal forum use.
 
 Errors must not expose sensitive information to users.
 
 Temporary diagnostics must be removed or appropriately replaced before the relevant stage is complete.
 
-Logging must use appropriate severity and must not flood XenForo logs during normal behavior.
+Logging must use appropriate severity and must not flood the product's operational logs during normal behavior. When `#N`, logging must not flood XenForo logs during normal behavior.
 
 ---
 
 ## 14. Error handling
 
-Add-on failures must fail gracefully.
+Product failures must fail gracefully.
 
-Normal forum use must continue when parsing, remote requests, storage, cache, or optional features fail.
+Normal user-facing use must continue when parsing, remote requests, storage, cache, or optional features fail. When `#N`, normal forum use must continue in those cases.
 
 Do not couple ordinary rendering to the availability of optional external services.
 
@@ -399,7 +405,7 @@ Performance is a core architecture requirement.
 
 AI must avoid:
 
-- Blocking the XenForo request on avoidable external work.
+- Blocking the user-facing request path on avoidable external work. When `#N`, do not block the XenForo request on avoidable external work.
 - Repeated work for the same key without a verified cache or suppression policy.
 - Unnecessary database queries and filesystem operations.
 - Global DOM scanning.
@@ -435,7 +441,9 @@ Internal diagnostic text is not automatically user-facing.
 
 Testing must correspond to the active stage and risk.
 
-Potential verification includes syntax validation, focused unit tests, XenForo integration checks, add-on data import/export, install/upgrade/uninstall, rendering and AJAX/dynamic-content checks, filesystem and HTTP behavior, security tests, and performance measurements.
+Potential verification includes syntax validation, focused unit tests, filesystem and HTTP behavior, security tests, and performance measurements appropriate to the active identity's approved in-scope surfaces.
+
+When the active identity is `#N`, potential verification also includes XenForo integration checks, add-on data import/export, install/upgrade/uninstall, rendering and AJAX/dynamic-content checks, and other XenForo suite items applicable to that increment. Do not require that XenForo suite for `A<N>`.
 
 Production or live-site observation must not substitute for controlled local verification.
 
@@ -476,7 +484,7 @@ Existing evidence
 → minimum new validation
 ```
 
-Existing evidence remains valid until a relevant change invalidates it. Typical invalidation triggers include: changed requirement; changed approved architecture; changed implementation scope or code path; repository change affecting the earlier evidence; relevant XenForo/XFRM/platform/environment change; failed validation; contradictory new evidence; previously unknown API behavior; release artifact change; or another concrete reason making prior evidence unreliable.
+Existing evidence remains valid until a relevant change invalidates it. Typical invalidation triggers include: changed requirement; changed approved architecture; changed implementation scope or code path; repository change affecting the earlier evidence; relevant host/runtime/platform/environment change (when `#N`, relevant XenForo/XFRM/environment change); failed validation; contradictory new evidence; previously unknown API behavior; release artifact change; or another concrete reason making prior evidence unreliable.
 
 Do not run broad regression merely because lifecycle status changed.
 
@@ -484,7 +492,7 @@ A later documentation-only or already-approved synchronization does not require 
 
 Release Finalization (when a project uses it) verifies the **artifact and deployment boundary**. It does not repeat the preceding stage audit unless that audit has been invalidated (production behavior changed after the audit, a release-blocking defect was found, packaging exposed a problem requiring production changes, or another concrete reason).
 
-Evidence reuse does **not** skip mandatory Product Owner Practical Acceptance for a release scope that has not yet reached explicit **PASS**, Gate 3 approval, Stable Release authorization, or other genuine Product Owner decision gates.
+Evidence reuse does **not** skip mandatory Product Owner Practical Acceptance for a release scope that has not yet reached explicit **PASS**, Release Readiness approval (when `#N`, Gate 3), Stable Release authorization, or other genuine Product Owner decision gates.
 
 ### Coherent execution blocks
 
@@ -509,9 +517,9 @@ This optimization must not weaken required validation or authorize unsafe shortc
 
 ### Adaptive Validation Matrix applicability
 
-The Adaptive Validation Matrix form lives in [`MAG_XENFORO_ADDON_BLUEPRINT.md`](MAG_XENFORO_ADDON_BLUEPRINT.md). It is evidence/applicability framing, not a policy owner, and not default ceremony.
+The Adaptive Validation Matrix form lives in [`MAG_XENFORO_ADDON_BLUEPRINT.md`](MAG_XENFORO_ADDON_BLUEPRINT.md). It is evidence/applicability framing, not a policy owner, and not default ceremony. Use it when the active identity is `#N` and the risk warrants it. Do not require the Matrix for `A<N>`.
 
-Use the full/explicit Matrix for:
+When `#N`, use the full/explicit Matrix for:
 
 - medium/high-risk increments;
 - formal audits;
@@ -520,23 +528,23 @@ Use the full/explicit Matrix for:
 
 For small/low-risk deterministic changes, use concise validation evidence appropriate to the change (for example `git diff --check`, targeted tests, lint/build result, relevant source verification, exact before/after state). Do not fill a full Matrix of N/A rows for a tiny deterministic edit. N/A remains valid where the owning rule permits it.
 
-Required Product Owner Practical Acceptance, Gate 3, and other mandatory owning verification rules are not waived by using concise evidence.
+Required Product Owner Practical Acceptance, Release Readiness (when `#N`, Gate 3), and other mandatory owning verification rules are not waived by using concise evidence.
 
 ### Product Owner Practical Acceptance
 
-Per [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) Phase 7, technical or automated validation alone does not complete Integration and Final Validation. Required Product Owner Practical Acceptance must reach explicit **PASS** before Gate 3 — Release Readiness.
+Technical validation and Product Owner Practical Acceptance are distinct. Core Validation / Acceptance requires Practical Acceptance for a release scope before Release Readiness. When the active identity is `#N`, that is [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) Phase 7: technical or automated validation alone does not complete Integration and Final Validation, and required Product Owner Practical Acceptance must reach explicit **PASS** before Gate 3 — Release Readiness.
 
 Do not treat technical validation as sufficient for release readiness, Release Finalization, or Stable Release while required Practical Acceptance remains pending or has failed.
 
 When Practical Acceptance finds a defect, return proportionally to the earliest affected lifecycle point. Preserve unaffected valid verification evidence; do not automatically repeat audits, architecture analysis, or broad regression work.
 
-This pre-release acceptance does not replace Phase 9 — Post-Release Verification.
+This pre-release acceptance does not replace Core Post-Release Verification. When `#N`, that mapping remains Phase 9 — Post-Release Verification.
 
 ## 19. Backwards compatibility
 
 A shipping MAG version is a product baseline, not a permanent public API freeze.
 
-Existing structures may change when the active stage requires it (markup, data attributes, JavaScript, CSS, constructors, method signatures, storage layout, and similar). Such changes must be required, explained before implementation, verified against XenForo, tested, reflected in documentation, and checkpointed in Git.
+Existing structures may change when the active stage requires it (markup, data attributes, JavaScript, CSS, constructors, method signatures, storage layout, and similar). Such changes must be required, explained before implementation, verified against the declared host/runtime (when `#N`, verified against XenForo), tested, reflected in documentation, and checkpointed in Git.
 
 Working behavior must not be broken casually. Preserve the current shipping product of the active development identity unless the approved increment explicitly changes it.
 
@@ -611,7 +619,7 @@ Before publishing:
 2. When the active development identity is `#N`, verify intended XenForo add-on structure.
 3. Review all changes.
 4. Confirm no temporary restore directories are tracked.
-5. Confirm no XenForo core or environment-specific files are included.
+5. Confirm no host, SDK, or environment-specific files that must not ship are included. When `#N`, confirm no XenForo core or environment-specific files are included.
 6. Test the applicable stage.
 7. Synchronize documentation.
 8. Commit with an English message when the user requests it.
@@ -621,19 +629,21 @@ Do not claim Git state was verified unless it was actually inspected.
 
 Preserve unrelated user changes.
 
-Canonical `#N` package identity and filenames are defined in `MAG_ECOSYSTEM.md`. Operational instantiation (eight bootstrap-created documents under `docs/`, public root `README.md`, `IDEA.md` casing) is defined in `MAG_XENFORO_ADDON_BLUEPRINT.md`. Do not maintain a second package tree here.
+Canonical `#N` package identity and filenames are defined in `MAG_ECOSYSTEM.md`. Operational instantiation (eight bootstrap-created documents under `docs/`, public root `README.md`, `IDEA.md` casing) is defined in `MAG_XENFORO_ADDON_BLUEPRINT.md`. Do not maintain a second package tree here. This eight-document package and Blueprint path do not apply to `A<N>`. `A<N>` documentation follows approved needs in `MAG_ECOSYSTEM.md`. Do not invent an `A<N>` documentation package here.
 
 New `#N` projects use that Blueprint/`docs/` layout. `#1` and `#2` historical root/`docs/` mixes and `Idea.md` casing are grandfathered. Do not migrate, rename, or retrofit them, and do not treat those historical layouts as new-project templates.
 
-Global process files live in `MAG-Ecosystem`, not inside each add-on.
+Global process files live in `MAG-Ecosystem`, not inside each product repository.
 
-Do not claim a MAG add-on repository must keep copies of Global `AI_GUIDELINES.md`.
+Do not claim a MAG product repository must keep copies of Global `AI_GUIDELINES.md`.
 
 ---
 
 ## 21. Release artifact preservation
 
-**Scope: `#N` MAG XenForo add-on projects only.**
+Core Release Finalization means Product Owner-authorized shipping of the artifact the active product actually ships. It does not invent a universal ZIP or version scheme.
+
+**Scope of the remainder of this section: `#N` MAG XenForo add-on projects only.**
 
 Release Presentation requirements, sequence, and final-package gating are canonical in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) Phase 8. Do not build the final release ZIP before required Release Presentation data is approved and applied per that workflow.
 
@@ -668,13 +678,13 @@ When source phrases changed, also validate any official extra-language file the 
 
 After verified implementation changes, update **only** the documents the change actually affects.
 
-Typical project documents (logical): README, TZ, Architecture, CLASS_MAP, Changelog, Roadmap, and optional overview/research files. Use the canonical `P<NN>__<CODE>__` filenames recorded in `MAG_ECOSYSTEM.md`.
+Typical project documents (logical): README, TZ, Architecture, CLASS_MAP, Changelog, Roadmap, and optional overview/research files. For `#N`, use the canonical `P<NN>__<CODE>__` filenames recorded in `MAG_ECOSYSTEM.md`. `A<N>` documentation follows approved needs from `MAG_ECOSYSTEM.md`. Do not design a new non-`#N` logical-document model here.
 
 Update Global documents only when process, ecosystem conventions, or reusable technical knowledge changed per `AI_GUIDELINES.md` §22.
 
 Documentation must describe the actual verified state. Do not copy one project's product status into Global guidelines.
 
-If code or XenForo source inspection shows that a documented requirement is incorrect, unsafe, impossible, or incompatible:
+If code or applicable host/runtime source inspection shows that a documented requirement is incorrect, unsafe, impossible, or incompatible:
 
 1. Stop implementation.
 2. Identify the conflict.
@@ -698,7 +708,7 @@ This evaluation is a normal completion consideration for relevant:
 - debugging;
 - audit;
 - compatibility investigation;
-- XenForo/XFRM source inspection;
+- host/runtime source inspection (when `#N`, XenForo/XFRM source inspection);
 - testing;
 - stabilization;
 - release verification;
@@ -713,7 +723,7 @@ Rules:
 - Promote only evidence-backed findings. Do not generalize from donor behavior, assumptions, planned architecture, hypotheses, or accidental implementation behavior.
 - Keep product requirements, approved project architecture, project code structure, product-specific behavior, and project history in the active development identity's documentation.
 - When ChatGPT identifies a technically valuable reusable candidate during MAG work — implementation pattern, architecture technique, optimization, security practice, debugging technique, benchmark methodology, workflow improvement, or similar — **explicitly flag it to the Product Owner** as a candidate for the Global MAG knowledge library while the context and evidence are still available. Do not wait only for procedure close-out if the finding is already clear.
-- Project-specific evidence, measurements, fixtures, and stack choices stay in the active `#N` / `A<N>` / `B<N>` documentation or research archive. Only the **generalized reusable principle** may be promoted to Global documentation.
+- Project-specific evidence, measurements, fixtures, and stack choices stay in the active assignable development identity's documentation or research archive (`#N` or `A<N>`). `B<N>` is reserved and has no active WHAT archive. Only the **generalized reusable principle** may be promoted to Global documentation.
 - Promotion to `MAG_IMPLEMENTATION_PATTERNS.md` or other Global knowledge requires Product Owner approval. Identifying a candidate does **not** authorize Global edits, implementation, architecture changes, requirements changes, or scope expansion outside the approved procedure.
 - Add or update Global reusable knowledge only when there is a meaningful future reuse case. Do not turn the knowledge base into a development log.
 - If the approved procedure already includes Global documentation synchronization and a qualifying knowledge update is within scope, record it as part of that procedure.
@@ -754,7 +764,7 @@ AI must:
 
 When a production observation conflicts with documentation, inspect code and controlled evidence before changing stage interpretation.
 
-Do not optimize development merely to reduce Cursor quota usage. Correctness, XenForo compatibility, security, maintainability, testing, and documentation remain higher priorities.
+Do not optimize development merely to reduce Cursor quota usage. Correctness, applicable host/runtime compatibility, security, maintainability, testing, and documentation remain higher priorities. When `#N`, XenForo compatibility remains among those higher priorities.
 
 When Cursor procedure presentation applies, follow §24 of this document for presentation, post-execution review, and model selection; and follow `AI_AGENTS_RULES.md` for mandatory execution and Plain text requirements. Do not collect, display, or maintain Cursor Models usage measurements.
 
@@ -896,7 +906,7 @@ AI-assisted MAG development must remain:
 
 - Incremental.
 - Evidence-based.
-- XenForo-native.
+- Host-native where a host applies. When `#N`, XenForo-native.
 - Existing-code-first.
 - Security-conscious.
 - Performance-conscious.
@@ -904,9 +914,9 @@ AI-assisted MAG development must remain:
 - Limited to the active stage of the active development identity.
 - Preservative of that project's current shipping baseline.
 
-Work proceeds from verified code and verified XenForo behavior, not from assumptions, silent conflict resolution, or speculative future architecture.
+Work proceeds from verified code and verified host/runtime behavior, not from assumptions, silent conflict resolution, or speculative future architecture. When `#N`, that host/runtime is XenForo.
 
-**GLOBAL defines HOW. Active development defines WHAT.**
+**GLOBAL defines HOW. Verified Applicability determines WHICH HOW applies. Active development defines WHAT.**
 
 ---
 
@@ -963,7 +973,7 @@ After promotion, canonical Global documents must be self-contained. Do not leave
 
 ## 27. MAG Knowledge Control routing
 
-This section is the Global owner of MAG Knowledge Control **AI routing behavior**: Entry Gate, intents, Identity Scope × Intent-Allowed Owner Classes, Locator states, and same-scope canonical fallback.
+This section is the Global owner of MAG Knowledge Control **AI routing behavior**: Entry Gate, intents, Identity Scope × Intent × Verified Applicability, Locator states, and same-scope canonical fallback.
 
 It does **not** create MAG authority. Ecosystem isolation and Knowledge Control classification remain in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). Mechanical Action Gate remains in [`AI_AGENTS_RULES.md`](AI_AGENTS_RULES.md). Generated discovery artifact mechanics remain in [`MAG_DOCUMENTATION_OPERATIONS.md`](MAG_DOCUMENTATION_OPERATIONS.md).
 
@@ -977,12 +987,12 @@ Before substantive MAG coordination, classify the turn as **CONTINUE** or **RESO
 
 - the immediately preceding assistant turn stated an explicit next action;
 - current Product Owner input is pure continuation/approval;
-- same valid `working_identity`;
+- same valid `working_identity` (`GLOBAL`, `GLOBAL+#N`, or `GLOBAL+A<N>`);
 - no topic/identity transition, correction, contradiction, or authority uncertainty.
 
 Otherwise **RESOLVE**.
 
-Do not infer identity from an arbitrary opened file or distant conversation history.
+Do not infer identity from an arbitrary opened file or distant conversation history. Platform or surface does not determine identity.
 
 ### Working state (ephemeral, not authority)
 
@@ -1009,13 +1019,21 @@ Only these intents are approved:
 
 Unknown intent is out of scope. Do not invent additional intents.
 
-### Retrieval model — Identity Scope × Intent-Allowed Owner Classes
+### Retrieval model — Identity Scope × Intent × Verified Applicability
 
 Establish **identity scope** before semantic retrieval.
 
 - **GLOBAL** permits Global owners and Global operational assets only.
-- **GLOBAL + active development identity** (`GLOBAL+#N`, `GLOBAL+A<N>`, or `GLOBAL+B<N>` as applicable) permits Global plus **that** development only.
+- **GLOBAL + active development identity** (`GLOBAL+#N` or `GLOBAL+A<N>`) permits Global plus **that** development only.
+- Do not use `GLOBAL+B<N>` while `B<N>` is reserved.
 - Never retrieve another development's WHAT unless the Product Owner explicitly authorizes a real cross-development task.
+- Platform or surface is not identity.
+
+After identity scope, apply **Verified Applicability**. It filters which Global HOW is eligible for the current Product Class, surface, and technology. Applicability is not authority. Keyword similarity is not proof of applicability. The current canonical owner body wins over working state, Locator, generated index, and conversation.
+
+Absence of a specialized profile means use the Global Core Lifecycle. Do not block a valid `A<N>` development for lack of a profile. Do not import `#N` HOW into `A<N>`.
+
+Generated discovery may lag this taxonomy. A missing exact-scope generated index does not mean knowledge is absent. Same-scope canonical fallback remains required.
 
 `MAG_IMPLEMENTATION_PATTERNS.md` applicability requires verified Scope compatibility. Keyword similarity alone is insufficient.
 
@@ -1052,8 +1070,10 @@ Semantics:
 
 The current canonical owner body always wins over working state, Locator, generated index, and conversation.
 
+Generated indexes are optional routing. They may lag taxonomy. Do not invent an index filename recipe for a missing identity scope. Do not change generated-index schema from this section.
+
 ### Fallback
 
-If Locator is missing, unavailable, failed, stale, conflicting, or otherwise unusable, fall back to **same-scope, section-oriented canonical retrieval**. Fallback must not broaden identity scope.
+If Locator is missing, unavailable, failed, stale, conflicting, unsupported, or otherwise unusable, fall back to **same-scope, section-oriented canonical retrieval**. Fallback must not broaden identity scope. Missing generated discovery is not knowledge absence.
 
 If required authority remains unresolved after fallback, the result is **Unknown**. Do not invent.

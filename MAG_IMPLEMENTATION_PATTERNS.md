@@ -1,9 +1,9 @@
 # MAG Implementation Patterns
 
 - MAG-Document-ID: `MAG_IMPLEMENTATION_PATTERNS.md`
-- MAG-Content-Updated: `2026-09-24T21:30:00+03:00`
+- MAG-Content-Updated: `2026-09-25T19:50:00+03:00`
 
-Reusable, source-backed implementation knowledge for MAG development.
+Reusable, source-backed implementation knowledge for MAG development. This file is the **single Global reusable implementation knowledge base**. Do not create per-class Pattern documents.
 
 This document is a Global knowledge base. It does not define product requirements and does not replace:
 
@@ -13,22 +13,37 @@ This document is a Global knowledge base. It does not define product requirement
 - `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
 - any active project `TZ`, `Roadmap`, `Architecture`, `CLASS_MAP`, `Changelog`, or `README`
 
-`GLOBAL defines HOW. Active development defines WHAT.`
+`GLOBAL defines HOW. Verified Applicability determines WHICH HOW applies. Active development defines WHAT.`
 
-Entries in this document are **stack-scoped** unless explicitly marked otherwise. XenForo/XFRM entries apply to `#N` products only. Do not apply XenForo patterns to `A<N>`, `B<N>`, or other non-`#N` developments without matching verified scope.
+Verified Applicability on a Pattern is **routing/filtering for reuse**. It is not MAG authority. Keyword similarity is not proof of applicability. The Pattern body, Status, Verified scope, and Limitations remain the record of what was proven. Canonical Global and active-development documentation still win on conflict.
+
+`#N` and `A<N>` are assignable identity families. `B<N>` is reserved and is not a current working identity. `#N` Patterns do not apply to `A<N>` unless a future explicit verified reclassification proves broader applicability. Missing applicability metadata must be interpreted fail-closed as `applicability_class: N`, never `UNIVERSAL`.
 
 ## Usage rule
 
 Do not read this document sequentially by default.
 
-For a concrete task:
+**Locate** a candidate and **select** it for reuse are different steps.
 
-1. Search the Index or keywords for the relevant topic.
-2. Open only the matching section.
-3. Check the entry status and verified scope.
-4. Reuse a pattern only when the current task matches its conditions.
-5. If an entry is version-specific, development-specific, or marked `Needs revalidation`, verify the current installed XenForo source or current development implementation before relying on it.
-6. If this document conflicts with authoritative Global or active-development documentation, report the conflict. Do not silently choose this document.
+Index, search, Locator, and keywords may **locate** a candidate only. They never select a Pattern for reuse.
+
+Fail-closed **selection**:
+
+1. Resolve the active assignable MAG identity (`GLOBAL`, `GLOBAL+#N`, or `GLOBAL+A<N>`). Platform or surface is not identity.
+2. Open the canonical Pattern body named by the pointer or Index hit.
+3. Inspect **Status**. Do not reuse as HOW when Status includes `Project-Specific` or `Needs Revalidation` until current host/runtime evidence revalidates it.
+4. Inspect **Applicability** metadata (`applicability_class`, `match`, `evidence_origin`, `revalidation`).
+5. Verify the current task against Applicability, Verified scope, and Limitations.
+6. If applicability cannot be established, **do not reuse** the Pattern. Perform targeted verification of the current host/runtime/implementation instead. Unknown applicability is not a STOP on implementation or debugging.
+7. Absence of a matching Pattern must never block implementation or debugging.
+
+`applicability_class` values:
+
+- `UNIVERSAL` — only for explicitly proven class-neutral reuse; body must not depend on a host-specific API; `match` is empty. No existing Pattern qualifies in this Stage.
+- `N` — XenForo Product only. Active identity must be `#N`. XenForo/XFRM/version Verified scope and Limitations must match. `A<N>` is ineligible.
+- `TECH` — reserved for future Patterns (or future reclassification) with explicitly verified technology/runtime applicability. All `match` tokens must be present in the active product's declared technology/runtime/surfaces. Namespace alone is insufficient. Do not assign existing `#N`-only entries to `TECH` without independent canonical evidence of cross-class applicability.
+
+If this document conflicts with authoritative Global or active-development documentation, report the conflict. Do not silently choose this document.
 
 ## Index
 
@@ -93,7 +108,7 @@ Identify whether the completed work produced a potentially reusable technical fi
 
 Candidates may include:
 
-- verified XenForo/XFRM behavior;
+- verified host/runtime/framework behavior (when `#N`, verified XenForo/XFRM behavior);
 - reusable implementation patterns;
 - compatibility findings;
 - upgrade/install behavior;
@@ -111,7 +126,7 @@ Do not promote assumptions or speculative conclusions.
 
 A candidate must have an appropriate evidence basis, such as:
 
-- installed XenForo/XFRM source inspection;
+- applicable installed host/runtime/framework source inspection (when `#N`, installed XenForo/XFRM source where that evidence is required);
 - verified implementation;
 - relevant tests;
 - real-environment verification;
@@ -133,7 +148,7 @@ Before creating a new entry, search this document for an existing applicable ent
 If one already exists:
 
 - do not duplicate it;
-- update it only when the new evidence materially changes or strengthens its verified scope, status, limitations, source context, or reusable conclusion.
+- update it only when the new evidence materially changes or strengthens its verified scope, applicability, status, limitations, source context, or reusable conclusion.
 
 ### 4. Classify
 
@@ -161,9 +176,9 @@ Keep information project-local when it only describes:
 - project history;
 - release history without a reusable technical lesson.
 
-Do not generalize behavior from one XenForo/XFRM version to another without evidence.
+Do not generalize behavior from one host/runtime/version to another without evidence. When `#N`, do not generalize from one XenForo/XFRM version to another without evidence.
 
-Use `Needs Revalidation` where the finding is useful but version-specific, environment-specific, project-specific, or otherwise unsafe to apply universally.
+Use `Needs Revalidation` where the finding is useful but host/runtime/version-specific, environment-specific, project-specific, or otherwise unsafe to apply universally. Unknown applicability means do not reuse the Pattern; perform targeted verification instead.
 
 ### 6. Decide
 
@@ -171,7 +186,21 @@ Add or update Global reusable knowledge only when there is a meaningful future r
 
 Do not add entries merely because something was discovered.
 
-This knowledge base must remain focused and useful rather than becoming a development log.
+This knowledge base must remain focused and useful rather than becoming a development log. `MAG_DEBUGGING.md` must not become a Pattern body store.
+
+Promotion flow:
+
+```text
+development/debugging evidence
+→ Detect
+→ Verify
+→ Search
+→ Classify Status
+→ determine Verified scope + applicability
+→ decide whether genuinely reusable
+→ Product Owner approval where required
+→ record Pattern with applicability metadata
+```
 
 ### 7. Record
 
@@ -180,6 +209,7 @@ When a candidate qualifies, record it using the entry structure in [Maintenance 
 Preserve, where applicable:
 
 - Status
+- Applicability (`applicability_class`, `match`, `evidence_origin`, `revalidation`)
 - Verified scope
 - Source context
 - observed or verified behavior
@@ -239,15 +269,17 @@ Each entry uses one of these statuses.
 Directly demonstrated by source inspection, implementation, tests, release behavior, or real-environment verification recorded in authoritative project documentation.
 
 **Reusable Pattern**  
-A verified implementation approach that is likely useful in another MAG project when the same technical conditions apply.
+A verified implementation approach that is likely useful in another MAG project when the same technical conditions apply **and** Verified Applicability selects it. Applicability `N` does not become `A<N>` reuse.
 
 **Project-Specific**  
 Correct for the source project, but not automatically reusable elsewhere.
 
 **Needs Revalidation**  
-Useful evidence exists, but the behavior is XenForo-version-specific, environment-specific, or insufficiently general to be treated as a permanent rule.
+Useful evidence exists, but the behavior is host/runtime/version-specific, environment-specific, or insufficiently general to be treated as a permanent rule. When `#N`, that includes XenForo-version-specific findings.
 
 A single entry may have more than one label.
+
+Status is independent from Applicability. Do not treat a Status label as `UNIVERSAL` reuse.
 
 ---
 
@@ -256,6 +288,12 @@ A single entry may have more than one label.
 Status: **Verified Fact / Needs Revalidation**
 
 Verified scope: **#1 GLF; XenForo 2.2.19 and 2.3.12; production behavior through GLF 1.4.2**
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#1`
+- revalidation: `required`
 
 Source context:
 - `GlobalLinksFavicons / P01__GLF__TZ.md`
@@ -298,6 +336,12 @@ Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#1 GLF real upgrades; 1.3.0 → 1.4.3 and production 1.4.3 upgrade**
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#1`
+- revalidation: `none`
+
 Source context:
 - `GlobalLinksFavicons / docs/P01__GLF__Architecture.md` §39F–39G
 - `GlobalLinksFavicons / docs/P01__GLF__Changelog.md` 1.4.2–1.4.3
@@ -337,6 +381,12 @@ Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#1 GLF 1.2.1+; XenForo 2.2.19 and 2.3.12**
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#1`
+- revalidation: `none`
+
 Source context:
 - `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
 - `GlobalLinksFavicons / docs/P01__GLF__Changelog.md`
@@ -365,6 +415,12 @@ Revalidate exact packaging syntax against the active XenForo version/build proce
 Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#1 GLF custom FAILED placeholder**
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#1`
+- revalidation: `none`
 
 Source context:
 - `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
@@ -400,6 +456,12 @@ Status: **Verified Fact / Needs Revalidation**
 
 Verified scope: **#1 GLF XenForo source investigation during image-upload work**
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#1`
+- revalidation: `required`
+
 Source context:
 - `GlobalLinksFavicons / docs/P01__GLF__Roadmap.md`
 
@@ -422,6 +484,12 @@ Revalidate before reuse because helper behavior is framework-version-specific.
 Status: **Verified Fact / Reusable Pattern / Needs Revalidation**
 
 Verified scope: **#1 GLF; XenForo 2.2.19 and 2.3.12**
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#1`
+- revalidation: `required`
 
 Source context:
 - `GlobalLinksFavicons / P01__GLF__TZ.md`
@@ -454,6 +522,12 @@ Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#1 GLF remote and ACP image handling**
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#1`
+- revalidation: `none`
+
 Source context:
 - `GlobalLinksFavicons / P01__GLF__TZ.md`
 - `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
@@ -482,6 +556,12 @@ Metadata may be used as a hint, but not as the sole trust boundary.
 Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#1 GLF runtime architecture**
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#1`
+- revalidation: `none`
 
 Source context:
 - `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
@@ -513,6 +593,12 @@ Related XenForo enqueue fact: `enqueueUnique()` defaults to **manual** jobs. For
 Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#1 GLF Stage 17**
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#1`
+- revalidation: `none`
 
 Source context:
 - `GlobalLinksFavicons / docs/P01__GLF__Changelog.md`
@@ -557,6 +643,12 @@ Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#1 GLF favicon state machine**
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#1`
+- revalidation: `none`
+
 Source context:
 - `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
 - `GlobalLinksFavicons / P01__GLF__TZ.md`
@@ -589,6 +681,12 @@ Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#1 GLF format-aware favicon storage**
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#1`
+- revalidation: `none`
+
 Source context:
 - `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
 - `GlobalLinksFavicons / docs/P01__GLF__Changelog.md`
@@ -612,6 +710,12 @@ Validate that any persisted path remains inside the add-on's managed storage nam
 Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#1 GLF format switching**
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#1`
+- revalidation: `none`
 
 Source context:
 - `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
@@ -640,6 +744,12 @@ Cleanup should be downstream of successful replacement and should not destroy th
 Status: **Verified Fact / Reusable Pattern / Needs Revalidation**
 
 Verified scope: **#1 GLF external favicon acquisition; XF 2.2.19 and 2.3.12**
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#1`
+- revalidation: `required`
 
 Source context:
 - `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
@@ -674,6 +784,12 @@ Status: **Verified Fact / Needs Revalidation**
 
 Verified scope: **#1 GLF FaviconDiscovery; XenForo 2.2.19 and 2.3.12**
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#1`
+- revalidation: `required`
+
 Source context:
 - `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
 
@@ -698,6 +814,12 @@ Revalidate before reuse.
 Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#1 GLF URL/domain identity**
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#1`
+- revalidation: `none`
 
 Source context:
 - `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
@@ -731,6 +853,12 @@ Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#1 GLF internal-link favicon behavior**
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#1`
+- revalidation: `none`
+
 Source context:
 - `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
 - `GlobalLinksFavicons / P01__GLF__TZ.md`
@@ -760,6 +888,12 @@ Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#1 GLF Cache Management**
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#1`
+- revalidation: `none`
+
 Source context:
 - `GlobalLinksFavicons / docs/P01__GLF__Architecture.md`
 
@@ -780,6 +914,12 @@ This keeps ACP actions bounded and avoids creating a second network/security imp
 Status: **Verified Fact / Reusable Pattern / Needs Revalidation**
 
 Verified scope: **#1 GLF security tests; XenForo 2.2.19 and 2.3.12**
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#1`
+- revalidation: `required`
 
 Source context:
 - `GlobalLinksFavicons / P01__GLF__TZ.md`
@@ -804,6 +944,14 @@ Revalidate each discrepancy rather than broadly accepting multiple values.
 ## Audit-scope optimization lesson
 
 Status: **Verified Fact / Reusable Pattern**
+
+Verified scope: **#1 GLF image-handling procedure history; XenForo source investigation in that procedure**
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#1`
+- revalidation: `none`
 
 Source context:
 - `GlobalLinksFavicons / docs/P01__GLF__Roadmap.md`
@@ -834,6 +982,12 @@ Do not split procedures mechanically when separation would increase cost without
 Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **XenForo 2.3.12; verified during #2 Tag Synchronizer Release Presentation work (P02-RF02–P02-RF05); mechanism is native `addon.json` metadata plus a root-level packaged icon asset**
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#2`
+- revalidation: `none`
 
 Source context:
 
@@ -881,7 +1035,13 @@ Limitations / revalidation boundary:
 
 Status: **Reusable Pattern** (strong pattern; not universally mandatory)
 
-Verified scope: **General MAG architecture/design guidance**; evidence origin **#5 XFRM 3D Model** isolated format-stack benchmark research (2026-09-15)
+Verified scope: **#5 XFRM 3D Model** isolated format-stack benchmark research (2026-09-15); XenForo/XFRM 3D host evidence only. Not proven as class-neutral MAG architecture.
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
 
 Source context:
 
@@ -937,6 +1097,12 @@ Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#5 XFRM 3D Model accepted Increments 1–11**; Forum and XFRM viewers; local package members including glTF + `.bin` sidecars
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
+
 Source context:
 - `XFRM3DModel / docs/P05__3DR__Architecture.md`
 - `XFRM3DModel / docs/P05__3DR__TZ.md`
@@ -988,6 +1154,12 @@ Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#5 XFRM 3D Model** native attachment / XFRM resource extension management
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
+
 Source context:
 - `XFRM3DModel / docs/P05__3DR__Architecture.md`
 - `XFRM3DModel / docs/P05__3DR__TZ.md`
@@ -1038,6 +1210,12 @@ Status: **Reusable Pattern**
 
 Verified scope: **#5 XFRM 3D Model** Forum + XFRM Source Package authoring and Source analysis
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
+
 Source context:
 - `XFRM3DModel / docs/P05__3DR__Architecture.md`
 - `XFRM3DModel / docs/P05__3DR__CLASS_MAP.md`
@@ -1066,7 +1244,7 @@ Core owns:
 
 ### When to use
 
-The same MAG product feature must run on more than one XenForo content host, or is likely to gain another host later.
+The same MAG product feature must run on more than one XenForo content host (Forum vs XFRM), or is likely to gain another XenForo content host later. Do not treat those hosts as Windows, Android, iOS, or other operating-system or mobile surfaces.
 
 ### Key constraints
 
@@ -1093,6 +1271,12 @@ This does not require a particular class tree. Do not treat #5 `SourceFile` / ho
 Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#5 XFRM 3D Model Increment 8+**; Forum and XFRM authoring
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
 
 Source context:
 - `XFRM3DModel / docs/P05__3DR__TZ.md`
@@ -1141,6 +1325,12 @@ Status: **Reusable Pattern**
 
 Verified scope: **#5 XFRM 3D Model** glTF URI/dependency inspection used by viewer security and authoring package validation
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
+
 Source context:
 - `XFRM3DModel / docs/P05__3DR__Architecture.md`
 - `XFRM3DModel / docs/P05__3DR__CLASS_MAP.md`
@@ -1184,6 +1374,12 @@ Sharing a parser is required only where the membership grammar is the same. Unre
 Status: **Reusable Pattern**
 
 Verified scope: **#5 XFRM 3D Model** batch STL/GLB/glTF authoring on Forum and XFRM
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
 
 Source context:
 - `XFRM3DModel / docs/P05__3DR__Architecture.md`
@@ -1237,6 +1433,12 @@ Status: **Reusable Pattern**
 
 Verified scope: **#5 XFRM 3D Model** Model Set multi-item viewer
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
+
 Source context:
 - `XFRM3DModel / docs/P05__3DR__Architecture.md`
 - `XFRM3DModel / docs/P05__3DR__CLASS_MAP.md`
@@ -1286,6 +1488,12 @@ This is a client GPU-resource pattern, not a mandate for a particular engine (Th
 Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#5 XFRM 3D Model Increment 11** Source Analysis / Model Info
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
 
 Source context:
 - `XFRM3DModel / docs/P05__3DR__TZ.md`
@@ -1339,6 +1547,12 @@ Status: **Reusable Pattern**
 
 Verified scope: **#5 XFRM 3D Model Increment 11** `SourceAnalysis` persistence designed independently of future Viewer Asset / derivative metrics
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
+
 Source context:
 - `XFRM3DModel / docs/P05__3DR__TZ.md`
 - `XFRM3DModel / docs/P05__3DR__Architecture.md`
@@ -1385,6 +1599,12 @@ This pattern does **not** implement ViewerAsset, optimization, or rebuild. Do no
 Status: **Verified Fact / Reusable Pattern / Needs Revalidation**
 
 Verified scope: **XenForo Job Manager as used by #5**; installed-source finding recorded in `#5` AUDIT and applied in Increment 11 analysis Jobs. Do not generalize beyond verified XenForo `enqueueUnique()` behavior.
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `required`
 
 Source context:
 - `XFRM3DModel / docs/P05__3DR__AUDIT.md` (Jobs section)
@@ -1443,6 +1663,12 @@ Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#5 XFRM 3D Model** Performance/UX P1; XenForo 2.3 entity relations on hot render paths
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
+
 Source context:
 - `XFRM3DModel / docs/P05__3DR__AUDIT.md` (Performance/UX)
 - `XFRM3DModel / docs/P05__3DR__CLASS_MAP.md`
@@ -1496,6 +1722,12 @@ Status: **Reusable Pattern**
 
 Verified scope: **#5 XFRM 3D Model** Performance/UX P2; browser client viewers
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
+
 Source context:
 - `XFRM3DModel / docs/P05__3DR__AUDIT.md` (Performance/UX)
 - related Global entry: [One WebGL context per logical viewer group](#one-webgl-context-per-logical-viewer-group)
@@ -1545,6 +1777,12 @@ Engine-specific (Three.js or other). Thresholds, `rootMargin`, and observer avai
 Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#5 XFRM 3D Model** Performance/UX P3 and Hardening H3; XenForo 2.3 `XF.AjaxSubmit`
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
 
 Source context:
 - `XFRM3DModel / docs/P05__3DR__AUDIT.md` (Performance/UX, Hardening)
@@ -1596,6 +1834,12 @@ Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#5 XFRM 3D Model** ASC-B3; public profile list, public totals, forum postbit counts
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
+
 Source context:
 - `XFRM3DModel / docs/P05__3DR__Architecture.md` (§27.10)
 - `XFRM3DModel / docs/P05__3DR__TZ.md` (§25.27)
@@ -1646,6 +1890,12 @@ Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#5 XFRM 3D Model** Hardening H2; XenForo `xf_job.unique_key`
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
+
 Source context:
 - `XFRM3DModel / docs/P05__3DR__AUDIT.md` (Hardening)
 - related Global entry: [XenForo unique Job enqueue defaults to manual](#xenforo-unique-job-enqueue-defaults-to-manual)
@@ -1694,6 +1944,12 @@ Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#5 XFRM 3D Model** Hardening H1; XenForo 2.3 `XF.Element` handlers; in-page HTML replacement
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
+
 Source context:
 - `XFRM3DModel / docs/P05__3DR__AUDIT.md` (Hardening, viewer lifecycle)
 
@@ -1740,6 +1996,12 @@ Observer placement and handler registration are implementation details. Revalida
 Status: **Reusable Pattern** (narrow UI integration rule)
 
 Verified scope: **#5 XFRM 3D Model** ASC-B4 Forum attachment list presentation
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
 
 Source context:
 - `XFRM3DModel / docs/P05__3DR__TZ.md` (§25.20)
@@ -1788,6 +2050,12 @@ Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#5 Beyond 3D Viewer** `1.0.4` / `1000195` supporting-document and model managed-HTML refresh; XenForo 2.3 public JS
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
+
 Source context:
 - `Beyond3DViewer / docs/P05__3DR__AUDIT.md` (1.0.4 stabilization)
 - `Beyond3DViewer / docs/P05__3DR__CLASS_MAP.md`
@@ -1814,6 +2082,12 @@ Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#5 Beyond 3D Viewer** XFRM Resource Edit Froala/editor bootstrap; XenForo 2.3 overlay edit
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
+
 Source context:
 - `Beyond3DViewer / docs/P05__3DR__AUDIT.md` (Known Fragile Areas)
 - `Beyond3DViewer / src/addons/MAG/Beyond3DViewer/_data/templates.xml`
@@ -1838,6 +2112,12 @@ Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#5 Beyond 3D Viewer** Resource Edit editor bootstrap; XenForo 2.3 Froala / overlay edit
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
+
 Source context:
 - `Beyond3DViewer / docs/P05__3DR__AUDIT.md` (1.0.4 stabilization / FOUC)
 
@@ -1860,6 +2140,12 @@ Does not forbid legitimate editor integration hooks. Revalidate against the inst
 Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#5 Beyond 3D Viewer** XenForo 2.3 add-on `_files` vs live `js/` tree; `xf-addon:rebuild`
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
 
 Source context:
 - `Beyond3DViewer / docs/P05__3DR__AUDIT.md` (Known Fragile Areas)
@@ -1885,6 +2171,12 @@ Status: **Verified Fact / Reusable Pattern**
 
 Verified scope: **#5 Beyond 3D Viewer** Forum node / XFRM category MAG enablement; ContentGate
 
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `none`
+
 Source context:
 - `Beyond3DViewer / docs/P05__3DR__Architecture.md`
 - `Beyond3DViewer / docs/P05__3DR__AUDIT.md` (Known Fragile Areas)
@@ -1908,6 +2200,12 @@ Column names, cache fields, and ContentGate class names are product-local. Reval
 Status: **Verified Fact / Reusable Pattern / Needs Revalidation**
 
 Verified scope: **#5 Beyond 3D Viewer; XenForo 2.3.12; `development.enabled = true`; `xf-addon:rebuild MAG/Beyond3DViewer -n`**
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `required`
 
 Source context:
 - `#5` live repair: incomplete `src/addons/MAG/Beyond3DViewer/_output` after an isolated ACP/template export
@@ -1943,6 +2241,12 @@ Verified on XenForo 2.3.12 with `development.enabled = true` for one MAG add-on.
 Status: **Verified Fact / Reusable Pattern / Needs Revalidation**
 
 Verified scope: **#5 Beyond 3D Viewer `1.1.0` installation investigation; installed XenForo 2.3.12 (`XF::$versionId` `2031270`); real local development tree; final `xf-addon:build-release` package `MAG-Beyond3DViewer-1.1.0.zip`**
+
+Applicability:
+- applicability_class: `N`
+- match: XenForo Product; host/runtime/version as recorded in Verified scope (no OS/mobile/class-neutral support)
+- evidence_origin: `#5`
+- revalidation: `required`
 
 Source context:
 
@@ -2052,6 +2356,7 @@ When adding or updating an entry:
 
 - keep the entry focused;
 - record status;
+- record applicability metadata;
 - record verified scope;
 - identify source project/document;
 - distinguish reusable principle from project-specific numeric values or requirements;
@@ -2066,11 +2371,12 @@ Follow the [Capture procedure](#capture-procedure) before adding or materially u
 Each knowledge entry should use this structure unless a narrow topic genuinely needs a shorter form:
 
 1. **Title** — concise, searchable topic name.
-2. **Status** — one or more labels from the status model.
-3. **Verified scope** — project marker, XenForo/XFRM versions, release or environment boundary.
-4. **Source context** — authoritative project or Global documents that contain the evidence.
-5. **Observed behavior** — what was verified, not what was assumed.
-6. **Pattern / conclusion** — the reusable principle or fact future work may apply.
-7. **Limitations / revalidation boundary** — when the entry must not be generalized or must be reverified.
+2. **Status** — one or more labels from the status model. Independent from Applicability.
+3. **Applicability** — `applicability_class` (`UNIVERSAL` | `N` | `TECH`); `match`; `evidence_origin`; `revalidation` (`none` | `required`).
+4. **Verified scope** — project marker, proven host/runtime/version, release or environment boundary. For `#N`, XenForo/XFRM versions where proven.
+5. **Source context** — authoritative project or Global documents that contain the evidence.
+6. **Observed behavior** — what was verified, not what was assumed.
+7. **Pattern / conclusion** — the reusable principle or fact future work may apply.
+8. **Limitations / revalidation boundary** — when the entry must not be generalized or must be reverified.
 
 After adding a new entry, add it to the [Index](#index).

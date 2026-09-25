@@ -484,6 +484,96 @@ $failU = Invoke-Update $orchManDir
 $afterFail = Get-Content -LiteralPath $idxOrchG -Raw
 Assert-True ($failU.ExitCode -eq 3 -and $keepFail -eq $afterFail) 'orch-fail-no-replace' "code=$($failU.ExitCode)"
 
+# Stage 6 — working identity vs generated discovery (no A index recipe)
+$wG = Get-MagWorkingIdentity 'GLOBAL'
+$w5 = Get-MagWorkingIdentity 'GLOBAL+#5'
+$wA1 = Get-MagWorkingIdentity 'GLOBAL+A1'
+$wA5 = Get-MagWorkingIdentity 'GLOBAL+A5'
+$wB1 = Get-MagWorkingIdentity 'GLOBAL+B1'
+$wBbare = Get-MagWorkingIdentity 'B1'
+$wDesk = Get-MagWorkingIdentity 'Desktop'
+$wAnd = Get-MagWorkingIdentity 'Android'
+Assert-True ($wG.Assignable -and $wG.Kind -eq 'GLOBAL') 's6-global-assignable'
+Assert-True ($w5.Assignable -and $w5.Kind -eq 'HASH_N' -and $w5.Number -eq '5') 's6-global-hash5-assignable'
+Assert-True ($wA1.Assignable -and $wA1.Kind -eq 'A_N' -and (Test-MagAssignableWorkingIdentity 'GLOBAL+A1')) 's6-a1-plan-identity-valid'
+Assert-True ($wA1.Assignable -and $wA1.Status -eq 'assignable') 's6-a1-debug-identity-valid'
+Assert-True (-not $wB1.Assignable -and $wB1.Status -eq 'reserved' -and -not $wBbare.Assignable) 's6-b1-reserved'
+Assert-True ($w5.Input -ne $wA5.Input -and $wA5.Assignable -and $wA5.Namespace -eq 'A' -and $w5.Namespace -eq '#') 's6-hash5-not-a5'
+Assert-True (-not $wDesk.Assignable -and -not $wAnd.Assignable -and $wDesk.Status -eq 'invalid') 's6-surface-not-identity'
+
+$lA1miss = Invoke-Loc (Join-Path $roots.Ecosystem 'generated\knowledge\no-such-a1.json') 'GLOBAL+A1' 'PLAN' 'x'
+Assert-True ($lA1miss.Code -eq 3 -and $lA1miss.Json.reason -eq 'missing_index' -and $lA1miss.Json.working_identity_status -eq 'assignable' -and (Get-MagWorkingIdentity 'GLOBAL+A1').Assignable) 's6-missing-a-index-identity-valid' "code=$($lA1miss.Code) st=$($lA1miss.Json.working_identity_status)"
+
+$lBmiss = Invoke-Loc (Join-Path $roots.Ecosystem 'generated\knowledge\no-such-b1.json') 'GLOBAL+B1' 'PLAN' 'x'
+$lBidx = Invoke-Loc $idxG 'GLOBAL+B1' 'GOVERN' 'Documentation authority model'
+Assert-True ($lBmiss.Code -eq 4 -and $lBmiss.Json.reason -eq 'reserved_identity' -and $lBidx.Code -eq 4) 's6-b-reserved-before-index' "miss=$($lBmiss.Code) idx=$($lBidx.Code)"
+
+$lAonG = Invoke-Loc $idxG 'GLOBAL+A1' 'GOVERN' 'Documentation authority model'
+$lAon5 = Invoke-Loc $idx5 'GLOBAL+A1' 'DEBUG' 'anything'
+$aWhatLeak = (($lAon5.Raw | Out-String) -match 'ACP-Enhancements|P08__|P05__3DR')
+Assert-True ($lAonG.Code -eq 4 -and $lAonG.Json.reason -eq 'foreign_identity') 's6-global-index-not-for-a1' "code=$($lAonG.Code)"
+Assert-True ($lAon5.Code -eq 4 -and $lAon5.Json.reason -eq 'foreign_identity' -and -not $aWhatLeak -and (@($lAon5.Json.candidates).Count -eq 0)) 's6-hash5-index-out-of-scope-for-a1' "code=$($lAon5.Code)"
+
+$lA5on5 = Invoke-Loc $idx5 'GLOBAL+A5' 'IMPLEMENT' 'anything'
+Assert-True ($lA5on5.Code -eq 4) 's6-a5-not-hash5-scope' "code=$($lA5on5.Code)"
+
+$manNames = @(Get-ChildItem -LiteralPath (Join-Path $roots.Knowledge 'manifests') -Filter '*.json' | ForEach-Object { $_.Name } | Sort-Object)
+$manOk = ($manNames.Count -eq 2 -and $manNames -contains 'global.json' -and $manNames -contains 'global-5.json')
+$schemaRaw = Get-Content -LiteralPath (Join-Path $roots.Knowledge 'schema\index.v1.schema.json') -Raw
+$schemaKeepsHash = $schemaRaw.Contains('^GLOBAL(\\+#[0-9A-Za-z]+)?$')
+$schemaNoAScope = -not $schemaRaw.Contains('GLOBAL+A')
+Assert-True ($manOk -and $schemaKeepsHash -and $schemaNoAScope) 's6-no-a-index-recipe' "mans=$($manNames -join ',') hash=$schemaKeepsHash noA=$schemaNoAScope"
+
+try {
+    $null = Import-MagManifest -ManifestPath (Join-Path $roots.Knowledge 'manifests\global.json') -Roots $roots
+    $importGOk = $true
+} catch { $importGOk = $false }
+$aManPath = Join-Path $badDir 's6-a-man.json'
+(@{
+    schema_version = 1; config_version = 1; scope = 'GLOBAL+A1'
+    global_sources = @('MAG_ECOSYSTEM.md')
+    development = @{ identity = 'A1'; repo_root = '../x'; doc_files = @('docs/x.md') }
+    source_rules = 'config/source_rules.json'
+    intent_owner_map = 'config/intent_owner_map.json'
+    output = 'generated/knowledge/index-global-a1.json'
+} | ConvertTo-Json -Depth 8) | Set-Content -LiteralPath $aManPath -Encoding utf8
+$importAThrew = $false
+try {
+    $null = Import-MagManifest -ManifestPath $aManPath -Roots $roots
+} catch {
+    $importAThrew = ([string]$_.Exception.Message -match 'invalid_scope')
+}
+Assert-True ($importGOk -and $importAThrew) 's6-manifest-scope-not-widened-to-a'
+
+$lGov = Invoke-Loc $idxG 'GLOBAL' 'GOVERN' 'Documentation authority model'
+Assert-True ($lGov.Code -eq 0 -and $lGov.Json.state -eq 'FOUND') 's6-global-govern-unchanged' "code=$($lGov.Code)"
+
+$idx5objS6 = Read-MagJsonFile $idx5
+$implUnit = @($idx5objS6.units | Where-Object { $_.knowledge_class -in @('development_architecture', 'development_class_map', 'reusable_pattern_unit') } | Select-Object -First 1)
+$lImpl5 = if ($implUnit) { Invoke-Loc $idx5 'GLOBAL+#5' 'IMPLEMENT' $implUnit.title } else { $null }
+Assert-True ($null -ne $implUnit -and $lImpl5.Code -eq 0 -and $lImpl5.Json.state -eq 'FOUND') 's6-hash5-implement-candidate' "code=$($lImpl5.Code)"
+
+$patUnit = @((Read-MagJsonFile $idxG).units | Where-Object { $_.knowledge_class -eq 'reusable_pattern_unit' } | Select-Object -First 1)
+$lPatG = Invoke-Loc $idxG 'GLOBAL' 'IMPLEMENT' $patUnit.title
+$lPatA = Invoke-Loc $idxG 'GLOBAL+A1' 'LEARN' $patUnit.title
+$lPat5 = Invoke-Loc $idx5 'GLOBAL+#5' 'IMPLEMENT' $patUnit.title
+# Locator has no applicability engine. A cannot obtain a Pattern pointer via GLOBAL/#5 indexes (OUT_OF_SCOPE).
+# Matching #N may still FOUND a Pattern candidate on the #5 index. Selection of applicability_class N as A HOW is canonical/agent, not Locator.
+Assert-True ($lPatG.Code -eq 0 -and $lPatA.Code -eq 4 -and $lPat5.Code -eq 0 -and $patUnit.knowledge_class -eq 'reusable_pattern_unit') 's6-pattern-candidate-not-a-selection' "g=$($lPatG.Code) a=$($lPatA.Code) h5=$($lPat5.Code)"
+
+$lNf = Invoke-Loc $idxG 'GLOBAL' 'GOVERN' 'the'
+Assert-True ($lNf.Code -eq 1 -and $lNf.Json.state -eq 'NOT_FOUND' -and [bool]$lNf.Json.index_miss) 's6-not-found-is-index-miss'
+
+$lOos = Invoke-Loc $idx5 'GLOBAL+#8' 'DEBUG' 'anything'
+Assert-True ($lOos.Code -eq 4 -and $lOos.Json.reason -eq 'foreign_identity' -and (@($lOos.Json.candidates).Count -eq 0)) 's6-oos-no-broaden'
+
+$lStale = Invoke-Loc (Join-Path $roots.Ecosystem 'generated\knowledge\no-such.json') 'GLOBAL' 'GOVERN' 'x'
+Assert-True ($lStale.Code -eq 3 -and $lStale.Json.reason -eq 'missing_index' -and $lStale.Json.working_identity_status -eq 'assignable') 's6-stale-missing-index-not-last-good'
+
+Assert-True (@($script:MagKnownIntents).Count -eq 6 -and ($script:MagKnownIntents -join ',') -eq 'GOVERN,PLAN,IMPLEMENT,DEBUG,VERIFY,LEARN') 's6-six-intents-only'
+$lFoo = Invoke-Loc $idxG 'GLOBAL' 'FOO' 'authority'
+Assert-True ($lFoo.Code -eq 4 -and $lFoo.Json.reason -eq 'unknown_intent') 's6-unknown-intent'
+
 Get-ChildItem (Join-Path $roots.Ecosystem 'generated\knowledge') -Filter 'index-orch*.json' -ErrorAction SilentlyContinue | Remove-Item -Force
 
 Remove-Item -LiteralPath $badDir -Recurse -Force -ErrorAction SilentlyContinue

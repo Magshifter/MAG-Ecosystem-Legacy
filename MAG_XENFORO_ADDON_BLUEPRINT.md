@@ -1,7 +1,7 @@
 # MAG XenForo Add-on Blueprint
 
 - MAG-Document-ID: `MAG_XENFORO_ADDON_BLUEPRINT.md`
-- MAG-Content-Updated: `2026-09-24T21:30:00+03:00`
+- MAG-Content-Updated: `2026-09-25T20:45:00+03:00`
 
 ## Purpose, scope, and authority
 
@@ -109,7 +109,7 @@ This supporting package lives locally at the repository root plus templates/xenf
 
 ## Architecture blocks and implementation increments
 
-Within a project, recommend AD1, AD2, AD3 for Architecture Decisions and I1, I2, I3 for executable Implementation Increments. Do not use A1, A2, A3 for architecture decisions: `A<N>` is the permanent Desktop / Development Application identity namespace. Qualify AD/I references with the project and document. Do not rename historical project identifiers or fragment a simple decision into artificial blocks.
+Within a project, recommend AD1, AD2, AD3 for Architecture Decisions and I1, I2, I3 for executable Implementation Increments. Do not use A1, A2, A3 for architecture decisions: `A<N>` is the platform-neutral Software Product identity namespace, not a Desktop or Windows class. A specific `A<N>` product may still have Desktop as instance classification or surface metadata. Qualify AD/I references with the project and document. Do not rename historical project identifiers or fragment a simple decision into artificial blocks.
 
 Architecture owns each decision; Roadmap references its approval and sequencing. Roadmap owns executable increment scope/progress. Approval of an architecture block does not itself authorize an implementation increment.
 

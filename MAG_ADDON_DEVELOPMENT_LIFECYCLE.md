@@ -1,15 +1,18 @@
 # MAG Add-on Development Lifecycle
 
 - MAG-Document-ID: `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
-- MAG-Content-Updated: `2026-09-24T21:30:00+03:00`
+- MAG-Content-Updated: `2026-09-25T19:00:00+03:00`
 
-This document defines the Global MAG lifecycle for developing and maintaining **MAG XenForo add-ons (`#N`)**.
+This document is the canonical MAG Global lifecycle owner. It contains one lifecycle, not two systems:
 
-**Scope:** This lifecycle applies to **`#N` MAG XenForo Projects** unless a separately approved lifecycle exists for another development class. Process rules that are not XenForo-specific remain available through GLOBAL + active development identity, but XenForo-only phases, gates, and release mechanics in this document apply only where the active identity is `#N`.
+1. a compact platform-neutral **Global Core Lifecycle**;
+2. the existing numbered **`#N` XenForo Product lifecycle** as that Core's established specialization/profile.
 
-It defines the ordered development path from an initial idea through project approval, requirements, technical verification, architecture, implementation, validation, release, post-release verification, reusable-knowledge capture, and subsequent maintenance.
+**Scope:** Core applies through GLOBAL + the active assignable development identity. The numbered `#N` profile applies when Verified Applicability selects `#N`. XenForo-only phases, gates, bootstrap package, version identity, packaging, and release mechanics apply only where the active identity is `#N`. This file is not a seventh Global owner and does not require a separate lifecycle document for another Product Class.
 
-This document is the canonical Global authority for the ordered add-on lifecycle, stage gates, and documentation timing: when documents are created, updated, reviewed, and finalized.
+It defines the ordered development path from an initial idea through product approval, bootstrap, requirements, technical verification, architecture, implementation, validation, release, post-release verification, reusable-knowledge capture, and subsequent maintenance.
+
+This document is the canonical Global authority for the Global Core Lifecycle, the ordered `#N` add-on lifecycle, stage gates, and `#N` documentation timing: when `#N` documents are created, updated, reviewed, and finalized.
 
 Detailed rules remain in their owning Global documents. This lifecycle references those rules; it does not replace or independently redefine them.
 
@@ -21,18 +24,19 @@ It does not replace:
 - any active project TZ, Roadmap, Architecture, CLASS_MAP, Changelog, README, or approved research/audit documentation.
 
 GLOBAL defines HOW.
+Verified Applicability determines WHICH HOW applies.
 Active development defines WHAT.
 
 Detailed development rules remain in AI_GUIDELINES.md.
 Coding-agent execution rules remain in AI_AGENTS_RULES.md.
 Cursor model-selection / model-routing policy remains in AI_GUIDELINES.md §24.4.
 Reusable technical knowledge remains in MAG_IMPLEMENTATION_PATTERNS.md.
-Project identity and documentation authority remain in MAG_ECOSYSTEM.md.
+Project identity, Product Class, Surface, Technology, Verified Applicability, and documentation authority remain in MAG_ECOSYSTEM.md.
 
 
 ### Authority boundaries and adoption
 
-The lifecycle applies to GLOBAL + the active `#N` XenForo project. Project document authority, identity, naming, and context isolation remain defined in [MAG_ECOSYSTEM.md](MAG_ECOSYSTEM.md).
+Core applies to GLOBAL + the active assignable development identity (`GLOBAL+#N` or `GLOBAL+A<N>`). The numbered `#N` XenForo Product profile applies to GLOBAL + the active `#N` XenForo product. Project document authority, identity, naming, taxonomy, and context isolation remain defined in [MAG_ECOSYSTEM.md](MAG_ECOSYSTEM.md). `B<N>` is reserved and is not a current working identity.
 
 Lifecycle transitions do not enlarge an agent's authorized scope. Apply [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) to execution in every phase, including research, documentation, and release work. Apply [AI_GUIDELINES.md](AI_GUIDELINES.md) §24 whenever a phase uses Cursor: operating modes, Coordinator Mode presentation, Direct Agent Mode execution surface, post-execution review, or model routing.
 
@@ -42,9 +46,100 @@ Process/HOW execution must honor currently ACTIVE entries in [`MAG_PROCESS_OVERL
 
 If another Global document contains an incompatible lifecycle sequence or documentation-timing rule, identify the exact conflict for Product Owner resolution and synchronize the owning documents through an approved change. Do not silently select a rule or duplicate its detailed implementation here.
 
+## Global Core Lifecycle
+
+This section is the MAG Global Core Lifecycle. It is platform-neutral. It does not create a second lifecycle system, a seventh Global owner, or a class/surface process stack.
+
+Verified Applicability selects whether a specialization applies after identity scope. Specialization adds applicable constraints to Core; it does not replace Core's canonical order or Core rules. Keyword similarity is not proof of applicability and must not select a specialization.
+
+`#N` XenForo Products use Core **plus** the existing numbered `#N` XenForo Product profile below.
+
+`A<N>` Software Products use Core unless a separately proven recurring specialization exists. Absence of a specialized profile means use Core. Absence of a profile must never block a valid `A<N>` development.
+
+Do not invent Android, iOS, Desktop, Web/service, or other class/surface lifecycle profiles in this document.
+
+### Core sequence
+
+```text
+Idea / Evaluation
+→ Product Approval
+→ Bootstrap
+→ Requirements
+→ Targeted Technical Verification [conditional]
+→ Architecture [when required]
+→ Architecture Approval [when required]
+→ Implementation Planning
+→ Implementation Authorization [per increment]
+→ Incremental Implementation
+→ Validation / Acceptance
+→ Release Readiness
+→ Release Finalization [applicable product artifact]
+→ Stable Release
+→ Post-Release Verification
+→ Knowledge Capture
+→ Maintenance / Next Version
+```
+
+### Core rules
+
+- Depth scales with complexity, uncertainty, and risk. Decision order does not reverse.
+- Uncertain host/runtime/framework behavior is verified before architecture relies on it.
+- Targeted technical verification is conditional: research only unresolved questions required for the next architecture decision. It is not a mandatory broad audit. Skip it only when remaining uncertainty is recorded as none.
+- Architecture, and Architecture Approval, apply when architecture decisions are required. They may be skipped only when no architecture decision is required.
+- Implementation of an increment requires explicit applicable Product Owner authorization. Architecture approval is not implementation authorization.
+- Validation depth is proportional to actual risk.
+- Technical validation and Product Owner Practical Acceptance are distinct. Practical Acceptance uses an environment appropriate to the product's in-scope surfaces for that release.
+- Defects return to the earliest affected lifecycle point. Preserve still-valid evidence and approvals; repeat validation when the change makes earlier evidence insufficient.
+- One primary Core stage at a time. Planned work is not implemented work.
+- Before advancing from a completed logical stage, complete the mandatory closure procedure in [AI_GUIDELINES.md](AI_GUIDELINES.md) §20 and applicable [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) §10 rules. An output ready for review is not a closed stage.
+- Coherent-block and immediate-gate-evaluation rules in §3 apply to Core as well as to the `#N` profile. Distinct gates retain separate evidence. Gate PASS does not authorize a later Product Owner-controlled stage when this document or the project Roadmap defines that authorization separately.
+- The Product Owner controls approval gates, implementation authorization, Git checkpoints, and releases.
+
+### Bootstrap Core intent
+
+Bootstrap establishes the approved identity and the applicable documentation foundation according to [MAG_ECOSYSTEM.md](MAG_ECOSYSTEM.md) for that Product Class and identity.
+
+The `#N` conceptual eight-document package, XenForo Blueprint instantiation, and Drive-First two-level bootstrap are `#N` profile requirements. They are not Core requirements.
+
+### Release Core intent
+
+Release Finalization and Stable Release mean Product Owner-authorized preparation, verification, shipping, and publication of the artifact the product actually ships.
+
+Exact artifact form, host metadata, store packaging, and version-identity mechanics belong to Verified Applicability. XenForo ZIP, Release Presentation, `magicon.png`, Resource URL, `hashes.json`, Delete-files eligibility, `_output` exclusion, and `addon.json` `version_id` / `version_string` are `#N` profile rules, not Core requirements.
+
+### Core ↔ `#N` Phase / Gate mapping
+
+This mapping is routing. It does not rewrite, renumber, or replace the numbered `#N` sections. `#N` work follows the numbered profile in full. Core names do not replace Phase/Gate numbers in `#N` Roadmaps, Blueprint, or existing citations.
+
+| Core stage | `#N` profile location |
+| --- | --- |
+| Idea / Evaluation | Phase 0 |
+| Product Approval | Gate 0 |
+| Bootstrap | Phase 1 |
+| Requirements | Phase 2; Gate 1 |
+| Targeted Technical Verification [conditional] | Phase 3 |
+| Architecture [when required] | Phase 4 |
+| Architecture Approval [when required] | Gate 2 |
+| Implementation Planning | Phase 5 |
+| Implementation Authorization [per increment] | Phase 5 implementation authorization |
+| Incremental Implementation | Phase 6 |
+| Validation / Acceptance | Phase 7 |
+| Release Readiness | Gate 3 |
+| Release Finalization [applicable product artifact] | Phase 8 |
+| Stable Release | Stable Release |
+| Post-Release Verification | Phase 9 |
+| Knowledge Capture | Phase 10 |
+| Maintenance / Next Version | Phase 11 |
+
+## `#N` XenForo Product lifecycle (profile)
+
+The numbered sections below are the established MAG `#N` XenForo Product specialization. They add XenForo-specific phases, gates, bootstrap, documentation package, verification, version identity, packaging, and release constraints to Core. They do not replace Core. Do not apply this profile to `A<N>` by keyword similarity or because a product has a desktop, mobile, Web, or other surface.
+
+`#N` work uses Core **plus** this profile. Citations to Phase 0–11 and Gate 0–3 remain valid.
+
 ## 1. Purpose
 
-The purpose of this lifecycle is to ensure that MAG add-ons are developed in a controlled order:
+The purpose of this `#N` XenForo Product profile is to ensure that MAG XenForo add-ons are developed in a controlled order:
 
 ```text
 Idea
@@ -69,6 +164,8 @@ Idea
 → Maintenance / Next Version
 ```
 
+This path is the `#N` instantiation of the Global Core sequence. Release Presentation and the final XenForo release package are `#N` profile obligations, not Core.
+
 The lifecycle prevents implementation from becoming the mechanism through which requirements or architecture are discovered accidentally.
 
 The amount of work performed in each phase must remain proportional to the complexity, uncertainty, and risk of the project or change.
@@ -80,7 +177,7 @@ The lifecycle follows these principles:
 
 1. Requirements precede architecture.
 2. Architecture precedes implementation when architecture decisions are required.
-3. Uncertain XenForo/XFRM behavior is verified before architecture relies on it.
+3. Uncertain host/runtime/framework behavior is verified before architecture relies on it. For `#N`, that host is XenForo/XFRM; Phase 3 specifies the XenForo sources and donor boundary.
 4. Research is targeted to unresolved technical questions rather than performed as a mandatory broad audit.
 5. Existing verified MAG knowledge should be reused when its verified scope applies.
 6. Implementation is incremental.
@@ -131,7 +228,7 @@ Research/architecture iterations and intermediate actions within the same approv
 
 Related approved lifecycle actions that share one uninterrupted objective **SHOULD** execute as one coherent block when no material state change or recovery boundary requires separation.
 
-Typical uninterrupted release objective:
+Typical uninterrupted `#N` release objective:
 
 ```text
 Gate
@@ -1375,7 +1472,7 @@ Phase 8 PASS confirms readiness of the final artifact, not publication. Stable s
 
 ## 23. Authority Summary
 
-- **MAG_ADDON_DEVELOPMENT_LIFECYCLE.md** is canonical for ordered lifecycle phases, transitions, stage gates, and documentation timing.
+- **MAG_ADDON_DEVELOPMENT_LIFECYCLE.md** is canonical for the Global Core Lifecycle, the ordered `#N` XenForo Product profile (phases, transitions, stage gates), and `#N` documentation timing.
 - **[MAG_ECOSYSTEM.md](MAG_ECOSYSTEM.md)** owns ecosystem identity, development-class taxonomy, namespace registry, documentation map, naming, context isolation, and the documentation authority model.
 - **[AI_GUIDELINES.md](AI_GUIDELINES.md)** owns detailed development workflow and operational standards.
 - **[AI_AGENTS_RULES.md](AI_AGENTS_RULES.md)** owns coding-agent execution boundaries, stop/report mechanics, and applicable checkpoint rules.

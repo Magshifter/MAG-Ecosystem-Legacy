@@ -1,13 +1,13 @@
 # MAG Documentation Operations
 
 - MAG-Document-ID: `MAG_DOCUMENTATION_OPERATIONS.md`
-- MAG-Content-Updated: `2026-09-25T16:15:00+03:00`
+- MAG-Content-Updated: `2026-09-25T20:05:00+03:00`
 
 ## 1. Purpose and authority
 
 This document is the Global MAG authority for documentation synchronization across managed Local Git repositories, Google Drive, ChatGPT, and Cursor.
 
-It governs documentation identity validation, synchronization scope and commands, comparison, conflict handling, approval, execution, verification, cleanup, reporting, and Git handoff boundaries. It does not redefine substantive document authority, the MAG development lifecycle, general agent permissions, or Git development policy.
+It governs documentation identity validation, synchronization scope and commands, comparison, conflict handling, approval, execution, verification, cleanup, reporting, and Git handoff boundaries. It does not redefine substantive document authority, the MAG development lifecycle, general agent permissions, or Git development policy. Ordered lifecycle remains in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md): Global Core plus the applicable `#N` XenForo Product profile.
 
 Broader material-change and evidence-invalidation principles for development validation live in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §18. This document remains canonical for documentation-sync evidence reuse, Fast Sync, and invalidation of sync-specific proven state.
 
@@ -37,7 +37,7 @@ This protocol applies to synchronization-managed MAG Markdown documents in:
 
 `C:\laragon\repos\Mirror` is a local filesystem **transport workspace** for an external Google Drive client (phone/remote access). It is not a fourth canonical location. Operational rules for that workspace are in §19.
 
-An operation may use only systems and locations resolved within its approved scope. Active development context follows `GLOBAL + active development identity` per `MAG_ECOSYSTEM.md`; synchronizing one registered development must not import another development's documentation.
+An operation may use only systems and locations resolved within its approved scope. Active development context follows `GLOBAL + active development identity` per `MAG_ECOSYSTEM.md`. Assignable working identities are `GLOBAL`, `#N`, and `A<N>`. `B<N>` is reserved and is not currently assignable. Surface or platform does not create identity. Synchronizing one registered development must not import another development's documentation.
 
 ## 3. Managed locations and canonical identity
 
@@ -66,9 +66,9 @@ Metadata supports identity, comparison, and conflict detection. It does not crea
 
 Missing, duplicate, malformed, mismatched, or unresolved required metadata is `INVALID_METADATA`. Stop synchronization for that document and report the exact problem. Do not invent historical timestamps; use Product Owner baseline ratification when historical evidence cannot establish the current baseline.
 
-### Supporting template assets
+### Supporting template assets (`#N` XenForo Products only)
 
-The approved files `templates/xenforo-addon/P0N__XXX__*.md` are **supporting template assets**: reusable source assets, not instantiated synchronization-managed logical project documents and not independently registered logical documents.
+The approved files `templates/xenforo-addon/P0N__XXX__*.md` are **supporting template assets** for `#N` XenForo Products and the XenForo Blueprint package path. They are reusable source assets, not instantiated synchronization-managed logical project documents and not independently registered logical documents. They do not apply to `A<N>`. Do not create `A<N>` template packages here.
 
 Their two-bullet metadata blocks follow the supporting-template-asset schema and intentionally contain substitution placeholders: `P<NN>__<CODE>__<DOCUMENT>.md` and `<RFC3339 substantive timestamp>`. Those placeholders are validated as template syntax for the asset itself. They are not judged as project-document `INVALID_METADATA` while the file remains a template asset.
 
@@ -82,13 +82,32 @@ supporting template asset
 → ordinary metadata, identity, and registration rules
 ```
 
-When a template is instantiated for a real project, replace its filename and all identity placeholders, establish the actual substantive timestamp, and apply ordinary project-document metadata and registration rules. Unresolved placeholders in an instantiated document remain `INVALID_METADATA`. Template-asset status grants no substantive authority and does not waive Git control.
+When a template is instantiated for a real `#N` project, replace its filename and all identity placeholders, establish the actual substantive timestamp, and apply ordinary project-document metadata and registration rules. Unresolved placeholders in an instantiated document remain `INVALID_METADATA`. Template-asset status grants no substantive authority and does not waive Git control. Do not instantiate these templates for `A<N>`.
 
 ## 5. Document onboarding and registration
 
 Ordinary SYNC operates only on stable registered logical documents. Controlled bootstrap batches use the explicit provisional scope defined below. The existence of a Markdown file alone does not establish registration or place it in SYNC scope.
 
-Document registration is a distinct authority action. Registration, adoption, canonical rename, and retirement require Product Owner approval. Do not fabricate substantive content merely to complete a nominal set. The approved `#N` bootstrap package owned by `MAG_ECOSYSTEM.md` establishes canonical ownership using eight bootstrap-created containers and honest current-state content.
+Document registration is a distinct authority action. Registration, adoption, canonical rename, and retirement require Product Owner approval. The canonical document set for a development must be explicit. Do not fabricate missing documents merely to complete a nominal set. Do not infer a canonical file solely because a logical information role exists.
+
+**`#N` XenForo Products:** the approved eight-document bootstrap package owned by `MAG_ECOSYSTEM.md` establishes canonical ownership using eight bootstrap-created containers and honest current-state content. That package and the Controlled XenForo bootstrap batch below remain unchanged.
+
+**`A<N>` Software Products:** registration uses an explicit Product Owner-approved canonical document set of 1..n documents. It is not the `#N` eight-document package. CLASS_MAP, AUDIT, IDEA, README, and similar artifacts exist only when actually approved and registered.
+
+### Non-#N logical information roles
+
+Non-`#N` documentation is organized by **logical information roles**, not a mandatory physical file count or filename package. These roles are not four required files.
+
+| Logical role | Meaning |
+| --- | --- |
+| **WHAT** | Product requirements authority. |
+| **ARCHITECTURE** | Approved implementation HOW. |
+| **PLAN / STATE** | Sequencing, current phase, and verified versus planned work. |
+| **HISTORY** | Released or staged change record. |
+
+One document may cover multiple roles when authority and purpose remain unambiguous. Roles may be split across more documents when complexity requires it. A multi-surface `A<N>` remains one identity; surface-specific documents are optional registered artifacts, not new identities.
+
+Conditional artifacts (for example CLASS_MAP, AUDIT/evidence, IDEA/discovery, README/entry, platform/store/release notes) exist only when approved and needed. Never infer a canonical file solely because a logical role exists. Do not define a mandatory `A<NN>__` package here. Filename conventions in `MAG_ECOSYSTEM.md` apply when a document is actually adopted or registered; they are not a package recipe.
 
 ### MAG Process Overlay Pool
 
@@ -113,7 +132,7 @@ These states are distinct:
 | Stable registered document | All stable-registration prerequisites satisfied, including applicable Local authoritative state and approved Git baseline. Drive reconciliation is independent; **Drive Reconciliation Pending** does not make a locally registered document provisional. |
 | Experimental registered document | Historical or expressly approved non-process working evidence. Synchronization eligibility only; not process authority. |
 
-Provisional is the expected Level 1 project-document state. Ordinary stable SYNC discovery must not silently include provisional documents. Controlled Level 1 bootstrap operations may work with their explicitly identified provisional package. No additional metadata field is required to represent provisional state.
+Provisional is the expected Level 1 project-document state for `#N` Phase 1. Ordinary stable SYNC discovery must not silently include provisional documents. Controlled Level 1 `#N` bootstrap operations may work with their explicitly identified provisional eight-document package. A controlled `A<N>` procedure may work only with its explicitly approved identified document set. No additional metadata field is required to represent provisional state.
 
 `MAG_XENFORO_ADDON_BLUEPRINT.md` and `MAG_DEBUGGING.md` use ordinary two-bullet metadata and are the currently registered Global operational assets that `MAG_ECOSYSTEM.md` records as eligible for `SYNC GLOBAL`. Supporting template assets remain outside ordinary SYNC discovery and use the approved package-transfer path above. Other Global files, unregistered files, and generated discovery artifacts are not `SYNC GLOBAL` eligible merely because they exist in `MAG-Ecosystem`.
 
@@ -125,7 +144,7 @@ Future process-optimization work uses the MAG Process Overlay Pool, not a new Ex
 
 Historical Experimental / Evaluation documents already present remain historical evidence. Do not automatically rename, delete, or migrate them in this procedure, and do not change their historical meaning.
 
-An Experimental registered document, when one already exists or is later expressly approved for a non-process need, belongs to an explicit development identity (for example `#N`) and records working evidence. Product Owner approval must establish its non-authoritative experimental role, canonical identity/location, and development scope. Registration grants synchronization eligibility only, never substantive authority. Use the existing two-bullet metadata block; do not add registration fields to it or create another registry file.
+An Experimental registered document, when one already exists or is later expressly approved for a non-process need, belongs to an explicit assignable development identity (for example `#N` or `A<N>`) and records working evidence. Product Owner approval must establish its non-authoritative experimental role, canonical identity/location, and development scope. Registration grants synchronization eligibility only, never substantive authority. Use the existing two-bullet metadata block; do not add registration fields to it or create another registry file.
 
 Experimental documents use the same identity, metadata, comparison, conflict, verification, and Git rules as other registered documents. Missing required metadata remains `INVALID_METADATA` for a registered document; unregistered files remain `UNREGISTERED_DOCUMENT` and excluded from writable SYNC. Neither case becomes `NEWER_LOCAL` merely because Local content changed.
 
@@ -135,7 +154,7 @@ Promotion of historical experiment findings remains a separate substantive decis
 
 ### New document
 
-Use this individual-document lifecycle when the logical document does not yet exist. For the approved `#N` package, use Controlled XenForo bootstrap batch below, including its Drive-First / Local/Git-First / Full / Resume path:
+Use this individual-document lifecycle when the logical document does not yet exist. For the approved `#N` eight-document package, use Controlled XenForo bootstrap batch below, including its `#N` Drive-First / Local/Git-First / Full / Resume Phase 1 path. For `A<N>`, use this individual path or the Controlled `A<N>` approved-set batch below. Do not use the XenForo eight-document batch or XenForo templates for `A<N>`.
 
 ```text
 Approve need
@@ -174,7 +193,7 @@ Use adoption when a pre-existing document with an approved authoritative or non-
 10. complete the separate Git handoff for stable discovery;
 11. use SYNC afterward for counterparts.
 
-Resume Bootstrap follows the Resume Bootstrap subsection below. It is not unrelated individual-document adoption. Do not treat adoption as new authorship. A concurrent substantive body edit requires a new substantive timestamp.
+Resume Bootstrap for `#N` follows the `#N` Phase 1 Resume Bootstrap subsection below. It is not unrelated individual-document adoption. Do not treat adoption as new authorship. A concurrent substantive body edit requires a new substantive timestamp.
 
 ### New counterpart
 
@@ -199,7 +218,7 @@ Do not create a separate documentation registry file.
 
 Global registration is represented by the `MAG_ECOSYSTEM.md` Global documentation map, valid metadata, and the applicable Local authoritative state. The six canonical Global authority files remain the durable authority set. `MAG_PROCESS_OVERLAY_POOL.md` is a separately registered ecosystem-level process asset, not a seventh equivalent authority owner.
 
-Stable project registration requires the approved development identity, canonical Local repository, applicable development documentation model and authority, valid metadata, and approved Git baseline. Nonstandard development documents require an explicit Product Owner-approved authoritative or non-authoritative experimental role; metadata cannot grant authority by itself. Process overlays are not registered as project documents.
+Stable project registration requires the approved development identity, canonical Local repository when applicable, the applicable development documentation model and authority, valid metadata, and approved Git baseline. For `#N`, the documentation model is the eight-document package. For `A<N>`, the documentation model is the explicit Product Owner-approved canonical document set (1..n registered documents), including which registered document(s) own Product WHAT. Do not import XenForo versions, `addon.json`, Blueprint, eight-file verification, or XenForo templates into `A<N>` registration. Nonstandard development documents require an explicit Product Owner-approved authoritative or non-authoritative experimental role; metadata cannot grant authority by itself. Process overlays are not registered as project documents.
 
 ### Derived generated discovery artifacts (Knowledge Control)
 
@@ -219,13 +238,13 @@ Generated discovery views must preserve MAG identity isolation. They may expose 
 
 Before generated discovery output is published or used as a routing aid, validate that its canonical source pointers and source revisions still correspond to the current allowed canonical sources. Output that fails this validation must not be published or used as current routing data.
 
-This subsection governs generated-artifact classification, generation, validation, publication, and documentation/SYNC mechanics only. Semantic Entry Gate and intent/retrieval routing behavior belong to `AI_GUIDELINES.md`. Mechanical Action Gate behavior belongs to `AI_AGENTS_RULES.md`.
+This subsection governs generated-artifact classification, generation, validation, publication, and documentation/SYNC mechanics only. Semantic Entry Gate and intent/retrieval routing behavior belong to `AI_GUIDELINES.md`. Mechanical Action Gate behavior belongs to `AI_AGENTS_RULES.md`. Do not create or name an `A<N>` generated-index recipe here.
 
 ### Provisional registration
 
-Provisional registration exists only inside an explicit controlled Product Owner-approved registration, adoption, or `#N` bootstrap procedure. It permits validation and review before Git handoff and, for Drive-First, continued documentation work and verified writes within that approved scope. It is not default discovery state.
+Provisional registration exists only inside an explicit controlled Product Owner-approved registration, adoption, `#N` bootstrap, or `A<N>` approved-set procedure. It permits validation and review before Git handoff and, for `#N` Drive-First Phase 1, continued documentation work and verified writes within that approved scope. It is not default discovery state.
 
-Ordinary `SYNC #N`, `SYNC A<N>`, or `SYNC B<N>` must not automatically include a provisional document. Unrelated procedures must not treat it as stable registration. The separately approved Git handoff establishes normal discoverability. No additional metadata field represents provisional state.
+Ordinary `SYNC #N` or `SYNC A<N>` must not automatically include a provisional document. `SYNC B<N>` is reserved/disabled while `B<N>` is reserved. Unrelated procedures must not treat provisional documents as stable registration. The separately approved Git handoff establishes normal discoverability. No additional metadata field represents provisional state.
 
 ### Unregistered and orphan documents
 
@@ -249,7 +268,13 @@ Project retirement remains under `MAG_ECOSYSTEM.md` and lifecycle authority. Its
 
 Documentation Operations consumes an already approved development identity. It does not approve developments, assign identities, or provide a development-creation command.
 
-A newly approved development identity does not by itself claim stable registration. For a newly approved XenForo `#N` bootstrap, instantiate the eight bootstrap-created documents owned by `MAG_ECOSYSTEM.md` with valid identity and honest current-state content. Do not blindly clone #1, #2, another project's WHAT, or speculative implementation. The approved package is permitted; it does not apply to `A<N>` or `B<N>`, whose documents remain selected from actual approved needs. Development approval and bootstrap sequencing remain governed by `MAG_ECOSYSTEM.md` and, for `#N` XenForo add-ons, `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`.
+A newly approved development identity does not by itself claim stable registration.
+
+For a newly approved XenForo `#N` bootstrap, instantiate the eight bootstrap-created documents owned by `MAG_ECOSYSTEM.md` with valid identity and honest current-state content. Do not blindly clone #1, #2, another project's WHAT, or speculative implementation. Development approval and `#N` bootstrap sequencing remain governed by `MAG_ECOSYSTEM.md` and the `#N` XenForo Product profile in `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`.
+
+For `A<N>`, select documentation from actual Product Owner-approved needs. The XenForo eight-document package does not apply. `A<N>` lifecycle behavior follows the Global Core Lifecycle in `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`, not the numbered `#N` profile. Do not execute `#N` Drive-First Phase 1, XenForo templates, Blueprint instantiation, or eight-file verification for `A<N>`.
+
+`B<N>` is reserved and is not assignable. Do not onboard, register, or SYNC `B<N>` product documentation while it remains reserved.
 
 ### Controlled XenForo bootstrap batch
 
@@ -263,30 +288,51 @@ Create only proven missing counterparts; update existing raw files safely in pla
 
 After execution, verify each intended counterpart and the bootstrap package: the eight bootstrap-created files, identity, metadata, location, content, and absence of unintended duplicates. Use byte-level comparison where possible; accept FORMAT_ONLY only when the representation-only difference is proven. Report per-file results and any remaining prerequisites. Normal SYNC outside this controlled bootstrap scope is unchanged.
 
+### Controlled `A<N>` approved-set batch
+
+An explicit Product Owner authorization may cover a newly approved `A<N>` identity's **explicitly enumerated** canonical document set as one operation. The set may contain 1..n documents. It is not an eight-document package. Do not expand the set during execution. Do not instantiate XenForo templates, Blueprint, or eight-file verification.
+
+```text
+PO-approved A<N> identity
+→ PO-approved explicit canonical document set
+→ each document: canonical identity, location, metadata, applicable logical role(s)
+→ provisional state only within the controlled procedure
+→ Git handoff where required for stable discovery
+→ ordinary SYNC only after stable registration
+```
+
+Minimum registration facts: identity; Product WHAT authority (which registered document(s) own WHAT); the explicit approved canonical document set; repository/local path when applicable; Drive counterpart state tracked independently (none / pending / reconciled).
+
+Create or synchronize only documents in that approved list. Missing optional logical roles that were never registered are not `MISSING_SOURCE` or `MISSING_TARGET`. Unregistered files remain unregistered. `A<N>` may use available documentation surfaces only for this approved/controlled set.
+
 ### Documentation surface availability
 
-These paths are operational availability modes, not exceptions. They do not change lifecycle gates, Git authority, implementation authorization, or release authority. Phase 1 completion and two-level bootstrap authority remain in `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 1.
+These paths are operational **surface availability** modes, not exceptions. They do not change lifecycle gates, Git authority, implementation authorization, or release authority.
 
-| Path | Meaning |
+Work may occur on an available registered surface (for example Drive when Local is unavailable) and later reconcile under this protocol. That Global availability rule applies to registered or controlled documents of the active identity. It does **not** by itself run `#N` Phase 1 eight-document bootstrap.
+
+`#N` Phase 1 completion and two-level bootstrap authority remain in `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 1. The Drive-First / Local/Git-First / Full / Resume subsections immediately below are **`#N` XenForo Phase 1 eight-document bootstrap**. `A<N>` must not execute them.
+
+| Path | Global surface meaning |
 | --- | --- |
-| **Drive-First** | Drive/documentation work may begin when Local/Git is unavailable. Later Local/Git bootstrap/reconciliation occurs. |
-| **Local/Git-First** | Local repository and Git bootstrap/work may complete when Drive is unavailable or intentionally deferred. Record **Drive Reconciliation Pending**. Later Drive reconciliation occurs. |
-| **Full** | Local/Git and Drive surfaces are available within the same coherent bootstrap/sync procedure. |
+| **Drive-First** | Drive/documentation work may begin when Local/Git is unavailable. Later Local/Git reconciliation occurs for the approved registered/controlled set. |
+| **Local/Git-First** | Local repository and Git work may complete when Drive is unavailable or intentionally deferred. Record **Drive Reconciliation Pending**. |
+| **Full** | Local/Git and Drive surfaces are available within the same coherent procedure. |
 | **Resume** | Continue from an already established partial state toward the missing surface(s). |
 
-### Drive-First Bootstrap
+### Drive-First Bootstrap (`#N` Phase 1)
 
 After Project Approval, Drive-First may establish the permanent identity and canonical package on Google Drive without Local/Git. Drive-First is a normal documentation-operations path, not an exception. Record **Bootstrap Incomplete — Local/Git Pending** in README and Roadmap and reflect pending registration accurately in the existing identity record where applicable. Do not introduce a metadata field or another registry file. Explicitly record Drive as the current authoritative documentation source in the controlled scope.
 
 The missing Local repository/approved Git baseline is an expected incomplete bootstrap prerequisite, not a reason to block approved Drive-side documentation work or falsely declare stable registration. These identified provisional documents stay inside the active bootstrap procedure and are excluded from ordinary SYNC discovery. Substantive edits still require appropriate scope/approval, timestamps, conflict checks, and readback verification.
 
-### Local/Git-First
+### Local/Git-First (`#N` Phase 1)
 
 After Project Approval, Local/Git-First may establish the Local repository, canonical `/docs/` package, and authorized Git baseline when Drive is unavailable or deferred. Completing Local/Git Bootstrap Complete and stable registration does not require Drive counterparts. Record **Drive Reconciliation Pending**. Do not silently declare **Drive Reconciled**. Do not authorize implementation, commit, push, tag, or release merely because Local/Git bootstrap is complete.
 
 When Drive later becomes available, reconcile applicable counterparts under this document without restarting approved substantive work. Preserve Local identity, metadata, and bodies; compare before overwrite; stop on conflict.
 
-### Resume Bootstrap
+### Resume Bootstrap (`#N` Phase 1)
 
 Resume Bootstrap reuses the same identity, approved scope, current bodies, and verified substantive work. Re-fetch the current Drive package when counterparts exist; check whether Local counterparts are absent or already exist. Create/complete the approved Local repository structure including `/docs/` and assign one canonical Local path per document using the approved root/`docs/` layout. Reconcile Drive into Local when those counterparts exist, without restarting requirements or architecture. Preserve names, metadata, and raw bytes where possible; compare any existing Local content and resolve conflicts before overwriting it. Do not infer Local authority merely because a repository has become available.
 
@@ -306,7 +352,7 @@ Natural-language narrowing may restrict repository, project, location, direction
 
 A bare `SYNC` may use clearly established active context. If the context is missing or ambiguous, stop for clarification.
 
-An explicit active controlled registration or adoption procedure may validate its own provisional document; a controlled `#N` bootstrap batch may validate and synchronize its identified provisional package under §5. Ordinary SYNC discovery and unrelated procedures must exclude provisional and unregistered documents.
+An explicit active controlled registration or adoption procedure may validate its own provisional document; a controlled `#N` bootstrap batch may validate and synchronize its identified provisional eight-document package under §5; a controlled `A<N>` approved-set batch may validate and synchronize only its explicitly enumerated documents. Ordinary SYNC discovery and unrelated procedures must exclude provisional and unregistered documents. Missing optional or unregistered logical roles for `A<N>` are not `MISSING_SOURCE` or `MISSING_TARGET`.
 
 If explicitly asked to SYNC an unregistered document:
 
@@ -372,7 +418,17 @@ Do not include unregistered files, generated discovery artifacts, or supporting 
 
 ### `SYNC #1`, `SYNC #2`, `SYNC #N`, `SYNC A<N>`, and `SYNC B<N>`
 
-Cover only the synchronization-managed documents belonging to that permanent development identity. Never copy Global documents into development scope.
+`SYNC #1`, `SYNC #2`, and `SYNC #N` cover only the stable registered synchronization-managed documents belonging to that `#N` identity. Never copy Global documents into development scope.
+
+`SYNC A<N>` enumerates only the stable registered approved canonical documents for that `A<N>` identity. It does not invent documents, does not require the `#N` eight-document package, and does not treat unregistered logical roles as missing counterparts.
+
+`SYNC B<N>` is reserved/disabled. While `B<N>` is reserved it is not an assignable working identity. If invoked:
+
+```text
+STOP → B<N> is not an assignable working identity
+```
+
+Do not invent documents or broaden scope. Historical mentions of the `B` prefix are not a live SYNC scope.
 
 ### `SYNC OPERATIONS`
 
@@ -624,7 +680,7 @@ Before a writable execution, report for every resolved document:
 - cleanup candidates;
 - conflicts, risks, and stop conditions.
 
-Then stop. Product Owner approval must identify the accepted plan or exact subset. For a controlled bootstrap batch, §5 permits one package authorization without a second or per-file approval loop. Outside that controlled bootstrap batch, the existing plan-approval requirement remains unchanged. Changed scope or material state invalidates the affected approval and requires a revised plan.
+Then stop. Product Owner approval must identify the accepted plan or exact subset. For a controlled `#N` XenForo bootstrap batch, §5 permits one eight-document package authorization without a second or per-file approval loop. For a controlled `A<N>` approved-set batch, §5 permits one authorization covering only the explicitly enumerated approved document set; do not expand that set during execution. Outside those controlled batches, the existing plan-approval requirement remains unchanged. Changed scope or material state invalidates the affected approval and requires a revised plan.
 
 ## 13. Execution
 
@@ -761,7 +817,7 @@ Mirror:          C:\laragon\repos\Mirror\<RepoFolder>\<RelPath>
 
 `<RepoFolder>` is the actual Local clone folder recorded in `MAG_ECOSYSTEM.md` (for example `MAG-Workflow-Bridge`, not a remote repository title).
 
-Managed membership is the explicit inventory currently at `MAG-Ecosystem` / `tools/docs/mirror-inventory.json`. Mirror contents never determine membership. Inventory may include canonical documents, supporting/experimental/template documentation, and explicitly allowlisted tools/scripts. Inclusion does not change an item's registration or authority class.
+Managed membership is the explicit inventory currently at `MAG-Ecosystem` / `tools/docs/mirror-inventory.json`. Mirror contents never determine membership. Inventory may include canonical documents, supporting/experimental/template documentation, and explicitly allowlisted tools/scripts. Inclusion does not change an item's registration or authority class. Inventory membership is explicit and does **not** imply `#N` eight-document package completeness or an `A<N>` package.
 
 Outside transport scope unless an inventory entry names them: `generated/**`, secrets/credentials, dependencies/vendor/`node_modules`, runtime/cache/output, release artifacts, product/source code, tests excluded by inventory, and unmanaged extras.
 

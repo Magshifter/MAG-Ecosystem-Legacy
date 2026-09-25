@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Coding Agent Rules
 
 - MAG-Document-ID: `AI_AGENTS_RULES.md`
-- MAG-Content-Updated: `2026-09-25T16:15:00+03:00`
+- MAG-Content-Updated: `2026-09-25T19:10:00+03:00`
 
 These rules define **how coding agents may execute** work in MAG repositories.
 
@@ -9,9 +9,9 @@ They apply equally to Cursor Agent, Codex, and any future coding agent used on M
 
 Coding agents are **implementation tools**. They do not own strategy, independent research, architecture, requirements, or project management. Broader MAG development policy is in [`AI_GUIDELINES.md`](AI_GUIDELINES.md). Ecosystem structure, active development identity, and documentation authority navigation are in [`MAG_ECOSYSTEM.md`](MAG_ECOSYSTEM.md). Do not restate those documents here.
 
-Respect **GLOBAL + active development identity** isolation per `MAG_ECOSYSTEM.md`. XenForo-specific execution rules apply only when that identity is a `#N` XenForo add-on project.
+Respect **GLOBAL + active development identity** isolation per `MAG_ECOSYSTEM.md`. `#N` and `A<N>` are assignable identity families. `B<N>` is reserved and is not a current working identity. After identity scope, Verified Applicability filters which Global HOW applies. Applicability is not authority. Keyword similarity is not proof of applicability. XenForo-specific execution rules apply only when that identity is a `#N` XenForo Product. Do not import `#N` requirements into `A<N>`.
 
-Ordered phase transitions and documentation timing are defined in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md). That lifecycle does not expand the execution scope authorized under this document.
+Ordered lifecycle transitions and documentation timing are defined in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) as Global Core plus the applicable specialization. `#N` uses Core plus the numbered `#N` XenForo Product profile. Absence of a specialization means use Core; it must not block a valid `A<N>` development. That lifecycle does not expand the execution scope authorized under this document.
 
 Honor currently ACTIVE entries in [`MAG_PROCESS_OVERLAY_POOL.md`](MAG_PROCESS_OVERLAY_POOL.md) inside their explicit scope. Do not enlarge overlay scope. Treat only Status `ACTIVE` as an overlay; DRAFT, VALIDATED, PROMOTED, REJECTED, and WITHDRAWN records have no execution effect unless Status is ACTIVE. An unresolved conflict between ACTIVE overlays, or ambiguous overlay scope, is a stop condition for the affected action.
 
@@ -91,7 +91,7 @@ An AI coding agent must not:
 
 - Search the internet unless explicitly authorized for a specific task.
 - Perform independent external documentation research.
-- Independently learn XenForo APIs or frameworks outside the approved task.
+- Independently learn host/framework APIs outside the approved task. When `#N`, that includes independently learning XenForo APIs.
 - Make architectural decisions or redesign architecture.
 - Analyze or define requirements (including inventing missing requirements).
 - Explore or choose new solutions as a research exercise.
@@ -257,6 +257,8 @@ An agent must not independently reinterpret requirements, rewrite or restructure
 
 Documentation modification must be an explicit part of the approved task.
 
+Do not instantiate `#N` Blueprint or eight-document package requirements unless the active identity is `#N`.
+
 If documentation and implementation conflict, **report the conflict**. Do not silently choose a new interpretation.
 
 If implementation appears to require an architectural change, **stop** and report: why the current architecture appears insufficient; the technical conflict; which requirement or boundary is affected; what decision is required. Continue only after that decision is made through the normal MAG process.
@@ -287,7 +289,9 @@ Apply the material-change filter and evidence-reuse rules in [`AI_GUIDELINES.md`
 
 Prefer the **minimum sufficient safe path**: when the objective is approved, evidence remains valid, and no authority/risk/scope boundary changed, execute the smallest safe procedure. Do not re-analyze merely to re-create ceremony.
 
-Release-artifact rules, Release Finalization scope, and Release Presentation gating are defined in `AI_GUIDELINES.md` and `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 8. XenForo `version_id` / `version_string` follow `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` **XenForo add-on version identity**. Agents must not invent `version_id`. Unresolved version identity is a stop before version bump and before the final release ZIP. Agents must not overwrite canonical `_releases` ZIP filenames. Test builds must be renamed immediately. Do not build the final release ZIP before required Release Presentation data is approved and applied.
+When the active identity is `#N`, release-artifact rules, Release Finalization scope, and Release Presentation gating are defined in `AI_GUIDELINES.md` §21 and `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 8. XenForo `version_id` / `version_string` follow `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` **XenForo add-on version identity**. Agents must not invent `version_id`. Unresolved version identity is a stop before version bump and before the final release ZIP. Agents must not overwrite canonical `_releases` ZIP filenames. Test builds must be renamed immediately. Do not build the final release ZIP before required Release Presentation data is approved and applied.
+
+Core Release Finalization uses the applicable shipping artifact of the active product. Do not invent a version scheme. Do not apply XenForo ZIP, Presentation, `version_id`, or `_releases` rules to `A<N>`.
 
 Distinguish:
 
@@ -299,9 +303,9 @@ Distinguish:
 - Product Owner Practical Acceptance still required or pending.
 - Assumptions that remain unverified.
 
-Do not claim a test passed, XenForo compatibility was verified, runtime behavior was proven from static inspection, or Git state was inspected, unless that is true.
+Do not claim a test passed, host/runtime compatibility was verified, runtime behavior was proven from static inspection, or Git state was inspected, unless that is true. When `#N`, do not claim XenForo compatibility was verified unless that is true.
 
-Do not treat completed technical validation as sufficient for Gate 3 — Release Readiness, Release Finalization, or Stable Release when required Product Owner Practical Acceptance per `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 7 remains pending or has not **PASS**.
+Do not treat completed technical validation as sufficient for Release Readiness, Release Finalization, or Stable Release when required Product Owner Practical Acceptance remains pending or has not **PASS**. When `#N`, that remains Gate 3 — Release Readiness and Product Owner Practical Acceptance per `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 7.
 
 Selecting a cheaper Cursor model must not reduce these validation requirements.
 
@@ -399,7 +403,7 @@ Proceed to next approved stage/phase only after closure
 
 Authoritative stage/phase closure discipline is defined in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §20.
 
-When the approved task is a completed stage checkpoint, synchronize that project's changelog as part of the same increment. A stage is not complete until required changelog synchronization is finished.
+When the approved task is a completed stage checkpoint, synchronize that identity's applicable changelog as part of the same increment if the identity has one. Do not require a `#N` `P<NN>__` Changelog filename for `A<N>`. A stage is not complete until required applicable changelog synchronization is finished.
 
 Within a coherent block, prefer one justified checkpoint at the material boundary rather than status-only intermediate commits.
 
@@ -412,7 +416,7 @@ Stop **before** continuing when:
 - Requirements are ambiguous and cannot be resolved safely from approved sources.
 - Authoritative documents conflict.
 - Two ACTIVE Process Overlay Pool entries conflict, or overlay scope is ambiguous.
-- Undocumented XenForo behavior must be verified beyond targeted installed-source inspection (or that inspection is insufficient).
+- Undocumented host, runtime, or framework behavior must be verified beyond targeted installed-source inspection (or that inspection is insufficient). When `#N`, that includes undocumented XenForo behavior and installed XenForo source.
 - Implementation would cross an approved rule boundary.
 - A required manual or user action is incomplete.
 - An unexpected **Critical** issue is discovered.
