@@ -1,7 +1,7 @@
 # MAG Implementation Patterns
 
 - MAG-Document-ID: `MAG_IMPLEMENTATION_PATTERNS.md`
-- MAG-Content-Updated: `2026-09-25T19:50:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:35:00+03:00`
 
 Reusable, source-backed implementation knowledge for MAG development. This file is the **single Global reusable implementation knowledge base**. Do not create per-class Pattern documents.
 
@@ -106,6 +106,13 @@ Use this procedure when MAG work may have produced reusable technical knowledge.
 
 Identify whether the completed work produced a potentially reusable technical finding or solution.
 
+If this work did **not** produce a genuinely new reusable technical finding that has not already been classified:
+
+- stop here;
+- do not launch a separate Cursor research or audit pass;
+- do not create a Pattern;
+- do not create an audit artifact merely to prove “none”.
+
 Candidates may include:
 
 - verified host/runtime/framework behavior (when `#N`, verified XenForo/XFRM behavior);
@@ -184,7 +191,7 @@ Use `Needs Revalidation` where the finding is useful but host/runtime/version-sp
 
 Add or update Global reusable knowledge only when there is a meaningful future reuse case.
 
-Do not add entries merely because something was discovered.
+Do not add entries merely because something was discovered. Do not create a Pattern, research pass, or audit artifact merely because Phase 10 was reached or to prove that no reusable candidate exists.
 
 This knowledge base must remain focused and useful rather than becoming a development log. `MAG_DEBUGGING.md` must not become a Pattern body store.
 

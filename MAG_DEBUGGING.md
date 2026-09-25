@@ -1,7 +1,7 @@
 # MAG Debugging
 
 - MAG-Document-ID: `MAG_DEBUGGING.md`
-- MAG-Content-Updated: `2026-09-25T19:50:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:35:00+03:00`
 
 ## 1. Purpose and scope
 
@@ -109,7 +109,7 @@ Do **not** allocate `DBG-*` identifiers or other Knowledge Control IDs in this o
 
 ## 5. Evidence discipline
 
-This section states **operational** evidence discipline for debugging. Authoritative fact handling, material-change rules, and promotion policy remain in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) and [`MAG_IMPLEMENTATION_PATTERNS.md`](MAG_IMPLEMENTATION_PATTERNS.md).
+This section states **operational** evidence discipline for debugging. Authoritative fact handling, **Evidence Inheritance**, **Validation Delta**, material-change rules, and promotion policy remain in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §18 and [`MAG_IMPLEMENTATION_PATTERNS.md`](MAG_IMPLEMENTATION_PATTERNS.md). Debugging verification is proportional. Do not rerun Phase 7 or Phase 8 release audits from a debugging case unless that case invalidated the relevant evidence.
 
 Principles:
 

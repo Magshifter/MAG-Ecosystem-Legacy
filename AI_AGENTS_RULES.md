@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Coding Agent Rules
 
 - MAG-Document-ID: `AI_AGENTS_RULES.md`
-- MAG-Content-Updated: `2026-09-25T23:20:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:35:00+03:00`
 
 These rules define **how coding agents may execute** work in MAG repositories.
 
@@ -289,7 +289,7 @@ If installed source is insufficient and external documentation research becomes 
 
 Validation effort must match the **actual change and risk**.
 
-Apply the material-change filter and evidence-reuse rules in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §18. Reuse immediately preceding **valid** verification where it still applies. Do not repeat expensive checks (broad regression, security, or performance suites; full release-finalization) without a concrete reason. A lifecycle or status transition alone is not evidence invalidation.
+Apply **Evidence Inheritance** and **Validation Delta** in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §18. Reuse immediately preceding **valid** verification where it still applies. Do not repeat expensive checks (broad regression, security, or performance suites; full release-finalization) without a concrete reason. A lifecycle or status transition alone is not evidence invalidation. Unknown or contradictory applicability fails closed.
 
 Prefer the **minimum sufficient safe path**: when the objective is approved, evidence remains valid, and no authority/risk/scope boundary changed, execute the smallest safe procedure. Do not re-analyze merely to re-create ceremony.
 
@@ -304,12 +304,12 @@ Distinguish:
 - Validation that failed.
 - Validation not performed.
 - Manual verification still required.
-- Product Owner Practical Acceptance still required or pending.
+- Product Owner Practical Acceptance still required, pending, or already valid by inheritance.
 - Assumptions that remain unverified.
 
 Do not claim a test passed, host/runtime compatibility was verified, runtime behavior was proven from static inspection, or Git state was inspected, unless that is true. When `#N`, do not claim XenForo compatibility was verified unless that is true.
 
-Do not treat completed technical validation as sufficient for Release Readiness, Release Finalization, or Stable Release when required Product Owner Practical Acceptance remains pending or has not **PASS**. When `#N`, that remains Gate 3 — Release Readiness and Product Owner Practical Acceptance per `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 7.
+Do not treat completed technical validation as sufficient for Release Readiness, Release Finalization, or Stable Release when required Product Owner Practical Acceptance remains pending or has not **PASS**. An inherited explicit Product Owner Practical Acceptance **PASS** for unchanged product state is a valid PASS. An agent must not substitute its own acceptance. When `#N`, Gate 3 remains mandatory; Fast Path does not bypass it. See `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 7, Gate 3, and Phase 8.
 
 Selecting a cheaper Cursor model must not reduce these validation requirements.
 

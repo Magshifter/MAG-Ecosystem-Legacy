@@ -1,7 +1,7 @@
 # MAG Add-on Development Lifecycle
 
 - MAG-Document-ID: `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`
-- MAG-Content-Updated: `2026-09-25T23:20:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:35:00+03:00`
 
 This document is the canonical MAG Global lifecycle owner. It contains one lifecycle, not two systems:
 
@@ -87,9 +87,9 @@ Idea / Evaluation
 - Targeted technical verification is conditional: research only unresolved questions required for the next architecture decision. It is not a mandatory broad audit. Skip it only when remaining uncertainty is recorded as none.
 - Architecture, and Architecture Approval, apply when architecture decisions are required. They may be skipped only when no architecture decision is required.
 - Implementation of an Increment requires explicit applicable Product Owner authorization. Architecture approval is not implementation authorization. An Increment does not automatically create another approval or Git checkpoint.
-- Validation depth is proportional to actual risk.
-- Technical validation and Product Owner Practical Acceptance are distinct. Practical Acceptance uses an environment appropriate to the product's in-scope surfaces for that release.
-- Defects return to the earliest affected lifecycle point. Preserve still-valid evidence and approvals; repeat validation when the change makes earlier evidence insufficient.
+- Validation depth is proportional to actual risk. **Evidence Inheritance** and **Validation Delta** in [AI_GUIDELINES.md](AI_GUIDELINES.md) §18 are the default Global validation principles. Valid evidence remains valid for the same relevant state until a material change invalidates it. A lifecycle transition, Phase label, Gate evaluation, new report, or desire for additional confidence is not by itself evidence invalidation. Repeated verification normally plans only the Validation Delta (missing evidence, invalidated evidence, and evidence required only by the new boundary, artifact, or environment). Unknown or contradictory applicability fails closed.
+- Technical validation and Product Owner Practical Acceptance are distinct. Practical Acceptance uses an environment appropriate to the product's in-scope surfaces for that release. A prior explicit Product Owner Practical Acceptance **PASS** may be inherited for unchanged product state.
+- Defects return to the earliest affected lifecycle point. Preserve still-valid evidence and approvals; repeat only the Validation Delta when the change makes earlier evidence insufficient. Do not restart the entire lifecycle automatically.
 - One primary Core Phase at a time. Planned work is not implemented work.
 - Before advancing from a completed Phase, complete the mandatory closure procedure in [AI_GUIDELINES.md](AI_GUIDELINES.md) §20 and applicable [AI_AGENTS_RULES.md](AI_AGENTS_RULES.md) §10 rules. An output ready for review is not a closed Phase.
 - Coherent-block and immediate-gate-evaluation rules in §3 apply to Core as well as to the `#N` profile. Distinct Gates retain separate evidence. Gate PASS does not authorize a later Product Owner-controlled Phase when this document or the project Roadmap defines that authorization separately.
@@ -160,9 +160,13 @@ The `#N` conceptual eight-document package, XenForo Blueprint instantiation, and
 
 ### Release Core intent
 
+**Validation / Acceptance** verifies **product correctness** of the release scope. **Release Finalization** verifies **shipping / release-artifact correctness** of the artifact the product actually ships. Those are distinct responsibilities. Do not duplicate the same proof in both unless the later boundary itself could invalidate the earlier evidence.
+
 Release Finalization and Stable Release mean Product Owner-authorized preparation, verification, shipping, and publication of the artifact the product actually ships.
 
-Exact artifact form, host metadata, store packaging, and version-identity mechanics belong to Verified Applicability. XenForo ZIP, Release Presentation, `magicon.png`, Resource URL, `hashes.json`, Delete-files eligibility, `_output` exclusion, and `addon.json` `version_id` / `version_string` are `#N` profile rules, not Core requirements.
+**Normal Release Fast Path** is the default execution mode through existing Core Validation / Acceptance → Release Readiness → Release Finalization boundaries when product evidence is PASS, Practical Acceptance is valid, Release Readiness prerequisites are satisfied, no relevant product evidence was invalidated, version identity is known, the release target is known, and no contradictory evidence exists. It is not a new Phase, Gate, checklist document, evidence artifact, or approval layer. When those prerequisites are not satisfied, use the existing proportional lifecycle path. Immediate Gate evaluation remains allowed when all evidence already exists. Fast Path does not bypass Release Readiness.
+
+Exact artifact form, host metadata, store packaging, and version-identity mechanics belong to Verified Applicability. XenForo ZIP, Release Presentation, `magicon.png`, Resource URL, `hashes.json`, Delete-files eligibility, `_output` exclusion, and `addon.json` `version_id` / `version_string` are `#N` profile rules, not Core requirements. `A<N>` Release Finalization applies to the artifact that product actually ships; do not import those `#N` package semantics.
 
 ### Core ↔ `#N` Phase / Gate mapping
 
@@ -811,9 +815,11 @@ An Increment awaiting required review, manual validation, or authorized Phase cl
 
 ### Purpose
 
-Verify that the completed release scope works as a coherent product rather than only as isolated increments.
+Phase 7 owns **product correctness** of the completed release scope: that the product works as a coherent product, not only as isolated increments.
 
-Product Owner Practical Acceptance is the mandatory final acceptance step of this phase. The Product Owner personally exercises the completed release scope as a real user and, where relevant, administrator to detect workflow, usability, integration, and behavioral issues that formal automated or technical validation may not reveal.
+Product Owner Practical Acceptance remains the genuine safety boundary for this phase. The Product Owner personally exercises the completed release scope as a real user and, where relevant, administrator to detect workflow, usability, integration, and behavioral issues that formal automated or technical validation may not reveal.
+
+Phase 7 inherits valid evidence from implementation Increments. It does not automatically repeat Increment validation. Shipping-package internals, final ZIP identity, `hashes.json`, `_output` exclusion, final release filename, historical artifact immutability, Release Presentation packaging, and clean final-artifact behavior belong to Phase 8 where applicable.
 
 ### Entry conditions
 
@@ -823,25 +829,24 @@ Required implementation scope for the target release is complete.
 
 #### Technical integration and final validation
 
-Validation depth is risk-based.
+Validation depth is risk-based. Plan only the Validation Delta per [AI_GUIDELINES.md](AI_GUIDELINES.md) §18.
 
-Where applicable verify:
+Where applicable and proportional to risk, verify:
 
-- functional integration;
-- regression behavior;
-- XenForo/XFRM compatibility;
-- security;
-- permissions;
-- persistence and lifecycle;
-- performance;
-- installation;
-- upgrade behavior;
-- packaging;
-- frontend behavior;
-- ACP behavior;
-- localization readiness of user/admin-facing text, including native phrase use and resolution where applicable;
-- failure paths;
-- cleanup behavior.
+- integrated product behavior;
+- functional correctness;
+- product regression;
+- permissions and security behavior;
+- persistence and data behavior;
+- performance where relevant;
+- frontend and ACP behavior;
+- localization where relevant (including native phrase use and resolution where applicable);
+- failure and cleanup behavior;
+- host/framework compatibility of the running product (when `#N`, XenForo/XFRM compatibility of the running add-on);
+- affected invariants, call-sites, and click-paths where warranted;
+- known product limitations.
+
+Product-level install or upgrade behavior discovered during implementation may be valid Phase 7 product evidence. Verification that the **final distributable artifact** installs or upgrades correctly belongs to Phase 8. Do not duplicate the same proof in both Phases unless packaging itself could invalidate it.
 
 Do not mechanically repeat expensive validation already performed when preceding valid evidence still applies.
 
@@ -867,11 +872,15 @@ Prefer semantic outcomes over literal framework return shapes when versions diff
 
 #### Product Owner Practical Acceptance (mandatory)
 
-After required technical integration and final validation for the release scope has completed, the Product Owner must personally exercise the completed release scope in an appropriate local or otherwise relevant XenForo environment.
+Product Owner Practical Acceptance remains a genuine safety boundary. An agent must not substitute its own acceptance for it.
 
-Practical Acceptance depth must be proportional to the product and release risk. Do not require an artificial exhaustive test script for every release.
+If the Product Owner already accepted the exact relevant product state during approved Increments and no product-relevant change occurred afterward, do not mechanically require the Product Owner to repeat the same acceptance solely because Phase 7 began. The prior explicit **PASS** may be inherited for unchanged state. The Phase 7 record may state that prior Practical Acceptance remains valid for unchanged product state.
 
-Practical Acceptance must produce an explicit **PASS** or identify issues requiring correction.
+If relevant product behavior changed, acceptance evidence is invalidated proportionally and must be refreshed for the affected behavior.
+
+When a new or refreshed Practical Acceptance is required, the Product Owner personally exercises the affected product state in an appropriate local or otherwise relevant environment (when `#N`, a relevant XenForo environment). Depth must be proportional to the product and release risk. Do not require an artificial exhaustive test script for every release.
+
+Practical Acceptance must produce an explicit **PASS** (including an inherited explicit PASS for unchanged product state) or identify issues requiring correction.
 
 This pre-release acceptance does not replace Phase 9 — Post-Release Verification, which remains responsible for issues observable only after actual release, deployment, or production use.
 
@@ -883,29 +892,31 @@ Synchronize only affected authoritative project documents.
 
 Record significant verified compatibility/security/performance findings in the document that owns them.
 
-Record the Product Owner Practical Acceptance result explicitly when performed.
+Record the Product Owner Practical Acceptance result explicitly when performed or inherited.
 
 Create a separate validation/audit artifact only when preserving that evidence has a real future purpose.
 
 ### Completion conditions
 
-- required validation for release risk has completed;
+- required product-correctness validation for release risk has completed (including inherited valid Increment evidence plus Validation Delta);
 - no unresolved Critical issue remains;
 - known limitations are documented accurately;
 - product documentation reflects verified state;
-- Product Owner Practical Acceptance has **PASS**.
+- Product Owner Practical Acceptance has a valid **PASS** (including inherited explicit PASS for unchanged product state).
 
-Phase 7 is not complete, and Gate 3 — Release Readiness must not be entered, until required Product Owner Practical Acceptance has **PASS**.
+Phase 7 is not complete, and Gate 3 — Release Readiness must not be entered, until required Product Owner Practical Acceptance has a valid **PASS**.
 
 
 ## 12. Gate 3 — Release Readiness
+
+Gate 3 remains the decision boundary for entering Release Finalization. **Normal Release Fast Path must not bypass Gate 3.** Immediate Gate evaluation remains allowed when all evidence already exists. Do not create another Fast Path Gate.
 
 The release may proceed to finalization only when:
 
 - approved release requirements are satisfied;
 - required implementation exists;
-- required validation is complete;
-- Product Owner Practical Acceptance has **PASS**;
+- required product-correctness validation is complete (inherited valid evidence plus Validation Delta);
+- Product Owner Practical Acceptance has a valid **PASS** (including inherited explicit PASS for unchanged product state);
 - Critical issues are resolved;
 - known limitations are accurately documented;
 - release documentation is synchronized;
@@ -913,7 +924,7 @@ The release may proceed to finalization only when:
 - applicable versioning mode is known: clean GLOBAL scheme **or** a documented project **Legacy Version Baseline**;
 - the Product Owner approves release finalization.
 
-Passing this gate does not itself publish the release. Exact `version_id` / `version_string` for the Phase 8 artifact may still be finalized under the version-identity rules below, but Phase 8 must not invent the scheme.
+Passing this gate does not itself publish the release. Exact `version_id` / `version_string` for the Phase 8 artifact may still be finalized under the version-identity rules below, but Phase 8 must not invent the scheme. Unknown version identity remains STOP before version bump and before the final ZIP.
 
 ## XenForo add-on version identity
 
@@ -992,9 +1003,15 @@ Existing projects transition only when their own release or version work require
 
 ### Purpose
 
-Prepare and verify the actual release state and artifact.
+Phase 8 owns **shipping / release-artifact correctness**, not a second full product audit.
 
-Release Finalization includes **Release Presentation** as a mandatory component immediately before the final release package is built. Release Presentation is not a separate top-level lifecycle phase.
+Prepare and verify the actual release state and the artifact the product ships.
+
+Phase 8 inherits uninvalidated Phase 7 product-correctness evidence. It must not automatically rerun architecture audit, broad source audit, product security audit, broad regression, compatibility audit, Product Owner Practical Acceptance, or implementation review unless a relevant Phase 8 change or discovered contradiction invalidated that evidence.
+
+If packaging exposes a product defect, invalidate only the affected evidence and return proportionally to the earliest affected lifecycle point. Do not restart the entire lifecycle automatically.
+
+Release Finalization includes **Release Presentation** as a mandatory `#N` component immediately before the final release package is built. Release Presentation is not a separate top-level lifecycle phase.
 
 ```text
 Release Readiness
@@ -1003,6 +1020,33 @@ Release Readiness
    → final release package build and validation
 → Stable Release
 ```
+
+### Normal Release Fast Path
+
+Normal Release Fast Path is the default execution mode through existing Gate 3 and Phase 8 boundaries when:
+
+- Phase 7 / applicable Core Validation evidence is PASS;
+- Practical Acceptance is valid (including inherited explicit PASS for unchanged product state);
+- Gate 3 prerequisites are satisfied;
+- no relevant product evidence was invalidated;
+- version identity is known;
+- release target is known;
+- no contradictory evidence exists.
+
+Target flow:
+
+```text
+inherit valid Phase 7 evidence
+→ calculate Validation Delta
+→ Gate 3
+→ Release Presentation delta
+→ build final artifact
+→ artifact-specific validation
+→ affected release-documentation delta
+→ Phase 8 PASS
+```
+
+It is not a new lifecycle Phase, Gate, checklist document, evidence artifact, or approval layer. Immediate Gate evaluation remains allowed when all evidence already exists. Fast Path must not bypass Gate 3. When Fast Path prerequisites are not satisfied, use the existing proportional lifecycle path rather than forcing Fast Path.
 
 ### Entry conditions
 
@@ -1107,17 +1151,15 @@ Within Release Finalization, use this sequence:
 6. Request the project-specific Resource URL from the Product Owner.
 7. Product Owner creates the add-on Resource on the forum and supplies its URL.
 8. Use that exact Resource URL as Support.
-9. Before implementation, verify the exact XenForo-native mechanism for:
-   - icon;
-   - description;
-   - Developer link;
-   - Support link;
-   - Donate link;
-   - release package inclusion.
+9. Before implementation, confirm **mechanism evidence** separately from **release-specific values**.
 
-   Use the applicable installed/reference XenForo source and native build tooling.
+   Mechanism evidence includes where XenForo obtains add-on description, icon mechanism, Developer / Support / Donate mechanism, and packaging inclusion mechanism. Verified mechanism evidence may be inherited until invalidated by something relevant such as XenForo version/framework behavior change, build tooling change, packaging mechanism change, contradictory runtime/source evidence, or an actual implementation change affecting the mechanism. A new version number alone does not invalidate the mechanism.
 
-   Do not assume `addon.json` field names, file paths, asset locations, or package behavior.
+   Release-specific values include current version, current description content, and current links or release metadata values. Those values must be current for this release even when mechanism evidence is inherited.
+
+   If mechanism evidence is first-time or Unknown, perform targeted verification using the applicable installed/reference XenForo source and native build tooling. Do not assume undocumented XenForo fields, `addon.json` field names, file paths, asset locations, or package behavior.
+
+   Do not repeat XenForo source research solely because a new final ZIP is being built.
 
 10. Apply the approved Release Presentation metadata/assets using the verified XenForo-native mechanism.
 11. Build the final release ZIP.
@@ -1176,21 +1218,30 @@ Projects that reached Release Finalization before adoption of this rule may comp
 
 ### Required work (after Release Presentation)
 
-As applicable:
+Phase 8 work after Presentation is **shipping correctness**. Where applicable verify:
 
-- verify release version metadata;
-- verify add-on metadata/dependencies;
-- verify canonical packaging;
-- verify release artifact;
-- verify required install/upgrade path;
-- verify no development-only diagnostics remain;
-- synchronize Changelog;
-- synchronize README/Overview where product state changed;
-- synchronize Roadmap;
-- synchronize Architecture/CLASS_MAP where affected;
-- synchronize Cursor usage history where applicable;
+- version identity;
+- version monotonicity;
+- final release version metadata;
+- Release Presentation applied to this release;
+- final ZIP build;
+- canonical final artifact filename;
+- preservation/immutability of historical finalized artifacts;
+- final artifact contents;
+- `hashes.json` correctness;
+- `_output` exclusion;
+- required packaged assets;
+- exclusions;
+- final clean/disposable-host install or upgrade verification when required for the artifact;
+- final package uninstall/Delete-files eligibility where applicable;
+- shipping-facing README/Changelog correctness against the actual artifact;
+- artifact size/hash and other final package evidence already required by current rules;
+- no development-only diagnostics remain in the artifact;
+- affected release-documentation delta;
 - inspect final repository diff/status;
 - resolve release-blocking issues.
+
+Do not automatically rerun Phase 7 product-correctness work. Supported host compatibility evidence is re-verified only when it is actually invalidated.
 
 ### Documentation actions
 
@@ -1208,7 +1259,7 @@ Release Finalization must end with an explicit result such as:
 
 Only a confirmed PASS may proceed to Stable Release.
 
-Phase 8 PASS confirms readiness of the final artifact and completed Release Presentation. It does not authorize publication.
+Phase 8 PASS confirms shipping correctness of the final artifact and completed Release Presentation. It inherits uninvalidated Phase 7 product evidence. It does not authorize publication.
 
 
 ## 14. Stable Release
@@ -1240,7 +1291,9 @@ Project documentation and ChatGPT Project context should be refreshed according 
 
 ### Purpose
 
-Detect issues that may appear only through real installation, upgrade, deployment, or production use.
+Verify evidence that becomes available only after actual publication, deployment, install, or upgrade in the real post-release environment.
+
+PRV must not automatically repeat Phase 7 or Phase 8 merely because publication occurred.
 
 ### Entry conditions
 
@@ -1248,10 +1301,16 @@ A release has actually been installed, upgraded, deployed, or otherwise exercise
 
 ### Conditional work
 
-Depending on risk:
+Valid PRV concerns include, depending on risk:
 
+- production-only behavior;
+- real deployment effects;
+- environment-specific behavior unavailable pre-release;
+- issues revealed only by actual distribution, install, or upgrade;
+- newly reported regressions;
+- real-world evidence contradicting pre-release assumptions;
 - real upgrade verification;
-- clean installation verification;
+- clean installation verification in the post-release environment;
 - production observation;
 - runtime route verification;
 - filesystem residue verification;
@@ -1259,13 +1318,15 @@ Depending on risk:
 - error-log review;
 - performance observation.
 
-Not every release requires an extensive production audit.
+If publication produces no new relevant uncertainty, PRV should be minimal. Not every release requires an extensive production audit. Do not classify legitimate post-release hotfix work as bureaucracy.
 
 ### Rule
 
 A production observation is evidence, not automatically a formal benchmark or new requirement.
 
 Unexpected behavior must be investigated before documentation or architecture is rewritten.
+
+If PRV finds a real defect, route the defect through the earliest affected lifecycle point proportionally. Do not restart the entire lifecycle automatically.
 
 A missing ACP **Delete files** action observed on a source-synchronized development tree is not, by itself, a release defect. Apply Phase 8 final clean-package uninstall acceptance and the XenForo eligibility finding in [MAG_IMPLEMENTATION_PATTERNS.md](MAG_IMPLEMENTATION_PATTERNS.md) before classifying one.
 
@@ -1282,19 +1343,34 @@ Preserve release history.
 
 ### Purpose
 
-Determine whether completed work produced technical knowledge useful to future MAG projects.
+Keep Knowledge Capture as a real lifecycle responsibility, but do not execute it as ritual.
 
 ### Entry conditions
 
-Relevant implementation, debugging, validation, compatibility, upgrade, or release work produced a potentially reusable finding.
+The applicable product cycle reached end-of-cycle Knowledge Capture.
 
 ### Required work
 
-Review potentially reusable findings from the completed work. Determine whether each finding belongs in project documentation only or qualifies for Global knowledge capture.
+Ask: did this work produce a genuinely new reusable technical finding that has not already been classified?
 
-Use the status model, evidence requirements, verified-scope rules, and maintenance rules in [MAG_IMPLEMENTATION_PATTERNS.md](MAG_IMPLEMENTATION_PATTERNS.md). Do not restate them here or promote a project-specific requirement into a Global default.
+If **NO**:
 
-Validation discipline for call-site audits and click-path/invariant regression is defined in Phase 7 — Integration and Final Validation (subsections above). Implementation patterns promoted from completed project work belong in `MAG_IMPLEMENTATION_PATTERNS.md`; process validation rules belong here.
+- record or recognize that no reusable candidate exists where needed;
+- do not launch a separate Cursor research or audit pass;
+- do not create a Pattern;
+- do not create an audit artifact merely to prove “none”.
+
+If **YES**:
+
+- use the existing [MAG_IMPLEMENTATION_PATTERNS.md](MAG_IMPLEMENTATION_PATTERNS.md) capture/classification procedure;
+- preserve Verified Applicability and Scope requirements;
+- do not weaken fail-closed Pattern reuse.
+
+If candidate classification already happened during implementation, debugging, or release work, do not repeat it in Phase 10 solely because the lifecycle reached Phase 10.
+
+Do not restate the Pattern status model, evidence requirements, verified-scope rules, or maintenance rules here. Do not promote a project-specific requirement into a Global default.
+
+Validation discipline for call-site audits and click-path/invariant regression is defined in Phase 7. Implementation patterns promoted from completed project work belong in `MAG_IMPLEMENTATION_PATTERNS.md`; process validation rules belong here.
 
 ### Conditional work
 
@@ -1304,15 +1380,15 @@ Prepare a focused candidate entry when a finding has a useful reuse case. Revali
 
 Preserve the source finding in its owning project document. Add or update a qualified entry in MAG_IMPLEMENTATION_PATTERNS.md through an authorized Global documentation action.
 
-Knowledge may be captured earlier when verification is complete. This phase is the end-of-cycle check for missed findings, not a reason to postpone useful evidence recording.
+Knowledge may be captured earlier when verification is complete. This phase is the end-of-cycle check for missed findings, not a reason to postpone useful evidence recording and not a reason to invent a finding.
 
 ### Validation
 
-Check that the candidate has traceable evidence and that its proposed scope matches what was verified. Check for an existing entry before adding another.
+When a candidate exists, check that it has traceable evidence and that its proposed scope matches what was verified. Check for an existing entry before adding another. When no candidate exists, that is a valid Phase 10 result.
 
 ### Completion conditions
 
-Every relevant candidate is recorded, rejected as unsuitable for Global reuse, or explicitly deferred with a reason. A completed review may validly produce no Global entry.
+Every relevant candidate is recorded, rejected as unsuitable for Global reuse, classified as none, or explicitly deferred with a reason. A completed review may validly produce no Global entry and no separate research pass.
 
 ### User approval / Gate
 
@@ -1320,7 +1396,7 @@ No new release gate. Global changes require their own authorized scope.
 
 ### Output
 
-Verified project evidence and, when justified, an approved Global knowledge contribution or a recorded follow-up.
+Verified project evidence and, when justified, an approved Global knowledge contribution, a recorded follow-up, or an explicit recognition that no reusable candidate exists.
 
 ### Next allowed phase
 
@@ -1406,8 +1482,8 @@ This matrix defines timing. Approval details, execution mechanics, evidence stan
 1. Before a decision gate: the owning document must state the decision being approved.
 2. Before implementation: the relevant requirements, architecture, and next increment must be clear enough to execute.
 3. After an increment: synchronize documents affected by verified changes; explicitly record pending validation.
-4. Before release readiness: reconcile release scope, actual implementation, evidence, and product documentation; confirm required Product Owner Practical Acceptance has **PASS**.
-5. During finalization: complete Release Presentation; verify documentation against the actual shipping artifact and version.
+4. Before release readiness: reconcile release scope, actual implementation, inherited valid evidence, Validation Delta, and product documentation; confirm required Product Owner Practical Acceptance has a valid **PASS** (including an inherited explicit PASS for unchanged product state).
+5. During finalization: complete applicable Release Presentation; verify documentation against the actual shipping artifact and version. Do not rerun product-correctness validation unless packaging or another Phase 8 change invalidated it.
 6. After release: record relevant real-environment findings and review reusable-knowledge candidates.
 
 The conceptual eight-document package remains canonical. Phase 1 physically creates eight bootstrap containers with honest current-state records. AUDIT exists ≠ an audit was performed. CLASS_MAP exists ≠ implementation exists. Architecture exists ≠ architecture is approved. Do not fabricate audit findings, requirements, or code maps to populate them. Create optional child audits and other additional documents only when they have real information to own.

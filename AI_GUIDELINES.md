@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Development Guidelines
 
 - MAG-Document-ID: `AI_GUIDELINES.md`
-- MAG-Content-Updated: `2026-09-25T23:20:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:35:00+03:00`
 
 This document is the **Global MAG development standard**. It defines **how** MAG software is developed with AI assistance.
 
@@ -457,44 +457,63 @@ Do not claim tests were run when they were not.
 
 Validation effort must be **proportional** to the change and to verification already performed.
 
+This section is the primary Global owner of **Evidence Inheritance**, **Validation Delta**, and proportional validation behavior. Lifecycle placement of Phase 7 product correctness, Phase 8 shipping correctness, Normal Release Fast Path, Practical Acceptance, Gate 3, PRV, and Knowledge Capture remains in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md). Do not create an evidence ledger, registry, receipt, freshness gate, timestamp ceremony, or extra audit artifact solely to record inheritance. Evidence stays in existing appropriate owners.
+
 Do not introduce redundant procedures merely to repeat already sufficient verification.
+
+### Evidence Inheritance
+
+**Evidence Inheritance is the default MAG validation principle.**
+
+Valid evidence remains valid for the same relevant state until a material change invalidates it.
+
+A lifecycle transition, Phase label, Gate evaluation, new report, release-preparation step, passage into Release Finalization, or a desire for additional confidence is **not** by itself evidence invalidation.
+
+Before repeating validation, analysis, research, source inspection, architecture review, security review, compatibility verification, Product Owner Practical Acceptance, or another expensive proof, determine:
+
+1. What relevant evidence already exists?
+2. What materially changed since that evidence?
+3. Which evidence was actually invalidated?
+4. What evidence is missing?
+5. What new boundary-specific evidence is required?
+
+Reuse everything else.
+
+If applicability of prior evidence is **Unknown** or contradictory, fail closed: do not inherit it; perform targeted verification of the uncertain claim. Do not invent certainty.
+
+Typical invalidation triggers include: changed requirement; changed approved architecture; changed implementation scope or code path; repository change affecting the earlier evidence; relevant host/runtime/platform/environment change (when `#N`, relevant XenForo/XFRM/environment change); failed validation; contradictory new evidence; previously unknown API behavior; release artifact change that could invalidate product behavior; or another concrete reason making prior evidence unreliable.
+
+### Validation Delta
+
+**Validation Delta is the normal planner for repeated verification.**
+
+Validation Delta =
+
+- missing evidence;
+- invalidated evidence;
+- evidence required only by the new boundary, artifact, or environment.
+
+Only that delta should normally be verified. Depth remains proportional to actual change and risk.
+
+If nothing relevant changed and no new boundary-specific evidence exists, do not rerun validation solely because the lifecycle advanced.
 
 ### Material-change filter
 
-Before repeating validation, package inspection, runtime checks, Product Owner practical verification, research, or completed analysis, ask:
-
-**What materially changed since the existing evidence was obtained?**
-
-If nothing relevant changed:
+The five Evidence Inheritance questions above are the material-change filter. If nothing relevant changed:
 
 - reuse existing evidence;
 - do not repeat the validation or analysis;
 - do not reopen completed work solely because a lifecycle label or status marker changed.
 
-A lifecycle or status transition alone is **not** evidence invalidation.
-
-If the change is narrow, perform only the minimum narrow validation required.
-
-### Evidence reuse and invalidation
-
-Before new validation:
-
-```text
-Existing evidence
-→ material changes since evidence
-→ potential invalidation
-→ minimum new validation
-```
-
-Existing evidence remains valid until a relevant change invalidates it. Typical invalidation triggers include: changed requirement; changed approved architecture; changed implementation scope or code path; repository change affecting the earlier evidence; relevant host/runtime/platform/environment change (when `#N`, relevant XenForo/XFRM/environment change); failed validation; contradictory new evidence; previously unknown API behavior; release artifact change; or another concrete reason making prior evidence unreliable.
+If the change is narrow, perform only the minimum narrow Validation Delta.
 
 Do not run broad regression merely because lifecycle status changed.
 
 A later documentation-only or already-approved synchronization does not require a new full review, security audit, or release-finalization suite unless the synchronization introduces unexpected changes, unresolved issues, or invalidates previous verification.
 
-Release Finalization (when a project uses it) verifies the **artifact and deployment boundary**. It does not repeat the preceding stage audit unless that audit has been invalidated (production behavior changed after the audit, a release-blocking defect was found, packaging exposed a problem requiring production changes, or another concrete reason).
+Release Finalization verifies **shipping / release-artifact correctness** of the artifact the product actually ships. It inherits uninvalidated product-correctness evidence. It does not repeat the preceding product audit unless that evidence has been invalidated. `#N` Phase 7 / Phase 8 ownership and Normal Release Fast Path are in [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md). Do not apply XenForo ZIP, `hashes.json`, Resource URL, or Release Presentation fields to `A<N>`.
 
-Evidence reuse does **not** skip mandatory Product Owner Practical Acceptance for a release scope that has not yet reached explicit **PASS**, Release Readiness approval (when `#N`, Gate 3), Stable Release authorization, or other genuine Product Owner decision gates.
+Evidence Inheritance does **not** skip Gate 3, Stable Release authorization, or other genuine Product Owner decision gates. It may inherit a prior explicit Product Owner Practical Acceptance **PASS** for unchanged product state as defined in the lifecycle owner.
 
 ### Coherent execution blocks
 
@@ -519,7 +538,7 @@ This optimization must not weaken required validation or authorize unsafe shortc
 
 ### Adaptive Validation Matrix applicability
 
-The Adaptive Validation Matrix form lives in [`MAG_XENFORO_ADDON_BLUEPRINT.md`](MAG_XENFORO_ADDON_BLUEPRINT.md). It is evidence/applicability framing, not a policy owner, and not default ceremony. Use it when the active identity is `#N` and the risk warrants it. Do not require the Matrix for `A<N>`.
+The Adaptive Validation Matrix form lives in [`MAG_XENFORO_ADDON_BLUEPRINT.md`](MAG_XENFORO_ADDON_BLUEPRINT.md). It is evidence/applicability framing, not a policy owner, and not default ceremony. Use it when the active identity is `#N` and the risk warrants it. Do not require the Matrix for `A<N>`. Inherited valid evidence does not need to be re-executed merely to populate the Matrix. Product-correctness rows map to Phase 7; package/artifact rows map to Phase 8; PRV rows belong to Phase 9 and must not invite pre-release duplication.
 
 When `#N`, use the full/explicit Matrix for:
 
@@ -534,7 +553,9 @@ Required Product Owner Practical Acceptance, Release Readiness (when `#N`, Gate 
 
 ### Product Owner Practical Acceptance
 
-Technical validation and Product Owner Practical Acceptance are distinct. Core Validation / Acceptance requires Practical Acceptance for a release scope before Release Readiness. When the active identity is `#N`, that is [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) Phase 7: technical or automated validation alone does not complete Integration and Final Validation, and required Product Owner Practical Acceptance must reach explicit **PASS** before Gate 3 — Release Readiness.
+Technical validation and Product Owner Practical Acceptance are distinct. Core Validation / Acceptance requires a valid Practical Acceptance **PASS** for a release scope before Release Readiness. When the active identity is `#N`, that is [`MAG_ADDON_DEVELOPMENT_LIFECYCLE.md`](MAG_ADDON_DEVELOPMENT_LIFECYCLE.md) Phase 7. An agent must not substitute its own acceptance for Product Owner Practical Acceptance.
+
+If the Product Owner already accepted the exact relevant product state during approved Increments and no product-relevant change occurred afterward, that explicit **PASS** may be inherited. Do not mechanically require the Product Owner to repeat the same acceptance solely because Phase 7 began. Refresh Practical Acceptance proportionally when relevant product behavior changed.
 
 Do not treat technical validation as sufficient for release readiness, Release Finalization, or Stable Release while required Practical Acceptance remains pending or has failed.
 

@@ -1,7 +1,7 @@
 # MAG XenForo Add-on Blueprint
 
 - MAG-Document-ID: `MAG_XENFORO_ADDON_BLUEPRINT.md`
-- MAG-Content-Updated: `2026-09-25T23:20:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:35:00+03:00`
 
 ## Purpose, scope, and authority
 
@@ -15,9 +15,10 @@ Use current authorities from `MAG-Ecosystem`: MAG_ECOSYSTEM.md (identity and doc
 
 - **Minimum Interaction:** one approved bootstrap scope covers routine package preparation, validation, applicable writes, and whole-package verification. Do not request per-document approvals or reconfirm a known decision.
 - **Exception-Driven Intervention:** surface conflicts, critical ambiguity, failed validation, unsafe writes, identity collisions, Git/Drive divergence, new product or architecture decisions, and Global conflicts. Existing separate gates and Git authorizations still apply.
-- **No Repeated Work:** reuse current context, approvals, existing documents, and still-valid evidence. Resume at the interrupted step after resolution.
+- **No Repeated Work:** reuse current context, approvals, existing documents, and still-valid evidence per Evidence Inheritance and Validation Delta in `AI_GUIDELINES.md` §18. Resume at the interrupted step after resolution.
 - **No Speculative Content:** state what is unknown or absent. Creation does not imply requirements approval, implementation, a passed gate, or a release.
 - **Existing-Documentation / Existing-Code First:** inspect the relevant existing state before creating or changing it. Reuse applicable verified patterns without copying another project's WHAT.
+- **Release Presentation mechanism inheritance:** `#N` mechanism evidence (where XenForo obtains description, icon, Developer / Support / Donate, packaging inclusion) may be inherited until invalidated. Release-specific values must still be current. First-time or Unknown mechanism remains targeted verification. Canonical sequence is `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 8.
 
 ## Identity and substitution
 
@@ -144,50 +145,56 @@ Use MAG-Ecosystem / AI_GUIDELINES.md §16 and the Lifecycle requirements, archit
 
 ## Adaptive Validation Matrix
 
-This matrix is an available evidence/applicability frame. It is not a policy owner and is not default ceremony for every documentation or implementation change. Applicability is owned by `AI_GUIDELINES.md` §18.
+This matrix is an available evidence/applicability frame. It is not a policy owner and is not default ceremony for every documentation or implementation change. Applicability is owned by `AI_GUIDELINES.md` §18. Inherited valid evidence does not need to be re-executed merely to populate the Matrix.
 
 Use the full/explicit matrix for medium/high-risk increments, formal audits, release/release-candidate validation where applicable, and changes where multiple evidence dimensions materially matter.
 
-For small/low-risk deterministic changes, record concise validation evidence appropriate to the change. Do not fill a full matrix of N/A rows for a tiny deterministic edit.
+For small/low-risk deterministic changes, record concise validation evidence appropriate to the change. Do not fill a full matrix of N/A rows for a tiny deterministic edit. N/A rows are not a ritual requirement for small deterministic changes.
 
 The matrix records applicability and evidence required by owning Global rules and applicable ACTIVE overlays; it does not independently define or waive validation requirements. Place an applicable instance with the evidence owner, normally AUDIT; Roadmap references the result. Select checks based on actual change/risk and reuse valid evidence. Blank fields below are a form, never proof of execution. Use this table only when the full/explicit frame applies.
 
-| Area | Applicable | Reason | Evidence | Result |
-| --- | --- | --- | --- | --- |
-| Source/static | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` |
-| Automated tests | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` |
-| XenForo rebuild | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` |
-| Runtime | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` |
-| ACP/UI | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` |
-| Localization | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` |
-| Permissions/security | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` |
-| Upgrade | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` |
-| Regression | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` |
-| Package | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` |
-| Product Owner practical verification | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` |
-| PRV (Post-Release Verification) | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` |
+Row mapping for `#N`:
+
+- Product-correctness rows (Source/static, Automated tests, XenForo rebuild, Runtime, ACP/UI, Localization, Permissions/security, product-level Upgrade evidence, Regression, Product Owner practical verification) map to Phase 7.
+- Package/artifact rows (Package, Release Evidence package identity/hash) map to Phase 8.
+- PRV belongs to Phase 9 / post-release. Do not execute PRV rows as pre-release duplication.
+
+| Area | Applicable | Reason | Evidence | Result | Typical owner |
+| --- | --- | --- | --- | --- | --- |
+| Source/static | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` | Phase 7 |
+| Automated tests | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` | Phase 7 |
+| XenForo rebuild | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` | Phase 7 |
+| Runtime | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` | Phase 7 |
+| ACP/UI | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` | Phase 7 |
+| Localization | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` | Phase 7 |
+| Permissions/security | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` | Phase 7 |
+| Upgrade | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` | Phase 7 product-level / Phase 8 final artifact |
+| Regression | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` | Phase 7 |
+| Package | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` | Phase 8 |
+| Product Owner practical verification | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` | Phase 7 |
+| PRV (Post-Release Verification) | `<yes/no>` | `<reason>` | `<reference>` | `<actual result>` | Phase 9 |
 
 N/A is valid with a reason where the owning Global rules permit it. This matrix cannot waive mandatory Product Owner Practical Acceptance or treat post-release checks as pre-release proof.
 
 ### Product Owner Practical Acceptance
 
-Use at the lifecycle's mandatory acceptance point; technical validation cannot substitute for the Product Owner's result. Record evidence in AUDIT and reference the status from Roadmap.
+Use at the lifecycle's mandatory acceptance point; technical validation cannot substitute for the Product Owner's result. A prior explicit PASS may be inherited for unchanged product state per `MAG_ADDON_DEVELOPMENT_LIFECYCLE.md` Phase 7. Record evidence in AUDIT and reference the status from Roadmap.
 
 - Workflow / Feature: <approved scope>
 - Expected Behavior: <requirements reference>
 - Manual Action: <actual user/admin exercise>
 - Observed Result: <observed evidence>
-- PASS / FAIL: <actual result; pending until performed>
+- PASS / FAIL: <actual result; pending until performed or inherited>
 - Finding / Follow-up: <issue and affected next action>
 
 ### Release Evidence
 
-Use within the owning project documents, with Roadmap linking the evidence and authoritative release state. This form does not authorize finalization/publication or replace the lifecycle release gates.
+Use within the owning project documents, with Roadmap linking the evidence and authoritative release state. This form does not authorize finalization/publication or replace the lifecycle release gates. Product-correctness fields inherit Phase 7 evidence. Package identity and hash/package evidence are Phase 8.
 
 - Version: <verified target>
 - Validation state: <evidence reference>
-- Practical Acceptance state: <Product Owner result>
-- Release readiness state: <gate result>
+- Practical Acceptance state: <Product Owner result, including inherited PASS where valid>
+- Release readiness state: <Gate 3 result>
 - Package identity: <actual artifact>
 - Hash/package evidence: <verified evidence>
 - Documentation state: <comparison/closure evidence>
