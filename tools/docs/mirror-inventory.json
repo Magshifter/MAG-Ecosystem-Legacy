@@ -11,7 +11,8 @@
                          "Beyond3DViewer":  "C:\\laragon\\repos\\Beyond3DViewer",
                          "DesignToolkit":  "C:\\laragon\\repos\\DesignToolkit",
                          "ACP-Enhancements":  "C:\\laragon\\repos\\ACP-Enhancements",
-                         "MAG-Workflow-Bridge":  "C:\\laragon\\repos\\MAG-Workflow-Bridge"
+                         "MAG-Workflow-Bridge":  "C:\\laragon\\repos\\MAG-Workflow-Bridge",
+                         "MAG-Art-Environment":  "C:\\laragon\\repos\\MAG-Art-Environment"
                      },
     "entries":  [
                     {
@@ -623,6 +624,30 @@
                     {
                         "repo":  "MAG-Workflow-Bridge",
                         "path":  "docs/MAG_GPT_CURSOR_SYNC_PLAN.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "MAG-Art-Environment",
+                        "path":  "docs/A02__AE__REQUIREMENTS.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "MAG-Art-Environment",
+                        "path":  "docs/A02__AE__ARCHITECTURE.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "MAG-Art-Environment",
+                        "path":  "docs/A02__AE__ROADMAP.md",
+                        "category":  "document",
+                        "require_metadata":  true
+                    },
+                    {
+                        "repo":  "MAG-Art-Environment",
+                        "path":  "docs/A02__AE__CHANGELOG.md",
                         "category":  "document",
                         "require_metadata":  true
                     }
