@@ -1,7 +1,7 @@
 # MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-25T20:45:00+03:00`
+- MAG-Content-Updated: `2026-09-25T23:04:09+03:00`
 
 This document is the navigation and governance foundation for MAG software development across approved Product Classes and identity namespaces.
 
@@ -131,8 +131,9 @@ Applicable XenForo-specific Global rules continue to apply to `#N` products.
 | ID | Product | Classification | Status | Git repository | Local path |
 | --- | --- | --- | --- | --- | --- |
 | A1 | [MAG] GPT\|Cursor\|Sync | MAG Desktop / Development Application | Active / Stable 1.1.1 | `MAG-GPT-Cursor-Sync` | `C:\laragon\repos\MAG-Workflow-Bridge` |
+| A2 | [MAG] Art Environment | Local AI Control / Workflow Platform | Active / Bootstrap complete; Requirements NEXT | `MAG-Art-Environment` | `C:\laragon\repos\MAG-Art-Environment` |
 
-The `A<N>` registry table is the canonical current-fact source for A1 identity, A1 instance classification, status, version, Git repository, and local path as currently recorded. The Classification column describes **this product**, not the `A<N>` namespace.
+The `A<N>` registry table is the canonical current-fact source for each registered `A<N>` identity, that product's instance classification, status, version where shown, Git repository, and local path as currently recorded. The Classification column describes **this product**, not the `A<N>` namespace.
 
 **A1 — concise registry metadata**
 
@@ -144,6 +145,22 @@ The `A<N>` registry table is the canonical current-fact source for A1 identity, 
 Global documentation contains only this concise product-level identity, classification, and purpose metadata. Detailed architecture, hotkeys, TER mechanics, terminal implementation, telemetry, installation, and release history remain owned by the A1 product repository.
 
 Some internal technical identifiers retain the historical `MAG Workflow Bridge` name for compatibility. That historical name does not change the public Git repository identity in the registry table.
+
+**A2 — concise registry metadata**
+
+- Identity: A2 is a registered MAG Ecosystem Software Product identity. It is not a XenForo `#N` product and must not consume any `#N` slot. Documentation code: `AE`. Canonical filenames use `A02__AE__<Document>.md`. The code `AE` does not consume `#8` `P08__AE`.
+- Product Class: MAG Software Product. Classification (this product, not the `A<N>` namespace): Local AI Control / Workflow Platform.
+- Purpose: A local controlled environment in which the user defines Rules, Knowledge Base, Project State, Workflow, Quality Gates, Human Control, and AI connections/adapters, and applies that controlled context to their projects. AI does not own process, rules, knowledge, or project state; AI is a replaceable client/executor.
+- Product WHAT authority: `docs/A02__AE__REQUIREMENTS.md`.
+- Approved canonical document set:
+  - `docs/A02__AE__REQUIREMENTS.md`
+  - `docs/A02__AE__ARCHITECTURE.md`
+  - `docs/A02__AE__ROADMAP.md`
+  - `docs/A02__AE__CHANGELOG.md`
+- Drive counterparts: none recorded. Drive Reconciliation Pending. No Drive object identity is assigned here.
+- Current status, repository, and local path: the `A<N>` registry table above.
+
+Global documentation contains only this concise product-level identity, classification, purpose, WHAT-authority, and approved-set metadata. Detailed requirements, architecture, sequencing, and history remain owned by the A2 product repository. Architecture in that set is not approved architecture.
 
 ### `B<N>` — RESERVED
 
@@ -173,7 +190,7 @@ Lives in this repository (`MAG-Ecosystem`). It is the Global authority map for e
 
 Lives in that development's own Git repository after Local/Git bootstrap is complete. For an approved `#N` Drive-First Bootstrap, Google Drive holds the canonical project documentation while Local/Git is pending. Describes that product only.
 
-Work on an active development identity means **GLOBAL + that identity** (for example GLOBAL + `#2`, GLOBAL + `A1`). Documentation from other approved developments is excluded unless a task specifically requires it (for example a real shared-component change).
+Work on an active development identity means **GLOBAL + that identity** (for example GLOBAL + `#2`, GLOBAL + `A1`, GLOBAL + `A2`). Documentation from other approved developments is excluded unless a task specifically requires it (for example a real shared-component change).
 
 ## Synchronization-managed document identity
 
@@ -375,7 +392,8 @@ Examples:
 
 - work on `#1` = GLOBAL + [MAG] Global Links Favicons; `#2`, `A1`, and other developments are out of scope;
 - work on `#2` = GLOBAL + [MAG] Tag Synchronizer; `#1`, `A1`, and other developments are out of scope;
-- work on `A1` = GLOBAL + [MAG] GPT\|Cursor\|Sync; `#1`, `#2`, and other developments are out of scope;
+- work on `A1` = GLOBAL + [MAG] GPT\|Cursor\|Sync; `#1`, `#2`, `A2`, and other developments are out of scope;
+- work on `A2` = GLOBAL + [MAG] Art Environment; `#N`, `A1`, and other developments are out of scope;
 - work on Global documentation = GLOBAL only.
 
 Do not modify one MAG repository while the approved procedure is scoped to another.
