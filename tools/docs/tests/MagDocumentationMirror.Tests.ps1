@@ -517,6 +517,183 @@ $hAfterRepeat = Get-MagMirrorSha256File (Join-Path $cND 'MiniRepo\a.md')
 Assert-True ($repeatClosed -and $hBeforeRepeat -eq $hAfterRepeat) 'obsolete-receipt-no-rewrite'
 Assert-True ($chkAfter.Pairs[0].classification -eq 'IDENTICAL') 'post-success-check-identical'
 
+# --- MPO-003 Publish-Affected matrix ---
+function New-PubFx($name) {
+    $c = Join-Path $fx $name
+    $m = Join-Path $fx ($name + '-m')
+    New-Item $c, $m -ItemType Directory -Force | Out-Null
+    return [pscustomobject]@{ C = $c; M = $m }
+}
+function Invoke-Pub {
+    param($Loaded, [string[]]$Tokens, [string]$BaselinePath)
+    if ($null -eq $Tokens) { $Tokens = [string[]]@() }
+    $splat = @{
+        Loaded                 = $Loaded
+        AffectedTokens         = $Tokens
+        BaselinePath           = $BaselinePath
+        SkipApprovedRootCheck  = $true
+    }
+    return Invoke-MagMirrorPublishAffected @splat
+}
+
+# A empty → NOT_APPLICABLE, no mutation
+$pa = New-PubFx 'pa'
+Write-Doc (Join-Path $pa.C 'MiniRepo\a.md') 'a.md' 'A'
+Write-Doc (Join-Path $pa.M 'MiniRepo\a.md') 'a.md' 'A'
+$invA = New-MiniInv $pa.C $pa.M @(@{ repo = 'MiniRepo'; path = 'a.md'; category = 'document'; require_metadata = $true })
+$loadedA = Import-MagMirrorInventory -InventoryPath $invA -ReposRootOverride $pa.C -MirrorRootOverride $pa.M
+$baseA = Join-Path $pa.C 'base.json'
+$hA0 = Get-MagMirrorSha256File (Join-Path $pa.M 'MiniRepo\a.md')
+$pubA = Invoke-Pub -Loaded $loadedA -Tokens $null -BaselinePath $baseA
+$hA1 = Get-MagMirrorSha256File (Join-Path $pa.M 'MiniRepo\a.md')
+Assert-True ($pubA.PublicationStatus -eq 'NOT_APPLICABLE' -and $pubA.WrittenCount -eq 0 -and $hA0 -eq $hA1 -and $pubA.google_drive_status -eq 'UNKNOWN' -and $pubA.drive_sync_claimed -eq $false) 'pub-A-empty-not-applicable'
+
+# B NEWER_LOCAL publish + baseline
+$pb = New-PubFx 'pb'
+Write-Doc (Join-Path $pb.C 'MiniRepo\a.md') 'a.md' 'OLD'
+Write-Doc (Join-Path $pb.M 'MiniRepo\a.md') 'a.md' 'OLD'
+$invB = New-MiniInv $pb.C $pb.M @(@{ repo = 'MiniRepo'; path = 'a.md'; category = 'document'; require_metadata = $true })
+$loadedB = Import-MagMirrorInventory -InventoryPath $invB -ReposRootOverride $pb.C -MirrorRootOverride $pb.M
+$baseB = Join-Path $pb.C 'base.json'
+$hOld = Get-MagMirrorSha256File (Join-Path $pb.C 'MiniRepo\a.md')
+Merge-MagMirrorBaselinePair -BaselinePath $baseB -Repo MiniRepo -RelPath 'a.md' -Category document -Sha256 $hOld | Out-Null
+Write-Doc (Join-Path $pb.C 'MiniRepo\a.md') 'a.md' 'NEW'
+$tB = [string[]]('MiniRepo/a.md')
+$pubB = Invoke-Pub -Loaded $loadedB -Tokens $tB -BaselinePath $baseB
+$hLocB = Get-MagMirrorSha256File (Join-Path $pb.C 'MiniRepo\a.md')
+$hMirB = Get-MagMirrorSha256File (Join-Path $pb.M 'MiniRepo\a.md')
+$bB = Import-MagMirrorBaseline $baseB
+Assert-True ($pubB.PublicationStatus -eq 'PUBLISHED' -and $pubB.WrittenCount -eq 1 -and $hLocB -eq $hMirB -and $bB['minirepo|a.md'] -eq $hLocB) 'pub-B-newer-local-publish'
+
+# C two files, only listed one publishes
+$pc = New-PubFx 'pc'
+Write-Doc (Join-Path $pc.C 'MiniRepo\a.md') 'a.md' 'A0'
+Write-Doc (Join-Path $pc.M 'MiniRepo\a.md') 'a.md' 'A0'
+Write-Doc (Join-Path $pc.C 'MiniRepo\b.md') 'b.md' 'B0'
+Write-Doc (Join-Path $pc.M 'MiniRepo\b.md') 'b.md' 'B0'
+$invC = New-MiniInv $pc.C $pc.M @(
+    @{ repo = 'MiniRepo'; path = 'a.md'; category = 'document'; require_metadata = $true },
+    @{ repo = 'MiniRepo'; path = 'b.md'; category = 'document'; require_metadata = $true }
+)
+$loadedC = Import-MagMirrorInventory -InventoryPath $invC -ReposRootOverride $pc.C -MirrorRootOverride $pc.M
+$baseC = Join-Path $pc.C 'base.json'
+Merge-MagMirrorBaselinePair -BaselinePath $baseC -Repo MiniRepo -RelPath 'a.md' -Category document -Sha256 (Get-MagMirrorSha256File (Join-Path $pc.C 'MiniRepo\a.md')) | Out-Null
+Merge-MagMirrorBaselinePair -BaselinePath $baseC -Repo MiniRepo -RelPath 'b.md' -Category document -Sha256 (Get-MagMirrorSha256File (Join-Path $pc.C 'MiniRepo\b.md')) | Out-Null
+Write-Doc (Join-Path $pc.C 'MiniRepo\a.md') 'a.md' 'A1'
+Write-Doc (Join-Path $pc.C 'MiniRepo\b.md') 'b.md' 'B1'
+$hB0m = Get-MagMirrorSha256File (Join-Path $pc.M 'MiniRepo\b.md')
+$tC = [string[]]('MiniRepo/a.md')
+$pubC = Invoke-Pub -Loaded $loadedC -Tokens $tC -BaselinePath $baseC
+$hB1m = Get-MagMirrorSha256File (Join-Path $pc.M 'MiniRepo\b.md')
+Assert-True ($pubC.WrittenCount -eq 1 -and $pubC.Results[0].path -eq 'a.md' -and $hB0m -eq $hB1m) 'pub-C-only-listed-file'
+
+# D source-only token → NOT_APPLICABLE, no write
+$pd = New-PubFx 'pd'
+Write-Doc (Join-Path $pd.C 'MiniRepo\a.md') 'a.md' 'X'
+Write-Doc (Join-Path $pd.M 'MiniRepo\a.md') 'a.md' 'X'
+New-Item (Join-Path $pd.C 'MiniRepo') -ItemType Directory -Force | Out-Null
+Set-Content (Join-Path $pd.C 'MiniRepo\app.php') '<?php echo 1;'
+$invD = New-MiniInv $pd.C $pd.M @(@{ repo = 'MiniRepo'; path = 'a.md'; category = 'document'; require_metadata = $true })
+$loadedD = Import-MagMirrorInventory -InventoryPath $invD -ReposRootOverride $pd.C -MirrorRootOverride $pd.M
+$hD0 = Get-MagMirrorSha256File (Join-Path $pd.M 'MiniRepo\a.md')
+$tD = [string[]]('MiniRepo/app.php')
+$pubD = Invoke-Pub -Loaded $loadedD -Tokens $tD -BaselinePath (Join-Path $pd.C 'base.json')
+$hD1 = Get-MagMirrorSha256File (Join-Path $pd.M 'MiniRepo\a.md')
+Assert-True ($pubD.PublicationStatus -eq 'NOT_APPLICABLE' -and $pubD.SkippedUnmanaged -eq 1 -and $hD0 -eq $hD1) 'pub-D-source-not-applicable'
+
+# E unmanaged markdown
+$pe = New-PubFx 'pe'
+Write-Doc (Join-Path $pe.C 'MiniRepo\a.md') 'a.md' 'M'
+Write-Doc (Join-Path $pe.M 'MiniRepo\a.md') 'a.md' 'M'
+Write-Doc (Join-Path $pe.C 'MiniRepo\notes.md') 'notes.md' 'N'
+$invE = New-MiniInv $pe.C $pe.M @(@{ repo = 'MiniRepo'; path = 'a.md'; category = 'document'; require_metadata = $true })
+$loadedE = Import-MagMirrorInventory -InventoryPath $invE -ReposRootOverride $pe.C -MirrorRootOverride $pe.M
+$tE = [string[]]('MiniRepo/notes.md')
+$pubE = Invoke-Pub -Loaded $loadedE -Tokens $tE -BaselinePath (Join-Path $pe.C 'base.json')
+Assert-True ($pubE.PublicationStatus -eq 'NOT_APPLICABLE' -and $pubE.SkippedUnmanaged -eq 1 -and -not (Test-Path (Join-Path $pe.M 'MiniRepo\notes.md'))) 'pub-E-unmanaged-not-adopted'
+
+# F already identical
+$pf = New-PubFx 'pf'
+Write-Doc (Join-Path $pf.C 'MiniRepo\a.md') 'a.md' 'SAME'
+Write-Doc (Join-Path $pf.M 'MiniRepo\a.md') 'a.md' 'SAME'
+$invF = New-MiniInv $pf.C $pf.M @(@{ repo = 'MiniRepo'; path = 'a.md'; category = 'document'; require_metadata = $true })
+$loadedF = Import-MagMirrorInventory -InventoryPath $invF -ReposRootOverride $pf.C -MirrorRootOverride $pf.M
+$tF = [string[]]('MiniRepo/a.md')
+$pubF = Invoke-Pub -Loaded $loadedF -Tokens $tF -BaselinePath (Join-Path $pf.C 'base.json')
+Assert-True ($pubF.PublicationStatus -eq 'IDENTICAL' -and $pubF.WrittenCount -eq 0) 'pub-F-identical-no-write'
+
+# G unexplained divergence / no baseline
+$pg = New-PubFx 'pg'
+Write-Doc (Join-Path $pg.C 'MiniRepo\a.md') 'a.md' 'Lnew'
+Write-Doc (Join-Path $pg.M 'MiniRepo\a.md') 'a.md' 'Mindep'
+$invG = New-MiniInv $pg.C $pg.M @(@{ repo = 'MiniRepo'; path = 'a.md'; category = 'document'; require_metadata = $true })
+$loadedG = Import-MagMirrorInventory -InventoryPath $invG -ReposRootOverride $pg.C -MirrorRootOverride $pg.M
+$hG0 = Get-MagMirrorSha256File (Join-Path $pg.M 'MiniRepo\a.md')
+$tG = [string[]]('MiniRepo/a.md')
+$pubG = Invoke-Pub -Loaded $loadedG -Tokens $tG -BaselinePath (Join-Path $pg.C 'base.json')
+$hG1 = Get-MagMirrorSha256File (Join-Path $pg.M 'MiniRepo\a.md')
+Assert-True ($pubG.PublicationStatus -eq 'BLOCKED' -and $pubG.WrittenCount -eq 0 -and $hG0 -eq $hG1) 'pub-G-conflict-no-overwrite'
+
+# H missing Mirror target
+$ph = New-PubFx 'ph'
+Write-Doc (Join-Path $ph.C 'MiniRepo\a.md') 'a.md' 'ONLYL'
+New-Item $ph.M -ItemType Directory -Force | Out-Null
+$invH = New-MiniInv $ph.C $ph.M @(@{ repo = 'MiniRepo'; path = 'a.md'; category = 'document'; require_metadata = $true })
+$loadedH = Import-MagMirrorInventory -InventoryPath $invH -ReposRootOverride $ph.C -MirrorRootOverride $ph.M
+$tH = [string[]]('MiniRepo/a.md')
+$pubH = Invoke-Pub -Loaded $loadedH -Tokens $tH -BaselinePath (Join-Path $ph.C 'base.json')
+Assert-True ($pubH.PublicationStatus -eq 'BLOCKED' -and $pubH.Results[0].reason -eq 'missing_mirror_target' -and -not (Test-Path (Join-Path $ph.M 'MiniRepo\a.md'))) 'pub-H-missing-target-blocked'
+
+# I path escape
+$pi = New-PubFx 'pi'
+Write-Doc (Join-Path $pi.C 'MiniRepo\a.md') 'a.md' 'Z'
+Write-Doc (Join-Path $pi.M 'MiniRepo\a.md') 'a.md' 'Z'
+$invI = New-MiniInv $pi.C $pi.M @(@{ repo = 'MiniRepo'; path = 'a.md'; category = 'document'; require_metadata = $true })
+$loadedI = Import-MagMirrorInventory -InventoryPath $invI -ReposRootOverride $pi.C -MirrorRootOverride $pi.M
+$hI0 = Get-MagMirrorSha256File (Join-Path $pi.M 'MiniRepo\a.md')
+$tI = [string[]]('..\..\Windows\x.md')
+$pubI = Invoke-Pub -Loaded $loadedI -Tokens $tI -BaselinePath (Join-Path $pi.C 'base.json')
+$hI1 = Get-MagMirrorSha256File (Join-Path $pi.M 'MiniRepo\a.md')
+Assert-True ($pubI.PublicationStatus -eq 'BLOCKED' -and $pubI.Results[0].outcome -eq 'PATH_ESCAPE' -and $hI0 -eq $hI1) 'pub-I-path-escape'
+
+# J partial: one publish, one conflict
+$pj = New-PubFx 'pj'
+Write-Doc (Join-Path $pj.C 'MiniRepo\ok.md') 'ok.md' 'O0'
+Write-Doc (Join-Path $pj.M 'MiniRepo\ok.md') 'ok.md' 'O0'
+Write-Doc (Join-Path $pj.C 'MiniRepo\bad.md') 'bad.md' 'L'
+Write-Doc (Join-Path $pj.M 'MiniRepo\bad.md') 'bad.md' 'M'
+$invJ = New-MiniInv $pj.C $pj.M @(
+    @{ repo = 'MiniRepo'; path = 'ok.md'; category = 'document'; require_metadata = $true },
+    @{ repo = 'MiniRepo'; path = 'bad.md'; category = 'document'; require_metadata = $true }
+)
+$loadedJ = Import-MagMirrorInventory -InventoryPath $invJ -ReposRootOverride $pj.C -MirrorRootOverride $pj.M
+$baseJ = Join-Path $pj.C 'base.json'
+Merge-MagMirrorBaselinePair -BaselinePath $baseJ -Repo MiniRepo -RelPath 'ok.md' -Category document -Sha256 (Get-MagMirrorSha256File (Join-Path $pj.C 'MiniRepo\ok.md')) | Out-Null
+Write-Doc (Join-Path $pj.C 'MiniRepo\ok.md') 'ok.md' 'O1'
+$hBad0 = Get-MagMirrorSha256File (Join-Path $pj.M 'MiniRepo\bad.md')
+$tJ = [string[]]@('MiniRepo/ok.md', 'MiniRepo/bad.md')
+$pubJ = Invoke-Pub -Loaded $loadedJ -Tokens $tJ -BaselinePath $baseJ
+$hBad1 = Get-MagMirrorSha256File (Join-Path $pj.M 'MiniRepo\bad.md')
+Assert-True ($pubJ.PublicationStatus -eq 'PARTIAL' -and $pubJ.WrittenCount -eq 1 -and $hBad0 -eq $hBad1) 'pub-J-partial-batch'
+
+# K drive claim always UNKNOWN
+Assert-True ($pubB.google_drive_status -eq 'UNKNOWN' -and $pubB.drive_sync_claimed -eq $false) 'pub-K-drive-unknown'
+
+# NEWER_DRIVE must not overwrite
+$pkd = New-PubFx 'pkd'
+Write-Doc (Join-Path $pkd.C 'MiniRepo\a.md') 'a.md' 'BASE'
+Write-Doc (Join-Path $pkd.M 'MiniRepo\a.md') 'a.md' 'BASE'
+$invKd = New-MiniInv $pkd.C $pkd.M @(@{ repo = 'MiniRepo'; path = 'a.md'; category = 'document'; require_metadata = $true })
+$loadedKd = Import-MagMirrorInventory -InventoryPath $invKd -ReposRootOverride $pkd.C -MirrorRootOverride $pkd.M
+$baseKd = Join-Path $pkd.C 'base.json'
+Merge-MagMirrorBaselinePair -BaselinePath $baseKd -Repo MiniRepo -RelPath 'a.md' -Category document -Sha256 (Get-MagMirrorSha256File (Join-Path $pkd.C 'MiniRepo\a.md')) | Out-Null
+Write-Doc (Join-Path $pkd.M 'MiniRepo\a.md') 'a.md' 'MIRRORNEWER'
+$hKd0 = Get-MagMirrorSha256File (Join-Path $pkd.M 'MiniRepo\a.md')
+$tKd = [string[]]('MiniRepo/a.md')
+$pubKd = Invoke-Pub -Loaded $loadedKd -Tokens $tKd -BaselinePath $baseKd
+$hKd1 = Get-MagMirrorSha256File (Join-Path $pkd.M 'MiniRepo\a.md')
+Assert-True ($pubKd.PublicationStatus -eq 'BLOCKED' -and $hKd0 -eq $hKd1) 'pub-newer-drive-no-overwrite'
+
 $hProdL1 = Get-MagMirrorSha256File $prodEco
 $hProdM1 = Get-MagMirrorSha256File $prodMir
 Assert-True ($hProdL0 -eq $hProdL1 -and $hProdM0 -eq $hProdM1) 'production-local-mirror-untouched-by-reconcile-tests'

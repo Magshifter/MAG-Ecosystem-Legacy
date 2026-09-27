@@ -3,6 +3,9 @@ param(
     [switch]$Check,
     [switch]$BootstrapClean,
     [switch]$Reconcile,
+    [switch]$PublishAffected,
+    [string[]]$Affected,
+    [switch]$ProductOwnerApproved,
     [string]$InventoryPath,
     [string]$MirrorRoot,
     [string]$ReposRoot,
@@ -17,10 +20,10 @@ $ErrorActionPreference = 'Stop'
 $lib = Join-Path $PSScriptRoot 'lib\MagDocumentationMirror.Common.ps1'
 . $lib
 
-$modeCount = @($Check, $BootstrapClean, $Reconcile | Where-Object { $_ }).Count
+$modeCount = @($Check, $BootstrapClean, $Reconcile, $PublishAffected | Where-Object { $_ }).Count
 if ($modeCount -eq 0) { $Check = $true }
 if ($modeCount -gt 1) {
-    [Console]::Error.WriteLine('usage: specify only one of -Check, -BootstrapClean, or -Reconcile')
+    [Console]::Error.WriteLine('usage: specify only one of -Check, -BootstrapClean, -Reconcile, or -PublishAffected')
     exit 5
 }
 
@@ -111,6 +114,32 @@ try {
         }
         Write-Output ($out | ConvertTo-Json -Depth 10 -Compress)
         if ($rec.FailedCount -gt 0) { exit 3 }
+        exit 0
+    }
+
+    if ($PublishAffected) {
+        if (-not $ProductOwnerApproved) {
+            [Console]::Error.WriteLine('usage: -PublishAffected requires -ProductOwnerApproved (procedure-bound documentation-aware closure; not standing Mirror authorization)')
+            exit 5
+        }
+        $pub = Invoke-MagMirrorPublishAffected -Loaded $loaded -AffectedTokens @($Affected) -BaselinePath $BaselinePath
+        $out = [pscustomobject]@{
+            operation            = 'PUBLISH_AFFECTED'
+            documentation_changed = (@($Affected | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }).Count -gt 0)
+            publication_status   = $pub.PublicationStatus
+            results              = $pub.Results
+            written_count        = $pub.WrittenCount
+            identical_count      = $pub.IdenticalCount
+            blocked_count        = $pub.BlockedCount
+            failed_count         = $pub.FailedCount
+            skipped_unmanaged    = $pub.SkippedUnmanaged
+            drive_sync_claimed   = $false
+            google_drive_status  = 'UNKNOWN'
+            knowledge_control    = $false
+        }
+        Write-Output ($out | ConvertTo-Json -Depth 10 -Compress)
+        if ($pub.FailedCount -gt 0) { exit 3 }
+        if ($pub.PublicationStatus -eq 'BLOCKED' -and $pub.WrittenCount -eq 0 -and $pub.IdenticalCount -eq 0) { exit 3 }
         exit 0
     }
 }

@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Coding Agent Rules
 
 - MAG-Document-ID: `AI_AGENTS_RULES.md`
-- MAG-Content-Updated: `2026-09-27T08:00:00+03:00`
+- MAG-Content-Updated: `2026-09-27T13:25:00+03:00`
 
 These rules define **how coding agents may execute** work in MAG repositories.
 
@@ -258,6 +258,8 @@ Access Mirror for mutation only under an explicitly authorized documentation-tra
 Mirror → canonical Local writes are HIGH-RISK. Local → Mirror transport writes also require current documentation-transport authorization. Destructive Mirror reset or bulk delete under MirrorRoot is HIGH-RISK and requires **specific** authorization for that operation. The completed one-time `BootstrapClean` authorization is **not** reusable and is not standing delete/reset authority.
 
 Do not infer external Google Drive upload, download, or publication completion from Mirror filesystem state.
+
+While a currently **ACTIVE** MAG Process Overlay Pool entry authorizes **procedure-bound Local→Mirror publication** of synchronization-managed files actually changed in the current Product Owner-approved Cursor procedure, that write uses `tools/docs/Update-MagDocumentationMirror.ps1 -PublishAffected` and is **not** CHECK-bound RECONCILE, **not** Mirror→Local, **not** conflict overwrite, **not** first-time Mirror target creation, and **not** standing authorization for unrelated files. Successful Local/Mirror equality does **not** prove Google Drive completion. If that overlay is not ACTIVE, do not use `-PublishAffected`.
 
 ---
 

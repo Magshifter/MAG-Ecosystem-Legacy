@@ -845,3 +845,262 @@ function Invoke-MagMirrorReconcile {
         drive_sync_claimed = $false
     }
 }
+
+function Resolve-MagMirrorAffectedToken {
+    param(
+        [Parameter(Mandatory)]$Loaded,
+        [Parameter(Mandatory)][string]$Token
+    )
+    $raw = $Token.Trim().Trim('"')
+    if ([string]::IsNullOrWhiteSpace($raw)) {
+        return [pscustomobject]@{ Ok = $false; Reason = 'empty_token'; Entry = $null }
+    }
+    $rooted = $false
+    try { $rooted = [IO.Path]::IsPathRooted($raw) } catch { $rooted = $false }
+    if ($rooted) {
+        $full = Get-MagMirrorFullPath $raw
+        if (-not (Test-MagMirrorPathUnderRoot -Path $full -Root $Loaded.ReposRoot)) {
+            return [pscustomobject]@{ Ok = $false; Reason = 'path_escape'; Entry = $null }
+        }
+        foreach ($e in @($Loaded.Entries)) {
+            if ($full.Equals((Get-MagMirrorFullPath $e.LocalPath), [StringComparison]::OrdinalIgnoreCase)) {
+                return [pscustomobject]@{ Ok = $true; Reason = ''; Entry = $e }
+            }
+        }
+        return [pscustomobject]@{ Ok = $false; Reason = 'not_in_inventory'; Entry = $null }
+    }
+    if (-not (Test-MagMirrorRelPathSafe $raw)) {
+        return [pscustomobject]@{ Ok = $false; Reason = 'path_escape'; Entry = $null }
+    }
+    $norm = $raw.Replace('\', '/')
+    $slash = $norm.IndexOf('/')
+    if ($slash -gt 0) {
+        $maybeRepo = $norm.Substring(0, $slash)
+        $rel = $norm.Substring($slash + 1)
+        if ($Loaded.RepoMap.ContainsKey($maybeRepo)) {
+            foreach ($e in @($Loaded.Entries)) {
+                if ($e.Repo -eq $maybeRepo -and $e.RelPath -eq $rel) {
+                    return [pscustomobject]@{ Ok = $true; Reason = ''; Entry = $e }
+                }
+            }
+            return [pscustomobject]@{ Ok = $false; Reason = 'not_in_inventory'; Entry = $null }
+        }
+    }
+    $hits = @($Loaded.Entries | Where-Object { $_.RelPath -eq $norm })
+    if ($hits.Count -eq 1) {
+        return [pscustomobject]@{ Ok = $true; Reason = ''; Entry = $hits[0] }
+    }
+    if ($hits.Count -gt 1) {
+        return [pscustomobject]@{ Ok = $false; Reason = 'ambiguous_relative_path'; Entry = $null }
+    }
+    return [pscustomobject]@{ Ok = $false; Reason = 'not_in_inventory'; Entry = $null }
+}
+
+function Get-MagMirrorPublishStatus {
+    param([object[]]$Results)
+    $rows = @($Results)
+    if ($rows.Count -lt 1) { return 'NOT_APPLICABLE' }
+    $escapes = @($rows | Where-Object { $_.outcome -eq 'PATH_ESCAPE' })
+    $written = @($rows | Where-Object { $_.wrote }).Count
+    if ($escapes.Count -gt 0) {
+        $blocked = @($rows | Where-Object { $_.outcome -eq 'BLOCKED' -or $_.outcome -eq 'FAILED' -or $_.outcome -eq 'PATH_ESCAPE' }).Count
+        if ($written -gt 0) {
+            if ($blocked -gt 0) { return 'PARTIAL' }
+        }
+        return 'BLOCKED'
+    }
+    $inventoryRows = @($rows | Where-Object { $_.outcome -ne 'SKIPPED_UNMANAGED' })
+    if ($inventoryRows.Count -lt 1) { return 'NOT_APPLICABLE' }
+    $writtenInv = @($inventoryRows | Where-Object { $_.wrote }).Count
+    $identical = @($inventoryRows | Where-Object { $_.outcome -eq 'IDENTICAL' }).Count
+    $blockedInv = @($inventoryRows | Where-Object { $_.outcome -eq 'BLOCKED' -or $_.outcome -eq 'FAILED' }).Count
+    if ($blockedInv -gt 0) {
+        if ($writtenInv -gt 0) { return 'PARTIAL' }
+        return 'BLOCKED'
+    }
+    if ($writtenInv -gt 0) { return 'PUBLISHED' }
+    if ($identical -eq $inventoryRows.Count) { return 'IDENTICAL' }
+    return 'BLOCKED'
+}
+
+function Invoke-MagMirrorPublishAffected {
+    param(
+        [Parameter(Mandatory)]$Loaded,
+        [string[]]$AffectedTokens = @(),
+        [Parameter(Mandatory)][string]$BaselinePath,
+        [switch]$SkipApprovedRootCheck
+    )
+    if (-not $SkipApprovedRootCheck) {
+        $null = Assert-MagMirrorRootSafe -MirrorRoot $Loaded.MirrorRoot -CanonicalRepoRoots @($Loaded.CanonicalRoots)
+    }
+    else {
+        $mr = Get-MagMirrorFullPath $Loaded.MirrorRoot
+        $reposRoot = Get-MagMirrorFullPath $Loaded.ReposRoot
+        if ($mr.Equals($reposRoot, [StringComparison]::OrdinalIgnoreCase)) {
+            throw 'mirror_root_is_repos_root'
+        }
+        foreach ($r in @($Loaded.CanonicalRoots)) {
+            if ($mr.Equals((Get-MagMirrorFullPath $r), [StringComparison]::OrdinalIgnoreCase)) {
+                throw "mirror_root_is_canonical_repo:$mr"
+            }
+        }
+        Assert-MagMirrorTreeContained -MirrorRoot $mr
+    }
+
+    $tokens = @()
+    if ($null -ne $AffectedTokens) {
+        $tokens = @($AffectedTokens | ForEach-Object { [string]$_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    }
+    $results = [System.Collections.Generic.List[object]]::new()
+    if ($tokens.Count -lt 1) {
+        return [pscustomobject]@{
+            Results            = @()
+            PublicationStatus  = 'NOT_APPLICABLE'
+            WrittenCount       = 0
+            IdenticalCount     = 0
+            BlockedCount       = 0
+            FailedCount        = 0
+            SkippedUnmanaged   = 0
+            drive_sync_claimed = $false
+            google_drive_status = 'UNKNOWN'
+        }
+    }
+
+    $baseMap = @{}
+    try {
+        $baseMap = Import-MagMirrorBaseline -BaselinePath $BaselinePath
+    }
+    catch {
+        $msg = [string]$_.Exception.Message
+        if ($msg -match '^malformed_baseline') { throw }
+        $baseMap = @{}
+    }
+
+    $seen = @{}
+    foreach ($tok in $tokens) {
+        $row = [pscustomobject]@{
+            repo       = ''
+            path       = $tok
+            outcome    = 'BLOCKED'
+            reason     = ''
+            wrote      = $false
+        }
+        $resolved = Resolve-MagMirrorAffectedToken -Loaded $Loaded -Token $tok
+        if (-not $resolved.Ok) {
+            if ($resolved.Reason -eq 'path_escape') {
+                $row.outcome = 'PATH_ESCAPE'
+                $row.reason = 'path_escape'
+            }
+            elseif ($resolved.Reason -eq 'not_in_inventory') {
+                $row.outcome = 'SKIPPED_UNMANAGED'
+                $row.reason = 'not_in_inventory'
+            }
+            else {
+                $row.outcome = 'BLOCKED'
+                $row.reason = $resolved.Reason
+            }
+            $results.Add($row) | Out-Null
+            continue
+        }
+        $e = $resolved.Entry
+        $row.repo = $e.Repo
+        $row.path = $e.RelPath
+        $key = ("{0}|{1}" -f $e.Repo, $e.RelPath).ToLowerInvariant()
+        if ($seen.ContainsKey($key)) {
+            $row.outcome = 'IDENTICAL'
+            $row.reason = 'duplicate_token_ignored'
+            $results.Add($row) | Out-Null
+            continue
+        }
+        $seen[$key] = $true
+
+        $lp = Get-MagMirrorFullPath $e.LocalPath
+        $mp = Get-MagMirrorFullPath $e.MirrorPath
+        if (-not (Test-MagMirrorPathUnderRoot -Path $lp -Root $e.LocalRepoRoot)) {
+            $row.outcome = 'PATH_ESCAPE'
+            $row.reason = 'path_outside_repo'
+            $results.Add($row) | Out-Null
+            continue
+        }
+        if (-not (Test-MagMirrorPathUnderRoot -Path $mp -Root $Loaded.MirrorRoot)) {
+            $row.outcome = 'PATH_ESCAPE'
+            $row.reason = 'path_outside_mirror'
+            $results.Add($row) | Out-Null
+            continue
+        }
+        if ((Test-MagMirrorReparsePoint $lp) -or ((Test-Path -LiteralPath $mp) -and (Test-MagMirrorReparsePoint $mp))) {
+            $row.outcome = 'BLOCKED'
+            $row.reason = 'reparse_not_allowed'
+            $results.Add($row) | Out-Null
+            continue
+        }
+        $lh = Get-MagMirrorSha256File $lp
+        $mh = Get-MagMirrorSha256File $mp
+        if ($lh -eq 'ABSENT') {
+            $row.outcome = 'BLOCKED'
+            $row.reason = 'missing_local_source'
+            $results.Add($row) | Out-Null
+            continue
+        }
+        if ($mh -eq 'ABSENT') {
+            $row.outcome = 'BLOCKED'
+            $row.reason = 'missing_mirror_target'
+            $results.Add($row) | Out-Null
+            continue
+        }
+        $bh = if ($baseMap.ContainsKey($key)) { [string]$baseMap[$key] } else { 'NONE' }
+        $isTool = ($e.Category -eq 'tool')
+        $metaOk = $true
+        if ($e.RequireMetadata) {
+            $metaOk = Test-MagDocumentMetadata -Path $lp -ExpectedFileName ([IO.Path]::GetFileName($e.RelPath))
+        }
+        $fmt = $false
+        if ($lh -ne $mh) {
+            $fmt = Test-MagMirrorFormatOnly -LocalPath $lp -MirrorPath $mp
+        }
+        $cls = Get-MagMirrorClassification -LocalHash $lh -MirrorHash $mh -BaselineHash $bh -FormatOnly $fmt -RequireMetadata $e.RequireMetadata -MetadataOk $metaOk -IsTool $isTool
+        if ([string]$cls.Classification -eq 'IDENTICAL') {
+            $row.outcome = 'IDENTICAL'
+            $row.reason = 'already_equal'
+            $results.Add($row) | Out-Null
+            continue
+        }
+        if ([string]$cls.Direction -ne 'LOCAL_TO_MIRROR' -or [string]$cls.Classification -ne 'NEWER_LOCAL') {
+            $row.outcome = 'BLOCKED'
+            $row.reason = $(if ($cls.Blocking) { [string]$cls.Blocking } else { [string]$cls.Classification })
+            $results.Add($row) | Out-Null
+            continue
+        }
+        try {
+            $h = Copy-MagMirrorFileVerified -Source $lp -Dest $mp -DestRoot $Loaded.MirrorRoot
+            $lh2 = Get-MagMirrorSha256File $lp
+            $mh2 = Get-MagMirrorSha256File $mp
+            if ($lh2 -ne $mh2 -or $lh2 -ne $h) {
+                throw 'post_write_hash_mismatch'
+            }
+            Merge-MagMirrorBaselinePair -BaselinePath $BaselinePath -Repo $e.Repo -RelPath $e.RelPath -Category $e.Category -Sha256 $h
+            $row.outcome = 'WRITTEN'
+            $row.wrote = $true
+            $row.reason = 'LOCAL_TO_MIRROR'
+        }
+        catch {
+            $row.outcome = 'FAILED'
+            $row.reason = [string]$_.Exception.Message
+            $row.wrote = $false
+        }
+        $results.Add($row) | Out-Null
+    }
+
+    $arr = @($results)
+    return [pscustomobject]@{
+        Results             = $arr
+        PublicationStatus   = (Get-MagMirrorPublishStatus -Results $arr)
+        WrittenCount        = @($arr | Where-Object { $_.wrote }).Count
+        IdenticalCount      = @($arr | Where-Object { $_.outcome -eq 'IDENTICAL' }).Count
+        BlockedCount        = @($arr | Where-Object { $_.outcome -in @('BLOCKED', 'PATH_ESCAPE') }).Count
+        FailedCount         = @($arr | Where-Object { $_.outcome -eq 'FAILED' }).Count
+        SkippedUnmanaged    = @($arr | Where-Object { $_.outcome -eq 'SKIPPED_UNMANAGED' }).Count
+        drive_sync_claimed  = $false
+        google_drive_status = 'UNKNOWN'
+    }
+}
