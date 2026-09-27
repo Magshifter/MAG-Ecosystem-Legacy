@@ -6,16 +6,12 @@ $ErrorActionPreference = 'Stop'
 $inputObj = Read-MagGuardStdinJson
 $planPath = Get-MagGuardPlanPath
 $plan = Read-MagGuardPlan -Path $planPath
-$decision = Resolve-MagGuardDecision -Plan $plan -HookInput $inputObj -HookName 'beforeSubmitPrompt'
+$decision = Resolve-MagGuardDecision -Plan $plan -HookInput $inputObj -HookName 'beforeSubmitPrompt' -PlanPath $planPath
 # Optional diagnostics must not change the enforcement decision.
 try { Write-MagGuardObservationDiagnostic -HookInput $inputObj -Decision $decision -HookName 'beforeSubmitPrompt' } catch { }
 $observed = Get-MagGuardObservedModelId -HookInput $inputObj
 
 try { Write-MagGuardEvidence -Plan $plan -ObservedModelId $observed -Signal $decision.Signal -Action $decision.Action -Note $decision.Message } catch { }
-
-if ($decision.Action -eq 'PO_CONTINUE' -and $decision.PoAck) {
-    try { Clear-MagGuardPoContinueAck -PlanPath $planPath -Plan $plan } catch { }
-}
 
 Emit-MagGuardHookResponse -Continue:([bool]$decision.Continue) -UserMessage ([string]$decision.Message)
 exit 0

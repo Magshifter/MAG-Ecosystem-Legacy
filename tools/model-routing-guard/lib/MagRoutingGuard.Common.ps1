@@ -232,6 +232,14 @@ function Get-MagGuardDeclaredSignal {
     return $null
 }
 
+function Get-MagGuardContinueToken {
+    param($Plan)
+    if ($null -ne $Plan -and $Plan.PSObject.Properties['continue_token'] -and -not [string]::IsNullOrWhiteSpace([string]$Plan.continue_token)) {
+        return ([string]$Plan.continue_token).Trim()
+    }
+    return '+'
+}
+
 function Test-MagGuardPoContinueAck {
     param($Plan)
     if ($null -eq $Plan -or -not $Plan.PSObject.Properties['runtime']) { return $false }
@@ -240,9 +248,53 @@ function Test-MagGuardPoContinueAck {
     return $false
 }
 
-function Clear-MagGuardPoContinueAck {
-    param([string]$PlanPath, $Plan)
-    if ($null -eq $Plan -or -not (Test-Path -LiteralPath $PlanPath)) { return }
+function Test-MagGuardPromptContinue {
+    param($Plan, $HookInput)
+    if ($null -eq $HookInput -or -not $HookInput.PSObject.Properties['prompt']) { return $false }
+    $prompt = [string]$HookInput.prompt
+    if ([string]::IsNullOrWhiteSpace($prompt)) { return $false }
+    return ($prompt.Trim() -eq (Get-MagGuardContinueToken -Plan $Plan))
+}
+
+function Test-MagGuardPoModelAccepted {
+    param($Plan, $Segment)
+    # One-shot model-gate accept for the current segment only.
+    # Does NOT disable Guard for the rest of the prompt session: BOUNDARY /
+    # ESCALATION / CHALLENGE / AUTHORITY / segment change can STOP+propose again.
+    if ($null -eq $Plan -or $null -eq $Segment -or -not $Plan.PSObject.Properties['runtime']) { return $false }
+    $r = $Plan.runtime
+    if (-not $r.PSObject.Properties['po_model_gate_accepted_segment']) { return $false }
+    $accepted = [string]$r.po_model_gate_accepted_segment
+    if ([string]::IsNullOrWhiteSpace($accepted)) { return $false }
+    return ($accepted -eq [string]$Segment.segment_id)
+}
+
+function Get-MagGuardProposalText {
+    param($Segment, $Mapping)
+    $class = if ($null -ne $Segment) { [string]$Segment.routing_class } else { '' }
+    $prefixes = @()
+    if ($null -ne $Mapping -and $Mapping.PSObject.Properties['classes'] -and -not [string]::IsNullOrWhiteSpace($class)) {
+        $entry = $Mapping.classes.PSObject.Properties[$class]
+        if ($null -ne $entry -and $entry.Value.PSObject.Properties['model_id_prefixes']) {
+            $prefixes = @($entry.Value.model_id_prefixes | ForEach-Object { [string]$_ } | Select-Object -First 5)
+        }
+    }
+    $required = @()
+    if ($null -ne $Segment -and $Segment.PSObject.Properties['required_model_ids'] -and $Segment.required_model_ids) {
+        $required = @($Segment.required_model_ids | ForEach-Object { [string]$_ } | Where-Object { $_ } | Select-Object -First 5)
+    }
+    $suggest = if ($required.Count -gt 0) { ($required -join ', ') } elseif ($prefixes.Count -gt 0) { ($prefixes -join ', ') } else { '(none mapped — choose any model you accept)' }
+    return ("Proposed class={0}; suggested model(s)={1}. Switch only if you agree, then send + . Your + accepts THIS gate only — Guard stays active and may propose again later in this session." -f $(if ($class) { $class } else { '(unknown)' }), $suggest)
+}
+
+function Accept-MagGuardPoContinue {
+    param(
+        [string]$PlanPath,
+        $Plan,
+        $Segment,
+        [string]$AcceptedGate = 'model'
+    )
+    if ($null -eq $Plan -or [string]::IsNullOrWhiteSpace($PlanPath)) { return }
     if (-not $Plan.PSObject.Properties['runtime']) {
         $Plan | Add-Member -NotePropertyName runtime -NotePropertyValue ([pscustomobject]@{}) -Force
     }
@@ -251,13 +303,30 @@ function Clear-MagGuardPoContinueAck {
         $rt[$p.Name] = $p.Value
     }
     $rt['po_continue_ack'] = $false
-    if ($rt.ContainsKey('blocking_signal')) { $rt['blocking_signal'] = $null }
-    if ($rt.ContainsKey('signal')) { $rt['signal'] = $null }
+    $rt['blocking_signal'] = $null
+    $rt['signal'] = $null
+    # Clear legacy field if present
+    if ($rt.ContainsKey('po_accepted_segment')) { $rt.Remove('po_accepted_segment') }
+    if ($null -ne $Segment -and -not [string]::IsNullOrWhiteSpace([string]$Segment.segment_id)) {
+        # Model/observation gate accept for this segment — not a session-wide disable.
+        if ($AcceptedGate -eq 'model') {
+            $rt['po_model_gate_accepted_segment'] = [string]$Segment.segment_id
+        }
+    }
+    $rt['last_po_continue_gate'] = $AcceptedGate
     $Plan.runtime = [pscustomobject]$rt
     if ($Plan.PSObject.Properties['signal']) { $Plan.signal = $null }
+    if (-not (Test-Path -LiteralPath $PlanPath)) { return }
     $json = $Plan | ConvertTo-Json -Depth 20
     $utf8 = [System.Text.UTF8Encoding]::new($false)
     [System.IO.File]::WriteAllText($PlanPath, $json + "`n", $utf8)
+}
+
+# Backward-compatible alias used by hooks / older call sites.
+function Clear-MagGuardPoContinueAck {
+    param([string]$PlanPath, $Plan, $Segment = $null)
+    if ($null -eq $Segment) { $Segment = Get-MagGuardCurrentSegment -Plan $Plan }
+    Accept-MagGuardPoContinue -PlanPath $PlanPath -Plan $Plan -Segment $Segment
 }
 
 function Write-MagGuardEvidence {
@@ -296,10 +365,12 @@ function Resolve-MagGuardDecision {
     param(
         $Plan,
         $HookInput,
-        [string]$HookName = 'beforeSubmitPrompt'
+        [string]$HookName = 'beforeSubmitPrompt',
+        [string]$PlanPath = ''
     )
     $enforcement = Get-MagGuardEnforcement -Plan $Plan
     $observed = Get-MagGuardObservedModelId -HookInput $HookInput
+    if ([string]::IsNullOrWhiteSpace($PlanPath)) { $PlanPath = Get-MagGuardPlanPath }
 
     if ($null -eq $Plan) {
         $behavior = [string]$enforcement.missing_plan_behavior
@@ -309,14 +380,15 @@ function Resolve-MagGuardDecision {
                 Signal   = 'MISSING_PLAN'
                 Action   = 'STOP'
                 Message  = 'MAG Model Routing Guard: routing plan missing. Create C:\laragon\repos\.mag\routing-plan.json or set missing_plan_behavior=INERT.'
+                PoAck    = $false
             }
         }
-        # INERT (+ optional notice is not shown on every prompt — truly inert)
         return [pscustomobject]@{
             Continue = $true
             Signal   = 'INERT'
             Action   = 'CONTINUE'
             Message  = ''
+            PoAck    = $false
         }
     }
 
@@ -326,80 +398,87 @@ function Resolve-MagGuardDecision {
             Continue = $false
             Signal   = 'AUTHORITY_CONFLICT'
             Action   = 'STOP'
-            Message  = 'MAG Model Routing Guard: current_segment not found in plan. Replan required.'
+            Message  = 'MAG Model Routing Guard: current_segment not found in plan. Replan or send + after fixing the plan — + accepts your decision.'
+            PoAck    = $false
         }
     }
 
-    $declared = Get-MagGuardDeclaredSignal -Plan $Plan -Segment $seg
+    $promptContinue = Test-MagGuardPromptContinue -Plan $Plan -HookInput $HookInput
     $poAck = Test-MagGuardPoContinueAck -Plan $Plan
+    $mapping = Read-MagGuardMapping
+    $proposal = Get-MagGuardProposalText -Segment $seg -Mapping $mapping
 
-    # Precedence helper
-    function New-Decision([string]$Signal, [bool]$Stop, [string]$Action, [string]$Message) {
+    function New-Decision([string]$Signal, [bool]$Stop, [string]$Action, [string]$Message, [bool]$Ack = $false) {
         return [pscustomobject]@{
             Continue = -not $Stop
             Signal   = $Signal
             Action   = $Action
             Message  = $Message
-            PoAck    = $poAck
+            PoAck    = $Ack
         }
     }
+
+    # Product Owner continue: prompt "+" (or plan continue_token) OR runtime.po_continue_ack.
+    # Must be evaluated BEFORE any STOP so "+" itself is never blocked.
+    # "+" acknowledges the current gate only — Guard remains active for later gates in this session.
+    if ($promptContinue -or $poAck) {
+        try { Accept-MagGuardPoContinue -PlanPath $PlanPath -Plan $Plan -Segment $seg -AcceptedGate 'model' } catch { }
+        return (New-Decision 'PO_CONTINUE' $false 'PO_CONTINUE' '' $true)
+    }
+
+    $declared = Get-MagGuardDeclaredSignal -Plan $Plan -Segment $seg
 
     if ($declared -in @('AUTHORITY_CONFLICT', 'REPLAN_REQUIRED')) {
-        if ($poAck) {
-            return (New-Decision $declared $false 'PO_CONTINUE' '')
-        }
-        return (New-Decision $declared $true 'STOP' ("MAG Model Routing Guard: {0}. Product Owner replan/resolution required, then set runtime.po_continue_ack=true and send +." -f $declared))
+        return (New-Decision $declared $true 'STOP' ("MAG Model Routing Guard: {0}. {1}" -f $declared, $proposal))
     }
 
-    $mapping = Read-MagGuardMapping
-    $match = Test-MagGuardModelAllowed -ObservedModelId $observed -Segment $seg -Mapping $mapping
-
-    if ($match.Reason -eq 'MODEL_UNOBSERVED') {
-        return (New-Decision 'MODEL_OBSERVATION_UNKNOWN' $true 'STOP' 'MAG Model Routing Guard: MODEL_OBSERVATION_UNKNOWN. No concrete model identity supplied. Enforcement remains stopped. Product Owner can run Set-MagGuardMaintenance.ps1 -Action Suspend -ProductOwnerApproved from an external terminal for repair.')
+    if ($declared -eq 'MODEL_ESCALATION_REQUIRED' -and [string]$enforcement.escalation_behavior -eq 'STOP') {
+        return (New-Decision $declared $true 'STOP' ("MAG Model Routing Guard: MODEL_ESCALATION_REQUIRED. {0}" -f $proposal))
     }
 
-    if (-not $match.Ok) {
-        $sig = if ($match.Reason -eq 'ROUTING_MAPPING_UNKNOWN') { 'ROUTING_MAPPING_UNKNOWN' } else { 'MODEL_MISMATCH' }
-        if ($poAck -and $sig -eq 'MODEL_MISMATCH') {
-            # Ack alone must not bypass mismatch — PO must actually switch model.
-        }
-        if ([string]$enforcement.mismatch_behavior -eq 'STOP' -or $sig -eq 'ROUTING_MAPPING_UNKNOWN') {
-            $msg = if ($sig -eq 'ROUTING_MAPPING_UNKNOWN') {
-                "MAG Model Routing Guard: ROUTING_MAPPING_UNKNOWN for class '$($seg.routing_class)'. Refresh capability-mapping.json or set required_model_ids."
-            }
-            else {
-                "MAG Model Routing Guard: MODEL_MISMATCH. Required class=$($seg.routing_class); observed=$observed. Switch model to match Capability Mapping, then retry."
-            }
-            return (New-Decision $sig $true 'STOP' $msg)
-        }
-        return (New-Decision $sig $false 'WARN' '')
-    }
-
-    if ($declared -eq 'MODEL_ESCALATION_REQUIRED') {
-        if ($poAck) { return (New-Decision $declared $false 'PO_CONTINUE' '') }
-        if ([string]$enforcement.escalation_behavior -eq 'STOP') {
-            return (New-Decision $declared $true 'STOP' 'MAG Model Routing Guard: MODEL_ESCALATION_REQUIRED. Product Owner must change to stronger class/model, set runtime.po_continue_ack=true, then send +.')
-        }
-    }
-
-    if ($declared -eq 'MODEL_BOUNDARY') {
-        if ($poAck) { return (New-Decision $declared $false 'PO_CONTINUE' '') }
-        if ([string]$enforcement.boundary_behavior -eq 'STOP') {
-            return (New-Decision $declared $true 'STOP' 'MAG Model Routing Guard: MODEL_BOUNDARY. Switch model for next segment, set runtime.po_continue_ack=true (and clear boundary signal), then send +.')
-        }
+    if ($declared -eq 'MODEL_BOUNDARY' -and [string]$enforcement.boundary_behavior -eq 'STOP') {
+        return (New-Decision $declared $true 'STOP' ("MAG Model Routing Guard: MODEL_BOUNDARY. {0}" -f $proposal))
     }
 
     if ($declared -eq 'RUNTIME_CHALLENGE') {
-        if ($poAck) { return (New-Decision $declared $false 'PO_CONTINUE' '') }
         $chal = [string]$enforcement.challenge_behavior
         if ($chal -eq 'STOP' -or $chal -eq 'STOP_IF_EXPENSIVE_OR_WRONG') {
-            return (New-Decision $declared $true 'STOP' 'MAG Model Routing Guard: RUNTIME_CHALLENGE (blocking). Resolve with Product Owner (downgrade/escalation/replan), set runtime.po_continue_ack=true, then send +.')
+            return (New-Decision $declared $true 'STOP' ("MAG Model Routing Guard: RUNTIME_CHALLENGE. {0}" -f $proposal))
         }
         return (New-Decision $declared $false 'WARN' '')
     }
 
     if ($declared -eq 'MODEL_DOWNGRADE_RECOMMENDED') {
         return (New-Decision $declared $false 'WARN' '')
+    }
+
+    # After PO "+" on a model/observation gate: do not re-nag the same model identity
+    # for this segment. Other gates (boundary/escalation/challenge/authority) still STOP.
+    if (Test-MagGuardPoModelAccepted -Plan $Plan -Segment $seg) {
+        if ($HookName -eq 'preCompact') {
+            return (New-Decision 'CONTEXT_WARNING' $false 'WARN' '')
+        }
+        return (New-Decision 'MODEL_PO_ACCEPTED' $false 'CONTINUE' '')
+    }
+
+    $match = Test-MagGuardModelAllowed -ObservedModelId $observed -Segment $seg -Mapping $mapping
+
+    if ($match.Reason -eq 'MODEL_UNOBSERVED') {
+        return (New-Decision 'MODEL_OBSERVATION_UNKNOWN' $true 'STOP' ("MAG Model Routing Guard: model not observed. {0} After you decide, send + — Guard continues without re-blocking on observation." -f $proposal))
+    }
+
+    if (-not $match.Ok) {
+        $sig = if ($match.Reason -eq 'ROUTING_MAPPING_UNKNOWN') { 'ROUTING_MAPPING_UNKNOWN' } else { 'MODEL_MISMATCH' }
+        if ([string]$enforcement.mismatch_behavior -eq 'STOP' -or $sig -eq 'ROUTING_MAPPING_UNKNOWN') {
+            $msg = if ($sig -eq 'ROUTING_MAPPING_UNKNOWN') {
+                "MAG Model Routing Guard: ROUTING_MAPPING_UNKNOWN for class '$($seg.routing_class)'. $proposal After you decide, send + ."
+            }
+            else {
+                "MAG Model Routing Guard: MODEL_MISMATCH (observed=$observed). $proposal After you decide, send + ."
+            }
+            return (New-Decision $sig $true 'STOP' $msg)
+        }
+        return (New-Decision $sig $false 'WARN' '')
     }
 
     if ($HookName -eq 'preCompact') {

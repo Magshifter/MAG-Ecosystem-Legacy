@@ -51,11 +51,15 @@ Evidence appends to:
 
 `C:\laragon\repos\.mag\routing-evidence.jsonl`
 
-### After MODEL_BOUNDARY / escalation / challenge STOP
+### After STOP (mismatch / boundary / escalation / unobserved)
 
-1. Switch the Cursor model manually (guard cannot).  
-2. Update the plan: clear `signal` / `runtime.blocking_signal`, set `runtime.po_continue_ack` to `true`, advance `current_segment` if needed.  
-3. Send `+` / next prompt — guard allows once and clears the ack.
+1. Guard shows a **proposal** (class + suggested models). It does **not** change the Cursor model.  
+2. Product Owner switches model only if they agree.  
+3. Send exact `+` (plan `continue_token`). Guard accepts **this gate** and continues — including “wrong” or unobserved models for a model-gate stop.  
+4. Guard **stays active** for the rest of the prompt session. Later subtasks may STOP+propose again (boundary / escalation / challenge / new segment).  
+5. After `+` on mismatch/unobserved, Guard does not re-nag the same model-identity gate for the current segment.
+
+`+` must never itself be blocked. `+` does not cancel Guard until the end of the session.
 
 ## Smoke test (no Cursor)
 
@@ -84,7 +88,7 @@ Resume refuses to overwrite another active plan. The emergency recovery on 2026-
 
 ## Model observation and temporary diagnostics
 
-The Guard uses concrete trimmed `model_id`, falling back to concrete `model`. Empty, default, auto, unknown, null, none, and undefined values are not identities. Unknown observation under an active plan remains fail-closed (`MODEL_OBSERVATION_UNKNOWN`), regardless of missing-model warning settings. No model is inferred from model_params.
+The Guard uses concrete trimmed `model_id`, falling back to concrete `model`. Empty, default, auto, unknown, null, none, and undefined values are not identities. Unknown observation under an active plan causes a one-time STOP + proposal; Product Owner `+` unlocks and accepts the segment without requiring observation. No model is inferred from model_params.
 
 For a narrowly scoped live debugging pass, create `.mag/routing-observation-debug.enabled`. The next submit writes only model/model_id, hook event, Cursor version (if supplied), model_params presence, observation source, signal and action to `.mag/routing-observation-debug.jsonl`. No prompt body, model_params values, token/cost usage, or session data is stored. Remove the marker after collecting the required observation; logging is disabled by default.
 

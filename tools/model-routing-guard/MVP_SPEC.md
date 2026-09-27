@@ -127,20 +127,26 @@ PLANNED
   ↓ session/prompt with plan
 ACTIVE_SEGMENT
   ├─ MODEL_MATCH + no boundary/escalation/challenge  → continue ACTIVE_SEGMENT
-  ├─ MODEL_MISMATCH                                  → STOP_SIGNAL → AWAITING_PO
-  ├─ MODEL_ESCALATION_REQUIRED                       → STOP_SIGNAL → AWAITING_PO
-  ├─ MODEL_BOUNDARY (model change required)          → STOP_SIGNAL → AWAITING_PO
-  ├─ RUNTIME_CHALLENGE (blocking)                    → STOP_SIGNAL → AWAITING_PO
+  ├─ MODEL_MISMATCH                                  → STOP_SIGNAL → AWAITING_PO (propose)
+  ├─ MODEL_OBSERVATION_UNKNOWN                       → STOP_SIGNAL → AWAITING_PO (propose)
+  ├─ MODEL_ESCALATION_REQUIRED                       → STOP_SIGNAL → AWAITING_PO (propose)
+  ├─ MODEL_BOUNDARY (model change required)          → STOP_SIGNAL → AWAITING_PO (propose)
+  ├─ RUNTIME_CHALLENGE (blocking)                    → STOP_SIGNAL → AWAITING_PO (propose)
   ├─ RUNTIME_CHALLENGE / DOWNGRADE (warn-only)       → WARN → ACTIVE_SEGMENT
   ├─ CONTEXT_WARNING                                 → WARN → ACTIVE_SEGMENT
-  ├─ AUTHORITY_CONFLICT / REPLAN_REQUIRED            → FAIL_CLOSED → AWAITING_PO
+  ├─ AUTHORITY_CONFLICT / REPLAN_REQUIRED            → STOP_SIGNAL → AWAITING_PO (propose)
   └─ final segment complete                          → COMPLETED
 
 AWAITING_PO
-  ├─ PO model switch + continue_token (+)            → ACTIVE_SEGMENT (next/current as plan says)
-  ├─ replan                                          → PLANNED / REPLAN_REQUIRED
-  └─ abort                                           → ABORTED
+  ├─ continue_token (+) in prompt  → PO_CONTINUE for **this gate only** → ACTIVE_SEGMENT
+  ├─ runtime.po_continue_ack=true  → same
+  ├─ later in same prompt session: new BOUNDARY / ESCALATION / CHALLENGE / AUTHORITY / new segment
+  │     → STOP_SIGNAL → AWAITING_PO again (multiple proposals per session are expected)
+  ├─ replan                        → PLANNED / REPLAN_REQUIRED
+  └─ abort                         → ABORTED
 ```
+
+**Product Owner contract (binding for this tool):** STOP is for attention and a **proposal** only. When the Product Owner sends `+` (plan `continue_token`), Guard accepts **that gate** and continues. `+` does **not** disable Guard for the rest of the prompt session — as subtask complexity changes, further STOP+propose cycles may occur. After `+` on a model/observation mismatch, Guard does not re-nag the same model-identity gate for the **current segment**, but declared boundary/escalation/challenge/authority and a **new segment** can still STOP. `+` itself must never be blocked by the hook.
 
 No weighted scoring. No hidden preferences.
 
@@ -174,20 +180,24 @@ Forbidden as auto-truth:
 
 ## 9. Enforcement defaults
 
-Mirror §24.4 v1 table:
+Mirror §24.4 v1 table, with Product Owner accept-via-`+`:
 
 | Signal | Behavior |
 | --- | --- |
-| AUTHORITY_CONFLICT / REPLAN_REQUIRED | hard STOP |
-| MODEL_MISMATCH | hard STOP |
-| MODEL_ESCALATION_REQUIRED | hard STOP |
-| MODEL_BOUNDARY (model change needed) | STOP until PO switch + `+` |
-| RUNTIME_CHALLENGE | STOP if continuing is materially wrong/expensive; else WARN |
+| AUTHORITY_CONFLICT / REPLAN_REQUIRED | STOP + propose; `+` accepts and continues |
+| MODEL_MISMATCH | STOP + propose; `+` accepts chosen model for segment (no re-block) |
+| MODEL_OBSERVATION_UNKNOWN | STOP + propose; `+` unlocks (no observation required after) |
+| MODEL_ESCALATION_REQUIRED | STOP + propose; `+` accepts |
+| MODEL_BOUNDARY (model change needed) | STOP + propose; `+` accepts |
+| RUNTIME_CHALLENGE | STOP + propose if blocking; else WARN; `+` accepts |
 | MODEL_DOWNGRADE_RECOMMENDED | WARN |
 | CONTEXT_WARNING | WARN |
 | missing plan | INERT (default) |
 
-Precedence: AUTHORITY → REPLAN → MISMATCH → ESCALATION → BOUNDARY → CHALLENGE/DOWNGRADE → CONTINUE.
+Precedence before accept: AUTHORITY → REPLAN → ESCALATION → BOUNDARY → CHALLENGE → MISMATCH / UNOBSERVED → CONTINUE.  
+**Always first:** if prompt is `continue_token` (`+`) or `runtime.po_continue_ack` → `PO_CONTINUE` (never block `+`).
+
+After `+`, `runtime.po_model_gate_accepted_segment` records that the model/observation gate for the current segment was accepted (no re-nag on the same mismatch). This is **not** a session-wide off switch: new BOUNDARY / ESCALATION / CHALLENGE / AUTHORITY / segment change can STOP+propose again in the same prompt session.
 
 ## 10. Evidence schema
 
@@ -216,8 +226,9 @@ Each event (minimum):
 
 - Cannot read plan / corrupt JSON → treat as missing plan (INERT) **or** FAIL_CLOSED if `missing_plan_behavior` later set to STOP (PO choice).  
 - Mapping unresolved when match required → STOP (`ROUTING_MAPPING_UNKNOWN`).  
-- Hook cannot observe model → UNKNOWN; if match enforcement requires observation → STOP; else WARN once.  
-- Never fail open into silent continue when mismatch/escalation/boundary STOP applies.
+- Hook cannot observe model → STOP + propose once; Product Owner sends `+` → continue (no trap; no external maintenance required for normal unlock).  
+- Never fail open into **silent** continue when a STOP signal applies — but always unlock on explicit `+` / `po_continue_ack`.  
+- Never block the continue token itself.
 
 ## 12. Proposed repo layout
 
