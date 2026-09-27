@@ -138,6 +138,18 @@
     },
     {
       "repo": "MAG-Ecosystem",
+      "path": "tools/model-routing-guard/README.md",
+      "category": "supporting",
+      "require_metadata": false
+    },
+    {
+      "repo": "MAG-Ecosystem",
+      "path": "tools/model-routing-guard/MVP_SPEC.md",
+      "category": "supporting",
+      "require_metadata": false
+    },
+    {
+      "repo": "MAG-Ecosystem",
       "path": "tools/docs/Update-MagDocumentationMirror.ps1",
       "category": "tool",
       "require_metadata": false
