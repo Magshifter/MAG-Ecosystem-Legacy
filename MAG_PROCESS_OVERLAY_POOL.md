@@ -1,7 +1,7 @@
 # MAG Process Overlay Pool
 
 - MAG-Document-ID: `MAG_PROCESS_OVERLAY_POOL.md`
-- MAG-Content-Updated: `2026-09-13T14:15:00+00:00`
+- MAG-Content-Updated: `2026-09-27T10:10:00+03:00`
 
 This file is the ecosystem-level **MAG Process Overlay Pool**. It is a single registered Global process asset containing multiple internal process records (MPO entries).
 
@@ -14,6 +14,7 @@ Individual MPO entries are **not** standalone documents. They do not receive a s
 | ID | Title | Status |
 | --- | --- | --- |
 | MPO-001 | Two-Level Bootstrap Authority | PROMOTED |
+| MPO-002 | Runtime Routing Enforcement | PROMOTED |
 
 ## Scope and ownership
 
@@ -98,4 +99,22 @@ Promotion is a Global documentation normalization procedure. After promotion, ca
 - Validation evidence: Wave 1 canonicalized Local/Git vs Drive states. `#4` Resume Bootstrap reached Local/Git Bootstrap Complete with Drive Reconciliation Pending. Wave 2 Product Owner procedure promoted the remaining Level 1 / Level 2 payload into Lifecycle Phase 1.
 - Known limitations: none for current operation. Historical ACTIVE overlay wording was removed at promotion; this record is not executable.
 - Promotion readiness: promoted.
-- Promotion result: **PROMOTED** on `2026-09-13` by Wave 2 Product Owner-authorized Global normalization. Canonical documents are self-contained. Do not consult this entry for current bootstrap HOW. No MPO-002 created.
+- Promotion result: **PROMOTED** on `2026-09-13` by Wave 2 Product Owner-authorized Global normalization. Canonical documents are self-contained. Do not consult this entry for current bootstrap HOW.
+
+---
+
+### MPO-002 — Runtime Routing Enforcement
+
+- Area: Cursor model routing / runtime enforcement
+- Status: PROMOTED
+- Problem: §24.4 previously lacked a complete Runtime Enforcement State / STOP re-evaluation / maintenance-boundary contract, which allowed Guard code to drift into a weaker second policy table.
+- Current canonical behavior: Runtime Routing Enforcement is **self-contained** in `AI_GUIDELINES.md` §24.4 (`#### Runtime Routing Enforcement`). Current HOW must be read from §24.4. This Pool entry has **no overlay effect**.
+- Active/proposed behavior: Historical promoted delta only. Do not execute from this record. Do not consult MPO-002 for current routing HOW.
+- Scope: historical process/HOW for Runtime Routing Enforcement. No current overlay scope.
+- Affected Global owners: `AI_GUIDELINES.md` §24.4 (promoted). `AI_AGENTS_RULES.md` unchanged (existing §24.4 delegation remains sufficient).
+- Affected operational assets: `tools/model-routing-guard/*` (contract/docs/loader aligned to canonical §24.4).
+- Activation decision: Product Owner approved ACTIVE validation on `2026-09-27`, then approved promotion into §24.4 on `2026-09-27`.
+- Validation evidence: Pre-promotion ACTIVE validation retained (offline `Test-GuardRecovery` ALL_RECOVERY_OK; smoke match/mismatch; isolated live A–E; bare `+` unresolved STOP; maintenance preserves pending; missing state→ENFORCED; SUSPENDED≠MATCH). Promotion verification `2026-09-27`: §24.4 subsection added; contract `1.0.1` without ACTIVE-overlay dependency; Guard recovery/smoke re-run PASS after provenance change.
+- Known limitations: Cursor may not expose trustworthy concrete model identity in every hook case; UNKNOWN remains explicit under §24.4.
+- Promotion readiness: promoted.
+- Promotion result: **PROMOTED** on `2026-09-27` into `AI_GUIDELINES.md` §24.4 Runtime Routing Enforcement. Overlay no longer overrides execution. Do not consult this entry for current routing HOW. Canonical documents are self-contained. Not a seventh Global owner.

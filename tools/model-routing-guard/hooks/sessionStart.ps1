@@ -3,36 +3,30 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 . (Join-Path (Split-Path $PSScriptRoot -Parent) 'lib\MagRoutingGuard.Common.ps1')
 
-# sessionStart: ensure .mag exists; load plan if present; evidence breadcrumb only.
-$root = Get-MagGuardReposRoot
-$magDir = Join-Path $root '.mag'
-if (-not (Test-Path -LiteralPath $magDir)) {
-    New-Item -ItemType Directory -Force -Path $magDir | Out-Null
-}
+Ensure-MagGuardMagDir | Out-Null
 $plan = Read-MagGuardPlan
-$mode = Read-MagGuardMode
-$observed = ''
-$note = ("sessionStart mode={0} source={1} enforce={2} expired={3}" -f $mode.Mode, $mode.Source, $mode.EnforceStops, $mode.Expired)
-$signal = if ($mode.Expired) { 'MODE_EXPIRED' } elseif ($mode.EnforceStops) { 'SESSION_START' } else { $mode.Mode.ToUpperInvariant() }
-Write-MagGuardEvidence -Plan $plan -ObservedModelId $observed -Signal $signal -Action 'CONTINUE' -Note $note
+$enf = Read-MagGuardEnforcementState -Plan $plan
+$cv = ''
+try { $cv = [string](Read-MagGuardContract).contract_version } catch { $cv = 'unavailable' }
+$note = ("sessionStart state={0} source={1} maintenance={2} contract={3}" -f $enf.State, $enf.Source, $enf.MaintenanceActive, $cv)
+Write-MagGuardEvidence -Plan $plan -ObservedModelId '' -Signal 'SESSION_START' -Action 'CONTINUE' -Note $note -ContractVersion $cv
 
 $ctx = $null
-if ($mode.Expired -or $mode.NeedsChoice) {
-    $ctx = 'MAG Model Routing Guard: Auto 24h window ended. FIRST ask Product Owner which mode to continue: Guard Pro (STOP+propose on), Guard Auto (another 24h, no proposals), or Guard Off (off until explicit enable). Do not continue substantive work until they answer.'
+if ($enf.MaintenanceActive) {
+    $ctx = 'MAG Model Routing Guard: MAINTENANCE active (tool SUSPENDED). Pending STOP preserved. Does NOT certify MODEL_MATCH. §24.4 agent obligations remain. Resume via Set-MagGuardMaintenance.ps1 -Action Resume.'
 }
-elseif ($mode.Source -eq 'default') {
-    $ctx = 'MAG Model Routing Guard: mode unset → treating as Auto (no STOP proposals). Prefer asking Product Owner: Guard Pro / Guard Auto / Guard Off.'
+elseif ($null -ne $plan -and $enf.State -eq 'ENFORCED') {
+    $ctx = 'MAG Model Routing Guard: ENFORCED (accepted plan). STOP/WARN per AI_GUIDELINES.md §24.4 Runtime Routing Enforcement.'
 }
-elseif ($mode.Mode -eq 'auto') {
-    $ctx = 'MAG Model Routing Guard: Auto mode — STOP+propose disabled (no model picker). Window 24h; after expiry you must ask mode again.'
+elseif ($enf.State -eq 'ADVISORY') {
+    $ctx = 'MAG Model Routing Guard: ADVISORY — reports predicates without normal hard blocking. Agents must still follow §24.4.'
 }
-elseif ($mode.Mode -eq 'off') {
-    $ctx = 'MAG Model Routing Guard: Off — STOP+propose disabled until Product Owner enables Pro or Auto.'
+elseif ($null -eq $plan) {
+    $ctx = 'MAG Model Routing Guard: no accepted Routing Plan → INERT hooks. Agents still follow §24.4 when a plan is required.'
 }
 
 if ($ctx) {
-    $out = [ordered]@{ additional_context = $ctx }
-    Write-Output (($out | ConvertTo-Json -Compress))
+    Write-Output (([ordered]@{ additional_context = $ctx } | ConvertTo-Json -Compress))
 }
 else {
     Write-Output '{}'

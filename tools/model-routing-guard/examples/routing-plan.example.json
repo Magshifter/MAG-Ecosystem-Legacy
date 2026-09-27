@@ -18,7 +18,11 @@
       "boundary_condition": "none",
       "escalation_condition": "none",
       "downgrade_condition": "none",
-      "context_strategy": "INHERIT_CONTEXT"
+      "context_strategy": "INHERIT_CONTEXT",
+      "recommended_routing_class": null,
+      "recommended_model_id_override": null,
+      "recommendation_reason": null,
+      "next_segment_id": null
     }
   ],
   "enforcement": {

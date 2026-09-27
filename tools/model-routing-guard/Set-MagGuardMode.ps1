@@ -1,11 +1,13 @@
 #Requires -Version 7.0
 <#
 .SYNOPSIS
-  Set MAG Model Routing Guard operating mode: Pro (STOP+propose), Auto (no proposals), Off (forced off).
+  Set Runtime Enforcement State: ENFORCED | ADVISORY | SUSPENDED (§24.4).
+  Legacy aliases: Pro→ENFORCED, Auto→ADVISORY, Off→SUSPENDED.
 #>
 param(
-    [Parameter(Mandatory)][ValidateSet('Pro', 'Auto', 'Off')][string]$Mode,
-    [int]$DurationHours = -1,
+    [Parameter(Mandatory)]
+    [ValidateSet('Enforced', 'Advisory', 'Suspended', 'Pro', 'Auto', 'Off', 'ENFORCED', 'ADVISORY', 'SUSPENDED')]
+    [string]$Mode,
     [string]$ReposRoot = 'C:\laragon\repos',
     [string]$Note = '',
     [Parameter(Mandatory)][switch]$ProductOwnerApproved
@@ -13,15 +15,9 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 if (-not $ProductOwnerApproved) { throw 'Explicit Product Owner authorization required.' }
-
 $env:MAG_REPOS_ROOT = $ReposRoot.TrimEnd('\', '/')
 . (Join-Path $PSScriptRoot 'lib\MagRoutingGuard.Common.ps1')
-
-$normalized = $Mode.ToLowerInvariant()
-if ($DurationHours -lt 0) {
-    # Pro permanent; Auto 24h then must re-ask; Off until explicit change.
-    $DurationHours = if ($normalized -eq 'auto') { 24 } else { 0 }
-}
-$info = Save-MagGuardMode -Mode $normalized -DurationHours $DurationHours -Note $Note
-$exp = if ($info.ExpiresAt) { $info.ExpiresAt.ToString('u') } else { 'never' }
-Write-Output ("MODE_SET mode={0} enforce_stops={1} expires={2} path={3}" -f $info.Mode, $info.EnforceStops, $exp, (Get-MagGuardModePath))
+$state = ConvertTo-MagGuardEnforcementState $Mode
+if (-not $state) { throw "unknown_state:$Mode" }
+$info = Save-MagGuardEnforcementState -State $state -Note $Note
+Write-Output ("ENFORCEMENT_STATE_SET state={0} source={1} path={2}" -f $info.State, $info.Source, (Get-MagGuardModePath))

@@ -1,0 +1,96 @@
+{
+  "contract_version": "1.0.1",
+  "kind": "mag-model-routing-enforcement-contract",
+  "authority": "none",
+  "canonical_owner": "AI_GUIDELINES.md",
+  "canonical_section": "24.4",
+  "provenance": {
+    "promoted_from_overlay": "MPO-002",
+    "note": "Historical provenance only. Not executable authority. Current HOW is AI_GUIDELINES.md §24.4 Runtime Routing Enforcement."
+  },
+  "subordinate_note": "Operational projection only. Not MAG authority. If this file conflicts with AI_GUIDELINES.md §24.4, Guard must STOP/report contract conflict — not invent policy.",
+  "enforcement_states": ["ENFORCED", "ADVISORY", "SUSPENDED"],
+  "default_state_with_accepted_plan": "ENFORCED",
+  "no_plan_behavior": "INERT",
+  "missing_state_file_with_accepted_plan": "ENFORCED",
+  "continuation_token": "+",
+  "continuation_semantics": "request_after_prerequisite_then_reevaluate",
+  "unknown_semantics": "never_becomes_match",
+  "maintenance_boundary": "separate_recovery_condition_effective_suspended",
+  "prohibited_automation": [
+    "automatic_model_switching",
+    "llm_router",
+    "semantic_autonomous_classification",
+    "automatic_escalation",
+    "automatic_downgrade",
+    "weighted_routing",
+    "token_dollar_telemetry"
+  ],
+  "precedence": [
+    "AUTHORITY_CONFLICT",
+    "REPLAN_REQUIRED",
+    "ROUTING_MAPPING_UNKNOWN",
+    "MODEL_MISMATCH",
+    "MODEL_OBSERVATION_UNKNOWN",
+    "MODEL_ESCALATION_REQUIRED",
+    "MODEL_BOUNDARY",
+    "RUNTIME_CHALLENGE",
+    "MODEL_DOWNGRADE_RECOMMENDED",
+    "CONTEXT_WARNING",
+    "MODEL_MATCH"
+  ],
+  "signals": {
+    "AUTHORITY_CONFLICT": {
+      "default_action": "STOP",
+      "required_resolution": ["AUTHORITY_RESOLUTION"]
+    },
+    "REPLAN_REQUIRED": {
+      "default_action": "STOP",
+      "required_resolution": ["REPLAN"]
+    },
+    "ROUTING_MAPPING_UNKNOWN": {
+      "default_action": "STOP",
+      "required_resolution": ["MAPPING_RESOLUTION"]
+    },
+    "MODEL_MISMATCH": {
+      "default_action": "STOP",
+      "required_resolution": ["MODEL_SWITCH", "REPLAN"]
+    },
+    "MODEL_OBSERVATION_UNKNOWN": {
+      "default_action": "STOP",
+      "required_resolution": ["OBSERVATION_REQUIRED", "PO_DECISION"]
+    },
+    "MODEL_ESCALATION_REQUIRED": {
+      "default_action": "STOP",
+      "required_resolution": ["MODEL_SWITCH", "REPLAN"]
+    },
+    "MODEL_BOUNDARY": {
+      "default_action": "STOP",
+      "required_resolution": ["MODEL_SWITCH"]
+    },
+    "RUNTIME_CHALLENGE": {
+      "default_action": "STOP_IF_BLOCKING_ELSE_WARN",
+      "required_resolution": ["PO_DECISION", "REPLAN"]
+    },
+    "MODEL_DOWNGRADE_RECOMMENDED": {
+      "default_action": "WARN",
+      "required_resolution": []
+    },
+    "CONTEXT_WARNING": {
+      "default_action": "WARN",
+      "required_resolution": []
+    },
+    "MODEL_MATCH": {
+      "default_action": "CONTINUE",
+      "required_resolution": []
+    }
+  },
+  "aliases": {
+    "Guard Enforced": "ENFORCED",
+    "Guard Advisory": "ADVISORY",
+    "Guard Suspended": "SUSPENDED",
+    "Guard Pro": "ENFORCED",
+    "Guard Auto": "ADVISORY",
+    "Guard Off": "SUSPENDED"
+  }
+}

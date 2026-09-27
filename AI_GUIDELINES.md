@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Development Guidelines
 
 - MAG-Document-ID: `AI_GUIDELINES.md`
-- MAG-Content-Updated: `2026-09-27T08:00:00+03:00`
+- MAG-Content-Updated: `2026-09-27T10:50:00+03:00`
 
 This document is the **Global MAG development standard**. It defines **how** MAG software is developed with AI assistance.
 
@@ -973,25 +973,37 @@ If runtime canonical policy and an accepted plan conflict materially: **STOP →
 
 #### Capability Mapping
 
-Concrete models and effort modes are volatile operational data subordinate to this subsection.
+Concrete models, effort, and speed-tier values are volatile operational data subordinate to this subsection. Provider/model IDs are **not** class semantics.
 
 ```text
-Routing Class → current Capability Mapping → concrete Cursor model + supported effort
+Routing Class → current Capability Mapping → preferred concrete model (+ effort / speed recommendation metadata)
 ```
 
 Refreshing the mapping does not change class semantics and does not require a lifecycle Gate, but must be Product Owner / operationally verified. A tool or agent must not silently reassign a class to a new model.
 
-If mapping is missing, stale, contradictory, or cannot resolve the requested class: **STOP → ROUTING MAPPING UNKNOWN**. Do not invent a replacement model.
+If mapping is missing, stale, contradictory, or cannot resolve the requested class / preferred concrete model when that resolution is required: **STOP → ROUTING MAPPING UNKNOWN**. Do not invent a replacement model.
 
-**Current Capability Mapping (subordinate; EXAMPLE / starting map — refresh when Cursor inventory changes):**
+Capability Mapping records three distinct concepts:
 
-| Routing class | Current concrete candidate |
-| --- | --- |
-| **EXECUTION** | Composer 2.5 (standard preferred over Fast unless latency clearly justifies Fast cost) |
-| **LIGHT_REASONING** | Current Grok reasoning configuration at low effort when available |
-| **NORMAL_REASONING** | Current Grok reasoning configuration at medium effort when available |
-| **DEEP_REASONING** | Current Grok reasoning configuration at high effort when available |
-| **EXCEPTIONAL_REASONING** | Exceptional Grok effort, or alternative frontier family (for example GPT-5.6 Sol / Claude Opus) after justified escalation / second-opinion need |
+1. **Preferred recommendation** — the first concrete model a controller should recommend for that class.
+2. **Compatible alternatives** — explicitly approved models that may satisfy model compatibility (MATCH) for that class.
+3. **Second-opinion candidates** — optional Product Owner-controlled independent review candidates. They are **not** automatic alternatives and are **never** auto-selected.
+
+`preferred` does not make alternatives invalid. Compatible alternatives may satisfy MATCH only when explicitly listed for the routing class. Second-opinion candidates do not satisfy an automatic recommendation path merely by appearing in that list. **Auto** remains outside MAG routing classes. No tool may automatically choose a different class or a second-opinion model. Do not encode community stack heuristics (for example “Sonnet for frontend”) as deterministic policy.
+
+Preferred effort and preferred speed tier are **recommendation/presentation metadata** for v1. They are **not** a hard MATCH predicate unless a later Product Owner-verified policy adds a trustworthy supported observation for them. Absent observed effort must not alone become `MODEL_MISMATCH`. Fast/Standard speed tier does not change routing class.
+
+**Current Capability Mapping (subordinate — refresh when Cursor inventory changes):**
+
+| Routing class | Preferred | Effort | Speed | Compatible alternatives |
+| --- | --- | --- | --- | --- |
+| **EXECUTION** | Composer 2.5 (`composer-2.5`) | model-default | standard | `gpt-5.6-luna`, `gemini-3.8-flash` |
+| **LIGHT_REASONING** | Grok 4.7 (`grok-4.7`) | low | standard | `grok-4.6`, `gpt-5.6-terra`, `gemini-3.8-flash` |
+| **NORMAL_REASONING** | Grok 4.7 (`grok-4.7`) | medium | standard | `grok-4.6`, `gpt-5.6-terra`, `claude-sonnet-5`, `gemini-3.1-pro` |
+| **DEEP_REASONING** | Grok 4.7 (`grok-4.7`) | high | standard | `grok-4.6`, `gpt-5.6-sol`, `claude-sonnet-5`, `claude-opus-5-5`, `gemini-3.1-pro` |
+| **EXCEPTIONAL_REASONING** | Grok 4.7 (`grok-4.7`) | xhigh | standard | `gpt-5.6-sol`, `claude-opus-5-5` |
+
+**EXCEPTIONAL_REASONING second-opinion candidates (PO-controlled only):** `gpt-5.6-sol`, `claude-opus-5-5`, `gemini-3.1-pro`.
 
 Do not invent unavailable model names. Prefer Cursor Models pool candidates when equivalent for the class. Fast / long-context surcharges are cost controls, not class upgrades.
 
@@ -1082,7 +1094,7 @@ v1 runtime predicates must be **coarse and observable**. Allowed examples: activ
 
 Do **not** claim “semantic analysis finished” from unauditable tool heuristics alone. If a required fact is UNKNOWN, do not pretend it was verified. If UNKNOWN affects correctness, escalation, authority, or required model compatibility: **STOP**. If UNKNOWN affects only optional cost optimization: continue safely and report the unverified optimization.
 
-Standard signals include: `MODEL_MATCH`, `MODEL_MISMATCH`, `MODEL_BOUNDARY`, `MODEL_DOWNGRADE_RECOMMENDED`, `MODEL_ESCALATION_REQUIRED`, `RUNTIME_CHALLENGE`, `CONTEXT_WARNING`, `REPLAN_REQUIRED`, `AUTHORITY_CONFLICT`, `STOP`.
+Standard signals include: `MODEL_MATCH`, `MODEL_MISMATCH`, `MODEL_OBSERVATION_UNKNOWN`, `ROUTING_MAPPING_UNKNOWN`, `MODEL_BOUNDARY`, `MODEL_DOWNGRADE_RECOMMENDED`, `MODEL_ESCALATION_REQUIRED`, `RUNTIME_CHALLENGE`, `CONTEXT_WARNING`, `REPLAN_REQUIRED`, `AUTHORITY_CONFLICT`, `STOP`.
 
 #### Enforcement defaults (v1)
 
@@ -1090,7 +1102,9 @@ Standard signals include: `MODEL_MATCH`, `MODEL_MISMATCH`, `MODEL_BOUNDARY`, `MO
 | --- | --- |
 | `AUTHORITY_CONFLICT` | hard STOP |
 | `REPLAN_REQUIRED` | hard STOP |
+| `ROUTING_MAPPING_UNKNOWN` | hard STOP when mapping is required |
 | `MODEL_MISMATCH` | hard STOP |
+| `MODEL_OBSERVATION_UNKNOWN` | hard STOP when compatibility observation is required |
 | `MODEL_ESCALATION_REQUIRED` | hard STOP |
 | `MODEL_BOUNDARY` requiring model change | STOP until Product Owner switch and `+` |
 | `RUNTIME_CHALLENGE` | STOP when continuing would mean materially wrong or unnecessarily expensive routing; otherwise warning |
@@ -1102,7 +1116,9 @@ Precedence when multiple conditions apply:
 ```text
 AUTHORITY_CONFLICT
 → REPLAN_REQUIRED
+→ ROUTING_MAPPING_UNKNOWN
 → MODEL_MISMATCH
+→ MODEL_OBSERVATION_UNKNOWN
 → MODEL_ESCALATION_REQUIRED
 → MODEL_BOUNDARY
 → RUNTIME_CHALLENGE / MODEL_DOWNGRADE_RECOMMENDED
@@ -1127,11 +1143,109 @@ Routing evidence is **not** Cursor Models usage measurement. Token/$ dashboards,
 
 #### Tool / controller boundary
 
-A future MAG routing controller may enforce an accepted plan with a deterministic state machine / predicate checker. It must not contain an autonomous model-selection brain, weighted scoring, LLM-based autonomous routing, automatic resegmentation, or automatic model switching unless a later Product Owner-approved policy explicitly authorizes that capability.
+A MAG routing controller (for example MAG Model Routing Guard) may enforce an accepted plan with a deterministic state machine / predicate checker. It must not contain an autonomous model-selection brain, weighted scoring, LLM-based autonomous routing, automatic resegmentation, or automatic model switching unless a later Product Owner-approved policy explicitly authorizes that capability. Runtime Routing Enforcement semantics for that controller are defined in the following subsection.
+
+#### Runtime Routing Enforcement
+
+Runtime Routing Enforcement is the deterministic runtime application of an **accepted Routing Plan** and the canonical §24.4 routing predicates.
+
+A runtime controller:
+
+- enforces policy;
+- does **not** own policy;
+- does **not** make Product/Architecture decisions;
+- does **not** independently select routing classes;
+- does **not** silently rewrite the Routing Plan.
+
+Canonical §24.4 remains authority. If controller behavior and this subsection disagree, **this subsection wins**. If the disagreement cannot be resolved mechanically: **STOP**.
+
+##### Runtime Enforcement States
+
+These states control **mechanical tool enforcement** only. They are **not** routing classes and **not** Cursor model-selection modes (including Cursor `Auto`).
+
+| State | Mechanical meaning |
+| --- | --- |
+| **ENFORCED** | Controller applies canonical STOP/WARN behavior and precedence. |
+| **ADVISORY** | Controller evaluates the same canonical predicates and reports signals; normal hook-level hard blocking is suppressed. Canonical **agent** obligations remain fully active. |
+| **SUSPENDED** | Controller enforcement is mechanically inactive. Canonical **agent** obligations remain fully active. SUSPENDED does **not** assert `MODEL_MATCH` or routing approval. |
+
+Tool-local aliases such as `Guard Pro` / `Guard Auto` / `Guard Off` may map to these states for compatibility. They are **not** Global state names. Do not confuse Guard `Auto` (ADVISORY alias) with Cursor `Auto` (model picker).
+
+##### Defaults
+
+- No accepted Routing Plan → runtime controller **INERT**.
+- Accepted Routing Plan + no explicit Runtime Enforcement State record → **ENFORCED**.
+- Absence of an operational state file must **not** silently weaken an accepted Routing Plan.
+- No TTL / automatic expiry belongs to v1 Runtime Enforcement State semantics.
+
+##### STOP resolution contract
+
+```text
+HARD STOP
+→ persist/report canonical signal and required resolution
+→ Product Owner performs required resolution
+→ runtime predicate is re-evaluated
+→ resolved → continuation allowed
+→ unresolved → STOP remains
+```
+
+Product Owner attention alone is not technical resolution. A controller must not clear an unresolved STOP merely because the Product Owner sent a continuation token.
+
+##### Continuation token (`+`) and routing STOP
+
+§24.1 continuation meaning still applies. For routing STOPs, `+` is a **continuation request after the applicable prerequisite has been satisfied**.
+
+`+` is **not**:
+
+- authority override;
+- `MODEL_MISMATCH` waiver;
+- model-switch substitute;
+- replan substitute;
+- escalation waiver;
+- an automatic STOP-clear command.
+
+The controller must **recognize** the continuation request and **re-evaluate** the pending predicate. Recognition does **not** guarantee continuation.
+
+##### Signal-specific resolution (deterministic enforcement)
+
+| Signal | Resolution before continuation |
+| --- | --- |
+| `MODEL_MISMATCH` | Compatible model observed **or** accepted Routing Plan changed by replan; then re-evaluate. |
+| `MODEL_BOUNDARY` requiring model change | Required model/class transition completed; re-evaluate; then `+`. |
+| `MODEL_ESCALATION_REQUIRED` | Product Owner-controlled model change **or** accepted replan; re-evaluate; then `+`. |
+| `REPLAN_REQUIRED` | Actual new accepted Routing Plan; evaluate under the new plan. Bare `+` does not resolve it. |
+| `AUTHORITY_CONFLICT` | Authority conflict actually resolved. Bare `+` does not resolve it. |
+| `ROUTING_MAPPING_UNKNOWN` | Valid mapping available when mapping is required; then re-evaluate. |
+| `MODEL_OBSERVATION_UNKNOWN` | UNKNOWN is not MATCH. When compatibility verification requires trustworthy observation → STOP under ENFORCED. Suspending tool enforcement does not certify compatibility. |
+| `RUNTIME_CHALLENGE` | Blocking challenge requires Product Owner resolution/replan before continuation; otherwise warn per enforcement defaults. |
+| `MODEL_DOWNGRADE_RECOMMENDED` | WARN only. |
+| `CONTEXT_WARNING` | WARN only. |
+
+##### UNKNOWN
+
+If a required fact is UNKNOWN, do not pretend it was verified. If UNKNOWN affects correctness, escalation, authority, or required model compatibility: **STOP**. If UNKNOWN affects only optional cost optimization: continue safely and report the unverified optimization. UNKNOWN must never be silently converted into `MODEL_MATCH`.
+
+##### Maintenance / recovery boundary
+
+Maintenance/recovery is explicit Product Owner-controlled **operational** recovery. It may mechanically suspend controller enforcement. It:
+
+- does **not** change routing policy;
+- does **not** authorize a model;
+- does **not** declare `MODEL_MATCH`;
+- does **not** resolve a pending canonical STOP;
+- must preserve relevant plan/evidence;
+- must be reversible;
+- must not silently auto-activate.
+
+Maintenance is **not** a fourth Runtime Enforcement State.
+
+##### Machine-readable enforcement projection
+
+A subordinate machine-readable enforcement contract may exist as a derived operational projection of this subsection (and of Capability Mapping where applicable). Canonical Markdown remains authority. The contract must not become a seventh Global authority owner. No LLM interpretation is required at runtime. If the contract or tool disagrees with this subsection: **STOP** / report stale-conflict — do not invent policy.
 
 #### Prohibited in v1 routing automation
 
-LLM-based autonomous routing; weighted model scores; autonomous semantic task classification; automatic task re-segmentation; automatic expensive-model escalation; automatic model switching; hidden model preferences; hard-coded permanent provider pricing as state-machine semantics; provider-specific model names as the semantics of the class-selection tree.
+LLM-based autonomous routing; weighted model scores; autonomous semantic task classification; automatic task re-segmentation; automatic expensive-model escalation; automatic model switching; hidden model preferences; hard-coded permanent provider pricing as state-machine semantics; provider-specific model names as the semantics of the class-selection tree; token/$ usage telemetry as routing enforcement input.
 
 ---
 

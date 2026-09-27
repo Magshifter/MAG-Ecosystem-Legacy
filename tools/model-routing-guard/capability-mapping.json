@@ -1,48 +1,75 @@
 {
-  "version": 1,
+  "version": 2,
+  "kind": "mag-capability-mapping",
+  "authority": "none",
+  "canonical_owner": "AI_GUIDELINES.md",
+  "canonical_section": "24.4",
+  "note": "Subordinate operational Capability Mapping. Preferred fields are recommendation metadata. model_id_prefixes are hard MATCH compatibility. second_opinion_model_ids are never auto-selected.",
   "classes": {
     "EXECUTION": {
+      "preferred_model_id": "composer-2.5",
+      "preferred_effort": null,
+      "preferred_speed_tier": "standard",
+      "display_name": "Composer 2.5",
       "model_id_prefixes": [
         "composer-2.5",
-        "composer-2",
-        "composer"
+        "gpt-5.6-luna",
+        "gemini-3.8-flash"
       ]
     },
     "LIGHT_REASONING": {
+      "preferred_model_id": "grok-4.7",
+      "preferred_effort": "low",
+      "preferred_speed_tier": "standard",
+      "display_name": "Grok 4.7",
       "model_id_prefixes": [
-        "cursor-grok-4.6",
-        "cursor-grok-4.7",
-        "grok-4.6",
         "grok-4.7",
-        "grok-4"
+        "grok-4.6",
+        "gpt-5.6-terra",
+        "gemini-3.8-flash"
       ]
     },
     "NORMAL_REASONING": {
+      "preferred_model_id": "grok-4.7",
+      "preferred_effort": "medium",
+      "preferred_speed_tier": "standard",
+      "display_name": "Grok 4.7",
       "model_id_prefixes": [
-        "cursor-grok-4.6",
-        "cursor-grok-4.7",
-        "grok-4.6",
         "grok-4.7",
-        "grok-4"
+        "grok-4.6",
+        "gpt-5.6-terra",
+        "claude-sonnet-5",
+        "gemini-3.1-pro"
       ]
     },
     "DEEP_REASONING": {
+      "preferred_model_id": "grok-4.7",
+      "preferred_effort": "high",
+      "preferred_speed_tier": "standard",
+      "display_name": "Grok 4.7",
       "model_id_prefixes": [
-        "cursor-grok-4.6",
-        "cursor-grok-4.7",
-        "grok-4.6",
         "grok-4.7",
-        "grok-4",
+        "grok-4.6",
         "gpt-5.6-sol",
-        "claude-opus"
+        "claude-sonnet-5",
+        "claude-opus-5-5",
+        "gemini-3.1-pro"
       ]
     },
     "EXCEPTIONAL_REASONING": {
+      "preferred_model_id": "grok-4.7",
+      "preferred_effort": "xhigh",
+      "preferred_speed_tier": "standard",
+      "display_name": "Grok 4.7",
       "model_id_prefixes": [
         "grok-4.7",
         "gpt-5.6-sol",
-        "claude-opus",
-        "claude-fable"
+        "claude-opus-5-5"
+      ],
+      "second_opinion_model_ids": [
+        "gpt-5.6-sol",
+        "claude-opus-5-5",
+        "gemini-3.1-pro"
       ]
     }
   }

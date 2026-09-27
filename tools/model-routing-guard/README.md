@@ -1,121 +1,64 @@
 # MAG Model Routing Guard
 
-Operational tooling. **Not** MAG canonical authority. **Not** a seventh Global owner. **Not** a Software Product identity (`A<N>`) unless Product Owner later reclassifies.
+Operational tooling. **Not** MAG authority. Deterministic hook arm for `AI_GUIDELINES.md` §24.4 **Runtime Routing Enforcement**.
 
 ## Authority
 
-- Canonical routing HOW: `AI_GUIDELINES.md` §24.4 (presentation minimum: §24.2).
-- Agent STOP obligations: `AI_AGENTS_RULES.md` (executive insert only).
-- This directory implements enforcement of an **accepted Routing Plan**. It does not define Product WHAT or competing HOW.
-
-## Working name
-
-**MAG Model Routing Guard** — deterministic plan guard / predicate checker. Not Mechanical Action Gate. Not Cursor Auto.
-
-## Status
-
-MVP **APPROVED** by Product Owner. EXECUTION spike implemented under [`MVP_SPEC.md`](MVP_SPEC.md).
-
-## Classification
-
-Global operational tool under `MAG-Ecosystem/tools/`. Remains here while limited to hooks + small state machine + routing evidence. Persistent UI / own settings service / independent release / multi-integration runtime → Product Owner reconsiders `A<N>`.
-
-## Files
-
-| Path | Role |
+| Layer | Owner |
 | --- | --- |
-| `MVP_SPEC.md` | Approved MVP specification |
-| `lib/MagRoutingGuard.Common.ps1` | Deterministic decision logic |
-| `hooks/*.ps1` | Cursor hook entrypoints |
-| `capability-mapping.json` | Subordinate class → model_id prefixes |
-| `hooks.json.template` | Hook registration template |
-| `examples/routing-plan.example.json` | Sample plan |
-| `Deploy-MagModelRoutingGuard.ps1` | Deploy source → `C:\laragon\repos\.cursor\` |
-| `Test-MagModelRoutingGuard.ps1` | Offline smoke scenarios |
+| Durable HOW | `AI_GUIDELINES.md` §24.4 |
+| Agents | `AI_AGENTS_RULES.md` — obligations remain in **all** tool states |
+| Contract | `enforcement-contract.v1.json` — subordinate only |
+| Capability Mapping | `capability-mapping.json` — subordinate only |
+| This tool | no authority |
+| MPO-002 | historical provenance only |
 
-## Deploy (workspace root = `C:\laragon\repos`)
+## Capability Mapping / recommendations
 
-```text
-pwsh -NoProfile -File "C:\laragon\repos\MAG-Ecosystem\tools\model-routing-guard\Deploy-MagModelRoutingGuard.ps1"
+- **Preferred** → one concrete model in STOP/WARN proposal text (from current mapping).
+- **Compatible alternatives** → `model_id_prefixes` hard MATCH set.
+- **Second-opinion** → metadata only; never auto-selected.
+- Target routing class comes from the accepted plan/decision (`recommended_routing_class` / next Segment). Guard does **not** invent escalation/downgrade classes.
+- Effort/speed are recommendation metadata in v1 (not hard MATCH).
+
+## Enforcement states
+
+| State | Hooks | Commands |
+| --- | --- | --- |
+| **ENFORCED** | hard STOP/WARN | `Guard Enforced` (alias `Guard Pro`) |
+| **ADVISORY** | report, no normal hard block | `Guard Advisory` (alias `Guard Auto`) |
+| **SUSPENDED** | inert | `Guard Suspended` (alias `Guard Off`) |
+
+```powershell
+.\Set-MagGuardMode.ps1 -Mode Enforced -ProductOwnerApproved
+.\Set-MagGuardMode.ps1 -Mode Advisory -ProductOwnerApproved
+.\Set-MagGuardMode.ps1 -Mode Suspended -ProductOwnerApproved
 ```
 
-Then restart Cursor or reload hooks (hooks.json is watched on save).
+Defaults: no plan → INERT; accepted plan + missing state file → **ENFORCED**. No 24h expiry.
 
-Place an accepted plan at:
+## `+` semantics
 
-`C:\laragon\repos\.mag\routing-plan.json`
+Continuation **request**. Guard re-evaluates the pending STOP prerequisite. Unresolved → STOP remains. Never a mismatch/authority waiver.
 
-(copy from `examples/routing-plan.example.json` and edit).
+Pending state: `.mag/routing-pending.json`.
 
-Evidence appends to:
-
-`C:\laragon\repos\.mag\routing-evidence.jsonl`
-
-### After STOP (mismatch / boundary / escalation / unobserved)
-
-1. Guard shows a **proposal** (class + suggested models). It does **not** change the Cursor model.  
-2. Product Owner switches model only if they agree.  
-3. Send exact `+` (plan `continue_token`). Guard accepts **this gate** and continues — including “wrong” or unobserved models for a model-gate stop.  
-4. Guard **stays active** for the rest of the prompt session. Later subtasks may STOP+propose again (boundary / escalation / challenge / new segment).  
-5. After `+` on mismatch/unobserved, Guard does not re-nag the same model-identity gate for the current segment.
-
-`+` must never itself be blocked. `+` does not cancel Guard until the end of the session.
-
-## Smoke test (no Cursor)
-
-```text
-pwsh -NoProfile -File ".\Test-MagModelRoutingGuard.ps1" -Scenario mismatch
-pwsh -NoProfile -File ".\Test-MagModelRoutingGuard.ps1" -Scenario match
-pwsh -NoProfile -File ".\Test-MagModelRoutingGuard.ps1" -Scenario boundary
-pwsh -NoProfile -File ".\Test-MagModelRoutingGuard.ps1" -Scenario inert
-```
-
-## Explicit maintenance recovery
-
-If the Guard prevents repair, the Product Owner may suspend the runtime plan from an external PowerShell terminal:
+## Maintenance
 
 ```powershell
 .\Set-MagGuardMaintenance.ps1 -Action Suspend -ProductOwnerApproved
-```
-
-This preserves the plan as `.mag/routing-plan.maintenance.json`; no active plan means INERT. This is an explicit repair action, never an automatic response to mismatch, boundary, or escalation. It authorizes no model or production work. Restore normal enforcement after repair:
-
-```powershell
 .\Set-MagGuardMaintenance.ps1 -Action Resume -ProductOwnerApproved
 ```
 
-Resume refuses to overwrite another active plan. The emergency recovery on 2026-09-27 preserved the earlier example plan separately as `.mag/routing-plan.recovery-20260927.json`; it is not automatically reactivated. Only place a Product Owner-accepted plan at the active path. An explicit `accepted: false` draft or an invalid plan is inert; existing valid file placement remains the v1 acceptance mechanism.
+Separate from enforcement state. Preserves plan + pending. Does **not** certify `MODEL_MATCH`.
 
-## Operating mode (Pro / Auto / Off)
+## Deploy / tests
 
-When the Product Owner cannot switch models (Cursor **Auto** only / exhausted Pro quota), STOP+propose would only create cyclic friction. Use an explicit mode:
-
-| Mode | Behavior | Duration |
-| --- | --- | --- |
-| **Pro** | STOP+propose armed | permanent until explicit change |
-| **Auto** | no STOP proposals | **24h**, then must re-ask mode before continuing |
-| **Off** | forced off, no proposals | until explicit change |
-
-Missing mode file = soft **Auto** (no proposals; prefer asking once at session start).  
-When Auto **expires**, Guard **STOPs** until Product Owner answers: `Guard Pro` / `Guard Auto` / `Guard Off`. Agents must ask this **first** before substantive work.
-```powershell
-.\Set-MagGuardMode.ps1 -Mode Auto -DurationHours 168 -ProductOwnerApproved
-.\Set-MagGuardMode.ps1 -Mode Pro -DurationHours 24 -ProductOwnerApproved
-.\Set-MagGuardMode.ps1 -Mode Off -ProductOwnerApproved
+```text
+pwsh -NoProfile -File ".\Deploy-MagModelRoutingGuard.ps1"
+pwsh -NoProfile -File ".\Test-GuardRecovery.ps1" -GuardRoot <this directory>
 ```
 
-Or send an exact chat command (hook switches mode, never blocks):
+## Non-goals
 
-- `Guard Pro` / `Активуємо план Pro`
-- `Guard Auto`
-- `Guard Off` / `Вимкни Guard`
-
-State file: `.mag/routing-guard-mode.json` (not Mirror authority).
-
-## Model observation and temporary diagnostics
-
-The Guard uses concrete trimmed `model_id`, falling back to concrete `model`. Empty, default, auto, unknown, null, none, and undefined values are not identities. Unknown observation under an active plan causes a one-time STOP + proposal; Product Owner `+` unlocks and accepts the segment without requiring observation. No model is inferred from model_params.
-
-For a narrowly scoped live debugging pass, create `.mag/routing-observation-debug.enabled`. The next submit writes only model/model_id, hook event, Cursor version (if supplied), model_params presence, observation source, signal and action to `.mag/routing-observation-debug.jsonl`. No prompt body, model_params values, token/cost usage, or session data is stored. Remove the marker after collecting the required observation; logging is disabled by default.
-
-Run `Test-GuardRecovery.ps1 -GuardRoot <this directory>` for recovery/model/STOP/privacy checks. All smoke and recovery tests use isolated temporary workspace roots and must never install an example plan in the live workspace.
+No auto model switch, Auto router, LLM routing, weighted scoring, token/$ telemetry.

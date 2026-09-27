@@ -1,265 +1,110 @@
 # MAG Model Routing Guard — MVP Spec
 
-Status: **APPROVED** (Product Owner `2026-09-27`) — EXECUTION spike authorized  
-Classification: **Global operational tool** under `MAG-Ecosystem/tools/`  
-Authority: **none** — implements `AI_GUIDELINES.md` §24.4 (+ Agents executive insert); does not own WHAT or HOW  
+Status: **APPROVED** — runtime enforcement under canonical `AI_GUIDELINES.md` §24.4 Runtime Routing Enforcement  
+Classification: Global operational tool under `MAG-Ecosystem/tools/`  
+Authority: **none** — subordinate to `AI_GUIDELINES.md` §24.4  
 Working name: **MAG Model Routing Guard**  
-Not: Mechanical Action Gate; not Cursor Auto; not a product identity; not `A1` / new `A<N>` (unless later reclassified)
+Contract: `enforcement-contract.v1.json` (subordinate projection — **not** authority)  
+Mapping: `capability-mapping.json` (subordinate Capability Mapping — **not** authority)  
+Provenance: MPO-002 promoted into §24.4 (historical only; not executable)
 
 ---
 
 ## 1. Purpose
 
-Enforce an **accepted Routing Plan** at Cursor runtime using a deterministic guard:
+Deterministic runtime enforcement of an **accepted Routing Plan** as the mechanical continuation of §24.4. Guard must not invent weaker routing semantics.
 
-```text
-§24 Routing Plan
-→ observe active model
-→ evaluate coarse predicates
-→ STOP | warn
-→ light routing evidence
-→ Product Owner switch + `+`
-→ continuation
-```
+Layers: **A** canonical STOP → **B** Guard message (one concrete preferred recommendation) → **C** PO resolution → **D** tool recovery → **E** `+` continuation request + **re-evaluation**.
 
-Minimize two failure modes:
+---
 
-1. **Wrong active model** vs required routing class / mapping.  
-2. **Continuing on an expensive class** after a declared MODEL BOUNDARY (or blocking Runtime Challenge).
+## 2. Non-goals
 
-## 2. Non-goals (v1)
+No UI, auto model switch, LLM router, semantic auto-class, auto escalate/downgrade, Auto router, weighted scoring, token/$ telemetry, Cloud routing, new `A<N>`, seventh Global owner.
 
-Do **not** implement in MVP:
+---
 
-- Routing Plan UI / dashboard  
-- Automatic model switching  
-- LLM-based router / semantic auto-detection / auto-resegmentation  
-- Automatic escalation or downgrade  
-- Token/$ optimizer or usage dashboards  
-- Cloud Agents integration  
-- Complex context manager beyond confirmed hook signals (e.g. `preCompact` warn only)  
-- Competing policy with §24.4  
-
-## 3. Authority boundary
+## 3. Authority
 
 | Layer | Owner |
 | --- | --- |
-| Routing policy | `AI_GUIDELINES.md` §24.4 |
-| Agent STOP obligations | `AI_AGENTS_RULES.md` (executive) + §24.4 |
-| Capability Mapping | subordinate operational mapping under §24.4 |
-| This tool | deterministic enforcement only |
+| Durable routing HOW | `AI_GUIDELINES.md` §24.4 (Runtime Routing Enforcement + Capability Mapping) |
+| Agent obligations | `AI_AGENTS_RULES.md` + §24.4 (always, all enforcement states) |
+| Machine-readable contract | `enforcement-contract.v1.json` — subordinate only |
+| Capability Mapping file | `capability-mapping.json` — subordinate only |
+| This tool / `.mag` state | operational — no authority |
+| MPO-002 | historical promotion provenance only — **not** current HOW |
 
-If plan/tool/canonical disagree → **canonical wins** → **STOP**. Tool must not invent authority.
+Conflict → §24.4 wins; Guard STOPs on contract/mapping stale-conflict. Target routing class is supplied by the accepted routing decision/plan — Guard does **not** invent class escalation/downgrade.
 
-**Growth threshold (revisit `A<N>`):** if the tool gains persistent UI, own settings/state store, installer/distribution, independent release cycle, multiple integrations, or service/background runtime — Product Owner reclassifies; until then it stays `MAG-Ecosystem/tools/`.
+---
 
-## 4. Plan location and input format
+## 4. Capability Mapping / recommendation
 
-### 4.1 Accepted plan sources (v1 priority)
-
-1. **Workspace file (preferred for guard):**  
-   `C:\laragon\repos\.mag\routing-plan.json`  
-   (workspace-root operational state; not MAG authority; not SYNC GLOBAL by default)
-2. **Repo-local override (optional later):** `<active-repo>/.mag/routing-plan.json`
-3. **Direct Agent Mode:** same schema may be declared in chat; file still preferred when guard is active.
-
-Absence of a plan file: guard is **inert** (no false STOPs) **or** emits a single non-blocking notice that §24.2 expects a routing record — Product Owner chooses at review (default proposal: **inert + optional notice**, not hard STOP).
-
-### 4.2 Minimal JSON schema (v1)
-
-Aligns with §24.2 minimum record; machine-readable.
-
-```json
-{
-  "routing_plan_version": 1,
-  "procedure_id": "string",
-  "identity": "GLOBAL | GLOBAL+#N | GLOBAL+A<N>",
-  "operating_mode": "Coordinator | DirectAgent",
-  "authority": {
-    "owner": "AI_GUIDELINES.md",
-    "section": "24.4"
-  },
-  "current_segment": "seg-1",
-  "segments": [
-    {
-      "segment_id": "seg-1",
-      "purpose": "string",
-      "routing_class": "EXECUTION | LIGHT_REASONING | NORMAL_REASONING | DEEP_REASONING | EXCEPTIONAL_REASONING",
-      "required_model_ids": ["optional-concrete-id-or-prefix"],
-      "effort_class": "optional",
-      "boundary_condition": "none | declared-complete | po-declared",
-      "escalation_condition": "none | string",
-      "downgrade_condition": "none | string",
-      "context_strategy": "INHERIT_CONTEXT | REDUCED_CONTEXT | FRESH_CONTEXT_AT_BOUNDARY"
-    }
-  ],
-  "enforcement": {
-    "mismatch_behavior": "STOP",
-    "boundary_behavior": "STOP",
-    "escalation_behavior": "STOP",
-    "downgrade_behavior": "WARN",
-    "challenge_behavior": "STOP_IF_EXPENSIVE_OR_WRONG",
-    "missing_plan_behavior": "INERT"
-  },
-  "continue_token": "+",
-  "evidence": { "enabled": true }
-}
-```
-
-`required_model_ids`: optional allowlist for the segment. If empty, guard uses Capability Mapping file (see §5) to resolve class → allowed model id prefixes.
-
-Human §24.2 text record remains mandatory for Coordinator presentation; JSON is the guard input.
-
-## 5. Capability Mapping file (subordinate)
-
-Path (proposed): `MAG-Ecosystem/tools/model-routing-guard/capability-mapping.json`
-
-- Subordinate to §24.4; refreshable without lifecycle Gate.  
-- Tool must not invent mappings when unresolved → signal `ROUTING_MAPPING_UNKNOWN` → STOP if enforcement requires a concrete match.  
-- Not canonical authority.
-
-## 6. State machine (deterministic)
-
-```text
-INERT                    (no plan / missing_plan_behavior=INERT)
-  ↓ plan accepted
-PLANNED
-  ↓ session/prompt with plan
-ACTIVE_SEGMENT
-  ├─ MODEL_MATCH + no boundary/escalation/challenge  → continue ACTIVE_SEGMENT
-  ├─ MODEL_MISMATCH                                  → STOP_SIGNAL → AWAITING_PO (propose)
-  ├─ MODEL_OBSERVATION_UNKNOWN                       → STOP_SIGNAL → AWAITING_PO (propose)
-  ├─ MODEL_ESCALATION_REQUIRED                       → STOP_SIGNAL → AWAITING_PO (propose)
-  ├─ MODEL_BOUNDARY (model change required)          → STOP_SIGNAL → AWAITING_PO (propose)
-  ├─ RUNTIME_CHALLENGE (blocking)                    → STOP_SIGNAL → AWAITING_PO (propose)
-  ├─ RUNTIME_CHALLENGE / DOWNGRADE (warn-only)       → WARN → ACTIVE_SEGMENT
-  ├─ CONTEXT_WARNING                                 → WARN → ACTIVE_SEGMENT
-  ├─ AUTHORITY_CONFLICT / REPLAN_REQUIRED            → STOP_SIGNAL → AWAITING_PO (propose)
-  └─ final segment complete                          → COMPLETED
-
-AWAITING_PO
-  ├─ continue_token (+) in prompt  → PO_CONTINUE for **this gate only** → ACTIVE_SEGMENT
-  ├─ runtime.po_continue_ack=true  → same
-  ├─ later in same prompt session: new BOUNDARY / ESCALATION / CHALLENGE / AUTHORITY / new segment
-  │     → STOP_SIGNAL → AWAITING_PO again (multiple proposals per session are expected)
-  ├─ replan                        → PLANNED / REPLAN_REQUIRED
-  └─ abort                         → ABORTED
-```
-
-**Product Owner contract (binding for this tool):** STOP is for attention and a **proposal** only. When the Product Owner sends `+` (plan `continue_token`), Guard accepts **that gate** and continues. `+` does **not** disable Guard for the rest of the prompt session — as subtask complexity changes, further STOP+propose cycles may occur. After `+` on a model/observation mismatch, Guard does not re-nag the same model-identity gate for the **current segment**, but declared boundary/escalation/challenge/authority and a **new segment** can still STOP. `+` itself must never be blocked by the hook.
-
-**Operating mode:** `Pro` = STOP+propose **permanent** until explicit change. `Auto` = no proposals for **24h**, then `MODE_EXPIRED` STOP — Product Owner / agent must **ask first** which mode to continue (`Guard Pro` / `Guard Auto` / `Guard Off`) before substantive work. `Off` = forced disable until explicit change. Missing mode file = soft Auto. Mode via `Set-MagGuardMode.ps1` or exact chat commands.
-
-No weighted scoring. No hidden preferences.
-
-## 7. Hook contracts (Cursor)
-
-Implement via Cursor **project/user hooks** deployed from this tool directory (deployment contract analogous to `tools/cursor/`).
-
-| Hook | Guard use |
+| Concept | Role |
 | --- | --- |
-| `beforeSubmitPrompt` | Primary gate: read plan + `model`/`model_id`/`model_params`; return `continue: false` + `user_message` on hard STOP |
-| `sessionStart` | Load plan; reset session evidence pointer |
-| `subagentStart` | Optional v1.1: warn/deny if subagent model outside segment allowlist |
-| `preCompact` | Optional: emit `CONTEXT_WARNING` only |
-| `stop` | Optional: record segment idle / await PO |
+| `preferred_model_id` (+ effort/speed/display) | One concrete recommendation projected into STOP/WARN text |
+| `model_id_prefixes` | Hard MATCH compatibility set (preferred + approved alternatives) |
+| `second_opinion_model_ids` | Metadata only — never auto-selected |
 
-**Confirmed limitation:** hooks do **not** switch the IDE model picker. Guard never claims to change models. PO switches manually.
+v1: effort/speed are recommendation metadata, not hard MATCH. Unknown observed effort alone ≠ `MODEL_MISMATCH`.
 
-## 8. Observable predicates only (v1)
+Target class rules (deterministic):
 
-Allowed:
-
-- Active `model_id` / params vs `required_model_ids` or mapping for `routing_class`  
-- Plan fields declaring boundary/escalation reached (explicit flags or PO/agent-written plan update)  
-- Explicit agent/user message markers agreed in spike (e.g. plan file field `signal: MODEL_BOUNDARY`)  
-- Confirmed hook events (`preCompact`)
-
-Forbidden as auto-truth:
-
-- “Semantic analysis finished” without explicit plan/PO/agent signal  
-- Invented complexity scores  
-
-## 9. Enforcement defaults
-
-Mirror §24.4 v1 table, with Product Owner accept-via-`+`:
-
-| Signal | Behavior |
+| Signal | Target class |
 | --- | --- |
-| AUTHORITY_CONFLICT / REPLAN_REQUIRED | STOP + propose; `+` accepts and continues |
-| MODEL_MISMATCH | STOP + propose; `+` accepts chosen model for segment (no re-block) |
-| MODEL_OBSERVATION_UNKNOWN | STOP + propose; `+` unlocks (no observation required after) |
-| MODEL_ESCALATION_REQUIRED | STOP + propose; `+` accepts |
-| MODEL_BOUNDARY (model change needed) | STOP + propose; `+` accepts |
-| RUNTIME_CHALLENGE | STOP + propose if blocking; else WARN; `+` accepts |
-| MODEL_DOWNGRADE_RECOMMENDED | WARN |
-| CONTEXT_WARNING | WARN |
-| missing plan | INERT (default) |
+| `MODEL_MISMATCH` | current segment `routing_class` |
+| `MODEL_ESCALATION_REQUIRED` | explicit `recommended_routing_class` only; else `ROUTING_MAPPING_UNKNOWN` |
+| `MODEL_BOUNDARY` | next Segment class, else explicit `recommended_routing_class`; else `ROUTING_MAPPING_UNKNOWN` |
+| `MODEL_DOWNGRADE_RECOMMENDED` | explicit `recommended_routing_class` only; absent → WARN without concrete model; no “one class lower” inference |
 
-Precedence before accept: AUTHORITY → REPLAN → ESCALATION → BOUNDARY → CHALLENGE → MISMATCH / UNOBSERVED → CONTINUE.  
-**Always first:** if prompt is `continue_token` (`+`) or `runtime.po_continue_ack` → `PO_CONTINUE` (never block `+`).
+Optional `recommended_model_id_override` must be compatible with the target class prefixes; incompatible → `ROUTING_MAPPING_UNKNOWN`. Preferred concrete model is always re-resolved from the **current** mapping file (not persisted as policy).
 
-After `+`, `runtime.po_model_gate_accepted_segment` records that the model/observation gate for the current segment was accepted (no re-nag on the same mismatch). This is **not** a session-wide off switch: new BOUNDARY / ESCALATION / CHALLENGE / AUTHORITY / segment change can STOP+propose again in the same prompt session.
+---
 
-## 10. Evidence schema
+## 5. Runtime Enforcement States
 
-Append-only JSONL (proposed):  
-`C:\laragon\repos\.mag\routing-evidence.jsonl`
+| State | Hooks | Agents §24.4 |
+| --- | --- | --- |
+| **ENFORCED** | hard STOP/WARN per contract | in force |
+| **ADVISORY** | evaluate + report; no normal hard block | **in force** |
+| **SUSPENDED** | hooks inert | **in force**; not MATCH |
 
-Each event (minimum):
+Primary commands: `Guard Enforced` / `Guard Advisory` / `Guard Suspended`  
+Legacy aliases only: `Guard Pro`→ENFORCED, `Guard Auto`→ADVISORY, `Guard Off`→SUSPENDED  
 
-```json
-{
-  "ts": "RFC3339",
-  "procedure_id": "...",
-  "identity": "...",
-  "segment_id": "...",
-  "routing_class": "...",
-  "observed_model_id": "...",
-  "signal": "MODEL_MISMATCH | ...",
-  "action": "STOP | WARN | CONTINUE | PO_CONTINUE | REPLAN | ABORT",
-  "note": "optional short"
-}
-```
+No TTL. State until explicit PO change.
 
-**Not** Cursor Models usage measurement. No token/$ fields in v1.
+Defaults:
+- no accepted plan → **INERT**
+- accepted plan + missing state file → **ENFORCED**
 
-## 11. Fail behavior
+---
 
-- Cannot read plan / corrupt JSON → treat as missing plan (INERT) **or** FAIL_CLOSED if `missing_plan_behavior` later set to STOP (PO choice).  
-- Mapping unresolved when match required → STOP (`ROUTING_MAPPING_UNKNOWN`).  
-- Hook cannot observe model → STOP + propose once; Product Owner sends `+` → continue (no trap; no external maintenance required for normal unlock).  
-- Never fail open into **silent** continue when a STOP signal applies — but always unlock on explicit `+` / `po_continue_ack`.  
-- Never block the continue token itself.
+## 6. Pending STOP + `+`
 
-## 12. Proposed repo layout
+Sidecar: `.mag/routing-pending.json` (not mutated into the plan body).
 
-```text
-MAG-Ecosystem/tools/model-routing-guard/
-  README.md                 (operational overview; non-authority)
-  MVP_SPEC.md               (this file)
-  capability-mapping.json   (subordinate; created at EXECUTION)
-  hooks/                    (hook scripts; created at EXECUTION)
-  deploy notes in README    (workspace hooks path)
-```
+May persist: signal, required_resolution, plan_fingerprint, segment, observed model, `recommended_routing_class`, optional override/reason. Does **not** persist a dynamically resolved preferred model as policy.
 
-Generated/runtime state under `C:\laragon\repos\.mag\` (outside authority docs).
+`+` = **continuation request**: recognize → re-evaluate pending predicate → resolved? clear : STOP remains.
 
-## 13. Acceptance criteria (after EXECUTION spike)
+No generic `+` clear. No wrong-model waiver.
 
-1. With plan requiring EXECUTION model A and picker on incompatible model B → submit blocked + clear message.  
-2. With plan signaling MODEL_BOUNDARY → submit blocked until plan acknowledges PO continuation.  
-3. Evidence JSONL receives STOP/WARN/PO_CONTINUE events.  
-4. No automatic model change occurs.  
-5. No usage/$ telemetry emitted.
+---
 
-## 14. Lifecycle note
+## 7. Maintenance (separate)
 
-```text
-MVP_SPEC APPROVED
-→ EXECUTION spike (hooks + mapping + deploy) — done in-tree
-→ real routing evidence from live Cursor sessions
-→ decide: remain operational tool vs grow toward A<N>
-```
+`Set-MagGuardMaintenance.ps1` Suspend/Resume. Effective tool SUSPENDED; preserves plan + pending; never MATCH; never auto-activates.
 
-Spike must not reopen architecture covered here.
+---
+
+## 8. Observation / contract
+
+Concrete `model_id`, else concrete `model`. UNKNOWN ≠ MATCH. Policy table from `enforcement-contract.v1.json`. Mapping from `capability-mapping.json`. No prompt/token/$ logging.
+
+---
+
+## 9. Acceptance
+
+See `Test-GuardRecovery.ps1`. Canonical HOW is §24.4 — not MPO-002.

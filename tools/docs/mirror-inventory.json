@@ -150,6 +150,78 @@
     },
     {
       "repo": "MAG-Ecosystem",
+      "path": "tools/model-routing-guard/capability-mapping.json",
+      "category": "tool",
+      "require_metadata": false
+    },
+    {
+      "repo": "MAG-Ecosystem",
+      "path": "tools/model-routing-guard/enforcement-contract.v1.json",
+      "category": "tool",
+      "require_metadata": false
+    },
+    {
+      "repo": "MAG-Ecosystem",
+      "path": "tools/model-routing-guard/lib/MagRoutingGuard.Common.ps1",
+      "category": "tool",
+      "require_metadata": false
+    },
+    {
+      "repo": "MAG-Ecosystem",
+      "path": "tools/model-routing-guard/Deploy-MagModelRoutingGuard.ps1",
+      "category": "tool",
+      "require_metadata": false
+    },
+    {
+      "repo": "MAG-Ecosystem",
+      "path": "tools/model-routing-guard/Set-MagGuardMode.ps1",
+      "category": "tool",
+      "require_metadata": false
+    },
+    {
+      "repo": "MAG-Ecosystem",
+      "path": "tools/model-routing-guard/Set-MagGuardMaintenance.ps1",
+      "category": "tool",
+      "require_metadata": false
+    },
+    {
+      "repo": "MAG-Ecosystem",
+      "path": "tools/model-routing-guard/Test-GuardRecovery.ps1",
+      "category": "tool",
+      "require_metadata": false
+    },
+    {
+      "repo": "MAG-Ecosystem",
+      "path": "tools/model-routing-guard/Test-MagModelRoutingGuard.ps1",
+      "category": "tool",
+      "require_metadata": false
+    },
+    {
+      "repo": "MAG-Ecosystem",
+      "path": "tools/model-routing-guard/hooks/beforeSubmitPrompt.ps1",
+      "category": "tool",
+      "require_metadata": false
+    },
+    {
+      "repo": "MAG-Ecosystem",
+      "path": "tools/model-routing-guard/hooks/sessionStart.ps1",
+      "category": "tool",
+      "require_metadata": false
+    },
+    {
+      "repo": "MAG-Ecosystem",
+      "path": "tools/model-routing-guard/hooks/preCompact.ps1",
+      "category": "tool",
+      "require_metadata": false
+    },
+    {
+      "repo": "MAG-Ecosystem",
+      "path": "tools/model-routing-guard/examples/routing-plan.example.json",
+      "category": "tool",
+      "require_metadata": false
+    },
+    {
+      "repo": "MAG-Ecosystem",
       "path": "tools/docs/Update-MagDocumentationMirror.ps1",
       "category": "tool",
       "require_metadata": false

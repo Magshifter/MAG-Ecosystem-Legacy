@@ -27,7 +27,8 @@ $files = @(
     'hooks\beforeSubmitPrompt.ps1',
     'hooks\sessionStart.ps1',
     'hooks\preCompact.ps1',
-    'capability-mapping.json'
+    'capability-mapping.json',
+    'enforcement-contract.v1.json'
 )
 
 Write-Output "source=$srcRoot"
@@ -44,6 +45,7 @@ Copy-Item -LiteralPath (Join-Path $srcRoot 'hooks\beforeSubmitPrompt.ps1') -Dest
 Copy-Item -LiteralPath (Join-Path $srcRoot 'hooks\sessionStart.ps1') -Destination (Join-Path $hooksDir 'hooks\sessionStart.ps1') -Force
 Copy-Item -LiteralPath (Join-Path $srcRoot 'hooks\preCompact.ps1') -Destination (Join-Path $hooksDir 'hooks\preCompact.ps1') -Force
 Copy-Item -LiteralPath (Join-Path $srcRoot 'capability-mapping.json') -Destination (Join-Path $hooksDir 'capability-mapping.json') -Force
+Copy-Item -LiteralPath (Join-Path $srcRoot 'enforcement-contract.v1.json') -Destination (Join-Path $hooksDir 'enforcement-contract.v1.json') -Force
 
 $tpl = Get-Content -LiteralPath $template -Raw | ConvertFrom-Json
 # Rewrite commands to absolute-ish workspace-relative paths from repos root
