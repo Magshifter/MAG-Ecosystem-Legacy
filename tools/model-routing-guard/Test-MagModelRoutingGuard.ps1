@@ -12,6 +12,7 @@ $root = $PSScriptRoot
 $env:MAG_REPOS_ROOT = Join-Path ([IO.Path]::GetTempPath()) ('mag-guard-test-' + [guid]::NewGuid().ToString('N'))
 $mag = Join-Path (Get-MagGuardReposRoot) '.mag'
 New-Item -ItemType Directory -Force -Path $mag | Out-Null
+Save-MagGuardMode -Mode pro -DurationHours 24 -Note 'smoke' | Out-Null
 $planPath = Get-MagGuardPlanPath
 
 switch ($Scenario) {

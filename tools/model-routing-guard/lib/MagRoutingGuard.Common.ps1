@@ -30,6 +30,126 @@ function Get-MagGuardEvidencePath {
     return (Join-Path $root '.mag\routing-evidence.jsonl')
 }
 
+function Get-MagGuardModePath {
+    $root = Get-MagGuardReposRoot
+    return (Join-Path $root '.mag\routing-guard-mode.json')
+}
+
+function Read-MagGuardMode {
+    param([string]$Path = (Get-MagGuardModePath))
+    $now = Get-Date
+    $result = [pscustomobject]@{
+        Mode          = 'auto'
+        Source        = 'default'
+        Expired       = $false
+        NeedsChoice   = $false
+        ExpiresAt     = $null
+        EnforceStops  = $false
+        Raw           = $null
+    }
+    if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
+        return $result
+    }
+    try {
+        $obj = Get-Content -LiteralPath $Path -Raw -Encoding utf8 | ConvertFrom-Json
+    }
+    catch {
+        return $result
+    }
+    if ($null -eq $obj -or -not $obj.PSObject.Properties['mode']) {
+        return $result
+    }
+    $mode = ([string]$obj.mode).Trim().ToLowerInvariant()
+    if ($mode -notin @('pro', 'auto', 'off')) {
+        return $result
+    }
+    $expiresAt = $null
+    $expired = $false
+    if ($obj.PSObject.Properties['expires_at'] -and -not [string]::IsNullOrWhiteSpace([string]$obj.expires_at)) {
+        try {
+            $expiresAt = [datetime]::Parse([string]$obj.expires_at, $null, [System.Globalization.DateTimeStyles]::RoundtripKind)
+            if ($now -gt $expiresAt) { $expired = $true }
+        }
+        catch {
+            $expired = $false
+        }
+    }
+    if ($expired) {
+        # Auto TTL elapsed: do not silently continue — Product Owner must re-choose mode.
+        return [pscustomobject]@{
+            Mode         = 'auto'
+            Source       = 'expired'
+            Expired      = $true
+            NeedsChoice  = $true
+            ExpiresAt    = $expiresAt
+            EnforceStops = $false
+            Raw          = $obj
+        }
+    }
+    return [pscustomobject]@{
+        Mode         = $mode
+        Source       = 'file'
+        Expired      = $false
+        NeedsChoice  = $false
+        ExpiresAt    = $expiresAt
+        EnforceStops = ($mode -eq 'pro')
+        Raw          = $obj
+    }
+}
+
+function Save-MagGuardMode {
+    param(
+        [ValidateSet('pro', 'auto', 'off')][string]$Mode,
+        [int]$DurationHours = -1,
+        [string]$Path = (Get-MagGuardModePath),
+        [string]$Note = ''
+    )
+    $dir = Split-Path -Parent $Path
+    if (-not (Test-Path -LiteralPath $dir)) {
+        New-Item -ItemType Directory -Force -Path $dir | Out-Null
+    }
+    if ($DurationHours -lt 0) {
+        # Pro + Off: permanent until explicit change. Auto: 24h then safe Auto fallback reminder.
+        $DurationHours = if ($Mode -eq 'auto') { 24 } else { 0 }
+    }
+    $expiresAt = $null
+    if ($DurationHours -gt 0) {
+        $expiresAt = (Get-Date).ToUniversalTime().AddHours($DurationHours).ToString('yyyy-MM-ddTHH:mm:ssZ')
+    }
+    $obj = [ordered]@{
+        version     = 1
+        mode        = $Mode
+        set_at      = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
+        expires_at  = $expiresAt
+        duration_hours = $(if ($DurationHours -gt 0) { $DurationHours } else { $null })
+        note        = $Note
+    }
+    $utf8 = [System.Text.UTF8Encoding]::new($false)
+    [System.IO.File]::WriteAllText($Path, (($obj | ConvertTo-Json -Depth 5) + "`n"), $utf8)
+    return (Read-MagGuardMode -Path $Path)
+}
+
+function Get-MagGuardModeCommand {
+    param($HookInput)
+    if ($null -eq $HookInput -or -not $HookInput.PSObject.Properties['prompt']) { return $null }
+    $prompt = ([string]$HookInput.prompt).Trim()
+    if ([string]::IsNullOrWhiteSpace($prompt)) { return $null }
+    $map = @{
+        'guard pro'            = 'pro'
+        'guard auto'           = 'auto'
+        'guard off'            = 'off'
+        'активуємо план pro'   = 'pro'
+        'активувати план pro'  = 'pro'
+        'активуємо pro'        = 'pro'
+        'увімкни guard'        = 'pro'
+        'увімкни guard pro'    = 'pro'
+        'вимкни guard'         = 'off'
+    }
+    $key = $prompt.ToLowerInvariant()
+    if ($map.ContainsKey($key)) { return $map[$key] }
+    return $null
+}
+
 function Read-MagGuardStdinJson {
     $script:MagGuardInputState = 'empty'
     $raw = [Console]::In.ReadToEnd()
@@ -372,42 +492,6 @@ function Resolve-MagGuardDecision {
     $observed = Get-MagGuardObservedModelId -HookInput $HookInput
     if ([string]::IsNullOrWhiteSpace($PlanPath)) { $PlanPath = Get-MagGuardPlanPath }
 
-    if ($null -eq $Plan) {
-        $behavior = [string]$enforcement.missing_plan_behavior
-        if ($behavior -eq 'STOP') {
-            return [pscustomobject]@{
-                Continue = $false
-                Signal   = 'MISSING_PLAN'
-                Action   = 'STOP'
-                Message  = 'MAG Model Routing Guard: routing plan missing. Create C:\laragon\repos\.mag\routing-plan.json or set missing_plan_behavior=INERT.'
-                PoAck    = $false
-            }
-        }
-        return [pscustomobject]@{
-            Continue = $true
-            Signal   = 'INERT'
-            Action   = 'CONTINUE'
-            Message  = ''
-            PoAck    = $false
-        }
-    }
-
-    $seg = Get-MagGuardCurrentSegment -Plan $Plan
-    if ($null -eq $seg) {
-        return [pscustomobject]@{
-            Continue = $false
-            Signal   = 'AUTHORITY_CONFLICT'
-            Action   = 'STOP'
-            Message  = 'MAG Model Routing Guard: current_segment not found in plan. Replan or send + after fixing the plan — + accepts your decision.'
-            PoAck    = $false
-        }
-    }
-
-    $promptContinue = Test-MagGuardPromptContinue -Plan $Plan -HookInput $HookInput
-    $poAck = Test-MagGuardPoContinueAck -Plan $Plan
-    $mapping = Read-MagGuardMapping
-    $proposal = Get-MagGuardProposalText -Segment $seg -Mapping $mapping
-
     function New-Decision([string]$Signal, [bool]$Stop, [string]$Action, [string]$Message, [bool]$Ack = $false) {
         return [pscustomobject]@{
             Continue = -not $Stop
@@ -417,6 +501,43 @@ function Resolve-MagGuardDecision {
             PoAck    = $Ack
         }
     }
+
+    # Explicit Product Owner mode commands — always honored, never blocked.
+    $modeCmd = Get-MagGuardModeCommand -HookInput $HookInput
+    if ($modeCmd) {
+        # Pro/Off permanent; Auto refreshes 24h window.
+        $hours = if ($modeCmd -eq 'auto') { 24 } else { 0 }
+        try { Save-MagGuardMode -Mode $modeCmd -DurationHours $hours -Note 'prompt_command' | Out-Null } catch { }
+        return (New-Decision ('MODE_' + $modeCmd.ToUpperInvariant()) $false 'MODE_SET' '' $true)
+    }
+
+    $modeInfo = Read-MagGuardMode
+    # After Auto TTL: block until Product Owner answers mode — first priority.
+    if ($modeInfo.Expired -or $modeInfo.NeedsChoice) {
+        return (New-Decision 'MODE_EXPIRED' $true 'STOP' 'MAG Model Routing Guard: Auto mode window (24h) ended. First: which mode do we continue in? Reply exactly: Guard Pro | Guard Auto | Guard Off (or Активуємо план Pro / Вимкни Guard).')
+    }
+    if (-not $modeInfo.EnforceStops) {
+        $sig = if ($modeInfo.Mode -eq 'off') { 'MODE_OFF' } else { 'MODE_AUTO' }
+        return (New-Decision $sig $false 'CONTINUE' '')
+    }
+
+    if ($null -eq $Plan) {
+        $behavior = [string]$enforcement.missing_plan_behavior
+        if ($behavior -eq 'STOP') {
+            return (New-Decision 'MISSING_PLAN' $true 'STOP' 'MAG Model Routing Guard: routing plan missing. Create C:\laragon\repos\.mag\routing-plan.json or set missing_plan_behavior=INERT.')
+        }
+        return (New-Decision 'INERT' $false 'CONTINUE' '')
+    }
+
+    $seg = Get-MagGuardCurrentSegment -Plan $Plan
+    if ($null -eq $seg) {
+        return (New-Decision 'AUTHORITY_CONFLICT' $true 'STOP' 'MAG Model Routing Guard: current_segment not found in plan. Replan or send + after fixing the plan — + accepts your decision.')
+    }
+
+    $promptContinue = Test-MagGuardPromptContinue -Plan $Plan -HookInput $HookInput
+    $poAck = Test-MagGuardPoContinueAck -Plan $Plan
+    $mapping = Read-MagGuardMapping
+    $proposal = Get-MagGuardProposalText -Segment $seg -Mapping $mapping
 
     # Product Owner continue: prompt "+" (or plan continue_token) OR runtime.po_continue_ack.
     # Must be evaluated BEFORE any STOP so "+" itself is never blocked.

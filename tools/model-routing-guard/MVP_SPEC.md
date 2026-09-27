@@ -148,6 +148,8 @@ AWAITING_PO
 
 **Product Owner contract (binding for this tool):** STOP is for attention and a **proposal** only. When the Product Owner sends `+` (plan `continue_token`), Guard accepts **that gate** and continues. `+` does **not** disable Guard for the rest of the prompt session — as subtask complexity changes, further STOP+propose cycles may occur. After `+` on a model/observation mismatch, Guard does not re-nag the same model-identity gate for the **current segment**, but declared boundary/escalation/challenge/authority and a **new segment** can still STOP. `+` itself must never be blocked by the hook.
 
+**Operating mode:** `Pro` = STOP+propose **permanent** until explicit change. `Auto` = no proposals for **24h**, then `MODE_EXPIRED` STOP — Product Owner / agent must **ask first** which mode to continue (`Guard Pro` / `Guard Auto` / `Guard Off`) before substantive work. `Off` = forced disable until explicit change. Missing mode file = soft Auto. Mode via `Set-MagGuardMode.ps1` or exact chat commands.
+
 No weighted scoring. No hidden preferences.
 
 ## 7. Hook contracts (Cursor)

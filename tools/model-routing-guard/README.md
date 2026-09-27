@@ -86,6 +86,32 @@ This preserves the plan as `.mag/routing-plan.maintenance.json`; no active plan 
 
 Resume refuses to overwrite another active plan. The emergency recovery on 2026-09-27 preserved the earlier example plan separately as `.mag/routing-plan.recovery-20260927.json`; it is not automatically reactivated. Only place a Product Owner-accepted plan at the active path. An explicit `accepted: false` draft or an invalid plan is inert; existing valid file placement remains the v1 acceptance mechanism.
 
+## Operating mode (Pro / Auto / Off)
+
+When the Product Owner cannot switch models (Cursor **Auto** only / exhausted Pro quota), STOP+propose would only create cyclic friction. Use an explicit mode:
+
+| Mode | Behavior | Duration |
+| --- | --- | --- |
+| **Pro** | STOP+propose armed | permanent until explicit change |
+| **Auto** | no STOP proposals | **24h**, then must re-ask mode before continuing |
+| **Off** | forced off, no proposals | until explicit change |
+
+Missing mode file = soft **Auto** (no proposals; prefer asking once at session start).  
+When Auto **expires**, Guard **STOPs** until Product Owner answers: `Guard Pro` / `Guard Auto` / `Guard Off`. Agents must ask this **first** before substantive work.
+```powershell
+.\Set-MagGuardMode.ps1 -Mode Auto -DurationHours 168 -ProductOwnerApproved
+.\Set-MagGuardMode.ps1 -Mode Pro -DurationHours 24 -ProductOwnerApproved
+.\Set-MagGuardMode.ps1 -Mode Off -ProductOwnerApproved
+```
+
+Or send an exact chat command (hook switches mode, never blocks):
+
+- `Guard Pro` / `Активуємо план Pro`
+- `Guard Auto`
+- `Guard Off` / `Вимкни Guard`
+
+State file: `.mag/routing-guard-mode.json` (not Mirror authority).
+
 ## Model observation and temporary diagnostics
 
 The Guard uses concrete trimmed `model_id`, falling back to concrete `model`. Empty, default, auto, unknown, null, none, and undefined values are not identities. Unknown observation under an active plan causes a one-time STOP + proposal; Product Owner `+` unlocks and accepts the segment without requiring observation. No model is inferred from model_params.

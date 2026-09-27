@@ -5,6 +5,8 @@ $ErrorActionPreference = 'Stop'
 $env:MAG_REPOS_ROOT = Join-Path ([IO.Path]::GetTempPath()) ('mag-recovery-' + [guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path (Join-Path $env:MAG_REPOS_ROOT '.mag') -Force | Out-Null
 $planPath = Get-MagGuardPlanPath
+# Enforcement tests require Pro mode (default/missing mode is Auto = no STOP proposals).
+Save-MagGuardMode -Mode pro -DurationHours 24 -Note 'test' | Out-Null
 $plan = Get-Content (Join-Path $GuardRoot 'examples\routing-plan.example.json') -Raw | ConvertFrom-Json
 function Assert-Decision($name, $p, $inputData, $signal, $allow) {
     $d = Resolve-MagGuardDecision -Plan $p -HookInput ([pscustomobject]$inputData) -PlanPath $planPath
@@ -45,6 +47,33 @@ $plan2 = Get-Content (Join-Path $GuardRoot 'examples\routing-plan.example.json')
 $plan2 | Add-Member -NotePropertyName signal -NotePropertyValue 'MODEL_ESCALATION_REQUIRED' -Force
 Assert-Decision 'escalation stop+propose' $plan2 @{ model = 'composer-2.5' } 'MODEL_ESCALATION_REQUIRED' $false
 Assert-Decision 'escalation plus accepts' $plan2 @{ model = 'composer-2.5'; prompt = '+' } 'PO_CONTINUE' $true
+
+# Operating modes: Auto/Off suppress STOP proposals; prompt commands switch mode
+$planMode = Get-Content (Join-Path $GuardRoot 'examples\routing-plan.example.json') -Raw | ConvertFrom-Json
+Save-MagGuardMode -Mode auto -DurationHours 24 | Out-Null
+Assert-Decision 'auto suppresses mismatch' $planMode @{ model = 'grok-4.7-high' } 'MODE_AUTO' $true
+Save-MagGuardMode -Mode off -DurationHours 0 | Out-Null
+Assert-Decision 'off suppresses mismatch' $planMode @{ model = 'grok-4.7-high' } 'MODE_OFF' $true
+Assert-Decision 'prompt enables pro' $planMode @{ model = 'grok-4.7-high'; prompt = 'Guard Pro' } 'MODE_PRO' $true
+Assert-Decision 'pro mismatch after enable' $planMode @{ model = 'grok-4.7-high' } 'MODEL_MISMATCH' $false
+Assert-Decision 'prompt auto' $planMode @{ prompt = 'Guard Auto' } 'MODE_AUTO' $true
+Assert-Decision 'prompt off' $planMode @{ prompt = 'Вимкни Guard' } 'MODE_OFF' $true
+
+# Auto expiry → must ask mode before continuing
+$expiredPath = Get-MagGuardModePath
+$expiredObj = [ordered]@{
+    version = 1
+    mode = 'auto'
+    set_at = '2020-01-01T00:00:00Z'
+    expires_at = '2020-01-02T00:00:00Z'
+    duration_hours = 24
+    note = 'expired-fixture'
+}
+[System.IO.File]::WriteAllText($expiredPath, (($expiredObj | ConvertTo-Json) + "`n"), [System.Text.UTF8Encoding]::new($false))
+Assert-Decision 'expired auto asks mode' $planMode @{ model = 'composer-2.5' } 'MODE_EXPIRED' $false
+Assert-Decision 'expired answered with auto' $planMode @{ prompt = 'Guard Auto' } 'MODE_AUTO' $true
+
+Save-MagGuardMode -Mode pro -DurationHours 0 | Out-Null
 
 $plan3 = Get-Content (Join-Path $GuardRoot 'examples\routing-plan.example.json') -Raw | ConvertFrom-Json
 $plan3 | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath $planPath -Encoding utf8
