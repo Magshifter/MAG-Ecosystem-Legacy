@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "pwsh -NoProfile -File \"./hooks/model-routing-guard/sessionStart.ps1\""
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "command": "pwsh -NoProfile -File \"./hooks/model-routing-guard/beforeSubmitPrompt.ps1\""
+      }
+    ],
+    "preCompact": [
+      {
+        "command": "pwsh -NoProfile -File \"./hooks/model-routing-guard/preCompact.ps1\""
+      }
+    ]
+  }
+}

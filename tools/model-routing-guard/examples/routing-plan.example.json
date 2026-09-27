@@ -1,0 +1,40 @@
+{
+  "routing_plan_version": 1,
+  "procedure_id": "example-execution",
+  "identity": "GLOBAL",
+  "operating_mode": "Coordinator",
+  "authority": {
+    "owner": "AI_GUIDELINES.md",
+    "section": "24.4"
+  },
+  "current_segment": "seg-1",
+  "segments": [
+    {
+      "segment_id": "seg-1",
+      "purpose": "Deterministic execution example",
+      "routing_class": "EXECUTION",
+      "required_model_ids": [],
+      "effort_class": "",
+      "boundary_condition": "none",
+      "escalation_condition": "none",
+      "downgrade_condition": "none",
+      "context_strategy": "INHERIT_CONTEXT"
+    }
+  ],
+  "enforcement": {
+    "mismatch_behavior": "STOP",
+    "boundary_behavior": "STOP",
+    "escalation_behavior": "STOP",
+    "downgrade_behavior": "WARN",
+    "challenge_behavior": "STOP_IF_EXPENSIVE_OR_WRONG",
+    "missing_plan_behavior": "INERT"
+  },
+  "runtime": {
+    "blocking_signal": null,
+    "po_continue_ack": false
+  },
+  "continue_token": "+",
+  "evidence": {
+    "enabled": true
+  }
+}

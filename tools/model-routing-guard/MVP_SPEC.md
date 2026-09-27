@@ -1,6 +1,6 @@
 # MAG Model Routing Guard — MVP Spec
 
-Status: **PROPOSED / AWAITING PRODUCT OWNER REVIEW**  
+Status: **APPROVED** (Product Owner `2026-09-27`) — EXECUTION spike authorized  
 Classification: **Global operational tool** under `MAG-Ecosystem/tools/`  
 Authority: **none** — implements `AI_GUIDELINES.md` §24.4 (+ Agents executive insert); does not own WHAT or HOW  
 Working name: **MAG Model Routing Guard**  
@@ -240,13 +240,12 @@ Generated/runtime state under `C:\laragon\repos\.mag\` (outside authority docs).
 4. No automatic model change occurs.  
 5. No usage/$ telemetry emitted.
 
-## 14. Next steps after PO review
+## 14. Lifecycle note
 
 ```text
-PO review / amend this MVP_SPEC
-→ MODEL BOUNDARY (spec accepted)
-→ EXECUTION (hooks spike under this spec only)
-→ real routing evidence
+MVP_SPEC APPROVED
+→ EXECUTION spike (hooks + mapping + deploy) — done in-tree
+→ real routing evidence from live Cursor sessions
 → decide: remain operational tool vs grow toward A<N>
 ```
 

@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "classes": {
+    "EXECUTION": {
+      "model_id_prefixes": [
+        "composer-2.5",
+        "composer-2",
+        "composer"
+      ]
+    },
+    "LIGHT_REASONING": {
+      "model_id_prefixes": [
+        "cursor-grok-4.6",
+        "cursor-grok-4.7",
+        "grok-4.6",
+        "grok-4.7",
+        "grok-4"
+      ]
+    },
+    "NORMAL_REASONING": {
+      "model_id_prefixes": [
+        "cursor-grok-4.6",
+        "cursor-grok-4.7",
+        "grok-4.6",
+        "grok-4.7",
+        "grok-4"
+      ]
+    },
+    "DEEP_REASONING": {
+      "model_id_prefixes": [
+        "cursor-grok-4.6",
+        "cursor-grok-4.7",
+        "grok-4.6",
+        "grok-4.7",
+        "grok-4",
+        "gpt-5.6-sol",
+        "claude-opus"
+      ]
+    },
+    "EXCEPTIONAL_REASONING": {
+      "model_id_prefixes": [
+        "grok-4.7",
+        "gpt-5.6-sol",
+        "claude-opus",
+        "claude-fable"
+      ]
+    }
+  }
+}
