@@ -12,6 +12,7 @@
     "DesignToolkit": "C:\\laragon\\repos\\DesignToolkit",
     "ACP-Enhancements": "C:\\laragon\\repos\\ACP-Enhancements",
     "Donatello-Int": "C:\\laragon\\repos\\Donatello-Int",
+    "Telegram-Bridge": "C:\\laragon\\repos\\Telegram-Bridge",
     "MAG-Workflow-Bridge": "C:\\laragon\\repos\\MAG-Workflow-Bridge",
     "MAG-Art-Environment": "C:\\laragon\\repos\\MAG-Art-Environment"
   },
@@ -757,6 +758,60 @@
     {
       "repo": "Donatello-Int",
       "path": "docs/P09__DI__TZ.md",
+      "category": "document",
+      "require_metadata": true
+    },
+    {
+      "repo": "Telegram-Bridge",
+      "path": "README.md",
+      "category": "supporting",
+      "require_metadata": false
+    },
+    {
+      "repo": "Telegram-Bridge",
+      "path": "docs/P10__TB__Architecture.md",
+      "category": "document",
+      "require_metadata": true
+    },
+    {
+      "repo": "Telegram-Bridge",
+      "path": "docs/P10__TB__AUDIT.md",
+      "category": "document",
+      "require_metadata": true
+    },
+    {
+      "repo": "Telegram-Bridge",
+      "path": "docs/P10__TB__Changelog.md",
+      "category": "document",
+      "require_metadata": true
+    },
+    {
+      "repo": "Telegram-Bridge",
+      "path": "docs/P10__TB__CLASS_MAP.md",
+      "category": "document",
+      "require_metadata": true
+    },
+    {
+      "repo": "Telegram-Bridge",
+      "path": "docs/P10__TB__IDEA.md",
+      "category": "document",
+      "require_metadata": true
+    },
+    {
+      "repo": "Telegram-Bridge",
+      "path": "docs/P10__TB__README.md",
+      "category": "document",
+      "require_metadata": true
+    },
+    {
+      "repo": "Telegram-Bridge",
+      "path": "docs/P10__TB__Roadmap.md",
+      "category": "document",
+      "require_metadata": true
+    },
+    {
+      "repo": "Telegram-Bridge",
+      "path": "docs/P10__TB__TZ.md",
       "category": "document",
       "require_metadata": true
     },
