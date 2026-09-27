@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Coding Agent Rules
 
 - MAG-Document-ID: `AI_AGENTS_RULES.md`
-- MAG-Content-Updated: `2026-09-25T23:55:00+03:00`
+- MAG-Content-Updated: `2026-09-27T08:00:00+03:00`
 
 These rules define **how coding agents may execute** work in MAG repositories.
 
@@ -19,7 +19,9 @@ Reusable-knowledge capture mechanics belong in [`MAG_IMPLEMENTATION_PATTERNS.md`
 
 Which agent is used is a user/tooling choice. These rules do not change when a more capable agent is introduced. Tool capability does not grant permission to exceed the approved task.
 
-Cursor model-selection / model-routing policy and operating modes (Coordinator Mode / Direct Agent Mode) belong in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24. Do not collect, display, or maintain Cursor Models usage measurements. Do not duplicate the model matrix in this file.
+Cursor model-selection / model-routing policy and operating modes (Coordinator Mode / Direct Agent Mode) belong in [`AI_GUIDELINES.md`](AI_GUIDELINES.md) §24. Do not duplicate routing policy, Capability Mapping, or the model matrix in this file.
+
+Cursor model routing follows `AI_GUIDELINES.md` §24.4. At `MODEL_BOUNDARY`, `MODEL_MISMATCH`, `MODEL_ESCALATION_REQUIRED`, or a blocking `RUNTIME_CHALLENGE`, the agent must STOP according to §24.4 and must not silently switch models or continue into the next routing segment. The agent may emit routing evidence limited to routing class, runtime signal, boundary/mismatch/challenge state, and Product Owner continuation/replan action. Routing evidence is not Cursor Models usage measurement. Token/$ dashboards, usage-measurement theater, and independent model-cost telemetry remain prohibited unless separately authorized by canonical policy. Do not collect, display, or maintain Cursor Models usage measurements.
 
 ---
 

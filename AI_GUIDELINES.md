@@ -1,7 +1,7 @@
 # MAG Ecosystem — AI Development Guidelines
 
 - MAG-Document-ID: `AI_GUIDELINES.md`
-- MAG-Content-Updated: `2026-09-26T01:20:00+03:00`
+- MAG-Content-Updated: `2026-09-27T08:00:00+03:00`
 
 This document is the **Global MAG development standard**. It defines **how** MAG software is developed with AI assistance.
 
@@ -884,11 +884,23 @@ Do **not**:
 1. **Cursor prompt** — first. A dedicated plain-text code block containing only the exact text intended for paste into Cursor. Do not place explanations or execution metadata before it. Keep the prompt concise and task-specific; reference applicable authoritative MAG rules instead of duplicating them unnecessarily.
 2. **Ціль/задача** — maximally concise, informative Ukrainian description of the procedure's purpose and expected result.
 3. **Cursor chat** — exact target chat. Never invent an unknown Cursor chat; resolve ambiguity with the Product Owner first. Do not route work for one approved development identity through another identity's Cursor Agent chat.
-4. **Cursor model** — recommended model/mode per §24.4.
+4. **Cursor model / routing record** — for **every** Cursor procedure, state the minimum routing record required by §24.4. Do not leave the Product Owner to infer model economics or planned transitions.
 
-Do not place explanations, usage values, or other execution metadata before the copyable prompt block.
+Minimum routing record:
 
-Prefer the lowest-friction safe executor that preserves Product Owner control, approved scope, required verification, and auditability. Do not create a Cursor or Work procedure merely to avoid a simpler safe path. A Cursor task should normally execute a complete coherent task rather than split without a risk-based reason.
+```text
+Cursor model: <current concrete model from Capability Mapping>
+Routing class: <EXECUTION | LIGHT_REASONING | NORMAL_REASONING | DEEP_REASONING | EXCEPTIONAL_REASONING>
+MODEL BOUNDARY: <condition | none>
+Escalation: <condition | none>
+Mismatch behavior: STOP
+```
+
+Add optional fields only when materially relevant: Effort; Context strategy (`INHERIT_CONTEXT` / `REDUCED_CONTEXT` / `FRESH_CONTEXT_AT_BOUNDARY`); next routing class/model; downgrade condition; multi-segment outline.
+
+Do not place explanations, usage values, or other execution metadata before the copyable prompt block. Do not invent a heavy YAML schema for ordinary single-segment work.
+
+Prefer the lowest-friction safe executor that preserves Product Owner control, approved scope, required verification, and auditability. Do not create a Cursor or Work procedure merely to avoid a simpler safe path. A Cursor task should normally execute a complete coherent task rather than split without a risk-based reason. When risk-based segmentation is warranted, present Segments and MODEL BOUNDARY under §24.4 rather than silently keeping one over-powered model for the whole procedure.
 
 ### 24.3 Post-execution review
 
@@ -908,6 +920,12 @@ In **Direct Agent Mode**, report in the same session under [`AI_AGENTS_RULES.md`
 
 This subsection is the **canonical Global owner** of Cursor model-selection and model-routing policy.
 
+Core invariant:
+
+`CONTROL → ROUTING → AUTHORITY`
+
+The Product Owner retains control. This subsection defines routing policy. A runtime tool or agent may enforce an accepted Routing Plan but must **not** become an independent policy owner. If tool/agent behavior and this subsection disagree, **this subsection wins**. If the disagreement cannot be resolved mechanically: **STOP**.
+
 Stable principles:
 
 - Model selection is based on the **complexity of technical decisions still unresolved**, not file type, number of files, or whether code is being edited.
@@ -919,22 +937,65 @@ Stable principles:
 - Escalation during execution should go only as high as newly observed reasoning or risk requires.
 - Unnecessary model strength is over-selection and should be avoided.
 - Selecting a cheaper model must not reduce validation requirements.
+- Operational / Mechanical Action Gate risk and reasoning complexity are independent dimensions. HIGH-RISK mechanical actions do not automatically require a high-reasoning model.
 
-#### Current model recommendations
+#### Routing unit: Segment
 
-These named recommendations are subordinate to the stable principles above and may be updated when Cursor's available models change without rewriting unrelated lifecycle rules. Do not invent unavailable model names.
+The routing unit is a **Segment**, not necessarily the whole prompt or procedure.
 
-| Model | Prefer when |
+A Segment is a contiguous part of a procedure whose unresolved reasoning complexity, required context, and model requirements are materially similar. One procedure may contain one Segment or multiple Segments with different routing classes. Risk-based segmentation is preferred over keeping an expensive reasoning model active after its reasoning responsibility ends.
+
+#### Routing classes
+
+Stable policy operates on abstract capability classes. Concrete Cursor model names are obtained through Capability Mapping and must not be the semantics of the class-selection tree.
+
+| Class | Prefer when |
 | --- | --- |
-| **Composer 2.5** | Default for deterministic/mechanical work, known-path implementation, approved detailed plans, known tests/commands, localization, XML/templates, metadata, cleanup, and multi-file implementation when **no material engineering decision remains**. First candidate for execution-dominant work even when PHP or multiple files are involved. |
-| **Auto** | Ordinary well-specified work when a specific model is not required and Composer is not the clearer fit. |
-| **Grok 4.6 Low** | Small localized uncertainty within an otherwise approved path. |
-| **Grok 4.6 Medium** | Normal engineering decisions within approved Architecture. |
-| **Grok 4.6 High** | Complex root cause, transactions, concurrency/reentrancy, security, difficult lifecycle, upgrade/migration/compatibility, multi-subsystem integration, or broad regression-risk reasoning. |
-| **Grok 4.6 Extra High** | Exceptional escalation when High is insufficient or uncertainty/failure cost is extreme. |
-| **GPT-5.6 Sol / Claude Opus** | Alternative escalation when that family is likely to materially improve the result after justified Grok escalation, or for strong second-opinion review. |
+| **EXECUTION** | Deterministic or already-decided work; no material engineering decision remains. |
+| **LIGHT_REASONING** | Small localized uncertainty inside an already approved path. |
+| **NORMAL_REASONING** | Normal engineering decisions inside approved Product semantics and Architecture. |
+| **DEEP_REASONING** | Complex root cause, transactions, concurrency/reentrancy, security, difficult lifecycle/upgrade/migration/compatibility, multi-subsystem integration, or broad regression-risk reasoning. |
+| **EXCEPTIONAL_REASONING** | Exceptional cases where DEEP_REASONING is demonstrably insufficient or failure cost/uncertainty is extreme. |
 
-Decision tree:
+**Auto is not a MAG routing class** and is not MAG routing authority. Auto may be used only when the current Capability Mapping or an explicit Product Owner decision allows it for a specific class/use case. Otherwise do not use Auto where MAG requires controlled, explainable model selection.
+
+#### Routing Preflight and Routing Plan
+
+Before a Cursor-assisted procedure begins, perform Routing Preflight: procedure → Segments → unresolved uncertainty → reasoning complexity → operational risk → context needs → minimum sufficient routing class → effort if applicable → expected MODEL BOUNDARY → escalation/downgrade conditions → context strategy.
+
+Every Cursor procedure has at least a **minimal single-segment Routing Plan** (the §24.2 routing record). Multi-segment procedures expand that plan with Segment boundaries and transitions.
+
+A Routing Plan is a **derived execution artifact**. It is not MAG authority. It instantiates this subsection for one procedure. Physical persistence of a machine-readable plan file is optional implementation detail; semantic parity is mandatory.
+
+In **Direct Agent Mode**, the same classes, BOUNDARY, mismatch, Runtime Challenge, escalation, and Product Owner control apply. The plan may be declared in the current agent context without a separate file.
+
+If runtime canonical policy and an accepted plan conflict materially: **STOP → ROUTING PLAN STALE/CONFLICT**. Do not silently rewrite the plan. Product Owner/coordinator replan is required.
+
+#### Capability Mapping
+
+Concrete models and effort modes are volatile operational data subordinate to this subsection.
+
+```text
+Routing Class → current Capability Mapping → concrete Cursor model + supported effort
+```
+
+Refreshing the mapping does not change class semantics and does not require a lifecycle Gate, but must be Product Owner / operationally verified. A tool or agent must not silently reassign a class to a new model.
+
+If mapping is missing, stale, contradictory, or cannot resolve the requested class: **STOP → ROUTING MAPPING UNKNOWN**. Do not invent a replacement model.
+
+**Current Capability Mapping (subordinate; EXAMPLE / starting map — refresh when Cursor inventory changes):**
+
+| Routing class | Current concrete candidate |
+| --- | --- |
+| **EXECUTION** | Composer 2.5 (standard preferred over Fast unless latency clearly justifies Fast cost) |
+| **LIGHT_REASONING** | Current Grok reasoning configuration at low effort when available |
+| **NORMAL_REASONING** | Current Grok reasoning configuration at medium effort when available |
+| **DEEP_REASONING** | Current Grok reasoning configuration at high effort when available |
+| **EXCEPTIONAL_REASONING** | Exceptional Grok effort, or alternative frontier family (for example GPT-5.6 Sol / Claude Opus) after justified escalation / second-opinion need |
+
+Do not invent unavailable model names. Prefer Cursor Models pool candidates when equivalent for the class. Fast / long-context surcharges are cost controls, not class upgrades.
+
+#### Class-selection tree
 
 ```text
 1. Are Product semantics or Architecture still unresolved?
@@ -942,23 +1003,135 @@ Decision tree:
    → NO: continue
 
 2. Is remaining work execution-dominant with no material engineering decision left?
-   → YES: Composer 2.5 (or Auto when Composer is not the clearer fit)
+   → YES: EXECUTION
    → NO: continue
 
 3. Is uncertainty small and localized within an approved path?
-   → YES: Grok 4.6 Low
+   → YES: LIGHT_REASONING
    → NO: continue
 
 4. Is the work normal engineering within approved Architecture?
-   → YES: Grok 4.6 Medium
+   → YES: NORMAL_REASONING
    → NO: continue
 
-5. Does the work involve complex root cause, transactions, concurrency/reentrancy,
-   security, difficult lifecycle, upgrade/migration/compatibility, multi-subsystem
-   integration, or broad regression-risk reasoning?
-   → YES: Grok 4.6 High (Extra High only when High is insufficient or failure cost is extreme)
+5. Does the work require DEEP_REASONING conditions above?
+   → YES: DEEP_REASONING (EXCEPTIONAL_REASONING only when DEEP is demonstrably insufficient or failure cost is extreme)
    → NO: re-evaluate from step 2 with a concrete reason
+
+Then resolve the selected class through Capability Mapping to a concrete model.
 ```
+
+#### MODEL BOUNDARY
+
+MODEL BOUNDARY is a controlled transition between Segments whose routing requirements differ.
+
+When a boundary requires a model change:
+
+```text
+Current Segment complete
+→ MODEL BOUNDARY
+→ STOP
+→ report reason and required next routing class / mapping
+→ Product Owner changes model
+→ +
+→ next Segment
+```
+
+Crossing a planned boundary does not by itself create a new Product Owner decision about scope when identity, scope, authority, and approved procedure remain unchanged. A boundary must not bypass an independent MAG approval requirement.
+
+#### Runtime Challenge
+
+Runtime Challenge is mandatory when accepted plan and observed repository/runtime reality materially disagree about required class/complexity.
+
+```text
+Accepted Routing Plan
+→ runtime evidence materially contradicts planned class/complexity
+→ RUNTIME_CHALLENGE
+→ STOP before an unnecessary expensive phase when applicable
+→ report observed evidence
+→ recommend downgrade / escalation / replan
+→ Product Owner decision
+→ continuation
+```
+
+Example: plan says DEEP_REASONING, but inspection shows decisions are already settled and only deterministic implementation remains. The agent must challenge before consuming the expensive phase. It must **not** silently rewrite the plan or silently switch models.
+
+If Runtime Challenge evidence implies authority conflict, replan, mismatch, or escalation, raise to that stronger signal. If it only shows over-selection, treat as downgrade-side challenge/warning per enforcement defaults.
+
+#### Escalation and downgrade
+
+**Escalation** moves to a stronger reasoning class because new evidence shows the current class is insufficient. Required flow:
+
+```text
+Qualifying uncertainty
+→ stop mutation when unsafe to continue
+→ MODEL ESCALATION REQUIRED
+→ evidence/reason + recommended routing class
+→ Product Owner-controlled model change or replan
+→ +
+→ continuation
+```
+
+Automatic silent escalation is forbidden. A tool/agent may detect and report; it may not authorize escalation.
+
+**Downgrade** moves to a cheaper/lower class when unresolved engineering reasoning is complete and remaining work is deterministic. Default behavior: **recommend/guard**, not automatic model switching. Emit `MODEL DOWNGRADE RECOMMENDED`; the Product Owner performs the model change unless a later explicit Product Owner-approved policy states otherwise.
+
+#### Runtime predicates and signals
+
+v1 runtime predicates must be **coarse and observable**. Allowed examples: active model/class mismatch; agent-declared boundary reached; explicit agent STOP/report; repeated unexplained validation failure count; supported hook/runtime events; confirmed context signals such as `preCompact` when available.
+
+Do **not** claim “semantic analysis finished” from unauditable tool heuristics alone. If a required fact is UNKNOWN, do not pretend it was verified. If UNKNOWN affects correctness, escalation, authority, or required model compatibility: **STOP**. If UNKNOWN affects only optional cost optimization: continue safely and report the unverified optimization.
+
+Standard signals include: `MODEL_MATCH`, `MODEL_MISMATCH`, `MODEL_BOUNDARY`, `MODEL_DOWNGRADE_RECOMMENDED`, `MODEL_ESCALATION_REQUIRED`, `RUNTIME_CHALLENGE`, `CONTEXT_WARNING`, `REPLAN_REQUIRED`, `AUTHORITY_CONFLICT`, `STOP`.
+
+#### Enforcement defaults (v1)
+
+| Signal | Default |
+| --- | --- |
+| `AUTHORITY_CONFLICT` | hard STOP |
+| `REPLAN_REQUIRED` | hard STOP |
+| `MODEL_MISMATCH` | hard STOP |
+| `MODEL_ESCALATION_REQUIRED` | hard STOP |
+| `MODEL_BOUNDARY` requiring model change | STOP until Product Owner switch and `+` |
+| `RUNTIME_CHALLENGE` | STOP when continuing would mean materially wrong or unnecessarily expensive routing; otherwise warning |
+| `MODEL_DOWNGRADE_RECOMMENDED` | warning only |
+| `CONTEXT_WARNING` | warning only |
+
+Precedence when multiple conditions apply:
+
+```text
+AUTHORITY_CONFLICT
+→ REPLAN_REQUIRED
+→ MODEL_MISMATCH
+→ MODEL_ESCALATION_REQUIRED
+→ MODEL_BOUNDARY
+→ RUNTIME_CHALLENGE / MODEL_DOWNGRADE_RECOMMENDED
+→ CONTINUE
+```
+
+Authority uncertainty fails closed. New semantic/architectural uncertainty outranks cost optimization. Correctness outranks downgrade.
+
+Silent model switching by a tool or agent is forbidden. Automatic expensive-model escalation is forbidden.
+
+#### Context strategy
+
+Expensive reasoning classes should receive only the context required for the decision they must make. Long accumulated context is not a reason to keep a high-cost class active after its reasoning responsibility ends.
+
+Routing Plans may specify `INHERIT_CONTEXT`, `REDUCED_CONTEXT`, or `FRESH_CONTEXT_AT_BOUNDARY`. A fresh-context transition must preserve correctness via an explicit remaining-work handoff. Never silently discard required context. Do not present token/$ figures as exact unless a reliable supported runtime source exists; identify heuristic context warnings as heuristic.
+
+#### Routing evidence
+
+Agents/tools MAY retain lightweight routing evidence: planned class, observed model, boundary/mismatch/escalation/downgrade/challenge signals, Product Owner continuation/replan/abort.
+
+Routing evidence is **not** Cursor Models usage measurement. Token/$ dashboards, usage-measurement theater, and independent model-cost telemetry remain prohibited unless separately authorized by canonical policy. Absence of exact telemetry must not block routing enforcement.
+
+#### Tool / controller boundary
+
+A future MAG routing controller may enforce an accepted plan with a deterministic state machine / predicate checker. It must not contain an autonomous model-selection brain, weighted scoring, LLM-based autonomous routing, automatic resegmentation, or automatic model switching unless a later Product Owner-approved policy explicitly authorizes that capability.
+
+#### Prohibited in v1 routing automation
+
+LLM-based autonomous routing; weighted model scores; autonomous semantic task classification; automatic task re-segmentation; automatic expensive-model escalation; automatic model switching; hidden model preferences; hard-coded permanent provider pricing as state-machine semantics; provider-specific model names as the semantics of the class-selection tree.
 
 ---
 
