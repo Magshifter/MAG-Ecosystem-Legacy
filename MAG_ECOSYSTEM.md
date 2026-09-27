@@ -1,7 +1,7 @@
 ﻿# MAG Ecosystem
 
 - MAG-Document-ID: `MAG_ECOSYSTEM.md`
-- MAG-Content-Updated: `2026-09-27T18:00:00+03:00`
+- MAG-Content-Updated: `2026-09-27T23:00:00+03:00`
 
 This document is the navigation and governance foundation for MAG software development across approved Product Classes and identity namespaces.
 
@@ -118,7 +118,7 @@ Each `#N` XenForo Product also has a **short, stable project code** used in docu
 | #6 | `P06__DT` | [MAG] Design Toolkit | Active / Initial requirements discovery | `DesignToolkit` | `C:\laragon\repos\DesignToolkit` |
 | #8 | `P08__AE` | [MAG] ACP Enhancements | Active / Published Stable 1.0.0 (`1000090`, Resource mag-acp-enhancements.12); Local/Git `1.0.2` / `1000290`; Phase 9 finalized into 1.0.1; external publication of 1.0.1/1.0.2 pending Product Owner | `ACP-Enhancements` | `C:\laragon\repos\ACP-Enhancements` |
 | #9 | `P09__DI` | [MAG] Donatello Integration | Active / Gate 1 PASSED; Phase 3 complete; Architecture NEXT; Drive Reconciliation Pending | `Donatello-Int` | `C:\laragon\repos\Donatello-Int` |
-| #10 | `P10__TB` | [MAG] Telegram Bridge | Active / Phase 1 Local/Git Bootstrap Complete; Requirements Definition NEXT; Drive Reconciliation Pending | `Telegram-Bridge` | `C:\laragon\repos\Telegram-Bridge` |
+| #10 | `P10__TB` | [MAG] Telegram Bridge | Active / Phase 2 Requirements Definition IN PROGRESS; Gate 1 PENDING; Drive Reconciliation Pending | `Telegram-Bridge` | `C:\laragon\repos\Telegram-Bridge` |
 
 The `#N` registry table is the canonical current-fact source for identity, current lifecycle/status label, current stable version where shown, Git repository, and local path as currently recorded. Additional repositories or paths do not by themselves create another `#N` identity. Narrative below may explain classification, history, and meaning; it must not independently restate volatile current status, version, or path.
 
@@ -553,7 +553,7 @@ For `#N`, Drive-First, Local/Git-First, Full, and Resume are normal documentatio
 
 `#9` [MAG] Donatello Integration is an approved XenForo identity. Current identity, status, repository, and local path are in the `#N` registry table above. Phase 1 **Local/Git Bootstrap Complete** (`2026-09-26`). Phase 2 **Requirements Definition** complete; **Gate 1 PASS** (`2026-09-27`). Phase 3 **Targeted Research and Verification** complete (`2026-09-27`); **Phase 4 Architecture** is next and not started. Drive state: **Drive Reconciliation Pending**. Implementation and Architecture approval are **not** granted. It inherits Global rules by reference and must not contain local copies of Global documentation files from `MAG-Ecosystem`.
 
-`#10` [MAG] Telegram Bridge is an approved XenForo identity. Current identity, status, repository, and local path are in the `#N` registry table above. Phase 1 reached **Local/Git Bootstrap Complete** through Local/Git-First on `2026-09-27`. XenForo add-on namespace: `MAG/TelegramBridge`. Drive state: **Drive Reconciliation Pending**. Phase 2 Requirements Definition is next. Gate 1, Architecture, and implementation are **not** approved or authorized. It inherits Global rules by reference and must not contain local copies of Global documentation files from `MAG-Ecosystem`.
+`#10` [MAG] Telegram Bridge is an approved XenForo identity. Current identity, status, repository, and local path are in the `#N` registry table above. Phase 1 reached **Local/Git Bootstrap Complete** through Local/Git-First on `2026-09-27`. XenForo add-on namespace: `MAG/TelegramBridge`. Drive state: **Drive Reconciliation Pending**. Phase 2 Requirements Definition is **IN PROGRESS**. Gate 1 remains **PENDING**. Architecture and implementation remain unauthorized. It inherits Global rules by reference and must not contain local copies of Global documentation files from `MAG-Ecosystem`.
 
 ## Current MAG-Ecosystem repository contents
 
