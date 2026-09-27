@@ -732,6 +732,12 @@
     },
     {
       "repo": "Donatello-Int",
+      "path": "docs/P09__DI__Donatello_Panel_Contract.md",
+      "category": "document",
+      "require_metadata": true
+    },
+    {
+      "repo": "Donatello-Int",
       "path": "docs/P09__DI__IDEA.md",
       "category": "document",
       "require_metadata": true
