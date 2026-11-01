@@ -1,12 +1,11 @@
 #Requires -Version 7.0
 Set-StrictMode -Version Latest
 
-$script:MagMirrorApprovedRoot = 'C:\laragon\repos\Mirror'
-$script:MagReposRootDefault = 'C:\laragon\repos'
-$script:MagForbiddenMirrorEquals = @(
-    'C:\laragon\repos',
-    'C:\laragon\repos\MAG-Ecosystem'
-)
+# W5: no author-specific default layout. ReposRoot and MirrorRoot come only from the explicitly
+# selected inventory (repos_root / mirror_root) or from -ReposRoot / -MirrorRoot. They are never
+# inferred from the current working directory. The active MAG-Ecosystem checkout (the repository
+# containing this library) is always protected from Mirror overlap.
+$script:MagEcosystemCheckoutRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..\..')).TrimEnd('\', '/')
 
 function Get-MagMirrorFullPath {
     param([Parameter(Mandatory)][string]$Path)
@@ -59,40 +58,107 @@ function Test-MagMirrorReparsePoint {
     return [bool]($item.Attributes -band [IO.FileAttributes]::ReparsePoint)
 }
 
+function Resolve-MagMirrorConfiguredRoot {
+    # Validates an explicitly configured root (repos_root / mirror_root) and returns its normalized
+    # absolute form. Missing, relative, drive-relative, device, malformed, or ambiguous values fail closed.
+    param(
+        [AllowEmptyString()][AllowNull()][string]$Path,
+        [Parameter(Mandatory)][ValidateSet('repos_root', 'mirror_root')][string]$Kind
+    )
+    if ([string]::IsNullOrWhiteSpace($Path)) { throw "${Kind}_missing" }
+    if ($Path -ne $Path.Trim()) { throw "${Kind}_ambiguous:surrounding_whitespace" }
+    if ($Path.StartsWith('\\?\') -or $Path.StartsWith('\\.\') -or $Path.StartsWith('//?/') -or $Path.StartsWith('//./')) {
+        throw "${Kind}_malformed:device_path:$Path"
+    }
+    if ($Path.IndexOfAny([IO.Path]::GetInvalidPathChars()) -ge 0 -or $Path.IndexOfAny([char[]]'*?"<>|') -ge 0) {
+        throw "${Kind}_malformed:invalid_characters:$Path"
+    }
+    if (-not [IO.Path]::IsPathFullyQualified($Path)) { throw "${Kind}_relative:$Path" }
+    if ($Path.LastIndexOf(':') -gt 1) { throw "${Kind}_malformed:colon:$Path" }
+    $rawRoot = [IO.Path]::GetPathRoot($Path)
+    foreach ($seg in $Path.Substring($rawRoot.Length).Split([char[]]@('\', '/'), [StringSplitOptions]::RemoveEmptyEntries)) {
+        if ($seg -eq '.' -or $seg -eq '..') { throw "${Kind}_ambiguous:dot_segment:$Path" }
+        if ($seg -match '~\d') { throw "${Kind}_ambiguous:short_name:$Path" }
+        if ($seg.EndsWith(' ') -or $seg.EndsWith('.')) { throw "${Kind}_ambiguous:trailing_dot_or_space:$Path" }
+    }
+    try { $full = [IO.Path]::GetFullPath($Path) } catch { throw "${Kind}_malformed:$Path" }
+    $fsRoot = [IO.Path]::GetPathRoot($full)
+    if ($full.TrimEnd('\', '/').Equals($fsRoot.TrimEnd('\', '/'), [StringComparison]::OrdinalIgnoreCase)) {
+        return $fsRoot
+    }
+    return $full.TrimEnd('\', '/')
+}
+
 function Assert-MagMirrorRootSafe {
+    # Validates MirrorRoot against the resolved configuration. A root is never approved merely
+    # because the caller supplied it: it must pass every topology and reparse check below.
     param(
         [Parameter(Mandatory)][string]$MirrorRoot,
-        [string[]]$CanonicalRepoRoots = @()
+        [Parameter(Mandatory)][string]$ReposRoot,
+        [string[]]$CanonicalRepoRoots = @(),
+        [string]$EcosystemRoot = $script:MagEcosystemCheckoutRoot
     )
-    $full = Get-MagMirrorFullPath $MirrorRoot
-    $approved = Get-MagMirrorFullPath $script:MagMirrorApprovedRoot
-    if (-not $full.Equals($approved, [StringComparison]::OrdinalIgnoreCase)) {
-        throw "mirror_root_not_approved:$full"
+    $full = Resolve-MagMirrorConfiguredRoot -Path $MirrorRoot -Kind 'mirror_root'
+    $repos = Resolve-MagMirrorConfiguredRoot -Path $ReposRoot -Kind 'repos_root'
+    $fsRoot = [IO.Path]::GetPathRoot($full)
+    if ($full.TrimEnd('\', '/').Equals($fsRoot.TrimEnd('\', '/'), [StringComparison]::OrdinalIgnoreCase)) {
+        throw "mirror_root_is_filesystem_root:$full"
     }
-    if (Test-MagMirrorReparsePoint $full) {
-        throw "mirror_root_reparse:$full"
+    if ($full.Equals($repos.TrimEnd('\', '/'), [StringComparison]::OrdinalIgnoreCase)) {
+        throw 'mirror_root_is_repos_root'
     }
-    foreach ($banned in $script:MagForbiddenMirrorEquals) {
-        $b = Get-MagMirrorFullPath $banned
-        if ($full.Equals($b, [StringComparison]::OrdinalIgnoreCase)) {
-            throw "mirror_root_forbidden:$full"
-        }
+    if (Test-MagMirrorPathUnderRoot -Path $repos -Root $full) {
+        throw "mirror_root_contains_repos_root:$full"
     }
     foreach ($repo in @($CanonicalRepoRoots)) {
         if ([string]::IsNullOrWhiteSpace($repo)) { continue }
-        $r = Get-MagMirrorFullPath $repo
+        $r = (Get-MagMirrorFullPath $repo).TrimEnd('\', '/')
         if ($full.Equals($r, [StringComparison]::OrdinalIgnoreCase)) {
             throw "mirror_root_is_canonical_repo:$full"
         }
         if (Test-MagMirrorPathUnderRoot -Path $full -Root $r) {
             throw "mirror_root_inside_canonical_repo:$full"
         }
+        if (Test-MagMirrorPathUnderRoot -Path $r -Root $full) {
+            throw "mirror_root_contains_canonical_repo:$full"
+        }
     }
-    $reposRoot = Get-MagMirrorFullPath $script:MagReposRootDefault
-    if ($full.Equals($reposRoot, [StringComparison]::OrdinalIgnoreCase)) {
-        throw 'mirror_root_is_repos_root'
+    if (-not [string]::IsNullOrWhiteSpace($EcosystemRoot)) {
+        if ((Test-MagMirrorPathUnderRoot -Path $full -Root $EcosystemRoot) -or (Test-MagMirrorPathUnderRoot -Path $EcosystemRoot -Root $full)) {
+            throw "mirror_root_overlaps_ecosystem_checkout:$full"
+        }
+    }
+    if ((Test-Path -LiteralPath $full) -and -not (Test-Path -LiteralPath $full -PathType Container)) {
+        throw "mirror_root_not_directory:$full"
+    }
+    $parent = Split-Path -Parent $full
+    if ([string]::IsNullOrWhiteSpace($parent) -or -not (Test-Path -LiteralPath $parent -PathType Container)) {
+        throw "mirror_root_parent_missing:$full"
+    }
+    # Root and every existing ancestor: no reparse point (symlink/junction) and no Git worktree marker.
+    $probe = $full
+    while (-not [string]::IsNullOrWhiteSpace($probe)) {
+        if (Test-Path -LiteralPath $probe) {
+            if (Test-MagMirrorReparsePoint $probe) {
+                throw "mirror_root_reparse:$probe"
+            }
+            if (Test-Path -LiteralPath (Join-Path $probe '.git')) {
+                throw "mirror_root_inside_git_worktree:$probe"
+            }
+        }
+        $next = Split-Path -Parent $probe
+        if ([string]::IsNullOrWhiteSpace($next) -or $next.Equals($probe, [StringComparison]::OrdinalIgnoreCase)) { break }
+        $probe = $next
     }
     return $full
+}
+
+function Assert-MagMirrorWriteTargetSafe {
+    # Single precondition for every Mirror-writing operation (BootstrapClean, Reconcile, PublishAffected).
+    param([Parameter(Mandatory)]$Loaded)
+    $mr = Assert-MagMirrorRootSafe -MirrorRoot $Loaded.MirrorRoot -ReposRoot $Loaded.ReposRoot -CanonicalRepoRoots @($Loaded.CanonicalRoots)
+    Assert-MagMirrorTreeContained -MirrorRoot $mr
+    return $mr
 }
 
 function Read-MagMirrorJsonFile {
@@ -162,14 +228,31 @@ function Import-MagMirrorInventory {
     if (-not $inv.PSObject.Properties['entries'] -or $null -eq $inv.entries) {
         throw 'malformed_inventory:entries'
     }
-    $reposRoot = if ($ReposRootOverride) { Get-MagMirrorFullPath $ReposRootOverride } else { Get-MagMirrorFullPath ([string]$inv.repos_root) }
-    $mirrorRoot = if ($MirrorRootOverride) { Get-MagMirrorFullPath $MirrorRootOverride } else { Get-MagMirrorFullPath ([string]$inv.mirror_root) }
-    if (-not $inv.PSObject.Properties['repositories']) {
+    # Roots: explicit CLI override, else the explicitly selected inventory. No built-in default.
+    $reposRootRaw = if ($ReposRootOverride) { $ReposRootOverride } elseif ($inv.PSObject.Properties['repos_root']) { [string]$inv.repos_root } else { '' }
+    $mirrorRootRaw = if ($MirrorRootOverride) { $MirrorRootOverride } elseif ($inv.PSObject.Properties['mirror_root']) { [string]$inv.mirror_root } else { '' }
+    $reposRoot = Resolve-MagMirrorConfiguredRoot -Path $reposRootRaw -Kind 'repos_root'
+    $mirrorRoot = Resolve-MagMirrorConfiguredRoot -Path $mirrorRootRaw -Kind 'mirror_root'
+    if (-not (Test-Path -LiteralPath $reposRoot -PathType Container)) {
+        throw "repos_root_not_found:$reposRoot"
+    }
+    if (-not $inv.PSObject.Properties['repositories'] -or $null -eq $inv.repositories) {
         throw 'malformed_inventory:repositories'
     }
     $repoMap = @{}
+    $seenRepoPath = @{}
     foreach ($p in $inv.repositories.PSObject.Properties) {
+        $repoName = [string]$p.Name
+        if ($repoName -notmatch '^[A-Za-z0-9][A-Za-z0-9._ -]*$' -or $repoName.EndsWith('.') -or $repoName.EndsWith(' ')) {
+            throw "malformed_inventory:repository_name:$repoName"
+        }
         $repoMap[$p.Name] = Get-MagMirrorFullPath (Join-Path $reposRoot $p.Name)
+        if (-not (Test-MagMirrorPathUnderRoot -Path $repoMap[$p.Name] -Root $reposRoot)) {
+            throw "path_outside_repos_root:$repoName"
+        }
+        $rk = $repoMap[$p.Name].ToLowerInvariant()
+        if ($seenRepoPath.ContainsKey($rk)) { throw "duplicate_repository:$repoName" }
+        $seenRepoPath[$rk] = $true
         $declared = [string]$p.Value
         if ($declared -and -not $ReposRootOverride) {
             $dFull = Get-MagMirrorFullPath $declared
@@ -472,6 +555,18 @@ function Copy-MagMirrorFileVerified {
     if (-not (Test-MagMirrorPathUnderRoot -Path $destFull -Root $DestRoot)) {
         throw "copy_escape:$destFull"
     }
+    # No reparse point (symlink/junction) between the authorized root and the destination file.
+    $destRootFull = (Get-MagMirrorFullPath $DestRoot).TrimEnd('\', '/')
+    $probe = $destFull
+    while (-not [string]::IsNullOrWhiteSpace($probe)) {
+        if (Test-MagMirrorReparsePoint $probe) {
+            throw "reparse_destination:$probe"
+        }
+        if ($probe.TrimEnd('\', '/').Equals($destRootFull, [StringComparison]::OrdinalIgnoreCase)) { break }
+        $next = Split-Path -Parent $probe
+        if ([string]::IsNullOrWhiteSpace($next) -or $next.Equals($probe, [StringComparison]::OrdinalIgnoreCase)) { break }
+        $probe = $next
+    }
     $dir = Split-Path -Parent $destFull
     New-Item -ItemType Directory -Path $dir -Force | Out-Null
     $tmp = Join-Path $dir ('.' + [IO.Path]::GetFileName($destFull) + '.mag-mirror-tmp')
@@ -510,25 +605,10 @@ function Write-MagMirrorBaseline {
 function Invoke-MagMirrorBootstrapClean {
     param(
         [Parameter(Mandatory)]$Loaded,
-        [Parameter(Mandatory)][string]$BaselinePath,
-        [switch]$SkipApprovedRootCheck
+        [Parameter(Mandatory)][string]$BaselinePath
     )
-    if (-not $SkipApprovedRootCheck) {
-        $null = Assert-MagMirrorRootSafe -MirrorRoot $Loaded.MirrorRoot -CanonicalRepoRoots @($Loaded.CanonicalRoots)
-    }
-    else {
-        $mr = Get-MagMirrorFullPath $Loaded.MirrorRoot
-        $reposRoot = Get-MagMirrorFullPath $Loaded.ReposRoot
-        if ($mr.Equals($reposRoot, [StringComparison]::OrdinalIgnoreCase)) {
-            throw 'mirror_root_is_repos_root'
-        }
-        foreach ($r in @($Loaded.CanonicalRoots)) {
-            if ($mr.Equals((Get-MagMirrorFullPath $r), [StringComparison]::OrdinalIgnoreCase)) {
-                throw "mirror_root_is_canonical_repo:$mr"
-            }
-        }
-        Assert-MagMirrorTreeContained -MirrorRoot $mr
-    }
+    $null = Assert-MagMirrorWriteTargetSafe -Loaded $Loaded
+
     if (-not (Test-Path -LiteralPath $Loaded.MirrorRoot -PathType Container)) {
         New-Item -ItemType Directory -Path $Loaded.MirrorRoot -Force | Out-Null
     }
@@ -679,8 +759,7 @@ function Invoke-MagMirrorReconcile {
         [Parameter(Mandatory)][string]$InventoryPath,
         [string]$BaselinePath,
         [string]$ReposRootOverride,
-        [string]$MirrorRootOverride,
-        [switch]$SkipApprovedRootCheck
+        [string]$MirrorRootOverride
     )
     $auth = ([string]$AuthorizationSha256).Trim().ToLowerInvariant()
     if ($auth.Length -ne 64 -or $auth -notmatch '^[0-9a-f]{64}$') {
@@ -720,22 +799,7 @@ function Invoke-MagMirrorReconcile {
     if (-not $receiptRoot.Equals($liveRoot, [StringComparison]::OrdinalIgnoreCase)) {
         throw 'mirror_root_mismatch'
     }
-    if (-not $SkipApprovedRootCheck) {
-        $null = Assert-MagMirrorRootSafe -MirrorRoot $loaded.MirrorRoot -CanonicalRepoRoots @($loaded.CanonicalRoots)
-    }
-    else {
-        $mr = $liveRoot
-        $reposRoot = Get-MagMirrorFullPath $loaded.ReposRoot
-        if ($mr.Equals($reposRoot, [StringComparison]::OrdinalIgnoreCase)) {
-            throw 'mirror_root_is_repos_root'
-        }
-        foreach ($r in @($loaded.CanonicalRoots)) {
-            if ($mr.Equals((Get-MagMirrorFullPath $r), [StringComparison]::OrdinalIgnoreCase)) {
-                throw "mirror_root_is_canonical_repo:$mr"
-            }
-        }
-        Assert-MagMirrorTreeContained -MirrorRoot $mr
-    }
+    $null = Assert-MagMirrorWriteTargetSafe -Loaded $loaded
 
     $byKey = @{}
     foreach ($e in $loaded.Entries) {
@@ -927,25 +991,10 @@ function Invoke-MagMirrorPublishAffected {
     param(
         [Parameter(Mandatory)]$Loaded,
         [string[]]$AffectedTokens = @(),
-        [Parameter(Mandatory)][string]$BaselinePath,
-        [switch]$SkipApprovedRootCheck
+        [Parameter(Mandatory)][string]$BaselinePath
     )
-    if (-not $SkipApprovedRootCheck) {
-        $null = Assert-MagMirrorRootSafe -MirrorRoot $Loaded.MirrorRoot -CanonicalRepoRoots @($Loaded.CanonicalRoots)
-    }
-    else {
-        $mr = Get-MagMirrorFullPath $Loaded.MirrorRoot
-        $reposRoot = Get-MagMirrorFullPath $Loaded.ReposRoot
-        if ($mr.Equals($reposRoot, [StringComparison]::OrdinalIgnoreCase)) {
-            throw 'mirror_root_is_repos_root'
-        }
-        foreach ($r in @($Loaded.CanonicalRoots)) {
-            if ($mr.Equals((Get-MagMirrorFullPath $r), [StringComparison]::OrdinalIgnoreCase)) {
-                throw "mirror_root_is_canonical_repo:$mr"
-            }
-        }
-        Assert-MagMirrorTreeContained -MirrorRoot $mr
-    }
+    $null = Assert-MagMirrorWriteTargetSafe -Loaded $Loaded
+
 
     $tokens = @()
     if ($null -ne $AffectedTokens) {

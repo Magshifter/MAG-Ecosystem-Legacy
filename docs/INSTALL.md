@@ -2,7 +2,7 @@
 
 Target environment for this guide: **Windows + PowerShell 7 (`pwsh`) + Cursor**.
 
-Clean-machine installation by an unrelated developer is **not verified**. Commands below match the scripts that exist in this repository today. Cursor rule check and Model Routing Guard take an explicit workspace root (**W4**, implemented). Documentation Mirror still hardcodes Magshifter's Laragon layout (`C:\laragon\repos`); its portability fix (**W5**) is **not yet implemented**.
+Clean-machine installation by an unrelated developer is **not verified**. Commands below match the scripts that exist in this repository today. Cursor rule check and Model Routing Guard take an explicit workspace root (**W4**, implemented). Documentation Mirror takes an explicitly selected inventory and explicit, validated roots with no Laragon default (**W5**, implemented and verified with isolated TEMP fixtures only).
 
 ## Prerequisites
 
@@ -17,7 +17,7 @@ Clean-machine installation by an unrelated developer is **not verified**. Comman
 Optional siblings (only if you intentionally enable those scopes):
 
 - `Beyond3DViewer` next to this repo for Knowledge **GLOBAL+#5**
-- Other Magshifter product checkouts listed in `tools/docs/mirror-inventory.json` for full Documentation Mirror coverage
+- Your own product checkouts, listed in your copy of `tools/docs/mirror-inventory.example.json`, if you use the Documentation Mirror
 
 ## Obtaining the repository
 
@@ -46,7 +46,7 @@ MAG-Ecosystem/                 ← repository root (run commands here)
   generated/                   ← derived outputs (gitignored); created by tools
 ```
 
-Author environment often places this repo under `C:\laragon\repos\MAG-Ecosystem` beside sibling product repos and a `Mirror` transport folder. That layout is **author-local**. Knowledge **GLOBAL** does not require siblings. Cursor Check and Guard use the workspace root you configure (no Laragon default). Mirror approved-root checks still require the author layout until **W5**.
+Author environment often places this repo under `C:\laragon\repos\MAG-Ecosystem` beside sibling product repos and a `Mirror` transport folder. That layout is **author-local** and is not a default anywhere. Knowledge **GLOBAL** does not require siblings. Cursor Check and Guard use the workspace root you configure. Documentation Mirror uses the repos root, Mirror root, and inventory you select explicitly (see below).
 
 ## Environment and configuration
 
@@ -54,7 +54,7 @@ Author environment often places this repo under `C:\laragon\repos\MAG-Ecosystem`
 | --- | --- |
 | `-ReposRoot` / `MAG_REPOS_ROOT` | Workspace root for the Cursor rule check and all Guard scripts/hooks. Explicit `-ReposRoot` wins; otherwise `MAG_REPOS_ROOT`; otherwise the script stops before any write (no current-directory fallback, no built-in default). Must be an absolute path to an existing directory; spaces allowed; a drive root is rejected by Guard. `C:\laragon\repos` works only when passed or configured explicitly. Guard scripts do not persist the variable; installed hooks carry `-ReposRoot` in their `hooks.json` command. |
 | Cursor workspace folder | Cursor loads `.cursor/rules` and `hooks.json` from the **opened workspace root** (`<ReposRoot>`). Opening only `MAG-Ecosystem` will not load a rule deployed under its parent folder. |
-| Mirror inventory | `tools/docs/mirror-inventory.json` hardcodes `repos_root` / `mirror_root` under `C:\laragon\repos`. Overrides exist on the CLI, but the approved Mirror root in code is still fixed to `C:\laragon\repos\Mirror` until **W5**. |
+| Mirror inventory / roots | `-InventoryPath` is required (no default inventory). Start from `tools/docs/mirror-inventory.example.json` (generic, no private repositories). `repos_root` / `mirror_root` come from `-ReposRoot` / `-MirrorRoot` when passed, otherwise from the inventory; if neither is set the tool stops before any write. Roots must be absolute; they are never inferred from the current directory; spaces are allowed. `tools/docs/mirror-inventory.json` is the author-specific Magshifter Laragon inventory and is used only when selected explicitly. |
 
 ## Setup — Knowledge GLOBAL (initial supported scope)
 
@@ -166,29 +166,73 @@ pwsh -NoProfile -File .\tools\model-routing-guard\Test-GuardRecovery.ps1 -GuardR
 pwsh -NoProfile -File .\tools\model-routing-guard\Test-MagGuardPortability.ps1
 ```
 
-## Setup — Documentation Mirror (optional; Magshifter-local today)
+## Setup - Documentation Mirror (optional)
 
-Mirror tooling lives under `tools/docs/`. It is **optional** for the initial public release.
+Mirror tooling lives under `tools/docs/`. It is **optional** for the initial public release. It copies the files listed in an inventory between your canonical repository checkouts ("Local") and a separate transport folder ("Mirror", for example a folder synced by a cloud drive), comparing SHA-256 and recording a baseline. It never claims that a cloud drive actually synced.
 
-Default inventory (`tools/docs/mirror-inventory.json`) lists Magshifter sibling repositories under `C:\laragon\repos` and Mirror root `C:\laragon\repos\Mirror`.
+### 1. Configure your layout and inventory
 
-Read-only check (default mode when no switch is passed):
+1. Copy the example inventory to a location you control (it is not modified by the tools):
 
-```text
-pwsh ./tools/docs/Update-MagDocumentationMirror.ps1 -Check
+   ```powershell
+   Copy-Item .\tools\docs\mirror-inventory.example.json 'D:\Work\mirror\my-inventory.json'
+   ```
+
+2. Edit the copy:
+   - `repositories`: one key per repository folder name directly under the repos root (value `""` = folder name equals key).
+   - `entries`: the files to mirror (`repo`, `path` relative to that repository, `category` `document` or `tool`, `require_metadata`). The schema is unchanged from earlier versions.
+   - `repos_root` / `mirror_root`: absolute paths, for example `D:\Work\Dev Projects` and `D:\Sync\Docs Mirror`. You may leave them `""` and pass `-ReposRoot` / `-MirrorRoot` on every call instead; CLI values win over the inventory.
+3. Choose a Mirror root that is a **dedicated folder**. Its parent folder must already exist. The Mirror itself does not need to exist or be pre-populated.
+
+Author layout: `tools/docs/mirror-inventory.json` (Magshifter repositories under `C:\laragon\repos`, Mirror `C:\laragon\repos\Mirror`) still works, but only when passed explicitly with `-InventoryPath .\tools\docs\mirror-inventory.json`.
+
+Recommended: keep a separate `-BaselinePath` / `-ReceiptPath` per layout. The defaults are `generated/docs-mirror/baseline.json` and `generated/docs-mirror/check-receipt.json` inside this checkout and are shared by every inventory, so separate files keep the baselines and receipts of different layouts from mixing.
+
+### 2. Initial safe CHECK
+
+```powershell
+pwsh -NoProfile -File .\tools\docs\Update-MagDocumentationMirror.ps1 -Check `
+  -InventoryPath 'D:\Work\mirror\my-inventory.json' `
+  -BaselinePath 'D:\Work\mirror\baseline.json' -ReceiptPath 'D:\Work\mirror\check-receipt.json'
 ```
 
-Optional overrides: `-ReposRoot`, `-MirrorRoot`, `-InventoryPath`, `-BaselinePath`, `-ReceiptPath`. Even with overrides, production code still requires the approved Mirror root to equal `C:\laragon\repos\Mirror` unless you only exercise fixture/`SkipApprovedRootCheck` test paths. Treat non-Laragon Mirror use as **blocked until W5**.
+`-Check` (also the mode when no mode switch is passed) validates the configuration and roots, then classifies every pair (`IDENTICAL`, `MISSING_TARGET`, `NEWER_LOCAL`, `CONFLICT`, ...). It does **not** write to Local, Mirror, or the baseline, but it **does write the check receipt** (`-ReceiptPath`), which binds a later `-Reconcile`. It is therefore not strictly read-only.
 
-**Destructive / write operations — do not run casually:**
+### 3. Which operations write
 
-| Mode | Effect |
+| Mode | Writes |
 | --- | --- |
-| `-BootstrapClean` | Deletes existing files under the configured Mirror root (transport tree cleanup), then repopulates from inventory sources and writes a baseline. **Data loss risk under MirrorRoot.** |
-| `-Reconcile` | Writes Mirror/Local pairs from a bound check receipt; requires `-AuthorizationSha256`. |
-| `-PublishAffected` | Writes listed affected Mirror targets; requires `-ProductOwnerApproved`. |
+| `-Check` | Only the check receipt file. |
+| `-BootstrapClean` | **Deletes every file and folder under MirrorRoot**, then copies each inventory source from Local into the Mirror (SHA-256 verified) and writes the baseline. It is never run implicitly. It refuses before deleting anything if the root is unsafe (see below) or the Mirror tree contains a reparse point (symlink/junction). **Data loss risk under MirrorRoot:** use only for a dedicated transport folder. |
+| `-Reconcile` | Writes Mirror/Local pairs proposed by a bound CHECK receipt and updates the baseline; requires `-AuthorizationSha256 <receipt_sha256 from CHECK>`; fails closed if the inventory, baseline, roots, or files changed since that CHECK. |
+| `-PublishAffected` | Writes only the listed affected Mirror targets that are newer locally (`-Affected repo/path`, ...) and updates the baseline; requires `-ProductOwnerApproved`. |
 
-Prefer `-Check` for inspection. Do not run `-BootstrapClean` against a Mirror tree that holds data you care about unless you intend that deletion.
+### 4. Verify sync
+
+Run `-Check` again. A synchronized Mirror reports every pair as `IDENTICAL` (exit `0`). `drive_sync_claimed` is always `false`: confirming that a cloud drive uploaded the Mirror is outside this tool.
+
+### 5. Rejected paths
+
+All root and inventory checks run before any write, including the CHECK receipt. Rejections exit `5`, print the reason on stderr, and change nothing. A root is not accepted merely because you supplied it: it is validated against the resolved configuration.
+
+| Reason (prefix) | Meaning / fix |
+| --- | --- |
+| `usage: -InventoryPath is required` | Pass `-InventoryPath` explicitly; there is no default inventory |
+| `repos_root_missing` / `mirror_root_missing` | Root not set in the inventory and not passed on the CLI |
+| `*_relative` | Root is not absolute (including drive-relative `C:folder`); the current directory is never used |
+| `*_malformed:*` / `*_ambiguous:*` | Device path (`\\?\`), invalid characters, stray colon, `.`/`..` segment, 8.3 short name (`~1`), or leading/trailing whitespace or dot; write the plain absolute path |
+| `repos_root_not_found` | Repos root does not exist |
+| `mirror_root_is_filesystem_root` | Mirror cannot be a drive root such as `D:\` |
+| `mirror_root_is_repos_root` / `mirror_root_contains_repos_root` | Mirror equals or is an ancestor of the repos root |
+| `mirror_root_is_canonical_repo` / `mirror_root_inside_canonical_repo` / `mirror_root_contains_canonical_repo` | Mirror overlaps a repository listed in the inventory |
+| `mirror_root_overlaps_ecosystem_checkout` | Mirror is inside, or contains, this MAG-Ecosystem checkout |
+| `mirror_root_inside_git_worktree` | Mirror or one of its parents contains a `.git` entry |
+| `mirror_root_reparse` | Mirror or one of its parents is a symlink/junction |
+| `mirror_root_parent_missing` / `mirror_root_not_directory` | Create the parent folder first / the path is a file |
+| `duplicate_mapping` / `duplicate_repository` / `path_traversal` / `path_outside_repos_root` / `malformed_inventory:*` | Fix the inventory; invalid or duplicate mappings fail closed |
+| `reparse_point:*` / `reparse_destination:*` | A symlink/junction inside the Mirror or on a destination path; remove it |
+
+A Mirror inside the repos root (for example `C:\laragon\repos\Mirror`) remains allowed as long as it does not overlap a listed repository.
 
 ## Verification commands
 
@@ -203,7 +247,7 @@ pwsh -NoProfile -File .\tools\model-routing-guard\Test-MagGuardPortability.ps1
 pwsh -NoProfile -File .\tools\cursor\Test-MagCursorKnowledgeControl.ps1
 ```
 
-Knowledge, Cursor, and Guard tests are designed to use isolated/temp roots where applicable. Mirror tests use a fixture tree under `tools/docs/tests/` and assert they leave production Local/Mirror content untouched; they still **read** some author Laragon paths for existence checks.
+Knowledge, Cursor, and Guard tests are designed to use isolated/temp roots where applicable. Mirror tests (`MagDocumentationMirror.Tests.ps1`, `MagDocumentationMirror.Portability.Tests.ps1`) build disposable fixtures with spaces in the system TEMP directory and remove them; they never write to a production Mirror or real repositories. The portability suite only **reads** the author inventory and `C:\laragon\repos` (if present) to confirm that the explicit Laragon layout still validates; it reports `NOT VERIFIED` when that layout is absent.
 
 ## Troubleshooting
 
@@ -217,13 +261,14 @@ Knowledge, Cursor, and Guard tests are designed to use isolated/temp roots where
 | Guard `repos_root_not_configured` / `repos_root_not_found` | Root not passed/set or wrong; nothing was written |
 | Guard `hooks_json_invalid` | Existing `hooks.json` is not valid JSON; fix it manually, deploy wrote nothing |
 | Guard deploy writes unexpected hooks | Existing `.cursor\hooks.json` was merged/updated; restore from backup if needed |
-| Mirror `mirror_root_not_approved` | Non-Laragon Mirror root rejected by current approved-root hardcode (**W5** not done) |
+| Mirror `usage: -InventoryPath is required` | No inventory selected; copy `tools/docs/mirror-inventory.example.json` and pass it |
+| Mirror `repos_root_*` / `mirror_root_*` / exit 5 | Root missing, relative, malformed, or unsafe; see "Rejected paths" above; nothing was written |
 | Mirror bootstrap deleted files | `-BootstrapClean` removes files under MirrorRoot by design |
 
 ## Limitations and safety summary
 
 - **IMPLEMENTED (W4):** explicit workspace root for Cursor check and Guard (verified with isolated TEMP fixtures).
-- **NOT YET IMPLEMENTED:** W5 portable Mirror approved-root/inventory.
+- **IMPLEMENTED (W5):** portable Documentation Mirror: explicit inventory and validated roots, generic example inventory (verified with isolated TEMP fixtures only).
 - **NOT VERIFIED:** clean Windows install by an unrelated developer.
 - **Do not** make the original private repository public or rewrite its history; public release uses a separate sanitized copy (**W7/W8**).
 - **Do not** assume MAG Development Center runs these tools.

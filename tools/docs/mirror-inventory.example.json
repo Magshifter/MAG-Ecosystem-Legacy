@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "description": "Generic example Documentation Mirror inventory. Copy it outside the repository, set repos_root and mirror_root to absolute paths (or pass -ReposRoot / -MirrorRoot), rename the repositories to your own sibling checkout folder names, and list the files to mirror. Select it explicitly with -InventoryPath. There is no default inventory.",
+  "repos_root": "",
+  "mirror_root": "",
+  "repositories": {
+    "my-app": "",
+    "my-library": ""
+  },
+  "entries": [
+    { "repo": "my-app", "path": "README.md", "category": "document", "require_metadata": false },
+    { "repo": "my-app", "path": "docs/ARCHITECTURE.md", "category": "document", "require_metadata": false },
+    { "repo": "my-app", "path": "tools/build.ps1", "category": "tool", "require_metadata": false },
+    { "repo": "my-library", "path": "README.md", "category": "document", "require_metadata": false }
+  ]
+}

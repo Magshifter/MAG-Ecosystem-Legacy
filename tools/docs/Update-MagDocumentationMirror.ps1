@@ -28,18 +28,29 @@ if ($modeCount -gt 1) {
 }
 
 $eco = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
+# W5: there is no default inventory. Select one explicitly, e.g. a copy of
+# tools/docs/mirror-inventory.example.json configured for your layout, or the author-specific
+# tools/docs/mirror-inventory.json (Magshifter Laragon layout) by explicit -InventoryPath.
 if ([string]::IsNullOrWhiteSpace($InventoryPath)) {
-    $InventoryPath = Join-Path $PSScriptRoot 'mirror-inventory.json'
+    [Console]::Error.WriteLine('usage: -InventoryPath is required (no default inventory; start from tools/docs/mirror-inventory.example.json)')
+    exit 5
 }
+# Relative file arguments resolve against the PowerShell location; roots (-ReposRoot/-MirrorRoot,
+# repos_root/mirror_root) must be absolute and are never resolved against the working directory.
+$InventoryPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($InventoryPath)
 if ([string]::IsNullOrWhiteSpace($BaselinePath)) {
     $BaselinePath = Join-Path $eco 'generated\docs-mirror\baseline.json'
 }
 if ([string]::IsNullOrWhiteSpace($ReceiptPath)) {
     $ReceiptPath = Join-Path $eco 'generated\docs-mirror\check-receipt.json'
 }
+$BaselinePath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($BaselinePath)
+$ReceiptPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($ReceiptPath)
 
 try {
     $loaded = Import-MagMirrorInventory -InventoryPath $InventoryPath -ReposRootOverride $ReposRoot -MirrorRootOverride $MirrorRoot
+    # Root safety is validated before any operation writes (CHECK writes its receipt).
+    $null = Assert-MagMirrorRootSafe -MirrorRoot $loaded.MirrorRoot -ReposRoot $loaded.ReposRoot -CanonicalRepoRoots @($loaded.CanonicalRoots)
     if ($Check) {
         $base = @{}
         try {
@@ -67,6 +78,7 @@ try {
             extra_count          = $result.Extras.Count
             pairs                = $result.Pairs
             unmanaged_extras     = $result.Extras
+            receipt_written      = $true
             receipt_path         = $saved.Path
             receipt_sha256       = $saved.Sha256
             drive_sync_claimed   = $false
@@ -148,6 +160,6 @@ catch {
     [Console]::Error.WriteLine($msg)
     $code = 3
     if ($msg -match '^usage') { $code = 5 }
-    if ($msg -match 'malformed_inventory|duplicate_|path_traversal|path_outside|unknown_repository|unresolved_repository|mirror_root_|authorization_|malformed_receipt|inventory_changed|baseline_changed') { $code = 5 }
+    if ($msg -match 'malformed_inventory|duplicate_|path_traversal|path_outside|unknown_repository|unresolved_repository|duplicate_repository|mirror_root_|repos_root_|authorization_|malformed_receipt|inventory_changed|baseline_changed') { $code = 5 }
     exit $code
 }

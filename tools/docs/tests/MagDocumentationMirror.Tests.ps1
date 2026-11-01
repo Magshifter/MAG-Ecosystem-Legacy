@@ -19,7 +19,8 @@ function Assert-True($cond, $name, $detail = '') {
     }
 }
 
-$fx = Join-Path $docsRoot 'tests\.mag-mirror-fx'
+# W5: disposable fixtures live outside the repository and outside the Laragon layout (path contains spaces).
+$fx = Join-Path ([IO.Path]::GetTempPath()) ('mag mirror fx ' + [guid]::NewGuid().ToString('N').Substring(0, 8))
 if (Test-Path $fx) { Remove-Item $fx -Recurse -Force }
 New-Item -ItemType Directory -Path $fx -Force | Out-Null
 
@@ -188,7 +189,7 @@ Assert-True ($hBefore -eq $hAfter) 'check-read-only-local'
 $threwBootInv = $false
 try {
     $loadedBad = Import-MagMirrorInventory -InventoryPath $badI
-    $null = Invoke-MagMirrorBootstrapClean -Loaded $loadedBad -BaselinePath (Join-Path $fx 'x.json') -SkipApprovedRootCheck
+    $null = Invoke-MagMirrorBootstrapClean -Loaded $loadedBad -BaselinePath (Join-Path $fx 'x.json')
 } catch { $threwBootInv = $true }
 Assert-True $threwBootInv 'bootstrap-refuses-invalid-inventory'
 
@@ -198,7 +199,7 @@ $invB = New-MiniInv $cB $cB @(@{ repo = 'MiniRepo'; path = 'a.md'; category = 't
 Write-Doc (Join-Path $cB 'MiniRepo\a.md') 'a.md' 'x'
 $loadedB = Import-MagMirrorInventory -InventoryPath $invB -ReposRootOverride $cB -MirrorRootOverride $cB
 $threwBound = $false
-try { $null = Invoke-MagMirrorBootstrapClean -Loaded $loadedB -BaselinePath (Join-Path $fx 'bb.json') -SkipApprovedRootCheck } catch { if ([string]$_.Exception.Message -match 'mirror_root_is_repos_root|mirror_root_is_canonical') { $threwBound = $true } }
+try { $null = Invoke-MagMirrorBootstrapClean -Loaded $loadedB -BaselinePath (Join-Path $fx 'bb.json') } catch { if ([string]$_.Exception.Message -match 'mirror_root_is_repos_root|mirror_root_is_canonical') { $threwBound = $true } }
 Assert-True $threwBound 'bootstrap-target-boundary'
 
 # bootstrap verified equality + partial failure
@@ -210,7 +211,7 @@ $invP = New-MiniInv $cP $mP @(
 )
 $loadedP = Import-MagMirrorInventory -InventoryPath $invP -ReposRootOverride $cP -MirrorRootOverride $mP
 $baseP = Join-Path $fx 'base-partial.json'
-$bootP = Invoke-MagMirrorBootstrapClean -Loaded $loadedP -BaselinePath $baseP -SkipApprovedRootCheck
+$bootP = Invoke-MagMirrorBootstrapClean -Loaded $loadedP -BaselinePath $baseP
 $baseObj = Get-Content $baseP -Raw | ConvertFrom-Json
 $onlyOk = ($baseObj.pairs.Count -eq 1 -and $baseObj.pairs[0].path -eq 'ok.md')
 $mhOk = Get-MagMirrorSha256File (Join-Path $mP 'MiniRepo\ok.md')
@@ -270,14 +271,14 @@ Write-Doc (Join-Path $mNL 'MiniRepo\a.md') 'a.md' 'old'
 $invNL = New-MiniInv $cNL $mNL @(@{ repo = 'MiniRepo'; path = 'a.md'; category = 'document'; require_metadata = $true })
 $loadedNL = Import-MagMirrorInventory -InventoryPath $invNL -ReposRootOverride $cNL -MirrorRootOverride $mNL
 $baseNL = Join-Path $fx 'base-nl.json'
-$null = Invoke-MagMirrorBootstrapClean -Loaded $loadedNL -BaselinePath $baseNL -SkipApprovedRootCheck
+$null = Invoke-MagMirrorBootstrapClean -Loaded $loadedNL -BaselinePath $baseNL
 Write-Doc (Join-Path $cNL 'MiniRepo\a.md') 'a.md' 'newL'
 $loadedNL = Import-MagMirrorInventory -InventoryPath $invNL -ReposRootOverride $cNL -MirrorRootOverride $mNL
 $bmapNL = Import-MagMirrorBaseline $baseNL
 $chkNL = Invoke-MagMirrorCheck -Loaded $loadedNL -BaselineMap $bmapNL
 $rpNL = Join-Path $fx 'receipt-nl.json'
 $svNL = Save-FxReceipt $loadedNL $chkNL $invNL $baseNL $rpNL
-$recNL = Invoke-MagMirrorReconcile -ReceiptPath $rpNL -AuthorizationSha256 $svNL.Sha256 -InventoryPath $invNL -BaselinePath $baseNL -ReposRootOverride $cNL -MirrorRootOverride $mNL -SkipApprovedRootCheck
+$recNL = Invoke-MagMirrorReconcile -ReceiptPath $rpNL -AuthorizationSha256 $svNL.Sha256 -InventoryPath $invNL -BaselinePath $baseNL -ReposRootOverride $cNL -MirrorRootOverride $mNL
 $hNLl = Get-MagMirrorSha256File (Join-Path $cNL 'MiniRepo\a.md')
 $hNLm = Get-MagMirrorSha256File (Join-Path $mNL 'MiniRepo\a.md')
 $bNL = Import-MagMirrorBaseline $baseNL
@@ -290,13 +291,13 @@ Write-Doc (Join-Path $mND 'MiniRepo\a.md') 'a.md' 'oldD'
 $invND = New-MiniInv $cND $mND @(@{ repo = 'MiniRepo'; path = 'a.md'; category = 'document'; require_metadata = $true })
 $loadedND = Import-MagMirrorInventory -InventoryPath $invND -ReposRootOverride $cND -MirrorRootOverride $mND
 $baseND = Join-Path $fx 'base-nd.json'
-$null = Invoke-MagMirrorBootstrapClean -Loaded $loadedND -BaselinePath $baseND -SkipApprovedRootCheck
+$null = Invoke-MagMirrorBootstrapClean -Loaded $loadedND -BaselinePath $baseND
 Write-Doc (Join-Path $mND 'MiniRepo\a.md') 'a.md' 'newD'
 $loadedND = Import-MagMirrorInventory -InventoryPath $invND -ReposRootOverride $cND -MirrorRootOverride $mND
 $chkND = Invoke-MagMirrorCheck -Loaded $loadedND -BaselineMap (Import-MagMirrorBaseline $baseND)
 $rpND = Join-Path $fx 'receipt-nd.json'
 $svND = Save-FxReceipt $loadedND $chkND $invND $baseND $rpND
-$recND = Invoke-MagMirrorReconcile -ReceiptPath $rpND -AuthorizationSha256 $svND.Sha256 -InventoryPath $invND -BaselinePath $baseND -ReposRootOverride $cND -MirrorRootOverride $mND -SkipApprovedRootCheck
+$recND = Invoke-MagMirrorReconcile -ReceiptPath $rpND -AuthorizationSha256 $svND.Sha256 -InventoryPath $invND -BaselinePath $baseND -ReposRootOverride $cND -MirrorRootOverride $mND
 $hNDl = Get-MagMirrorSha256File (Join-Path $cND 'MiniRepo\a.md')
 $hNDm = Get-MagMirrorSha256File (Join-Path $mND 'MiniRepo\a.md')
 Assert-True ($recND.WrittenCount -eq 1 -and $hNDl -eq $hNDm) 'reconcile-newer-drive'
@@ -313,14 +314,14 @@ $invX = New-MiniInv $cX $mX @(
 )
 $loadedX = Import-MagMirrorInventory -InventoryPath $invX -ReposRootOverride $cX -MirrorRootOverride $mX
 $baseX = Join-Path $fx 'base-x.json'
-$null = Invoke-MagMirrorBootstrapClean -Loaded $loadedX -BaselinePath $baseX -SkipApprovedRootCheck
+$null = Invoke-MagMirrorBootstrapClean -Loaded $loadedX -BaselinePath $baseX
 Write-Doc (Join-Path $cX 'MiniRepo\a.md') 'a.md' 'xnewL'
 Write-Doc (Join-Path $mX 'MiniRepo\b.md') 'b.md' 'ynewM'
 $loadedX = Import-MagMirrorInventory -InventoryPath $invX -ReposRootOverride $cX -MirrorRootOverride $mX
 $chkX = Invoke-MagMirrorCheck -Loaded $loadedX -BaselineMap (Import-MagMirrorBaseline $baseX)
 $rpX = Join-Path $fx 'receipt-x.json'
 $svX = Save-FxReceipt $loadedX $chkX $invX $baseX $rpX
-$recX = Invoke-MagMirrorReconcile -ReceiptPath $rpX -AuthorizationSha256 $svX.Sha256 -InventoryPath $invX -BaselinePath $baseX -ReposRootOverride $cX -MirrorRootOverride $mX -SkipApprovedRootCheck
+$recX = Invoke-MagMirrorReconcile -ReceiptPath $rpX -AuthorizationSha256 $svX.Sha256 -InventoryPath $invX -BaselinePath $baseX -ReposRootOverride $cX -MirrorRootOverride $mX
 $eqA = (Get-MagMirrorSha256File (Join-Path $cX 'MiniRepo\a.md')) -eq (Get-MagMirrorSha256File (Join-Path $mX 'MiniRepo\a.md'))
 $eqB = (Get-MagMirrorSha256File (Join-Path $cX 'MiniRepo\b.md')) -eq (Get-MagMirrorSha256File (Join-Path $mX 'MiniRepo\b.md'))
 Assert-True ($recX.WrittenCount -eq 2 -and $eqA -and $eqB) 'reconcile-mixed-batch'
@@ -347,7 +348,7 @@ $chkC = Invoke-MagMirrorCheck -Loaded $loadedC -BaselineMap (Import-MagMirrorBas
 $rpC = Join-Path $fx 'receipt-c.json'
 $svC = Save-FxReceipt $loadedC $chkC $invC $baseC $rpC
 $hBadM0 = Get-MagMirrorSha256File (Join-Path $mC 'MiniRepo\bad.md')
-$recC = Invoke-MagMirrorReconcile -ReceiptPath $rpC -AuthorizationSha256 $svC.Sha256 -InventoryPath $invC -BaselinePath $baseC -ReposRootOverride $cC -MirrorRootOverride $mC -SkipApprovedRootCheck
+$recC = Invoke-MagMirrorReconcile -ReceiptPath $rpC -AuthorizationSha256 $svC.Sha256 -InventoryPath $invC -BaselinePath $baseC -ReposRootOverride $cC -MirrorRootOverride $mC
 $hBadM1 = Get-MagMirrorSha256File (Join-Path $mC 'MiniRepo\bad.md')
 $safeEq = (Get-MagMirrorSha256File (Join-Path $cC 'MiniRepo\safe.md')) -eq (Get-MagMirrorSha256File (Join-Path $mC 'MiniRepo\safe.md'))
 Assert-True ($recC.WrittenCount -eq 1 -and $recC.BlockedCount -eq 1 -and $hBadM0 -eq $hBadM1 -and $safeEq) 'conflict-blocks-only-that-pair'
@@ -359,7 +360,7 @@ Write-Doc (Join-Path $mS 'MiniRepo\a.md') 'a.md' 't0'
 $invS = New-MiniInv $cS $mS @(@{ repo = 'MiniRepo'; path = 'a.md'; category = 'document'; require_metadata = $true })
 $loadedS = Import-MagMirrorInventory -InventoryPath $invS -ReposRootOverride $cS -MirrorRootOverride $mS
 $baseS = Join-Path $fx 'base-s.json'
-$null = Invoke-MagMirrorBootstrapClean -Loaded $loadedS -BaselinePath $baseS -SkipApprovedRootCheck
+$null = Invoke-MagMirrorBootstrapClean -Loaded $loadedS -BaselinePath $baseS
 Write-Doc (Join-Path $cS 'MiniRepo\a.md') 'a.md' 't1'
 $loadedS = Import-MagMirrorInventory -InventoryPath $invS -ReposRootOverride $cS -MirrorRootOverride $mS
 $chkS = Invoke-MagMirrorCheck -Loaded $loadedS -BaselineMap (Import-MagMirrorBaseline $baseS)
@@ -367,7 +368,7 @@ $rpS = Join-Path $fx 'receipt-s.json'
 $svS = Save-FxReceipt $loadedS $chkS $invS $baseS $rpS
 Write-Doc (Join-Path $cS 'MiniRepo\a.md') 'a.md' 't2'
 $hM0 = Get-MagMirrorSha256File (Join-Path $mS 'MiniRepo\a.md')
-$recS = Invoke-MagMirrorReconcile -ReceiptPath $rpS -AuthorizationSha256 $svS.Sha256 -InventoryPath $invS -BaselinePath $baseS -ReposRootOverride $cS -MirrorRootOverride $mS -SkipApprovedRootCheck
+$recS = Invoke-MagMirrorReconcile -ReceiptPath $rpS -AuthorizationSha256 $svS.Sha256 -InventoryPath $invS -BaselinePath $baseS -ReposRootOverride $cS -MirrorRootOverride $mS
 $hM1 = Get-MagMirrorSha256File (Join-Path $mS 'MiniRepo\a.md')
 Assert-True ($recS.StaleCount -eq 1 -and $hM0 -eq $hM1) 'stale-local-no-write'
 
@@ -379,7 +380,7 @@ $rpS2 = Join-Path $fx 'receipt-s2.json'
 $svS2 = Save-FxReceipt $loadedS $chkS2 $invS $baseS $rpS2
 Write-Doc (Join-Path $mS 'MiniRepo\a.md') 'a.md' 'mX'
 $hL0 = Get-MagMirrorSha256File (Join-Path $cS 'MiniRepo\a.md')
-$recS2 = Invoke-MagMirrorReconcile -ReceiptPath $rpS2 -AuthorizationSha256 $svS2.Sha256 -InventoryPath $invS -BaselinePath $baseS -ReposRootOverride $cS -MirrorRootOverride $mS -SkipApprovedRootCheck
+$recS2 = Invoke-MagMirrorReconcile -ReceiptPath $rpS2 -AuthorizationSha256 $svS2.Sha256 -InventoryPath $invS -BaselinePath $baseS -ReposRootOverride $cS -MirrorRootOverride $mS
 $hL1 = Get-MagMirrorSha256File (Join-Path $cS 'MiniRepo\a.md')
 Assert-True ($recS2.StaleCount -eq 1 -and $hL0 -eq $hL1) 'stale-mirror-no-write'
 
@@ -390,7 +391,7 @@ Write-Doc (Join-Path $mB2 'MiniRepo\a.md') 'a.md' 'b0'
 $invB2 = New-MiniInv $cB2 $mB2 @(@{ repo = 'MiniRepo'; path = 'a.md'; category = 'document'; require_metadata = $true })
 $loadedB2 = Import-MagMirrorInventory -InventoryPath $invB2 -ReposRootOverride $cB2 -MirrorRootOverride $mB2
 $baseB2 = Join-Path $fx 'base-b2.json'
-$null = Invoke-MagMirrorBootstrapClean -Loaded $loadedB2 -BaselinePath $baseB2 -SkipApprovedRootCheck
+$null = Invoke-MagMirrorBootstrapClean -Loaded $loadedB2 -BaselinePath $baseB2
 Write-Doc (Join-Path $cB2 'MiniRepo\a.md') 'a.md' 'b1'
 $loadedB2 = Import-MagMirrorInventory -InventoryPath $invB2 -ReposRootOverride $cB2 -MirrorRootOverride $mB2
 $chkB2 = Invoke-MagMirrorCheck -Loaded $loadedB2 -BaselineMap (Import-MagMirrorBaseline $baseB2)
@@ -399,7 +400,7 @@ $svB2 = Save-FxReceipt $loadedB2 $chkB2 $invB2 $baseB2 $rpB2
 Write-MagMirrorBaseline -BaselinePath $baseB2 -Pairs @(@{ repo = 'MiniRepo'; path = 'a.md'; category = 'document'; baseline_sha256 = ('b' * 64); confirmed_at = '2026-01-01T00:00:00Z' })
 $threwBase = $false
 try {
-    $null = Invoke-MagMirrorReconcile -ReceiptPath $rpB2 -AuthorizationSha256 $svB2.Sha256 -InventoryPath $invB2 -BaselinePath $baseB2 -ReposRootOverride $cB2 -MirrorRootOverride $mB2 -SkipApprovedRootCheck
+    $null = Invoke-MagMirrorReconcile -ReceiptPath $rpB2 -AuthorizationSha256 $svB2.Sha256 -InventoryPath $invB2 -BaselinePath $baseB2 -ReposRootOverride $cB2 -MirrorRootOverride $mB2
 }
 catch { if ([string]$_.Exception.Message -match 'baseline_changed') { $threwBase = $true } }
 Assert-True $threwBase 'baseline-changed-fail-closed'
@@ -411,7 +412,7 @@ Write-Doc (Join-Path $mI 'MiniRepo\a.md') 'a.md' 'i0'
 $invI = New-MiniInv $cI $mI @(@{ repo = 'MiniRepo'; path = 'a.md'; category = 'document'; require_metadata = $true })
 $loadedI = Import-MagMirrorInventory -InventoryPath $invI -ReposRootOverride $cI -MirrorRootOverride $mI
 $baseI = Join-Path $fx 'base-i.json'
-$null = Invoke-MagMirrorBootstrapClean -Loaded $loadedI -BaselinePath $baseI -SkipApprovedRootCheck
+$null = Invoke-MagMirrorBootstrapClean -Loaded $loadedI -BaselinePath $baseI
 Write-Doc (Join-Path $cI 'MiniRepo\a.md') 'a.md' 'i1'
 $loadedI = Import-MagMirrorInventory -InventoryPath $invI -ReposRootOverride $cI -MirrorRootOverride $mI
 $chkI = Invoke-MagMirrorCheck -Loaded $loadedI -BaselineMap (Import-MagMirrorBaseline $baseI)
@@ -420,7 +421,7 @@ $svI = Save-FxReceipt $loadedI $chkI $invI $baseI $rpI
 Add-Content $invI -Value ' '
 $threwInv = $false
 try {
-    $null = Invoke-MagMirrorReconcile -ReceiptPath $rpI -AuthorizationSha256 $svI.Sha256 -InventoryPath $invI -BaselinePath $baseI -ReposRootOverride $cI -MirrorRootOverride $mI -SkipApprovedRootCheck
+    $null = Invoke-MagMirrorReconcile -ReceiptPath $rpI -AuthorizationSha256 $svI.Sha256 -InventoryPath $invI -BaselinePath $baseI -ReposRootOverride $cI -MirrorRootOverride $mI
 }
 catch { if ([string]$_.Exception.Message -match 'inventory_changed') { $threwInv = $true } }
 Assert-True $threwInv 'inventory-changed-fail-closed'
@@ -428,14 +429,14 @@ Assert-True $threwInv 'inventory-changed-fail-closed'
 # malformed receipt / wrong auth
 $threwMal = $false
 '{bad' | Set-Content (Join-Path $fx 'bad-rec.json')
-try { $null = Invoke-MagMirrorReconcile -ReceiptPath (Join-Path $fx 'bad-rec.json') -AuthorizationSha256 ('a' * 64) -InventoryPath $invNL -BaselinePath $baseNL -SkipApprovedRootCheck } catch { $threwMal = $true }
+try { $null = Invoke-MagMirrorReconcile -ReceiptPath (Join-Path $fx 'bad-rec.json') -AuthorizationSha256 ('a' * 64) -InventoryPath $invNL -BaselinePath $baseNL } catch { $threwMal = $true }
 $threwAuth = $false
-try { $null = Invoke-MagMirrorReconcile -ReceiptPath $rpNL -AuthorizationSha256 ('0' * 64) -InventoryPath $invNL -BaselinePath $baseNL -SkipApprovedRootCheck } catch { if ([string]$_.Exception.Message -match 'authorization_mismatch') { $threwAuth = $true } }
+try { $null = Invoke-MagMirrorReconcile -ReceiptPath $rpNL -AuthorizationSha256 ('0' * 64) -InventoryPath $invNL -BaselinePath $baseNL } catch { if ([string]$_.Exception.Message -match 'authorization_mismatch') { $threwAuth = $true } }
 $raw = Get-Content $rpNL -Raw
 $raw2 = $raw -replace 'NEWER_LOCAL', 'CONFLICT'
 Set-Content $rpNL ($raw2) -Encoding utf8
 $threwTamp = $false
-try { $null = Invoke-MagMirrorReconcile -ReceiptPath $rpNL -AuthorizationSha256 $svNL.Sha256 -InventoryPath $invNL -BaselinePath $baseNL -SkipApprovedRootCheck } catch { if ([string]$_.Exception.Message -match 'authorization_mismatch') { $threwTamp = $true } }
+try { $null = Invoke-MagMirrorReconcile -ReceiptPath $rpNL -AuthorizationSha256 $svNL.Sha256 -InventoryPath $invNL -BaselinePath $baseNL } catch { if ([string]$_.Exception.Message -match 'authorization_mismatch') { $threwTamp = $true } }
 Assert-True ($threwMal -and $threwAuth -and $threwTamp) 'receipt-tamper-and-auth-fail-closed'
 
 # unsafe MirrorRoot for reconcile
@@ -445,7 +446,7 @@ Write-Doc (Join-Path $mU 'MiniRepo\a.md') 'a.md' 'u0'
 $invU = New-MiniInv $cU $mU @(@{ repo = 'MiniRepo'; path = 'a.md'; category = 'document'; require_metadata = $true })
 $loadedU = Import-MagMirrorInventory -InventoryPath $invU -ReposRootOverride $cU -MirrorRootOverride $mU
 $baseU = Join-Path $fx 'base-u.json'
-$null = Invoke-MagMirrorBootstrapClean -Loaded $loadedU -BaselinePath $baseU -SkipApprovedRootCheck
+$null = Invoke-MagMirrorBootstrapClean -Loaded $loadedU -BaselinePath $baseU
 Write-Doc (Join-Path $cU 'MiniRepo\a.md') 'a.md' 'u1'
 $loadedU = Import-MagMirrorInventory -InventoryPath $invU -ReposRootOverride $cU -MirrorRootOverride $mU
 $chkU = Invoke-MagMirrorCheck -Loaded $loadedU -BaselineMap (Import-MagMirrorBaseline $baseU)
@@ -453,7 +454,7 @@ $rpU = Join-Path $fx 'receipt-u.json'
 $svU = Save-FxReceipt $loadedU $chkU $invU $baseU $rpU
 $threwUnsafe = $false
 try {
-    $null = Invoke-MagMirrorReconcile -ReceiptPath $rpU -AuthorizationSha256 $svU.Sha256 -InventoryPath $invU -BaselinePath $baseU -ReposRootOverride $cU -MirrorRootOverride $cU -SkipApprovedRootCheck
+    $null = Invoke-MagMirrorReconcile -ReceiptPath $rpU -AuthorizationSha256 $svU.Sha256 -InventoryPath $invU -BaselinePath $baseU -ReposRootOverride $cU -MirrorRootOverride $cU
 }
 catch { if ([string]$_.Exception.Message -match 'mirror_root') { $threwUnsafe = $true } }
 Assert-True $threwUnsafe 'reconcile-unsafe-root-fail-closed'
@@ -465,7 +466,7 @@ Write-Doc (Join-Path $mV 'MiniRepo\a.md') 'a.md' 'v0'
 $invV = New-MiniInv $cV $mV @(@{ repo = 'MiniRepo'; path = 'a.md'; category = 'document'; require_metadata = $true })
 $loadedV = Import-MagMirrorInventory -InventoryPath $invV -ReposRootOverride $cV -MirrorRootOverride $mV
 $baseV = Join-Path $fx 'base-v.json'
-$null = Invoke-MagMirrorBootstrapClean -Loaded $loadedV -BaselinePath $baseV -SkipApprovedRootCheck
+$null = Invoke-MagMirrorBootstrapClean -Loaded $loadedV -BaselinePath $baseV
 Write-Doc (Join-Path $cV 'MiniRepo\a.md') 'a.md' 'v1'
 $loadedV = Import-MagMirrorInventory -InventoryPath $invV -ReposRootOverride $cV -MirrorRootOverride $mV
 $chkV = Invoke-MagMirrorCheck -Loaded $loadedV -BaselineMap (Import-MagMirrorBaseline $baseV)
@@ -473,7 +474,7 @@ $rpV = Join-Path $fx 'receipt-v.json'
 $svV = Save-FxReceipt $loadedV $chkV $invV $baseV $rpV
 Remove-Item (Join-Path $mV 'MiniRepo\a.md') -Force
 New-Item -ItemType Directory -Path (Join-Path $mV 'MiniRepo\a.md') -Force | Out-Null
-$recV = Invoke-MagMirrorReconcile -ReceiptPath $rpV -AuthorizationSha256 $svV.Sha256 -InventoryPath $invV -BaselinePath $baseV -ReposRootOverride $cV -MirrorRootOverride $mV -SkipApprovedRootCheck
+$recV = Invoke-MagMirrorReconcile -ReceiptPath $rpV -AuthorizationSha256 $svV.Sha256 -InventoryPath $invV -BaselinePath $baseV -ReposRootOverride $cV -MirrorRootOverride $mV
 $bV = Import-MagMirrorBaseline $baseV
 $hV0 = Get-MagMirrorSha256File (Join-Path $cV 'MiniRepo\a.md')
 Assert-True (($recV.FailedCount -eq 1 -or $recV.StaleCount -eq 1) -and -not $recV.Results[0].wrote -and $bV['minirepo|a.md'] -ne $hV0) 'failed-verify-no-baseline-advance'
@@ -490,7 +491,7 @@ $invPf = New-MiniInv $cPf $mPf @(
 )
 $loadedPf = Import-MagMirrorInventory -InventoryPath $invPf -ReposRootOverride $cPf -MirrorRootOverride $mPf
 $basePf = Join-Path $fx 'base-pf.json'
-$null = Invoke-MagMirrorBootstrapClean -Loaded $loadedPf -BaselinePath $basePf -SkipApprovedRootCheck
+$null = Invoke-MagMirrorBootstrapClean -Loaded $loadedPf -BaselinePath $basePf
 Write-Doc (Join-Path $cPf 'MiniRepo\ok.md') 'ok.md' 'p1'
 Write-Doc (Join-Path $cPf 'MiniRepo\fail.md') 'fail.md' 'p1'
 $loadedPf = Import-MagMirrorInventory -InventoryPath $invPf -ReposRootOverride $cPf -MirrorRootOverride $mPf
@@ -500,7 +501,7 @@ $svPf = Save-FxReceipt $loadedPf $chkPf $invPf $basePf $rpPf
 Remove-Item (Join-Path $mPf 'MiniRepo\fail.md') -Force
 New-Item -ItemType Directory -Path (Join-Path $mPf 'MiniRepo\fail.md') -Force | Out-Null
 $hFailBase = (Import-MagMirrorBaseline $basePf)['minirepo|fail.md']
-$recPf = Invoke-MagMirrorReconcile -ReceiptPath $rpPf -AuthorizationSha256 $svPf.Sha256 -InventoryPath $invPf -BaselinePath $basePf -ReposRootOverride $cPf -MirrorRootOverride $mPf -SkipApprovedRootCheck
+$recPf = Invoke-MagMirrorReconcile -ReceiptPath $rpPf -AuthorizationSha256 $svPf.Sha256 -InventoryPath $invPf -BaselinePath $basePf -ReposRootOverride $cPf -MirrorRootOverride $mPf
 $bPf = Import-MagMirrorBaseline $basePf
 $okHash = Get-MagMirrorSha256File (Join-Path $cPf 'MiniRepo\ok.md')
 Assert-True ($recPf.WrittenCount -eq 1 -and ($recPf.FailedCount -eq 1 -or $recPf.StaleCount -eq 1) -and $bPf['minirepo|ok.md'] -eq $okHash -and $bPf['minirepo|fail.md'] -eq $hFailBase) 'partial-failure-truthful-baseline'
@@ -510,7 +511,7 @@ $chkAfter = Invoke-MagMirrorCheck -Loaded $loadedNL -BaselineMap (Import-MagMirr
 $hBeforeRepeat = Get-MagMirrorSha256File (Join-Path $cND 'MiniRepo\a.md')
 $repeatClosed = $false
 try {
-    $null = Invoke-MagMirrorReconcile -ReceiptPath $rpND -AuthorizationSha256 $svND.Sha256 -InventoryPath $invND -BaselinePath $baseND -ReposRootOverride $cND -MirrorRootOverride $mND -SkipApprovedRootCheck
+    $null = Invoke-MagMirrorReconcile -ReceiptPath $rpND -AuthorizationSha256 $svND.Sha256 -InventoryPath $invND -BaselinePath $baseND -ReposRootOverride $cND -MirrorRootOverride $mND
 }
 catch { if ([string]$_.Exception.Message -match 'baseline_changed_since_check') { $repeatClosed = $true } }
 $hAfterRepeat = Get-MagMirrorSha256File (Join-Path $cND 'MiniRepo\a.md')
@@ -531,7 +532,6 @@ function Invoke-Pub {
         Loaded                 = $Loaded
         AffectedTokens         = $Tokens
         BaselinePath           = $BaselinePath
-        SkipApprovedRootCheck  = $true
     }
     return Invoke-MagMirrorPublishAffected @splat
 }

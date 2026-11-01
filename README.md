@@ -35,7 +35,7 @@ Initial supported evaluation environment:
 - PowerShell 7 (`pwsh`)
 - Cursor
 
-Cursor rule check and Model Routing Guard take an explicit workspace root (`-ReposRoot` or `MAG_REPOS_ROOT`; **W4**). Documentation Mirror still assumes Magshifter's Laragon multi-repo layout (`C:\laragon\repos`); its portability (**W5**) is **not yet implemented**.
+Cursor rule check and Model Routing Guard take an explicit workspace root (`-ReposRoot` or `MAG_REPOS_ROOT`; **W4**). Documentation Mirror takes an explicitly selected inventory and explicit, validated repos/Mirror roots with no Laragon default (**W5**); start from `tools/docs/mirror-inventory.example.json`.
 
 ## Installation
 
@@ -66,7 +66,7 @@ Generated indexes under `generated/` are derived, gitignored, and non-authoritat
 
 - Clean-machine installation on an unrelated Windows PC is **not verified**.
 - Cursor check and Guard require an explicit workspace root (`-ReposRoot` or `MAG_REPOS_ROOT`); there is no Laragon default.
-- Documentation Mirror inventory and approved Mirror root are Magshifter-local until **W5**; Mirror is **optional** for the initial public release.
+- Documentation Mirror requires an explicit `-InventoryPath`; the shipped `tools/docs/mirror-inventory.json` is the author-specific Laragon inventory (explicit selection only). Mirror is **optional** for the initial public release. `-Check` writes a check receipt; `-BootstrapClean` deletes everything under the Mirror root before repopulating it.
 - Knowledge **GLOBAL** is the initial standalone supported index scope. **GLOBAL+#5** is optional and needs a sibling `Beyond3DViewer` checkout.
 - A sanitized history-preserving public copy (**W7**) and publication (**W8**) are separate authorized steps. This private repository must not be made public or have its history rewritten.
 
