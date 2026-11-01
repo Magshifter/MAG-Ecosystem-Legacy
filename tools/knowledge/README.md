@@ -4,6 +4,15 @@ Operational tooling. Not MAG canonical authority. Not a seventh Global owner.
 
 Generated JSON under `generated/knowledge/` is derived, optional, non-authoritative, non-registered, disposable, and reproducible from explicit manifests. Ordinary `SYNC` / `DOC REGISTER` must not treat it as a MAG document. A previous generated file is not “last good knowledge”; Locator re-hashes sources and fails closed when stale.
 
+## Public release scope (initial)
+
+| Scope | Status | Dependency |
+| --- | --- | --- |
+| **GLOBAL** (`manifests/global.json` → `generated/knowledge/index-global.json`) | **Initial self-contained supported index scope** | Only this MAG-Ecosystem checkout and PowerShell 7 |
+| **GLOBAL+#5** (`manifests/global-5.json` → `generated/knowledge/index-global-5.json`) | **Optional example** | Sibling checkout `../Beyond3DViewer` with the listed `docs/P05__3DR__*.md` files |
+
+Do not treat GLOBAL+#5, other `#N`, or `A<N>` indexes as required for a basic install. Missing optional indexes do not invalidate assignable working identities; Locator fails closed for generated discovery and same-scope canonical fallback remains.
+
 ## Working identity vs generated discovery
 
 These are different grammars. Do not collapse them.
@@ -20,8 +29,8 @@ Namespaces are independent: `GLOBAL+#5` is not `GLOBAL+A5`. Platform or surface 
 
 **Supported generated index recipes** (explicit manifests only; not the identity model):
 
-- `manifests/global.json` → `generated/knowledge/index-global.json` (`-Identity GLOBAL`)
-- `manifests/global-5.json` → `generated/knowledge/index-global-5.json` (`-Identity GLOBAL+#5`)
+- `manifests/global.json` → `generated/knowledge/index-global.json` (`-Identity GLOBAL`) — initial standalone supported recipe
+- `manifests/global-5.json` → `generated/knowledge/index-global-5.json` (`-Identity GLOBAL+#5`) — optional; requires `../Beyond3DViewer`
 
 A valid `GLOBAL+A<N>` identity **does not** imply an A generated index. Do not invent `index-global-a1.json`, `global-a1.json`, or any A/B filename recipe. Missing exact generated discovery for a valid identity (including `GLOBAL+A1`) leaves the identity valid and requires same-scope section-oriented canonical fallback. The GLOBAL index is not a substitute for `GLOBAL+A<N>`. A `GLOBAL+#N` index is not a substitute for `GLOBAL+A<N>`.
 
@@ -29,7 +38,7 @@ Locator does not implement Verified Applicability or Pattern selection. `FOUND` 
 
 ## Requirements
 
-- PowerShell 7 (`pwsh`)
+- PowerShell 7 (`pwsh`) — scripts declare `#Requires -Version 7.0`
 - No extra packages
 - Run from or with paths relative to `MAG-Ecosystem`
 
@@ -50,11 +59,15 @@ Locator does not implement Verified Applicability or Pattern selection. `FOUND` 
 
 ## Manifests
 
-`global.json` lists Global files by basename only (no globs). `global-5.json` adds `#5` files under `../Beyond3DViewer/docs/P05__3DR__*.md` as an explicit list. There is no workspace-wide scan. `#8` is not a source.
+`global.json` lists Global files by basename only (no globs). It is the initial public standalone recipe.
+
+`global-5.json` is an optional example: it adds `#5` files under `../Beyond3DViewer/docs/P05__3DR__*.md` as an explicit list. Generation fails closed if those sibling paths are absent. There is no workspace-wide scan. `#8` is not a source.
 
 Forbidden as sources: Knowledge Control roadmap, Pipeline V2 files, `templates/`, `generated/`, `tools/`.
 
 ## Commands
+
+GLOBAL (supported standalone):
 
 ```text
 pwsh ./tools/knowledge/Generate-MagKnowledgeIndex.ps1 `
@@ -69,6 +82,23 @@ pwsh ./tools/knowledge/Locate-MagKnowledge.ps1 `
   -Identity GLOBAL `
   -Intent GOVERN `
   -Query "Documentation authority model"
+```
+
+Optional GLOBAL+#5 (only with sibling `Beyond3DViewer` present):
+
+```text
+pwsh ./tools/knowledge/Generate-MagKnowledgeIndex.ps1 `
+  -Manifest ./tools/knowledge/manifests/global-5.json
+
+pwsh ./tools/knowledge/Validate-MagKnowledgeIndex.ps1 `
+  -Index ./generated/knowledge/index-global-5.json `
+  -Manifest ./tools/knowledge/manifests/global-5.json
+
+pwsh ./tools/knowledge/Locate-MagKnowledge.ps1 `
+  -Index ./generated/knowledge/index-global-5.json `
+  -Identity GLOBAL+#5 `
+  -Intent IMPLEMENT `
+  -Query "XenForo repository short-name compatibility"
 ```
 
 Locator does **not** regenerate the index and does **not** run section-oriented canonical fallback (`AI_GUIDELINES.md`).
@@ -119,7 +149,15 @@ pwsh ./tools/knowledge/Update-MagKnowledge.ps1 -ChangedFiles MAG_ECOSYSTEM.md
 
 Generated JSON stays derived, non-authoritative, non-registered, gitignored, and excluded from ordinary `SYNC` / `DOC REGISTER`.
 
-The existing test suite (cases 1–2) regenerates both **production** indexes. Orchestrator regression uses isolated manifests under `.mag-kn-test`.
+The existing test suite (cases 1–2) regenerates both **production** indexes (GLOBAL and, when sibling sources exist, GLOBAL+#5). Orchestrator regression uses isolated manifests under `.mag-kn-test`.
+
+## Limitations
+
+- Generated discovery is optional and not implied for every valid working identity.
+- Locator never auto-regenerates indexes and never prints document bodies.
+- Stale or missing indexes are fail-closed for generated discovery; they are not “last good knowledge.”
+- GLOBAL+#5 and any future `#N` recipes remain optional examples with external checkout dependencies.
+- Clean-machine installation of the wider MAG Ecosystem tooling is separately **not verified**; Knowledge GLOBAL itself only requires this repository plus PowerShell 7.
 
 ## Git
 
