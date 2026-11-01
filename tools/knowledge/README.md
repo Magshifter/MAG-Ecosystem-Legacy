@@ -130,7 +130,7 @@ Exact normalized title, or (query with ≥2 tokens) all tokens in title/heading_
 
 Operational orchestrator. Not MAG authority. Run on the PC **after** Local documentation is reconciled (including Drive → Local). Does **not** write Google Drive, SYNC, commit, or install Git hooks. Locator never calls this script.
 
-Discover supported indexes by enumerating `tools/knowledge/manifests/*.json` only (currently GLOBAL and GLOBAL+#5). Do not invent A<N> or B<N> index names. Absence of an A manifest is required in this Stage; it does not make `GLOBAL+A<N>` an invalid working identity.
+Manifest selection: without `-ManifestDirectory`, only the shipped standalone `tools/knowledge/manifests/global.json` (GLOBAL) is selected, so the default refresh needs no sibling checkout and never selects GLOBAL+#5. With an explicit `-ManifestDirectory`, every `*.json` manifest in that folder is selected (the shipped folder gives GLOBAL and GLOBAL+#5), and every selected manifest must have its sources: a missing development root or document makes the refresh `FAILED` (exit `3`) without replacing existing indexes. There is no auto-discovery from sibling folders and no fallback scope. Do not invent A<N> or B<N> index names. Absence of an A manifest is required in this Stage; it does not make `GLOBAL+A<N>` an invalid working identity.
 
 Changed sources are detected by SHA-256 of current approved source bytes vs `sources[].content_sha256` in each existing index. Optional `-ChangedFiles` is unioned with that, matching only manifest-resolved source paths. A missing index makes its manifest affected. `tools/`, the Knowledge Control roadmap, `#8`, and other non-indexed files select nothing.
 
@@ -138,6 +138,8 @@ Changed sources are detected by SHA-256 of current approved source bytes vs `sou
 pwsh ./tools/knowledge/Update-MagKnowledge.ps1
 pwsh ./tools/knowledge/Update-MagKnowledge.ps1 -DryRun
 pwsh ./tools/knowledge/Update-MagKnowledge.ps1 -ChangedFiles MAG_ECOSYSTEM.md
+# optional scopes, explicit only (GLOBAL+#5 requires ../Beyond3DViewer):
+pwsh ./tools/knowledge/Update-MagKnowledge.ps1 -ManifestDirectory ./tools/knowledge/manifests
 ```
 
 | Result | Meaning |
@@ -149,7 +151,7 @@ pwsh ./tools/knowledge/Update-MagKnowledge.ps1 -ChangedFiles MAG_ECOSYSTEM.md
 
 Generated JSON stays derived, non-authoritative, non-registered, gitignored, and excluded from ordinary `SYNC` / `DOC REGISTER`.
 
-The existing test suite (cases 1–2) regenerates both **production** indexes (GLOBAL and, when sibling sources exist, GLOBAL+#5). Orchestrator regression uses isolated manifests under `.mag-kn-test`.
+The existing test suite (cases 1–2) regenerates the real GLOBAL index and builds GLOBAL+#5 from a synthetic fixture under `.mag-kn-test/h5` (copies of the GLOBAL sources plus synthetic `P05__3DR__*.md` documents, output `index-fx5.json`), so it needs no sibling checkout and never writes the real `index-global-5.json`. Orchestrator regression, default GLOBAL-only selection, and explicit missing-source failures use isolated manifests under `.mag-kn-test`. The suite refuses to start if `.mag-kn-test` already exists. Fixtures are not a real deployment: a real GLOBAL+#5 index still needs the real `Beyond3DViewer` sources.
 
 ## Limitations
 

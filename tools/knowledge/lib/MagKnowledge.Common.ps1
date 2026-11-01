@@ -1111,12 +1111,18 @@ function Get-MagKnowledgeManifestFiles {
         [Parameter(Mandatory)]$Roots,
         [string]$ManifestDirectory
     )
-    $dir = if ([string]::IsNullOrWhiteSpace($ManifestDirectory)) {
-        Join-Path $Roots.Knowledge 'manifests'
+    # W8-PORTABILITY: without an explicit ManifestDirectory only the shipped standalone GLOBAL
+    # manifest is selected. Optional development scopes (for example GLOBAL+#5) are refreshed only
+    # when their manifest directory is passed explicitly; every JSON manifest in that directory is
+    # selected and its sources are required (missing sources fail closed).
+    if ([string]::IsNullOrWhiteSpace($ManifestDirectory)) {
+        $defaultManifest = Join-Path (Join-Path $Roots.Knowledge 'manifests') 'global.json'
+        if (-not (Test-Path -LiteralPath $defaultManifest -PathType Leaf)) {
+            throw "missing_default_manifest:$defaultManifest"
+        }
+        return @(Get-Item -LiteralPath $defaultManifest)
     }
-    else {
-        Get-MagFullPath $ManifestDirectory
-    }
+    $dir = Get-MagFullPath $ManifestDirectory
     if (-not (Test-MagPathUnderRoot -Path $dir -Root $Roots.Ecosystem)) {
         throw 'path_outside_ecosystem'
     }

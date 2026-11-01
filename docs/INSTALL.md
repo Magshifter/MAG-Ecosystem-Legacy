@@ -133,17 +133,20 @@ pwsh ./tools/knowledge/Locate-MagKnowledge.ps1 `
 
 **Refresh after documentation changes (standalone):** run steps 2 and 3 again.
 
-`Update-MagKnowledge.ps1` refreshes every manifest in `tools/knowledge/manifests/`, and that folder includes **GLOBAL+#5**. Without a `Beyond3DViewer` sibling checkout:
-
-- `Update-MagKnowledge.ps1 -DryRun` still lists GLOBAL+#5 as affected.
-- `Update-MagKnowledge.ps1` without `-DryRun` reports `FAILED` and exits `3`.
-
-Use it only when the optional sibling is present:
+Or let `Update-MagKnowledge.ps1` refresh it. By default it selects **only** the shipped standalone GLOBAL manifest (`tools/knowledge/manifests/global.json`), so it works without `Beyond3DViewer` or any other sibling checkout and never touches GLOBAL+#5:
 
 ```text
 pwsh ./tools/knowledge/Update-MagKnowledge.ps1 -DryRun
 pwsh ./tools/knowledge/Update-MagKnowledge.ps1
 ```
+
+Optional scopes are refreshed only on explicit request. `-ManifestDirectory` selects every manifest in that folder; the shipped folder adds **GLOBAL+#5**:
+
+```text
+pwsh ./tools/knowledge/Update-MagKnowledge.ps1 -ManifestDirectory ./tools/knowledge/manifests
+```
+
+GLOBAL+#5 needs its own sources (the `Beyond3DViewer` sibling with the listed `docs/P05__3DR__*.md` files). When an explicitly selected manifest is missing its sources, the refresh reports `FAILED` and exits `3` (for example `missing_development_root` or `missing_source`), and existing indexes are not replaced. Nothing is discovered automatically from sibling folders.
 
 Details, exit codes, and **GLOBAL+#5** (optional sibling) are in [tools/knowledge/README.md](../tools/knowledge/README.md).
 
@@ -307,8 +310,8 @@ What each suite needs and touches:
 
 | Suite | Standalone? | Notes |
 | --- | --- | --- |
-| `MagKnowledge.Tests.ps1` | **No** | Its second case generates **GLOBAL+#5**. Without a `Beyond3DViewer` sibling it reports `FAIL 2-global-5-generation` and stops (exit `1`). It writes indexes into this checkout's `generated/knowledge/` and temporarily creates `.mag-kn-test/` in the repository root. That folder is removed at the end, but an aborted run can leave it behind; delete it manually. Until the suite is made standalone, the GLOBAL setup steps above are the standalone check. |
-| `MagDocumentationMirror.Tests.ps1` | **Partly** | Builds disposable fixtures (with spaces) in the system TEMP folder and never writes to a production Mirror or real repositories. Its `production-path-exists` case reads the author path `C:\laragon\repos\MAG-Ecosystem\MAG_ECOSYSTEM.md`, so it is expected to fail on a machine without the author layout. |
+| `MagKnowledge.Tests.ps1` | Yes | Needs no `Beyond3DViewer` or other sibling. GLOBAL+#5 cases use a synthetic fixture (copies of the GLOBAL sources plus synthetic `P05__3DR__*.md` documents) under `.mag-kn-test/` in the repository root, and also check the default GLOBAL-only refresh and fail-closed missing-source cases. It regenerates the real `generated/knowledge/index-global.json` and writes fixture indexes (`index-fx*`, `index-orch*`, removed at the end); it never writes the real `index-global-5.json`. If `.mag-kn-test/` already exists (for example after an aborted run), the suite stops with `FAIL fixture-root-preexisting` without deleting it; inspect and remove it manually. |
+| `MagDocumentationMirror.Tests.ps1` | Yes | Builds disposable fixtures (with spaces) in the system TEMP folder, including an outside-root Local/Mirror sentinel pair whose hashes prove nothing is written outside the fixture roots. It does not read or write any author path, real repository, or production Mirror. |
 | `MagDocumentationMirror.Portability.Tests.ps1` | Yes | TEMP fixtures only. It only **reads** the author inventory and `C:\laragon\repos` (if present) to confirm that the explicit Laragon layout still validates, and it reports `NOT VERIFIED` when that layout is absent. |
 | Guard `Test-MagModelRoutingGuard.ps1`, `Test-GuardRecovery.ps1`, `Test-MagGuardPortability.ps1` | Yes | Temporary roots only. |
 | `Test-MagCursorKnowledgeControl.ps1` | Yes | Temporary roots only. |
@@ -321,8 +324,8 @@ What each suite needs and touches:
 | `git clone` asks for a password or returns `Repository not found` | The repository is private: sign in through Git Credential Manager or `gh auth login` with an account that has access. Do not paste a token into the URL |
 | Locator `STALE` / exit 3 / `missing_index` | Index missing or source SHA mismatch; regenerate and validate. The Locator does not auto-repair |
 | Locator `OUT_OF_SCOPE` for `GLOBAL+#5` / `A…` / `B…` | Wrong identity for the index, a reserved identity, or a missing optional sibling/index recipe |
-| `Update-MagKnowledge.ps1` reports `FAILED`, exit 3 | No `Beyond3DViewer` sibling for GLOBAL+#5; for GLOBAL only, rerun Generate and Validate |
-| `MagKnowledge.Tests.ps1` fails at `2-global-5-generation` | Optional `Beyond3DViewer` sibling missing (see Verification commands) |
+| `Update-MagKnowledge.ps1` reports `FAILED`, exit 3 | An explicitly selected manifest (`-ManifestDirectory`) is missing its sources, for example no `Beyond3DViewer` sibling for GLOBAL+#5; the default run refreshes GLOBAL only |
+| `MagKnowledge.Tests.ps1` reports `FAIL fixture-root-preexisting` | A `.mag-kn-test/` folder is left from an earlier run; inspect and remove it manually |
 | Cursor Check `INVALID_ROOT` / exit 4 | Neither `-ReposRoot` nor `MAG_REPOS_ROOT` set, or the path is relative or missing |
 | Cursor Check `MISSING_DEPLOYED` | Rule not copied to `<ReposRoot>\.cursor\rules\`, or a different root was configured |
 | Guard `repos_root_not_configured` / `repos_root_not_found` | Root not passed or set, or wrong; nothing was written |
@@ -337,6 +340,6 @@ What each suite needs and touches:
 - **IMPLEMENTED (W4):** explicit workspace root for Cursor check and Guard (verified with isolated TEMP fixtures).
 - **IMPLEMENTED (W5):** portable Documentation Mirror: explicit inventory and validated roots, generic example inventory (verified with isolated TEMP fixtures only).
 - **NOT VERIFIED:** clean Windows installation by an unrelated developer.
-- **KNOWN DEFECTS (documented, not fixed here):** `MagKnowledge.Tests.ps1` and `Update-MagKnowledge.ps1` require the optional `Beyond3DViewer` sibling. `MagDocumentationMirror.Tests.ps1` reads an author-specific path.
+- **IMPLEMENTED (W8):** standalone Knowledge refresh (default GLOBAL only; GLOBAL+#5 on explicit request) and standalone Knowledge and Mirror test suites (synthetic and TEMP fixtures; no sibling repositories or author paths). Verified in this checkout and in a disposable copy without sibling repositories, on the author's PC only. The test fixtures are not a real deployment.
 - **Repository status:** PRIVATE, publication pending. Do not change visibility or rewrite history outside a separately authorized step. An obsolete pre-sanitization commit is still reachable on GitHub by direct SHA, which blocks publication (see the [README](../README.md#known-limitations)).
 - **Do not** assume MAG Development Center runs these tools. It is a separate successor project, not a runtime replacement.

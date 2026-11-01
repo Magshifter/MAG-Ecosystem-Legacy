@@ -64,27 +64,116 @@ function Invoke-Update {
 }
 
 $manG = Join-Path $roots.Knowledge 'manifests\global.json'
+# Shipped optional GLOBAL+#5 manifest: validated here, never generated (its sources are a separate product checkout).
 $man5 = Join-Path $roots.Knowledge 'manifests\global-5.json'
 $idxG = Join-Path $roots.Ecosystem 'generated\knowledge\index-global.json'
-$idx5 = Join-Path $roots.Ecosystem 'generated\knowledge\index-global-5.json'
+# Real optional GLOBAL+#5 index location: must stay unmodified by this suite (W8-PORTABILITY).
+$idx5Prod = Join-Path $roots.Ecosystem 'generated\knowledge\index-global-5.json'
+
+# Disposable fixture root (manifests and ecosystem_root must stay inside this checkout).
+# A preexisting folder is never reused or deleted.
+$badDir = Join-Path $roots.Ecosystem '.mag-kn-test'
+if (Test-Path -LiteralPath $badDir) {
+    Write-Host "FAIL fixture-root-preexisting $badDir already exists; inspect and remove it manually"
+    Write-Host ""
+    Write-Host "Passed=$script:Passed Failed=1"
+    exit 1
+}
+New-Item -ItemType Directory -Path $badDir -Force | Out-Null
+
+function Get-OptionalFileHash {
+    param([string]$Path)
+    if (Test-Path -LiteralPath $Path) { return (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash }
+    return 'ABSENT'
+}
+$prod5Before = Get-OptionalFileHash $idx5Prod
+
+function Write-FxDoc {
+    param([string]$Path, [string]$DocId, [string[]]$Headings)
+    $lines = @("# Fixture $DocId", '', "- MAG-Document-ID: ``$DocId``", '- MAG-Content-Updated: `2026-01-01T00:00:00+00:00`', '')
+    foreach ($h in $Headings) { $lines += @("## $h", 'synthetic fixture text', '') }
+    ($lines -join "`n") | Set-Content -LiteralPath $Path -Encoding utf8
+}
+
+# Synthetic GLOBAL+#5 development fixture (W8-PORTABILITY): same scope, identity, global sources and
+# development document list as the shipped manifest; development documents are synthetic, so no private
+# product checkout is required. A foreign #8 document is planted in the fixture root but never listed.
+$shipped5 = Read-MagJsonFile $man5
+$h5Root = Join-Path $badDir 'h5'
+$h5Eco = Join-Path $h5Root 'eco'
+$h5Dev = Join-Path $h5Root 'dev'
+New-Item -ItemType Directory -Path $h5Eco, (Join-Path $h5Dev 'docs') -Force | Out-Null
+foreach ($g in @($shipped5.global_sources)) {
+    Copy-Item -LiteralPath (Join-Path $roots.Ecosystem ([string]$g)) -Destination (Join-Path $h5Eco ([string]$g))
+}
+foreach ($rel in @($shipped5.development.doc_files)) {
+    $fn = [IO.Path]::GetFileName([string]$rel)
+    $stem = [IO.Path]::GetFileNameWithoutExtension($fn).Replace('P05__3DR__', '')
+    Write-FxDoc -Path (Join-Path $h5Dev ([string]$rel)) -DocId $fn -Headings @("Fixture Viewer $stem Overview", "Fixture Viewer $stem Details")
+}
+Write-FxDoc -Path (Join-Path $h5Dev 'docs\P08__AE__TZ.md') -DocId 'P08__AE__TZ.md' -Headings @('Foreign Hash8 Purpose')
+function New-Fx5Manifest {
+    param([string]$RepoRoot, [string[]]$DocFiles, [string]$Output)
+    return [pscustomobject]@{
+        schema_version   = 1
+        config_version   = 1
+        scope            = [string]$shipped5.scope
+        ecosystem_root   = '.mag-kn-test/h5/eco'
+        global_sources   = @($shipped5.global_sources)
+        development      = [pscustomobject]@{ identity = [string]$shipped5.development.identity; repo_root = $RepoRoot; doc_files = @($DocFiles) }
+        source_rules     = 'config/source_rules.json'
+        intent_owner_map = 'config/intent_owner_map.json'
+        output           = $Output
+    }
+}
+$man5Fx = Join-Path $badDir 'h5-man.json'
+(New-Fx5Manifest '../dev' @($shipped5.development.doc_files) 'generated/knowledge/index-fx5.json' | ConvertTo-Json -Depth 8) |
+    Set-Content -LiteralPath $man5Fx -Encoding utf8
+$idx5 = Join-Path $roots.Ecosystem 'generated\knowledge\index-fx5.json'
 
 # 1 Global generation
 $c1 = Invoke-Gen $manG
 Assert-True ($c1 -eq 0 -and (Test-Path $idxG)) '1-global-generation' "exit=$c1"
 
-# 2 GLOBAL+#5
-$c2 = Invoke-Gen $man5
+# 2 GLOBAL+#5 (synthetic development fixture)
+$c2 = Invoke-Gen $man5Fx
 Assert-True ($c2 -eq 0 -and (Test-Path $idx5)) '2-global-5-generation' "exit=$c2"
 
-# 3 #5 cannot include #8
+# 2b Shipped GLOBAL+#5 manifest stays a valid optional scope (scope/identity checks; sources not required here)
+$ship5Ok = $false
+try {
+    $ship5 = Import-MagManifest -ManifestPath $man5 -Roots $roots
+    $ship5Ok = ($ship5.scope -eq 'GLOBAL+#5' -and [string]$ship5.development.identity -eq '#5' -and @($ship5.development.doc_files).Count -gt 0)
+} catch { $ship5Ok = $false }
+Assert-True $ship5Ok '2b-shipped-global-5-manifest-valid'
+
+# 2c Source ownership: GLOBAL sources are GLOBAL-scoped, development sources are exactly the listed #5 documents
+$idx5own = Read-MagJsonFile $idx5
+$own5Global = @($idx5own.sources | Where-Object { $_.identity_scope -eq 'GLOBAL' } | ForEach-Object { [string]$_.owner })
+$own5Dev = @($idx5own.sources | Where-Object { $_.identity_scope -eq 'GLOBAL+#5' } | ForEach-Object { [string]$_.owner })
+$exp5Dev = @($shipped5.development.doc_files | ForEach-Object { [IO.Path]::GetFileName([string]$_) })
+$ownOk = ($idx5own.scope -eq 'GLOBAL+#5') -and
+    ((@($own5Global | Sort-Object) -join ',') -eq (@($shipped5.global_sources | Sort-Object) -join ',')) -and
+    ((@($own5Dev | Sort-Object) -join ',') -eq (@($exp5Dev | Sort-Object) -join ','))
+$archTitle = 'Fixture Viewer Architecture Overview'
+$lArch5 = Invoke-Loc $idx5 'GLOBAL+#5' 'IMPLEMENT' $archTitle
+$lArchG = Invoke-Loc $idx5 'GLOBAL' 'IMPLEMENT' $archTitle
+Assert-True ($ownOk -and $lArch5.Code -eq 0 -and $lArch5.Json.pointer.owner -eq 'P05__3DR__Architecture.md' -and $lArchG.Code -eq 4) '2c-global-5-source-ownership' "own=$ownOk h5=$($lArch5.Code) g=$($lArchG.Code)"
+
+# 3 #5 cannot include #8 (a foreign #8 document exists in the fixture development root)
 $idx5obj = Read-MagJsonFile $idx5
 $blob5 = Get-Content -LiteralPath $idx5 -Raw
 $no8 = ($blob5 -notmatch 'ACP-Enhancements' -and $blob5 -notmatch 'P08__' -and $blob5 -notmatch 'GLOBAL\+#8')
 Assert-True $no8 '3-no-hash8-in-global-5'
 
+# 3b A #8 document listed in a #5 manifest is rejected
+$man5Foreign = Join-Path $badDir 'h5-foreign.json'
+(New-Fx5Manifest '../dev' @('docs/P05__3DR__TZ.md', 'docs/P08__AE__TZ.md') 'generated/knowledge/index-fx5foreign.json' | ConvertTo-Json -Depth 8) |
+    Set-Content -LiteralPath $man5Foreign -Encoding utf8
+$c3b = Invoke-Gen $man5Foreign
+Assert-True ($c3b -eq 3 -and -not (Test-Path (Join-Path $roots.Ecosystem 'generated\knowledge\index-fx5foreign.json'))) '3b-foreign-hash8-doc-rejected' "exit=$c3b"
+
 # 4 Roadmap/pipeline rejected
-$badDir = Join-Path $roots.Ecosystem '.mag-kn-test'
-New-Item -ItemType Directory -Path $badDir -Force | Out-Null
 $badMan = Join-Path $badDir 'bad-roadmap.json'
 $good = Read-MagJsonFile $manG
 $good.global_sources = @('MAG_KNOWLEDGE_CONTROL_ROADMAP.md')
@@ -319,10 +408,10 @@ $c25b = Invoke-Gen $fxManPath
 $h2 = (Read-MagJsonFile $idxFx).generated_at
 Assert-True ($c25a -eq 0 -and $c25b -eq 0 -and $h1 -ne $h2) '25-atomic-regen' "t1=$h1 t2=$h2"
 
-# extra: validate production indexes
+# extra: validate the production GLOBAL index and the synthetic GLOBAL+#5 fixture index
 $vg = Invoke-Val $idxG $manG
-$v5 = Invoke-Val $idx5 $man5
-Assert-True ($vg -eq 0 -and $v5 -eq 0) 'validate-production-indexes' "g=$vg 5=$v5"
+$v5 = Invoke-Val $idx5 $man5Fx
+Assert-True ($vg -eq 0 -and $v5 -eq 0) 'validate-global-and-fixture-5-indexes' "g=$vg 5=$v5"
 
 # Orchestrator fixtures (isolated manifests; not production indexes)
 $orchRoot = Join-Path $badDir 'orch'
@@ -484,6 +573,54 @@ $failU = Invoke-Update $orchManDir
 $afterFail = Get-Content -LiteralPath $idxOrchG -Raw
 Assert-True ($failU.ExitCode -eq 3 -and $keepFail -eq $afterFail) 'orch-fail-no-replace' "code=$($failU.ExitCode)"
 
+# W8-PORTABILITY: default selection is the standalone GLOBAL manifest; optional scopes are explicit.
+$defFiles = @(Get-MagKnowledgeManifestFiles -Roots $roots)
+Assert-True ($defFiles.Count -eq 1 -and $defFiles[0].Name -eq 'global.json') 'w8-default-selects-global-only' "files=$(@($defFiles | ForEach-Object { $_.Name }) -join ',')"
+
+$expFiles = @(Get-MagKnowledgeManifestFiles -Roots $roots -ManifestDirectory (Join-Path $roots.Knowledge 'manifests') | ForEach-Object { $_.Name })
+Assert-True ($expFiles.Count -eq 2 -and $expFiles -contains 'global.json' -and $expFiles -contains 'global-5.json') 'w8-explicit-shipped-directory-selects-all' "files=$($expFiles -join ',')"
+
+$defDec = @(Get-MagRefreshDecisions -Roots $roots -ChangedFiles @('docs/P05__3DR__TZ.md') -CompareIndexHashes $true)
+Assert-True ($defDec.Count -eq 1 -and $defDec[0].Scope -eq 'GLOBAL' -and (Test-MagPathEquals $defDec[0].Output $idxG)) 'w8-default-decisions-global-only' "scopes=$(@($defDec | ForEach-Object { $_.Scope }) -join ',')"
+
+# Default refresh through the CLI entry point: GLOBAL regenerated, optional #5 never selected or written.
+Remove-Item -LiteralPath $idxG -Force
+$updCli = Join-Path $roots.Knowledge 'Update-MagKnowledge.ps1'
+$updOut = & $pwsh -NoProfile -File $updCli 2>$null
+$updCode = $LASTEXITCODE
+$updJson = $null
+try { $updJson = $updOut | Out-String | ConvertFrom-Json } catch { }
+$updScopes = @(if ($updJson) { $updJson.affected_scopes })
+$vgDef = Invoke-Val $idxG $manG
+Assert-True ($updCode -eq 0 -and $updJson -and $updJson.state -eq 'UPDATED' -and $updScopes.Count -eq 1 -and $updScopes[0] -eq 'GLOBAL' -and $vgDef -eq 0 -and (Get-OptionalFileHash $idx5Prod) -eq $prod5Before) 'w8-default-refresh-global-success' "code=$updCode scopes=$($updScopes -join ',') val=$vgDef"
+
+# Explicitly selected GLOBAL+#5 with a missing development root fails closed (never PASS, no index written).
+$miss5Dir = Join-Path $badDir 'miss5-manifests'
+New-Item -ItemType Directory -Path $miss5Dir -Force | Out-Null
+$idxMiss5 = Join-Path $roots.Ecosystem 'generated\knowledge\index-fxmiss5.json'
+(New-Fx5Manifest '../absent-dev' @($shipped5.development.doc_files) 'generated/knowledge/index-fxmiss5.json' | ConvertTo-Json -Depth 8) |
+    Set-Content -LiteralPath (Join-Path $miss5Dir 'miss-5.json') -Encoding utf8
+$m5Dry = Invoke-Update $miss5Dir -DryRun
+$m5DryAff = @($m5Dry.Affected | Where-Object { $_.Scope -eq 'GLOBAL+#5' })
+$m5DryOk = ($m5DryAff.Count -eq 1) -and (@($m5DryAff[0].Reasons | Where-Object { $_ -like 'missing_development_root:*' }).Count -eq 1)
+$m5Run = Invoke-Update $miss5Dir
+$m5Gen = Invoke-Gen (Join-Path $miss5Dir 'miss-5.json')
+Assert-True ($m5DryOk -and $m5Run.ExitCode -eq 3 -and $m5Run.State -eq 'FAILED' -and $m5Run.Detail -match 'missing_development_root' -and $m5Gen -eq 3 -and -not (Test-Path -LiteralPath $idxMiss5)) 'w8-explicit-missing-5-root-fails-closed' "dry=$m5DryOk code=$($m5Run.ExitCode) state=$($m5Run.State) gen=$m5Gen"
+
+# Explicitly selected GLOBAL+#5 with one listed development document missing fails closed and keeps the valid index.
+$part5Dev = Join-Path $h5Root 'dev-partial\docs'
+New-Item -ItemType Directory -Path $part5Dev -Force | Out-Null
+Copy-Item -LiteralPath (Join-Path $h5Dev 'docs\P05__3DR__TZ.md') -Destination (Join-Path $part5Dev 'P05__3DR__TZ.md')
+$part5Dir = Join-Path $badDir 'part5-manifests'
+New-Item -ItemType Directory -Path $part5Dir -Force | Out-Null
+(New-Fx5Manifest '../dev-partial' @('docs/P05__3DR__TZ.md', 'docs/P05__3DR__Architecture.md') 'generated/knowledge/index-fx5.json' | ConvertTo-Json -Depth 8) |
+    Set-Content -LiteralPath (Join-Path $part5Dir 'part-5.json') -Encoding utf8
+$h5Keep0 = Get-OptionalFileHash $idx5
+$p5Run = Invoke-Update $part5Dir
+$h5Keep1 = Get-OptionalFileHash $idx5
+$v5Keep = Invoke-Val $idx5 $man5Fx
+Assert-True ($p5Run.ExitCode -eq 3 -and $p5Run.State -eq 'FAILED' -and $p5Run.Detail -match 'missing_source:docs/P05__3DR__Architecture.md' -and $h5Keep0 -eq $h5Keep1 -and $v5Keep -eq 0) 'w8-explicit-missing-5-doc-fails-closed-keeps-index' "code=$($p5Run.ExitCode) kept=$($h5Keep0 -eq $h5Keep1) val=$v5Keep"
+
 # Stage 6 — working identity vs generated discovery (no A index recipe)
 $wG = Get-MagWorkingIdentity 'GLOBAL'
 $w5 = Get-MagWorkingIdentity 'GLOBAL+#5'
@@ -573,6 +710,9 @@ Assert-True ($lStale.Code -eq 3 -and $lStale.Json.reason -eq 'missing_index' -an
 Assert-True (@($script:MagKnownIntents).Count -eq 6 -and ($script:MagKnownIntents -join ',') -eq 'GOVERN,PLAN,IMPLEMENT,DEBUG,VERIFY,LEARN') 's6-six-intents-only'
 $lFoo = Invoke-Loc $idxG 'GLOBAL' 'FOO' 'authority'
 Assert-True ($lFoo.Code -eq 4 -and $lFoo.Json.reason -eq 'unknown_intent') 's6-unknown-intent'
+
+$prod5After = Get-OptionalFileHash $idx5Prod
+Assert-True ($prod5Before -eq $prod5After) 'w8-optional-global-5-index-untouched' "before=$prod5Before after=$prod5After"
 
 Get-ChildItem (Join-Path $roots.Ecosystem 'generated\knowledge') -Filter 'index-orch*.json' -ErrorAction SilentlyContinue | Remove-Item -Force
 

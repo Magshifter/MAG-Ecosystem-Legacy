@@ -24,6 +24,23 @@ $fx = Join-Path ([IO.Path]::GetTempPath()) ('mag mirror fx ' + [guid]::NewGuid()
 if (Test-Path $fx) { Remove-Item $fx -Recurse -Force }
 New-Item -ItemType Directory -Path $fx -Force | Out-Null
 
+# W8-PORTABILITY: an outside-root Local/Mirror sentinel pair replaces the author's production paths.
+# It lives in the disposable fixture but outside every Local/Mirror root passed to the Mirror tools,
+# so its hashes prove no test writes outside the authorized fixture roots. The real Mirror is never read.
+$sentRoot = Join-Path $fx 'outside-root sentinel'
+$prodEco = Join-Path $sentRoot 'local\MiniRepo\MAG_ECOSYSTEM.md'
+$prodMir = Join-Path $sentRoot 'mirror\MiniRepo\MAG_ECOSYSTEM.md'
+foreach ($sp in @($prodEco, $prodMir)) {
+    New-Item -ItemType Directory -Path (Split-Path $sp -Parent) -Force | Out-Null
+    $sentText = "# MAG_ECOSYSTEM.md`n`n- MAG-Document-ID: ``MAG_ECOSYSTEM.md```n- MAG-Content-Updated: ``2026-01-01T00:00:00+00:00```n`nsentinel`n"
+    [IO.File]::WriteAllBytes($sp, [Text.Encoding]::UTF8.GetBytes($sentText))
+}
+function Get-SentinelListing {
+    return (@(Get-ChildItem -LiteralPath $sentRoot -Recurse -Force | ForEach-Object { $_.FullName.Substring($sentRoot.Length) } | Sort-Object) -join '|')
+}
+$sentList0 = Get-SentinelListing
+$ph = Get-MagMirrorSha256File $prodEco
+
 function New-MiniInv {
     param($Root, $Mirror, $Entries)
     $repo = Join-Path $Root 'MiniRepo'
@@ -218,12 +235,10 @@ $mhOk = Get-MagMirrorSha256File (Join-Path $mP 'MiniRepo\ok.md')
 $lhOk = Get-MagMirrorSha256File (Join-Path $cP 'MiniRepo\ok.md')
 Assert-True ($bootP.Failed.Count -eq 1 -and $onlyOk -and $mhOk -eq $lhOk) 'partial-bootstrap-baseline'
 
-# production paths untouched: MAG_ECOSYSTEM hash stable through tests
-$prod = 'C:\laragon\repos\MAG-Ecosystem\MAG_ECOSYSTEM.md'
-$ph = Get-MagMirrorSha256File $prod
-Assert-True ($ph.Length -eq 64) 'production-path-exists'
-$ph2 = Get-MagMirrorSha256File $prod
-Assert-True ($ph -eq $ph2) 'production-untouched-by-tests'
+# outside-root sentinel untouched: MAG_ECOSYSTEM hash stable through the preceding tests (no author paths)
+Assert-True ($ph.Length -eq 64) 'outside-root-sentinel-exists'
+$ph2 = Get-MagMirrorSha256File $prodEco
+Assert-True ($ph -eq $ph2) 'outside-root-sentinel-untouched-by-tests'
 
 # FORMAT_ONLY no write
 $cF = Join-Path $fx 'cf'; $mF = Join-Path $fx 'mf'
@@ -244,8 +259,6 @@ function Save-FxReceipt($loaded, $check, $invPath, $basePath, $receiptPath) {
     return Save-MagMirrorCheckReceipt -Receipt $rec -ReceiptPath $receiptPath
 }
 
-$prodEco = 'C:\laragon\repos\MAG-Ecosystem\MAG_ECOSYSTEM.md'
-$prodMir = 'C:\laragon\repos\Mirror\MAG-Ecosystem\MAG_ECOSYSTEM.md'
 $hProdL0 = Get-MagMirrorSha256File $prodEco
 $hProdM0 = Get-MagMirrorSha256File $prodMir
 
@@ -696,7 +709,7 @@ Assert-True ($pubKd.PublicationStatus -eq 'BLOCKED' -and $hKd0 -eq $hKd1) 'pub-n
 
 $hProdL1 = Get-MagMirrorSha256File $prodEco
 $hProdM1 = Get-MagMirrorSha256File $prodMir
-Assert-True ($hProdL0 -eq $hProdL1 -and $hProdM0 -eq $hProdM1) 'production-local-mirror-untouched-by-reconcile-tests'
+Assert-True ($hProdL0.Length -eq 64 -and $hProdM0.Length -eq 64 -and $hProdL0 -eq $hProdL1 -and $hProdM0 -eq $hProdM1 -and (Get-SentinelListing) -eq $sentList0) 'outside-root-local-mirror-untouched-by-reconcile-tests'
 
 Remove-Item $fx -Recurse -Force -ErrorAction SilentlyContinue
 
