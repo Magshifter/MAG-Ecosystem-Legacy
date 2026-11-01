@@ -1,10 +1,16 @@
-# MAG Ecosystem
+# MAG-Ecosystem-Legacy
 
-MAG Ecosystem is Magshifter's multi-class software development framework for AI-assisted work: global governance, documentation operations, knowledge routing, and Cursor tooling.
+This repository is **MAG-Ecosystem-Legacy**. It preserves the historical development of MAG Ecosystem, Magshifter's multi-class software development framework for AI-assisted work: global governance, documentation operations, knowledge routing, and Cursor tooling. The repository keeps that development history in sanitized form.
 
-This repository is the **completed legacy development branch**. Further architectural development continues in the separate [MAG Development Center](https://github.com/Magshifter/MAG-Development-Center) project. MAGDC is a successor project, not a drop-in runtime, compatibility layer, or executor for these legacy tools.
+## Status
 
-Public release identity for the planned open copy: **MAG-Ecosystem-Legacy**. That public repository is prepared separately and is **not** claimed available from this private tree.
+- **Visibility:** this repository is currently **PRIVATE**.
+- **Publication:** public publication is **pending**. It is not yet published, and the repository is **not publication-ready** (see [Known limitations](#known-limitations)).
+- **Development:** MAG Ecosystem development is closed here. This repository is maintained as a historical record and a usable snapshot of its tools. It is not an active development line.
+
+## Relationship to MAG Development Center
+
+[MAG Development Center](https://github.com/Magshifter/MAG-Development-Center) (MAGDC) is a **separate successor** project: a governance and evidence control plane. MAGDC is **not** a compatible runtime replacement for MAG-Ecosystem-Legacy. It does not execute these legacy tools, and no migration, shared runtime, or compatibility bridge exists or is claimed.
 
 ## Purpose
 
@@ -14,36 +20,49 @@ MAG Ecosystem defines how MAG developments relate to each other and how document
 - Verified Applicability filters which HOW applies.
 - Each active development defines its own WHAT.
 
-## Architecture and capabilities
+## Components
 
-| Area | Location | Role |
+### Implemented and part of the minimum setup
+
+| Component | Location | What it is |
 | --- | --- | --- |
-| Governance documentation | Root `AI_*.md`, `MAG_*.md` | Canonical process and agent rules |
-| XenForo product templates | `templates/xenforo-addon/` | Starter document package for `#N` products |
-| Knowledge Index / Locator | `tools/knowledge/` | Deterministic index generation and pointer lookup |
-| Documentation Mirror | `tools/docs/` | Optional Local ↔ Mirror transport tooling |
-| Cursor knowledge-control rule | `tools/cursor/` | Operational Entry Gate projection for Cursor |
-| Model Routing Guard | `tools/model-routing-guard/` | Optional Cursor hook arm for model-routing enforcement |
+| Governance documentation | Root `AI_*.md`, `MAG_*.md` | The historical canonical process and agent rules (Markdown documents; nothing to install) |
+| XenForo document templates | `templates/xenforo-addon/` | Starter document package (`P0N__XXX__*.md`) for XenForo `#N` add-on products (Markdown; nothing to install) |
+| Knowledge Index and Locator, **GLOBAL** scope | `tools/knowledge/` | Deterministic index generation, validation, and pointer lookup over the Global documents. Standalone: needs only this checkout and PowerShell 7 |
+| Cursor knowledge-control rule | `tools/cursor/` | Operational Entry Gate projection for Cursor: a rule (`mag-knowledge-control.mdc`) that you copy manually into your Cursor workspace, plus a read-only drift check |
 
-Pipeline V2 evaluation/experiment documents at the repository root are historical/experimental and are not required for day-one use.
+### Optional integrations
+
+| Component | Location | What it is |
+| --- | --- | --- |
+| Model Routing Guard | `tools/model-routing-guard/` | Cursor hooks (`sessionStart`, `beforeSubmitPrompt`, `preCompact`) for model-routing enforcement. The deploy script **modifies** your Cursor workspace's `.cursor\hooks.json` |
+| Documentation Mirror | `tools/docs/` | Copies listed files between your repository checkouts and a separate transport folder (for example one synced by a cloud drive client). `-BootstrapClean` **deletes** everything under the Mirror root before it repopulates it |
+| Knowledge **GLOBAL+#5** scope | `tools/knowledge/manifests/global-5.json` | Example index scope that needs a separate `Beyond3DViewer` checkout next to this repository |
+
+### Historical and experimental material
+
+- `MAG_PIPELINE_V2_EVALUATION.md` and `MAG_PIPELINE_V2_EXPERIMENT.md` record a closed experiment. They are not Global authority and are not needed for any setup.
+- The Governance documentation records the author's environment and product registry, for example `C:\laragon\repos\...` paths and the numbered products. These are historical records, not installation requirements or defaults.
+- `tools/docs/mirror-inventory.json` is the author's own Documentation Mirror inventory (Laragon layout and Magshifter repositories). It is used only when you select it explicitly. Independent users start from `tools/docs/mirror-inventory.example.json`.
 
 ## Supported environment
 
-Initial supported evaluation environment:
+Initial evaluation environment (minimum setup):
 
 - Windows
 - PowerShell 7 (`pwsh`)
-- Cursor
+- Git
+- Cursor (needed for the Cursor rule and for the optional Model Routing Guard)
 
-Cursor rule check and Model Routing Guard take an explicit workspace root (`-ReposRoot` or `MAG_REPOS_ROOT`; **W4**). Documentation Mirror takes an explicitly selected inventory and explicit, validated repos/Mirror roots with no Laragon default (**W5**); start from `tools/docs/mirror-inventory.example.json`.
+You do not need Laragon, the private sibling repositories, the Documentation Mirror, the Model Routing Guard, or Beyond3DViewer for the standalone Knowledge **GLOBAL** scope.
 
 ## Installation
 
-See [docs/INSTALL.md](docs/INSTALL.md).
+See [docs/INSTALL.md](docs/INSTALL.md). It covers cloning this repository while it is still private and the minimum setup, and it keeps the optional components separate.
 
 ## Basic usage
 
-From the repository root, after PowerShell 7 is available:
+From the repository root, in PowerShell 7:
 
 ```text
 pwsh ./tools/knowledge/Generate-MagKnowledgeIndex.ps1 `
@@ -60,20 +79,18 @@ pwsh ./tools/knowledge/Locate-MagKnowledge.ps1 `
   -Query "Documentation authority model"
 ```
 
-Generated indexes under `generated/` are derived, gitignored, and non-authoritative. Details: [tools/knowledge/README.md](tools/knowledge/README.md).
+Generated indexes under `generated/` are derived, gitignored, and non-authoritative. Details: [tools/knowledge/README.md](tools/knowledge/README.md). Component guides: [tools/cursor/README.md](tools/cursor/README.md) and [tools/model-routing-guard/README.md](tools/model-routing-guard/README.md).
 
 ## Known limitations
 
-- Clean-machine installation on an unrelated Windows PC is **not verified**.
-- Cursor check and Guard require an explicit workspace root (`-ReposRoot` or `MAG_REPOS_ROOT`); there is no Laragon default.
-- Documentation Mirror requires an explicit `-InventoryPath`; the shipped `tools/docs/mirror-inventory.json` is the author-specific Laragon inventory (explicit selection only). Mirror is **optional** for the initial public release. `-Check` writes a check receipt; `-BootstrapClean` deletes everything under the Mirror root before repopulating it.
-- Knowledge **GLOBAL** is the initial standalone supported index scope. **GLOBAL+#5** is optional and needs a sibling `Beyond3DViewer` checkout.
-- A sanitized history-preserving public copy (**W7**) and publication (**W8**) are separate authorized steps. This private repository must not be made public or have its history rewritten.
+- **Clean-machine installation is not verified.** No installation on a separate Windows PC has been tested yet. Local results come from isolated temporary fixtures on the author's machine.
+- **Publication blocker (unresolved):** an obsolete pre-sanitization commit (`442286df...`) was still reachable on GitHub by its direct SHA after the history rewrite. The sanitized `main` history alone does not prove that obsolete GitHub objects are inaccessible. Until that is resolved, this repository is **not publication-ready** and stays private.
+- Cursor check and Model Routing Guard need an explicit workspace root (`-ReposRoot` or `MAG_REPOS_ROOT`). There is no Laragon default.
+- Documentation Mirror needs an explicit `-InventoryPath`. `-Check` writes a check receipt. `-BootstrapClean` deletes everything under the Mirror root before it repopulates it. The tool never claims that a cloud drive actually synced.
+- Knowledge **GLOBAL** is the standalone scope. **GLOBAL+#5** needs a separate `Beyond3DViewer` checkout. Without that checkout, the bundled `Update-MagKnowledge.ps1` refresh and the `tools/knowledge/tests/MagKnowledge.Tests.ps1` suite stop at the GLOBAL+#5 scope (see [docs/INSTALL.md](docs/INSTALL.md#verification-commands)).
+- `tools/docs/tests/MagDocumentationMirror.Tests.ps1` reads the author path `C:\laragon\repos\MAG-Ecosystem\MAG_ECOSYSTEM.md` (read-only). On a machine without that path, its `production-path-exists` assertion is expected to fail.
+- Do not change this repository's visibility or rewrite its history outside a separately authorized step.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
-
-## Relationship to MAG Development Center
-
-[MAG Development Center](https://github.com/Magshifter/MAG-Development-Center) is the successor governance and evidence control plane. It does **not** currently execute MAG Ecosystem legacy tools, and no migration, shared runtime, or compatibility bridge is claimed in this release documentation.
+MIT. See [LICENSE](LICENSE).
