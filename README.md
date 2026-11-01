@@ -35,7 +35,7 @@ Initial supported evaluation environment:
 - PowerShell 7 (`pwsh`)
 - Cursor
 
-Many scripts and docs still assume Magshifter's Laragon multi-repo layout (`C:\laragon\repos`). Portability parameterization is tracked as future work (**W4/W5**) and is **not yet implemented**.
+Cursor rule check and Model Routing Guard take an explicit workspace root (`-ReposRoot` or `MAG_REPOS_ROOT`; **W4**). Documentation Mirror still assumes Magshifter's Laragon multi-repo layout (`C:\laragon\repos`); its portability (**W5**) is **not yet implemented**.
 
 ## Installation
 
@@ -65,7 +65,7 @@ Generated indexes under `generated/` are derived, gitignored, and non-authoritat
 ## Known limitations
 
 - Clean-machine installation on an unrelated Windows PC is **not verified**.
-- Cursor deploy check and Guard deploy default to `C:\laragon\repos` paths until **W4**.
+- Cursor check and Guard require an explicit workspace root (`-ReposRoot` or `MAG_REPOS_ROOT`); there is no Laragon default.
 - Documentation Mirror inventory and approved Mirror root are Magshifter-local until **W5**; Mirror is **optional** for the initial public release.
 - Knowledge **GLOBAL** is the initial standalone supported index scope. **GLOBAL+#5** is optional and needs a sibling `Beyond3DViewer` checkout.
 - A sanitized history-preserving public copy (**W7**) and publication (**W8**) are separate authorized steps. This private repository must not be made public or have its history rewritten.

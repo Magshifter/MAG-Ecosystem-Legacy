@@ -2,7 +2,7 @@
 
 Target environment for this guide: **Windows + PowerShell 7 (`pwsh`) + Cursor**.
 
-Clean-machine installation by an unrelated developer is **not verified**. Commands below match the scripts that exist in this repository today. Several paths still hardcode Magshifter's Laragon layout (`C:\laragon\repos`). Portability fixes are planned as **W4** (Cursor / Guard) and **W5** (Mirror) and are **not yet implemented**.
+Clean-machine installation by an unrelated developer is **not verified**. Commands below match the scripts that exist in this repository today. Cursor rule check and Model Routing Guard take an explicit workspace root (**W4**, implemented). Documentation Mirror still hardcodes Magshifter's Laragon layout (`C:\laragon\repos`); its portability fix (**W5**) is **not yet implemented**.
 
 ## Prerequisites
 
@@ -46,14 +46,14 @@ MAG-Ecosystem/                 ← repository root (run commands here)
   generated/                   ← derived outputs (gitignored); created by tools
 ```
 
-Author environment often places this repo under `C:\laragon\repos\MAG-Ecosystem` beside sibling product repos and a `Mirror` transport folder. That layout is **author-local**. Knowledge **GLOBAL** does not require siblings. Cursor Check, Guard default deploy, and Mirror approved-root checks currently do.
+Author environment often places this repo under `C:\laragon\repos\MAG-Ecosystem` beside sibling product repos and a `Mirror` transport folder. That layout is **author-local**. Knowledge **GLOBAL** does not require siblings. Cursor Check and Guard use the workspace root you configure (no Laragon default). Mirror approved-root checks still require the author layout until **W5**.
 
 ## Environment and configuration
 
 | Variable / setting | Status |
 | --- | --- |
-| `MAG_REPOS_ROOT` | Read by Model Routing Guard library logic. Deploy/mode scripts can set it from `-ReposRoot`. Default remains `C:\laragon\repos` until **W4**. |
-| Cursor workspace folder | Cursor loads `.cursor/rules` and `hooks.json` from the **opened workspace root**. Author workflow opens `C:\laragon\repos`. Opening only `MAG-Ecosystem` will not load a rule deployed under the parent `repos` folder. |
+| `-ReposRoot` / `MAG_REPOS_ROOT` | Workspace root for the Cursor rule check and all Guard scripts/hooks. Explicit `-ReposRoot` wins; otherwise `MAG_REPOS_ROOT`; otherwise the script stops before any write (no current-directory fallback, no built-in default). Must be an absolute path to an existing directory; spaces allowed; a drive root is rejected by Guard. `C:\laragon\repos` works only when passed or configured explicitly. Guard scripts do not persist the variable; installed hooks carry `-ReposRoot` in their `hooks.json` command. |
+| Cursor workspace folder | Cursor loads `.cursor/rules` and `hooks.json` from the **opened workspace root** (`<ReposRoot>`). Opening only `MAG-Ecosystem` will not load a rule deployed under its parent folder. |
 | Mirror inventory | `tools/docs/mirror-inventory.json` hardcodes `repos_root` / `mirror_root` under `C:\laragon\repos`. Overrides exist on the CLI, but the approved Mirror root in code is still fixed to `C:\laragon\repos\Mirror` until **W5**. |
 
 ## Setup — Knowledge GLOBAL (initial supported scope)
@@ -101,55 +101,69 @@ Tracked source (authority for the projection text):
 
 - `tools/cursor/mag-knowledge-control.mdc`
 
-Author deploy path (hardcoded in the check script today):
+Deployed copy (loaded by Cursor when `<ReposRoot>` is the opened workspace folder):
 
-- `C:\laragon\repos\.cursor\rules\mag-knowledge-control.mdc`
+- `<ReposRoot>\.cursor\rules\mag-knowledge-control.mdc`
 
-**Until W4:**
+Install (manual copy, source → deployed; no automatic deploy script):
 
-1. Open a Cursor workspace whose root is where you want the rule to apply.
-2. Manually copy `tools/cursor/mag-knowledge-control.mdc` into `<workspaceRoot>\.cursor\rules\mag-knowledge-control.mdc`.
-3. Do **not** reverse-copy from the deployed file onto the tracked source.
-
-Drift check (read-only; **currently hardcoded** to the Laragon deploy path):
-
-```text
-pwsh ./tools/cursor/Check-MagCursorKnowledgeControl.ps1
+```powershell
+$root = 'D:\Work\My Repos'   # absolute path of your Cursor workspace folder
+New-Item -ItemType Directory -Force -Path "$root\.cursor\rules" | Out-Null
+Copy-Item -LiteralPath .\tools\cursor\mag-knowledge-control.mdc -Destination "$root\.cursor\rules\mag-knowledge-control.mdc"
 ```
 
-- Exit `0` / `IDENTICAL` — source matches that hardcoded deployed path.
-- Non-zero — missing source, missing deployed file, or `DRIFT`.
+Do **not** reverse-copy from the deployed file onto the tracked source.
 
-If your workspace is not `C:\laragon\repos`, treat the check script as **author-environment only** until W4. Manual copy still works.
+Drift check (read-only):
 
-The source `.mdc` contains an example Locator command with an absolute Laragon path; use the relative commands in this document instead.
+```text
+pwsh -NoProfile -File ./tools/cursor/Check-MagCursorKnowledgeControl.ps1 -ReposRoot "D:\Work\My Repos"
+```
+
+or set `MAG_REPOS_ROOT` and omit `-ReposRoot`.
+
+- Exit `0` / `IDENTICAL` — source matches the deployed copy.
+- Exit `1` / `DRIFT`; `2` / `MISSING_SOURCE`; `3` / `MISSING_DEPLOYED`; `4` / `INVALID_ROOT` (root not configured, relative, or missing).
+
+The rule's Locator example uses the placeholder `<MAG-Ecosystem>` = absolute path of your local `MAG-Ecosystem` checkout (for example `<ReposRoot>\MAG-Ecosystem`). The Locator is not installed automatically; the relative commands in this document also work from the repository root.
 
 ## Setup — Model Routing Guard (optional)
 
 Source of truth: `tools/model-routing-guard/`.
 
-Deploy copies Guard files into `<ReposRoot>\.cursor\hooks\model-routing-guard\` and writes/merges `<ReposRoot>\.cursor\hooks.json`.
+Deploy copies Guard files into `<ReposRoot>\.cursor\hooks\model-routing-guard\` and writes/merges `<ReposRoot>\.cursor\hooks.json`. The root is required (`-ReposRoot` or `MAG_REPOS_ROOT`); there is no default.
 
 ```text
-pwsh -NoProfile -File .\tools\model-routing-guard\Deploy-MagModelRoutingGuard.ps1 -WhatIf
-pwsh -NoProfile -File .\tools\model-routing-guard\Deploy-MagModelRoutingGuard.ps1 -ReposRoot <your-workspace-root>
+pwsh -NoProfile -File .\tools\model-routing-guard\Deploy-MagModelRoutingGuard.ps1 -ReposRoot "D:\Work\My Repos" -WhatIf
+pwsh -NoProfile -File .\tools\model-routing-guard\Deploy-MagModelRoutingGuard.ps1 -ReposRoot "D:\Work\My Repos"
 ```
 
-Default `-ReposRoot` is `C:\laragon\repos` if omitted.
+`-WhatIf` resolves the root, validates the existing `hooks.json`, and computes the merge without writing.
 
-**Safety — this can modify existing Cursor configuration:**
+**Safety — this modifies existing Cursor configuration:**
 
 - Overwrites Guard-owned files under `.cursor\hooks\model-routing-guard\` (`-Force` copy).
-- Creates or updates `.cursor\hooks.json`: keeps non–model-routing-guard hook entries for `sessionStart` / `beforeSubmitPrompt` / `preCompact`, replaces prior Guard entries for those events, and writes the file.
-- Does not claim to preserve arbitrary unrelated Cursor settings outside that merge behavior.
+- Creates or updates `.cursor\hooks.json`. Guard-owned scope only: in `sessionStart` / `beforeSubmitPrompt` / `preCompact`, entries whose command contains `model-routing-guard` are replaced by exactly one Guard entry; other entries, other events, and other top-level settings are kept. JSON formatting/whitespace is rewritten.
+- Guard commands are absolute: `pwsh -NoProfile -File "<ReposRoot>\.cursor\hooks\model-routing-guard\hooks\<hook>.ps1" -ReposRoot "<ReposRoot>"`, so hooks use the same root regardless of the CWD Cursor starts them in.
+- Rejected before any copy or write: missing/relative/drive-root root, invalid JSON, non-object `hooks`, non-directory targets, and roots containing `"`, `%`, `$`, or a backtick. Back up `hooks.json` first if it matters to you.
 
-Mode / maintenance helpers also default to Laragon unless `-ReposRoot` is passed (they set `MAG_REPOS_ROOT` for the process). See `tools/model-routing-guard/README.md`.
+Mode / maintenance (same root contract; `-ProductOwnerApproved` still required; state under `<ReposRoot>\.mag\`):
+
+```text
+pwsh -NoProfile -File .\tools\model-routing-guard\Set-MagGuardMode.ps1 -ReposRoot "D:\Work\My Repos" -Mode Advisory -ProductOwnerApproved
+pwsh -NoProfile -File .\tools\model-routing-guard\Set-MagGuardMaintenance.ps1 -ReposRoot "D:\Work\My Repos" -Action Suspend -ProductOwnerApproved
+pwsh -NoProfile -File .\tools\model-routing-guard\Set-MagGuardMaintenance.ps1 -ReposRoot "D:\Work\My Repos" -Action Resume -ProductOwnerApproved
+```
+
+See `tools/model-routing-guard/README.md`.
 
 Smoke / recovery tests (use temp roots; safe for verification):
 
 ```text
 pwsh -NoProfile -File .\tools\model-routing-guard\Test-MagModelRoutingGuard.ps1
 pwsh -NoProfile -File .\tools\model-routing-guard\Test-GuardRecovery.ps1 -GuardRoot (Resolve-Path .\tools\model-routing-guard).Path
+pwsh -NoProfile -File .\tools\model-routing-guard\Test-MagGuardPortability.ps1
 ```
 
 ## Setup — Documentation Mirror (optional; Magshifter-local today)
@@ -185,9 +199,11 @@ pwsh ./tools/knowledge/tests/MagKnowledge.Tests.ps1
 pwsh ./tools/docs/tests/MagDocumentationMirror.Tests.ps1
 pwsh -NoProfile -File .\tools\model-routing-guard\Test-MagModelRoutingGuard.ps1
 pwsh -NoProfile -File .\tools\model-routing-guard\Test-GuardRecovery.ps1 -GuardRoot (Resolve-Path .\tools\model-routing-guard).Path
+pwsh -NoProfile -File .\tools\model-routing-guard\Test-MagGuardPortability.ps1
+pwsh -NoProfile -File .\tools\cursor\Test-MagCursorKnowledgeControl.ps1
 ```
 
-Knowledge and Guard tests are designed to use isolated/temp roots where applicable. Mirror tests use a fixture tree under `tools/docs/tests/` and assert they leave production Local/Mirror content untouched; they still **read** some author Laragon paths for existence checks.
+Knowledge, Cursor, and Guard tests are designed to use isolated/temp roots where applicable. Mirror tests use a fixture tree under `tools/docs/tests/` and assert they leave production Local/Mirror content untouched; they still **read** some author Laragon paths for existence checks.
 
 ## Troubleshooting
 
@@ -196,14 +212,18 @@ Knowledge and Guard tests are designed to use isolated/temp roots where applicab
 | `#Requires -Version 7.0` / script will not start | Windows PowerShell 5.x used instead of `pwsh` |
 | Locator `STALE` / exit 3 / `missing_index` | Index missing or source SHA mismatch; regenerate/validate; Locator does not auto-repair |
 | Locator `OUT_OF_SCOPE` for `GLOBAL+#5` / `A…` / `B…` | Wrong identity for the index, reserved identity, or missing optional sibling/index recipe |
-| Cursor Check `MISSING_DEPLOYED` | Rule not copied to the hardcoded Laragon path, or you are not on the author layout |
+| Cursor Check `INVALID_ROOT` / exit 4 | Neither `-ReposRoot` nor `MAG_REPOS_ROOT` set, or the path is relative/missing |
+| Cursor Check `MISSING_DEPLOYED` | Rule not copied to `<ReposRoot>\.cursor\rules\`, or a different root was configured |
+| Guard `repos_root_not_configured` / `repos_root_not_found` | Root not passed/set or wrong; nothing was written |
+| Guard `hooks_json_invalid` | Existing `hooks.json` is not valid JSON; fix it manually, deploy wrote nothing |
 | Guard deploy writes unexpected hooks | Existing `.cursor\hooks.json` was merged/updated; restore from backup if needed |
 | Mirror `mirror_root_not_approved` | Non-Laragon Mirror root rejected by current approved-root hardcode (**W5** not done) |
 | Mirror bootstrap deleted files | `-BootstrapClean` removes files under MirrorRoot by design |
 
 ## Limitations and safety summary
 
-- **NOT YET IMPLEMENTED:** W4 portable Cursor/Guard defaults; W5 portable Mirror approved-root/inventory.
+- **IMPLEMENTED (W4):** explicit workspace root for Cursor check and Guard (verified with isolated TEMP fixtures).
+- **NOT YET IMPLEMENTED:** W5 portable Mirror approved-root/inventory.
 - **NOT VERIFIED:** clean Windows install by an unrelated developer.
 - **Do not** make the original private repository public or rewrite its history; public release uses a separate sanitized copy (**W7/W8**).
 - **Do not** assume MAG Development Center runs these tools.

@@ -9,16 +9,34 @@ $script:MagGuardRoot = if ((Split-Path -Leaf $PSScriptRoot) -eq 'lib') {
 } else {
     $PSScriptRoot
 }
-$script:DefaultReposRoot = 'C:\laragon\repos'
 $script:DefaultMappingPath = Join-Path $script:MagGuardRoot 'capability-mapping.json'
 $script:DefaultContractPath = Join-Path $script:MagGuardRoot 'enforcement-contract.v1.json'
 $script:LoadedContract = $null
+
+# Workspace root contract (W4): explicit -ReposRoot wins over MAG_REPOS_ROOT; no silent default.
+# Resolve-MagGuardReposRoot validates before any write and pins MAG_REPOS_ROOT for this process only.
+function Resolve-MagGuardReposRoot {
+    param([string]$ReposRoot = '')
+    $candidate = if (-not [string]::IsNullOrWhiteSpace($ReposRoot)) { $ReposRoot }
+        elseif (-not [string]::IsNullOrWhiteSpace($env:MAG_REPOS_ROOT)) { $env:MAG_REPOS_ROOT }
+        else { $null }
+    if ($null -eq $candidate) { throw 'repos_root_not_configured: pass -ReposRoot or set MAG_REPOS_ROOT' }
+    $candidate = $candidate.Trim()
+    if (-not [System.IO.Path]::IsPathFullyQualified($candidate)) { throw "repos_root_not_absolute:$candidate" }
+    $full = [System.IO.Path]::GetFullPath($candidate).TrimEnd('\', '/')
+    if (-not [System.IO.Path]::IsPathFullyQualified($full) -or [System.IO.Path]::GetPathRoot($full).TrimEnd('\', '/') -eq $full) {
+        throw "repos_root_is_volume_root:$candidate"
+    }
+    if (-not (Test-Path -LiteralPath $full -PathType Container)) { throw "repos_root_not_found:$full" }
+    $env:MAG_REPOS_ROOT = $full
+    return $full
+}
 
 function Get-MagGuardReposRoot {
     if (-not [string]::IsNullOrWhiteSpace($env:MAG_REPOS_ROOT)) {
         return $env:MAG_REPOS_ROOT.TrimEnd('\', '/')
     }
-    return $script:DefaultReposRoot
+    throw 'repos_root_not_configured: pass -ReposRoot or set MAG_REPOS_ROOT'
 }
 
 function Get-MagGuardPlanPath { return (Join-Path (Get-MagGuardReposRoot) '.mag\routing-plan.json') }

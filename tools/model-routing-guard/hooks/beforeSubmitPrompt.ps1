@@ -1,7 +1,10 @@
 #Requires -Version 7.0
+# -ReposRoot is written into hooks.json by Deploy-MagModelRoutingGuard.ps1 so the hook does not depend on process CWD.
+param([string]$ReposRoot = '')
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 . (Join-Path (Split-Path $PSScriptRoot -Parent) 'lib\MagRoutingGuard.Common.ps1')
+$null = Resolve-MagGuardReposRoot -ReposRoot $ReposRoot
 
 $inputObj = Read-MagGuardStdinJson
 $planPath = Get-MagGuardPlanPath

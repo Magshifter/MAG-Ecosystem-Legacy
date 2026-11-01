@@ -7,14 +7,15 @@
 #>
 param(
     [Parameter(Mandatory)][ValidateSet('Suspend', 'Resume')][string]$Action,
-    [string]$ReposRoot = 'C:\laragon\repos',
+    [string]$ReposRoot = '',
     [Parameter(Mandatory)][switch]$ProductOwnerApproved
 )
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 if (-not $ProductOwnerApproved) { throw 'Explicit Product Owner authorization required.' }
-$env:MAG_REPOS_ROOT = $ReposRoot.TrimEnd('\', '/')
 . (Join-Path $PSScriptRoot 'lib\MagRoutingGuard.Common.ps1')
+# Explicit -ReposRoot wins over MAG_REPOS_ROOT; missing/invalid root stops before any write.
+$null = Resolve-MagGuardReposRoot -ReposRoot $ReposRoot
 
 $maintPath = Get-MagGuardMaintenancePath
 $planPath = Get-MagGuardPlanPath
