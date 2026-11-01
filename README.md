@@ -10,7 +10,7 @@ This repository is **MAG-Ecosystem-Legacy**. It preserves the historical develop
 
 ## Relationship to MAG Development Center
 
-[MAG Development Center](https://github.com/Magshifter/MAG-Development-Center) (MAGDC) is a **separate successor** project: a governance and evidence control plane. MAGDC is **not** a compatible runtime replacement for MAG-Ecosystem-Legacy. It does not execute these legacy tools, and no migration, shared runtime, or compatibility bridge exists or is claimed.
+[MAG Development Center](https://magshifter.com/resources/magdc-evidence-driven-control-plane.14/) (MAGDC) is a **separate successor** project: a governance and evidence control plane. MAGDC is **not** a compatible runtime replacement for MAG-Ecosystem-Legacy. It does not execute these legacy tools, and no migration, shared runtime, or compatibility bridge exists or is claimed.
 
 ## Purpose
 
@@ -87,8 +87,8 @@ Generated indexes under `generated/` are derived, gitignored, and non-authoritat
 - **Publication blocker (unresolved):** an obsolete pre-sanitization commit (`442286df...`) was still reachable on GitHub by its direct SHA after the history rewrite. The sanitized `main` history alone does not prove that obsolete GitHub objects are inaccessible. Until that is resolved, this repository is **not publication-ready** and stays private.
 - Cursor check and Model Routing Guard need an explicit workspace root (`-ReposRoot` or `MAG_REPOS_ROOT`). There is no Laragon default.
 - Documentation Mirror needs an explicit `-InventoryPath`. `-Check` writes a check receipt. `-BootstrapClean` deletes everything under the Mirror root before it repopulates it. The tool never claims that a cloud drive actually synced.
-- Knowledge **GLOBAL** is the standalone scope. **GLOBAL+#5** needs a separate `Beyond3DViewer` checkout. Without that checkout, the bundled `Update-MagKnowledge.ps1` refresh and the `tools/knowledge/tests/MagKnowledge.Tests.ps1` suite stop at the GLOBAL+#5 scope (see [docs/INSTALL.md](docs/INSTALL.md#verification-commands)).
-- `tools/docs/tests/MagDocumentationMirror.Tests.ps1` reads the author path `C:\laragon\repos\MAG-Ecosystem\MAG_ECOSYSTEM.md` (read-only). On a machine without that path, its `production-path-exists` assertion is expected to fail.
+- Knowledge **GLOBAL** is the standalone scope. The default `Update-MagKnowledge.ps1` refresh selects GLOBAL only and needs no `Beyond3DViewer` checkout. **GLOBAL+#5** is optional: it is refreshed only with an explicit `-ManifestDirectory`, and a real GLOBAL+#5 index still needs its documented `Beyond3DViewer` sources. When an explicitly selected manifest is missing its sources, the refresh fails closed (`FAILED`, exit `3`) without replacing existing indexes. `tools/knowledge/tests/MagKnowledge.Tests.ps1` is standalone and covers GLOBAL+#5 with synthetic fixture documents (see [docs/INSTALL.md](docs/INSTALL.md#verification-commands) and [tools/knowledge/README.md](tools/knowledge/README.md)).
+- `tools/docs/tests/MagDocumentationMirror.Tests.ps1` uses disposable TEMP fixtures only. It does not read author-specific production paths or modify a real production Mirror, and it verifies outside-root preservation with fixture sentinels. The optional author-layout observation in `MagDocumentationMirror.Portability.Tests.ps1` reports `NOT VERIFIED` on machines without that layout. These tests do not prove cloud synchronization.
 - Do not change this repository's visibility or rewrite its history outside a separately authorized step.
 
 ## License
