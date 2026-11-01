@@ -880,15 +880,15 @@ Mirror:          C:\laragon\repos\Mirror\<RepoFolder>\<RelPath>
 
 `<RepoFolder>` is the actual Local clone folder recorded in `MAG_ECOSYSTEM.md` (for example `MAG-Workflow-Bridge`, not a remote repository title).
 
-Managed membership is the explicit inventory currently at `MAG-Ecosystem` / `tools/docs/mirror-inventory.json`. Mirror contents never determine membership. Inventory may include canonical documents, supporting/experimental/template documentation, and explicitly allowlisted tools/scripts. Inclusion does not change an item's registration or authority class. Inventory membership is explicit and does **not** imply `#N` eight-document package completeness or an `A<N>` package.
+Managed membership is the inventory explicitly selected with `-InventoryPath` on every `tools/docs/Update-MagDocumentationMirror.ps1` invocation; there is no default inventory. For the author legacy layout this is `-InventoryPath .\tools\docs\mirror-inventory.json`; independent installations use their own inventory configured from `tools/docs/mirror-inventory.example.json`. Mirror contents never determine membership. Inventory may include canonical documents, supporting/experimental/template documentation, and explicitly allowlisted tools/scripts. Inclusion does not change an item's registration or authority class. Inventory membership is explicit and does **not** imply `#N` eight-document package completeness or an `A<N>` package.
 
 Outside transport scope unless an inventory entry names them: `generated/**`, secrets/credentials, dependencies/vendor/`node_modules`, runtime/cache/output, release artifacts, product/source code, tests excluded by inventory, and unmanaged extras.
 
 ### CHECK, receipt, and baseline
 
-Implemented CHECK is read-only (`tools/docs/Update-MagDocumentationMirror.ps1 -Check`). It compares managed Local↔Mirror pairs using exact-file SHA-256 and, where present, the last-confirmed common baseline. CHECK must not copy, delete, rename, normalize, modify baseline, modify `MAG-Content-Updated`, run Git lifecycle, invoke Knowledge Control, or claim Google Drive publication/download completion.
+Implemented CHECK (`tools/docs/Update-MagDocumentationMirror.ps1 -Check -InventoryPath <inventory>`) does not mutate canonical Local, Mirror, or baseline content; it writes only its derived CHECK receipt file to the configured `-ReceiptPath`. It compares managed Local↔Mirror pairs using exact-file SHA-256 and, where present, the last-confirmed common baseline. CHECK must not copy, delete, rename, normalize, modify baseline, modify `MAG-Content-Updated`, run Git lifecycle, invoke Knowledge Control, or claim Google Drive publication/download completion.
 
-CHECK produces a derived, non-authoritative **CHECK receipt** at `MAG-Ecosystem` / `generated/docs-mirror/check-receipt.json` (gitignored with other `/generated/` artifacts). Receipt kind `mag-docs-mirror-check-receipt`, schema version 1. The receipt records the exact checked state: MirrorRoot, inventory path and content SHA-256, baseline file SHA-256 or explicit no-baseline state, the managed pair set, per-pair paths/hashes/classifications/proposed directions/blocking state, extras, and aggregate counts. Receipt `generated_at` is audit information only; it is **not** authority and **not** freshness proof. CHECK receipt generation must not mutate canonical Local, Mirror, or baseline.
+CHECK produces a derived, non-authoritative **CHECK receipt** at `-ReceiptPath` (default `MAG-Ecosystem` / `generated/docs-mirror/check-receipt.json`, gitignored with other `/generated/` artifacts). Receipt kind `mag-docs-mirror-check-receipt`, schema version 1. The receipt records the exact checked state: MirrorRoot, inventory path and content SHA-256, baseline file SHA-256 or explicit no-baseline state, the managed pair set, per-pair paths/hashes/classifications/proposed directions/blocking state, extras, and aggregate counts. Receipt `generated_at` is audit information only; it is **not** authority and **not** freshness proof. CHECK receipt generation must not mutate canonical Local, Mirror, or baseline.
 
 Baseline path: `MAG-Ecosystem` / `generated/docs-mirror/baseline.json`. Baseline is derived, non-authoritative, gitignored, and may record only pairs whose Local and Mirror bytes were verified equal. Filesystem mtime is not authority. Missing, stale, or corrupt baseline is treated as no baseline (fail closed on divergence).
 
@@ -900,7 +900,7 @@ Absence of a Mirror file, or a rename on either side, never authorizes automatic
 
 ### CHECK-bound RECONCILE
 
-**RECONCILE is an implemented MAG documentation-transport operation. It is not self-authorizing.** A generic `SYNC` or `RECONCILE` invocation is not standing authorization. CHECK is not a write path.
+**RECONCILE is an implemented MAG documentation-transport operation. It is not self-authorizing.** A generic `SYNC` or `RECONCILE` invocation is not standing authorization. CHECK is not a content write path: its only write is the non-authoritative CHECK receipt, and neither the receipt nor its SHA-256 is Product Owner authorization for RECONCILE.
 
 RECONCILE may write only after:
 
