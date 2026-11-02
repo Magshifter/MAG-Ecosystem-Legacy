@@ -7,7 +7,7 @@ Target environment for this guide: **Windows + PowerShell 7 (`pwsh`) + Git + Cur
 - Cursor rule check and Model Routing Guard take an explicit workspace root (**W4**, implemented).
 - Documentation Mirror takes an explicitly selected inventory and explicit, validated roots, with no Laragon default (**W5**, implemented and verified with isolated TEMP fixtures only).
 
-Repository status: **MAG-Ecosystem-Legacy** is currently **PRIVATE**, and public publication is pending. See the [README](../README.md) for status, components, and known limitations.
+Repository status: **MAG-Ecosystem-Legacy** is a **PUBLIC** GitHub repository. The [official forum resource](https://magshifter.com/resources/mag-ecosystem-legacy.17/) is a separate Product Owner-provided listing. No GitHub Release or release tag is documented here. See the [README](../README.md) for status, components, and known limitations.
 
 ## What you need
 
@@ -42,12 +42,12 @@ Optional sibling checkouts (only if you deliberately enable those scopes):
 
 Repository: `https://github.com/Magshifter/MAG-Ecosystem-Legacy.git`
 
-While the repository is **PRIVATE**, cloning works only for a GitHub account that has been given access. Sign in with a credential helper instead of putting credentials in the URL, for example:
+This GitHub repository is **PUBLIC**. Ordinary cloning does not require a private-access gate. Do not put a password or token in the clone URL or in scripts.
 
-- **Git Credential Manager** (included with Git for Windows) opens a browser sign-in the first time you clone, or
+If Git or GitHub CLI still prompts for authentication on your network, sign in through a credential helper instead of embedding credentials in the URL, for example:
+
+- **Git Credential Manager** (included with Git for Windows) can open a browser sign-in when prompted, or
 - **GitHub CLI:** run `gh auth login` once, then clone with `git` or `gh repo clone Magshifter/MAG-Ecosystem-Legacy`.
-
-Never put a password or token in the clone URL or in scripts. After publication, the same URL will work without signing in.
 
 Example (PowerShell 7, in a parent folder you control):
 
@@ -321,7 +321,7 @@ What each suite needs and touches:
 | Symptom | Likely cause |
 | --- | --- |
 | `#Requires -Version 7.0` / script will not start | Windows PowerShell 5.x used instead of `pwsh` |
-| `git clone` asks for a password or returns `Repository not found` | The repository is private: sign in through Git Credential Manager or `gh auth login` with an account that has access. Do not paste a token into the URL |
+| `git clone` returns `Repository not found` or fails | Check the URL and network. The repository is public; a typo in the owner or repository name is a common cause. If Git still prompts for credentials, sign in through Git Credential Manager or `gh auth login`. Do not paste a token into the URL |
 | Locator `STALE` / exit 3 / `missing_index` | Index missing or source SHA mismatch; regenerate and validate. The Locator does not auto-repair |
 | Locator `OUT_OF_SCOPE` for `GLOBAL+#5` / `A…` / `B…` | Wrong identity for the index, a reserved identity, or a missing optional sibling/index recipe |
 | `Update-MagKnowledge.ps1` reports `FAILED`, exit 3 | An explicitly selected manifest (`-ManifestDirectory`) is missing its sources, for example no `Beyond3DViewer` sibling for GLOBAL+#5; the default run refreshes GLOBAL only |
@@ -341,5 +341,5 @@ What each suite needs and touches:
 - **IMPLEMENTED (W5):** portable Documentation Mirror: explicit inventory and validated roots, generic example inventory (verified with isolated TEMP fixtures only).
 - **NOT VERIFIED:** clean Windows installation by an unrelated developer.
 - **IMPLEMENTED (W8):** standalone Knowledge refresh (default GLOBAL only; GLOBAL+#5 on explicit request) and standalone Knowledge and Mirror test suites (synthetic and TEMP fixtures; no sibling repositories or author paths). Verified in this checkout and in a disposable copy without sibling repositories, on the author's PC only. The test fixtures are not a real deployment.
-- **Repository status:** this repository is **PRIVATE**, and public publication remains **pending**. Path B migrated the sanitized history into this clean GitHub repository. The previous archive, `Magshifter/MAG-Ecosystem-Legacy-Arhiv`, was deleted. The known obsolete pre-sanitization commit is no longer accessible through the authenticated GitHub API endpoints checked afterward. That inaccessibility does not prove permanent physical removal from every GitHub cache, backup, or recoverable store. Changes to repository visibility and history remain separately controlled. The detailed record is in the [README](../README.md#known-limitations).
+- **Repository status:** this GitHub repository is **PUBLIC**. The [official forum resource](https://magshifter.com/resources/mag-ecosystem-legacy.17/) is a separate listing and is not a GitHub Release. No GitHub Release or release tag is documented here. Path B migrated the sanitized history into this clean GitHub repository. The previous archive, `Magshifter/MAG-Ecosystem-Legacy-Arhiv`, was deleted. The known obsolete pre-sanitization commit is no longer accessible through the authenticated GitHub API endpoints checked afterward. That inaccessibility does not prove permanent physical removal from every GitHub cache, backup, or recoverable store. Changes to repository visibility and history remain separately controlled. The detailed record is in the [README](../README.md#known-limitations).
 - **Do not** assume MAG Development Center runs these tools. It is a separate successor project, not a runtime replacement.

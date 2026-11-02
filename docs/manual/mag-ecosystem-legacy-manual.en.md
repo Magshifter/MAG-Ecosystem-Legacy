@@ -4,7 +4,7 @@ Document version: 0.1.1.
 
 This manual explains how to obtain and use MAG-Ecosystem-Legacy. It describes the tools that exist in this repository. It does not add capabilities, and it does not replace the historical governance documents. If this manual disagrees with a script or with [docs/INSTALL.md](../INSTALL.md), the script and the installation guide are the usage evidence to follow, and this manual should be corrected.
 
-Version 0.1.1 is the documentation target selected for this pack. It is not a GitHub release, not a public publication, and not a MAG Development Center product registration.
+Version 0.1.1 is the documentation target selected for this pack. It is not a GitHub release and not a MAG Development Center product registration.
 
 <!-- mag-item-id: ec2b507e-26c3-4045-9f0c-4592c2a943aa -->
 ## 1. What MAG-Ecosystem-Legacy is
@@ -29,9 +29,9 @@ Development of MAG Ecosystem is closed in this repository. The repository is mai
 
 Current repository facts:
 
-- Visibility is **PRIVATE**.
-- Public publication is **pending**. It is not approved, and this manual does not make the repository publication-ready.
-- The documentation target is 0.1.1. Creating these manuals does not create a Git tag or a GitHub release.
+- This GitHub repository is **PUBLIC**. Source code is available at `Magshifter/MAG-Ecosystem-Legacy` without a private-access clone gate.
+- The [official forum resource](https://magshifter.com/resources/mag-ecosystem-legacy.17/) is a separate Product Owner-provided listing. It is not this GitHub repository and is not a GitHub Release.
+- No GitHub Release or release tag is documented in this manual. The documentation target is 0.1.1. These manuals are documentation only, not a packaged release artifact.
 - Clean-machine installation on another Windows PC is **NOT VERIFIED**. Commands in this manual match the scripts in this checkout. They were checked on the author's machine, including isolated temporary fixtures. Those fixtures are not a successful installation on a separate PC.
 
 Do not change repository visibility or rewrite history except in a separately authorized step.
@@ -116,14 +116,12 @@ Repository URL:
 https://github.com/Magshifter/MAG-Ecosystem-Legacy.git
 ```
 
-While the repository is **PRIVATE**, clone it only with a GitHub account that has access. Sign in through a credential helper. Do not put a password or token in the clone URL or in a script.
+This GitHub repository is **PUBLIC**. Ordinary cloning does not require a private-access gate. Do not put a password or token in the clone URL or in a script.
 
-Examples of sign-in:
+If Git or GitHub CLI still prompts for authentication on your network, sign in through a credential helper:
 
-- Git Credential Manager, included with Git for Windows, can open a browser sign-in on the first clone.
+- Git Credential Manager, included with Git for Windows, can open a browser sign-in when prompted.
 - GitHub CLI: run `gh auth login` once, then clone with `git` or `gh repo clone Magshifter/MAG-Ecosystem-Legacy`.
-
-After publication, the same URL would work without signing in. Publication is not approved.
 
 Example, from a parent folder you control:
 
@@ -437,7 +435,7 @@ Root and inventory checks run before any write, including the Check receipt. A r
 | Symptom | What to do |
 | --- | --- |
 | `#Requires -Version 7.0`, or the script does not start | Use `pwsh`, not Windows PowerShell 5.x. |
-| `git clone` asks for a password or returns `Repository not found` | The repository is private. Sign in with Git Credential Manager or `gh auth login`. Do not paste a token into the URL. |
+| `git clone` returns `Repository not found` or fails | Check the URL and network. The repository is public; a typo in the owner or repository name is a common cause. If Git still prompts for credentials, sign in with Git Credential Manager or `gh auth login`. Do not paste a token into the URL. |
 | Locator `STALE`, exit `3`, or `missing_index` | Regenerate and validate. The Locator does not repair the index. |
 | Locator `OUT_OF_SCOPE` for `GLOBAL+#5`, `A…`, or `B…` | The identity does not match that index, the identity is reserved, or the optional index recipe is absent. |
 | `Update-MagKnowledge.ps1` reports `FAILED`, exit `3` | An explicitly selected manifest is missing sources. The default run refreshes GLOBAL only. |
@@ -454,7 +452,7 @@ Root and inventory checks run before any write, including the Check receipt. A r
 <!-- mag-item-id: 9d23b4dc-d9a0-4a5d-be72-b604a0a384e5 -->
 ## 13. Security and preservation
 
-- Keep the repository **PRIVATE** until a separate publication decision. Do not change visibility from this manual.
+- This GitHub repository is **PUBLIC**. Do not change repository visibility or rewrite history except in a separately authorized step.
 - Do not put passwords or tokens in clone URLs, scripts, or committed files.
 - Path B migrated the sanitized development history into this clean GitHub repository. That migrated history preserves 103 commits, with GitHub noreply author and committer metadata, and the historical source trees. Later documentation commits are additional commits on that history. They are not a loss of those 103 commits.
 - The previous archive, `Magshifter/MAG-Ecosystem-Legacy-Arhiv` (former ID `1442085997`), was deleted.
@@ -468,7 +466,7 @@ Root and inventory checks run before any write, including the Check receipt. A r
 ## 14. Limitations
 
 - Clean-machine installation on a separate Windows PC is **NOT VERIFIED**.
-- Public publication is **pending** and is not approved. This pack is not a release.
+- This GitHub repository is **PUBLIC**. The [official forum resource](https://magshifter.com/resources/mag-ecosystem-legacy.17/) is a separate listing. No GitHub Release or release tag is documented. Version 0.1.1 in this pack is documentation only, not a packaged release.
 - Passing a TEMP-fixture test does not mean an unrelated developer has installed the repository.
 - Optional components are not required for Knowledge **GLOBAL**.
 - The Locator does not apply Verified Applicability, does not select implementation patterns, and does not print document text.
