@@ -2,10 +2,13 @@
 
 This repository is **MAG-Ecosystem-Legacy**. It preserves the historical development of MAG Ecosystem, Magshifter's multi-class software development framework for AI-assisted work: global governance, documentation operations, knowledge routing, and Cursor tooling. The repository keeps that development history in sanitized form.
 
+[MAG Ecosystem Legacy — official forum resource](https://magshifter.com/resources/mag-ecosystem-legacy.17/)
+
 ## Status
 
-- **Visibility:** this repository is currently **PRIVATE**.
-- **Publication:** public publication is **pending**. It is not yet published, and the repository is **not publication-ready** (see [Known limitations](#known-limitations)).
+- **Visibility:** this GitHub repository is **PUBLIC**. Source code is available at `Magshifter/MAG-Ecosystem-Legacy` without a private-access clone gate.
+- **Forum listing:** the [official forum resource](https://magshifter.com/resources/mag-ecosystem-legacy.17/) is a separate Product Owner-provided listing. It is not the same thing as this GitHub repository, and it is not a GitHub Release.
+- **GitHub Release:** no GitHub Release or release tag is documented in this README. The version 0.1.1 user manuals are documentation only, not a packaged release artifact.
 - **Development:** MAG Ecosystem development is closed here. This repository is maintained as a historical record and a usable snapshot of its tools. It is not an active development line.
 
 ## Relationship to MAG Development Center
@@ -58,7 +61,7 @@ You do not need Laragon, the private sibling repositories, the Documentation Mir
 
 ## Installation
 
-See [docs/INSTALL.md](docs/INSTALL.md). It covers cloning this repository while it is still private and the minimum setup, and it keeps the optional components separate.
+See [docs/INSTALL.md](docs/INSTALL.md). It covers cloning this public repository and the minimum setup, and it keeps the optional components separate.
 
 ## Documentation
 
@@ -93,7 +96,7 @@ Generated indexes under `generated/` are derived, gitignored, and non-authoritat
 ## Known limitations
 
 - **Clean-machine installation is not verified.** No installation on a separate Windows PC has been tested yet. Local results come from isolated temporary fixtures on the author's machine.
-- **Historical cleanup:** Path B migrated the sanitized development history into this clean GitHub repository, `Magshifter/MAG-Ecosystem-Legacy`. That migrated history preserves 103 commits, with GitHub noreply author and committer metadata and the historical source trees kept. The previous archive repository, `Magshifter/MAG-Ecosystem-Legacy-Arhiv` (former ID `1442085997`), was deleted. The obsolete pre-sanitization commit `442286df7cb2abff56e84064dd1ceb5a3594e9b8` is not available through the authenticated GitHub APIs checked after that deletion: the deleted archive returns 404, and this repository's Git API returns 404 (its commits API returns 422, No commit found). Authenticated API inaccessibility does not prove physical removal from every GitHub cache, backup, or recoverable store. This repository remains **PRIVATE**. Public publication remains **pending** and is not approved. Clean-machine installation on another Windows PC remains **NOT VERIFIED**.
+- **Historical cleanup:** Path B migrated the sanitized development history into this clean GitHub repository, `Magshifter/MAG-Ecosystem-Legacy`. That migrated history preserves 103 commits, with GitHub noreply author and committer metadata and the historical source trees kept. The previous archive repository, `Magshifter/MAG-Ecosystem-Legacy-Arhiv` (former ID `1442085997`), was deleted. The obsolete pre-sanitization commit `442286df7cb2abff56e84064dd1ceb5a3594e9b8` is not available through the authenticated GitHub APIs checked after that deletion: the deleted archive returns 404, and this repository's Git API returns 404 (its commits API returns 422, No commit found). Authenticated API inaccessibility does not prove physical removal from every GitHub cache, backup, or recoverable store. This GitHub repository is now **PUBLIC**. Clean-machine installation on another Windows PC remains **NOT VERIFIED**.
 - Cursor check and Model Routing Guard need an explicit workspace root (`-ReposRoot` or `MAG_REPOS_ROOT`). There is no Laragon default.
 - Documentation Mirror needs an explicit `-InventoryPath`. `-Check` writes a check receipt. `-BootstrapClean` deletes everything under the Mirror root before it repopulates it. The tool never claims that a cloud drive actually synced.
 - Knowledge **GLOBAL** is the standalone scope. The default `Update-MagKnowledge.ps1` refresh selects GLOBAL only and needs no `Beyond3DViewer` checkout. **GLOBAL+#5** is optional: it is refreshed only with an explicit `-ManifestDirectory`, and a real GLOBAL+#5 index still needs its documented `Beyond3DViewer` sources. When an explicitly selected manifest is missing its sources, the refresh fails closed (`FAILED`, exit `3`) without replacing existing indexes. `tools/knowledge/tests/MagKnowledge.Tests.ps1` is standalone and covers GLOBAL+#5 with synthetic fixture documents (see [docs/INSTALL.md](docs/INSTALL.md#verification-commands) and [tools/knowledge/README.md](tools/knowledge/README.md)).
