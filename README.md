@@ -60,6 +60,15 @@ You do not need Laragon, the private sibling repositories, the Documentation Mir
 
 See [docs/INSTALL.md](docs/INSTALL.md). It covers cloning this repository while it is still private and the minimum setup, and it keeps the optional components separate.
 
+## Documentation
+
+User manuals for version 0.1.1:
+
+- [English manual](docs/manual/mag-ecosystem-legacy-manual.en.md)
+- [Ukrainian manual](docs/manual/mag-ecosystem-legacy-manual.uk.md)
+
+These manuals explain setup and use. They do not replace the historical governance documents, and they are not a release or a publication approval. Installation detail remains in [docs/INSTALL.md](docs/INSTALL.md).
+
 ## Basic usage
 
 From the repository root, in PowerShell 7:

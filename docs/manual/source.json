@@ -1,0 +1,17 @@
+{
+  "source_contract_version": 2,
+  "source_kind": "mag_manual_pack",
+  "source_product_id": "mag-ecosystem-legacy",
+  "documents": {
+    "en": {
+      "file": "mag-ecosystem-legacy-manual.en.md",
+      "portable_document_id": "a765543a-35c8-471c-9cec-f4d34808e91f",
+      "portable_root_item_id": "211ec187-40a2-4b20-9fc2-6351485c7335"
+    },
+    "uk": {
+      "file": "mag-ecosystem-legacy-manual.uk.md",
+      "portable_document_id": "06a4dc3c-ebc1-47da-bbab-7f54cadde0b8",
+      "portable_root_item_id": "d68daf85-89b4-4c92-b18a-8a982565ea11"
+    }
+  }
+}
